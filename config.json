@@ -1,0 +1,7 @@
+{
+    "prefix" : "--",
+    "owner_id" : "434421758540644382",
+    "mod_roles" : ["Staff"],
+    "version": "0.0.8",
+    "modules" : ["mod", "help", "credit", "whois", "info", "ping", "shortcut", "daterep", "say", "mentions", "blacklist"]
+}
