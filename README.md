@@ -50,10 +50,10 @@ https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 
 
 
-This project is [hosted on GitHub](https://github.com/yumepantai/PyBot). You can clone this project directly using this command:
+This project is [hosted on GitHub](https://github.com/yumenetwork/Yume-bot). You can clone this project directly using this command:
 
 ```
-git clone git@https://github.com/yumepantai/PyBot
+git clone git@https://github.com/yumenetwork/Yume-bot
 ```
 
 ## Building
@@ -101,7 +101,7 @@ Talk about the release process. How are releases made? What cadence? How to get 
 
 ## Versioning
 
-This project uses [Semantic Versioning](http://semver.org/). For a list of available versions, see the [repository tag list](https://github.com/your/project/tags).
+This project uses [Semantic Versioning](http://semver.org/). For a list of available versions, see the [repository tag list](https://github.com/yumenetwork/Yume-bot/tags).
 
 ## Payload
 
@@ -135,9 +135,9 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 
 # Authors
 
-* **[Phillip Johnston](https://github.com/phillipjohnston)** - *Initial work* - [Embedded Artistry](https://github.com/embeddedartistry)
+* **[Yume](https://github.com/yumenetwork)** - *Initial work*
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/contributors) who participated in this project.
 
 **[Back to top](#table-of-contents)**
 
