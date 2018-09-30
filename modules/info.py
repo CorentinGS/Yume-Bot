@@ -52,6 +52,54 @@ class Info:
         except:
             pass
 
+    @commands.command(pass_context = True)
+    @commands.guild_only()
+    @commands.cooldown(1, 60, commands.BucketType.user)
+    async def members(self, ctx):
+        msg = ctx.message
+        server = ctx.message.guild
+
+        embed = discord.Embed(
+            title="{}".format(ctx.message.guild.name),
+            description="I found this...",
+            color=discord.Colour.dark_gold()
+        )
+
+        embed.add_field(name="Members", value=len(server.members), inline=True)
+        embed.set_thumbnail(url=server.icon_url)
+
+        try:
+            await msg.delete()
+            return await ctx.send(embed=embed)
+
+        except:
+            pass
+
+
+    @commands.command(pass_context = True)
+    @commands.guild_only()
+    @commands.cooldown(1, 60, commands.BucketType.user)
+    async def owner(self, ctx):
+        msg = ctx.message
+        server = ctx.message.guild
+
+        embed = discord.Embed(
+            title="{}".format(ctx.message.guild.name),
+            description="I found this...",
+            color=discord.Colour.dark_gold()
+        )
+
+        embed.add_field(name="Members", value=len(server.owner.mention), inline=True)
+        embed.set_thumbnail(url=server.icon_url)
+
+        try:
+            await msg.delete()
+            return await ctx.send(embed=embed)
+
+        except:
+            pass
+
+
 
 def setup(client):
     client.add_cog(Info(client, client.config))
