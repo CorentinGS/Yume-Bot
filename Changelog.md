@@ -6,6 +6,35 @@ All notable changes to this project will be documented in this file. The format 
 
 ---
 
+## [1.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.0) - 2018-09-30
+
+### Changed
+
+#### Setup
+
+- Add token.json
+- New Github repo / account
+
+### Patched
+
+- Kick embed errors
+- Some bug
+
+### Added
+
+#### Info
+
+- New info commands
+
+
+
+
+
+
+
+
+---
+
 ## [0.0.9](https://github.com/yumepantai/Yume-Bot/releases/tag/0.0.9) - 2018-09-12
 
 ### Changed
@@ -18,7 +47,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Some new features
-- Bug patching 
+- Bug patching
 
 
 ---
