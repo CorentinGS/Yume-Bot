@@ -17,7 +17,7 @@ Read through these guidelines before you get started:
 ## Questions & Concerns
 
 If you have any questions about using or developing for this project, reach out
-to @tylucaskelley or send an [email][1].
+to @yumenetwork or send an [email][1].
 
 ## Issues & Bugs
 

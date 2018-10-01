@@ -1,17 +1,19 @@
 # Submit a feature request or bug report
 
 Before you submit an issue, check to see if it has [already been reported][1].
-Any questions should be directed to @tylucaskelley.
+Any questions should be directed to @yumenetwork.
 
 ---
 
 Replace any ":question:" below with your information.
 
-## Development Environment
+
+## Development Environment (only for developpers)
 
 - Operating system: :question:
-- Browser: :question:
 - Project version: :question:
+- Python version: :question:
+
 
 ## Current Behavior
 
@@ -21,14 +23,12 @@ Replace any ":question:" below with your information.
 
 :question:
 
-## Steps to Reproduce
-
-Only fill this in if you are filing a bug report.
-
-1. :question:
 
 ## Other Relevant Information
 
 :question:
+
+
+
 
 [1]: https://github.com/yumenetwork/Yume-Bot/issues

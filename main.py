@@ -28,8 +28,7 @@ with open('./config/token.json', 'r') as cjson:
     token  = json.load(cjson)
 
 
-
-desc = "discord bot v2.0"
+desc = " "
 PREFIX = config["prefix"]
 modules = config["modules"]
 OWNER = config["owner_id"]
@@ -45,7 +44,8 @@ async def status_task():
     while True:
         await client.change_presence(activity=discord.Game(name=PREFIX + "help"))
         await asyncio.sleep(10)
-        await client.change_presence(activity=discord.Game(name=desc))
+        #await client.change_presence(activity=discord.Game(name=desc))
+        await client.change_presence(activity=discord.Game(name= "Peace and Dream"))
         await asyncio.sleep(10)
         await client.change_presence(activity=discord.Game(name="By Yume"))
         await asyncio.sleep(10)

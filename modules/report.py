@@ -4,6 +4,11 @@ from modules.utils import checks
 import json
 import asyncio
 
+with open('./config/config.json', 'r') as cjson:
+        config = json.load(cjson)
+
+OWNER = config["owner_id"]
+
 
 class Report:
 
@@ -23,17 +28,34 @@ class Report:
     @commands.command(pass_context = True)
     async def feedback(self, ctx):
 
-        msg = ctx.message
-        await msg.delete()
-        user = ctx.message.author
+        cmd = ctx.message
+        await cmd.delete()
+        print("FeedBack")
+        auth = ctx.message.author
+        guild = ctx.message.guild
+
+        owner = await self.client.get_user_info(OWNER)
 
 
-        try :
-            await ctx.send("{}, look at your DM".format(user.mention))
-            return await user.send('Hey ! You asked me for a bug report ! Please type the command **{}debug** and follow the instructions...'.format(PREFIX))
 
-        except discord.Forbidden:
-            return await ctx.send('I cannot DM you ! Please switch your DM permissions to **ALLOWED** !')
+        await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention))
+
+        print("Tell me feedback")
+
+        async def check(user):
+            return user == ctx.message.author
+
+        try:
+            msg = await self.client.wait_for('message', timeout = 60.0, check=check)
+            print('wait for')
+            await owner.send("{}#{} in guild __{}__ has sent a feedback : \n **{}** \n ```{}```".format(auth.name, auth.discriminator, guild.name, msg.content, msg))
+            print('sent')
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
+        else:
+            await ctx.send('👍')
+
 
 
     @commands.command(pass_context = True)
@@ -42,9 +64,8 @@ class Report:
         channel = ctx.channel
         user = ctx.channel.recipient
         owner = await self.client.get_user_info(434421758540644382)
-        await owner.send(
-        "{}#{} asked for a **debug** ! This is his informations :\n **ID** : {}".format(user.name, user.discriminator, user.id))
-        return await channel.send("Can you fill the feedback please:\n <https://anon.to/0fyO7H>")
+        await owner.send("{}#{} asked for a **debug** ! This is his informations :\n **ID** : {}".format(user.name, user.discriminator, user.id))
+        return await channel.send("Can you create an issue please:\n <https://github.com/yumenetwork/Yume-Bot/issues>")
 
 
 

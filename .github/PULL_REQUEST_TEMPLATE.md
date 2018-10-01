@@ -11,7 +11,7 @@ is true:
 6. Tests have been added or updated to reflect your changes.
 7. All tests pass.
 
-Any questions should be directed to @tylucaskelley.
+Any questions should be directed to @yumenetwork.
 
 ---
 

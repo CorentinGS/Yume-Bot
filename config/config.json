@@ -1,7 +1,7 @@
 {
     "prefix" : "--",
-    "owner_id" : "434421758540644382",
-    "mod_roles" : ["Staff"],
-    "version": "1.0.0",
-    "modules" : ["mod", "help", "credit", "whois", "info", "ping", "shortcut", "daterep", "say", "mentions", "blacklist"]
+    "owner_id" : "282233191916634113",
+    "version": "1.0.0-stable",
+    "modules": ["mod", "help", "credit", "whois", "info", "ping", "shortcut", "daterep", "say", "mentions", "blacklist", "report"]
+
 }
