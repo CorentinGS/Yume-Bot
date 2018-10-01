@@ -53,7 +53,7 @@ https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 This project is [hosted on GitHub](https://github.com/yumenetwork/Yume-bot). You can clone this project directly using this command:
 
 ```
-git clone git@https://github.com/yumenetwork/Yume-bot
+git clone https://github.com/yumenetwork/Yume-bot
 ```
 
 ## Building
@@ -64,31 +64,13 @@ Instructions for how to build your project
 docker-compose build
 ```
 
-## Running Tests
-
-Describe how to run unit tests for your project.
-
-```
-Examples should be included
-```
-
-SOON
-
-
-## Installation
-
-Instructions for how to install your project's build artifacts
-
-```
-docker-compose up
-```
 
 ## Usage
 
 Instructions for using your project. Ways to run the program, how to include it in another project, etc.
 
 ```
-Examples should be included
+docker-compose up -d
 ```
 
 If your project provides an API, either provide details for usage in this document or link to the appropriate API reference documents
