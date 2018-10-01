@@ -42,8 +42,11 @@ class Report:
 
         print("Tell me feedback")
 
-        async def check(user):
-            return user == ctx.message.author and channel == ctx.message.channel
+        def check(m):
+            if m.author == ctx.message.author:
+                return True
+            else:
+                return False
 
         try:
             msg = await self.client.wait_for('message', timeout = 60.0, check=check)
