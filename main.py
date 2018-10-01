@@ -21,10 +21,10 @@ except ImportError:
     sys.exit(1)
 
 
-with open('./config.json', 'r') as cjson:
+with open('./config/config.json', 'r') as cjson:
         config = json.load(cjson)
 
-with open('./token.json', 'r') as cjson:
+with open('./config/token.json', 'r') as cjson:
     token  = json.load(cjson)
 
 
