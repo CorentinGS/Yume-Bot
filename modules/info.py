@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import json
+import os
+import psutil
 
 class Info:
 
@@ -98,6 +100,22 @@ class Info:
 
         except:
             pass
+
+    @commands.command(pass_context = True)
+    @commands.guild_only()
+    @commands.cooldown(1, 20, commands.BucketType.user)
+    async def avatar(self, ctx, *, user: discord.Member = None):
+
+        if user is None:
+            user = ctx.author
+
+        return await ctx.send(f"Avatar to {user.name} \n {user.avatar_url_as(size=1024)}")
+
+    @commands.command(pass_context = True)
+    @commands.guild_only()
+    @commands.cooldown(1, 120, commands.BucketType.guild)
+    async def avatar_guild(self, ctx):
+        return await ctx.send(f"Avatar of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
 
 
