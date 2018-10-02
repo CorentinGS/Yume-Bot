@@ -30,11 +30,11 @@ class Mod:
     @commands.has_permissions(manage_messages = True)
     async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
 
-        role = discord.utils.get(ctx.guild.roles, name="Muted")
+
         msg = ctx.message
         server = ctx.guild.name
         id = user.id
-
+        role = discord.utils.get(ctx.guild.roles, name="Muted")
 
 
         unit = duration[-1]
@@ -285,6 +285,22 @@ class Mod:
         except:
             pass
 
+
+    @commands.command(pass_context = True)
+    @commands.guild_only()
+    @commands.cooldown(2, 10, commands.BucketType.user)
+    @commands.has_permissions(ban_members = True)
+    async def massban(self, ctx, reason: str = None, *members: int):
+
+        try:
+            for member_id in members:
+                user = await self.client.get_user_info(member_id)
+                await ctx.guild.ban(discord.Object(id=member_id), reason= "{} - {}".format(ctx.message.author, reason))
+                #await ctx.send("{user.name}#{user.discriminator} has been banned")
+                await ctx.send("Banned")
+            return
+        except Exception as e:
+            return await ctx.send(e)
 
 
 def setup(client):
