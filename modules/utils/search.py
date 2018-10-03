@@ -1,9 +1,9 @@
 def duckduckgo(text):
-    return "https://duckduckgo.com/?q={}".format(text)
+    return f"https://duckduckgo.com/?q={text}"
 
 
 def qwant(text):
-    return 'https://www.qwant.com/?q={}'.format(text)
+    return f'https://www.qwant.com/?q={text}'
 
 
 def discordpy(text):
