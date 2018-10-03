@@ -3,6 +3,7 @@ from discord.ext import commands
 import json
 from .utils.search import duckduckgo, qwant, discordpy, youtube, stack
 
+
 class Shortcut:
 
     conf = {}
@@ -14,8 +15,7 @@ class Shortcut:
         global conf
         conf = config
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ddg(self, ctx, *, content: str):
 
@@ -30,12 +30,10 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-
             except:
                 pass
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def qwant(self, ctx, *, content: str):
 
@@ -50,11 +48,10 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-
             except:
                 pass
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def discordpy(self, ctx, *, content: str):
 
@@ -69,11 +66,10 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-
             except:
                 pass
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def youtube(self, ctx, *, content: str):
 
@@ -88,12 +84,10 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-
             except:
                 pass
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def stack(self, ctx, *, content: str):
 
@@ -108,9 +102,9 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-
             except:
                 pass
+
 
 '''
     @commands.command(pass_context = True)

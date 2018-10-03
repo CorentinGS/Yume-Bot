@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 
+
 class Mentions:
 
     conf = {}
@@ -13,10 +14,9 @@ class Mentions:
         global conf
         conf = config
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.has_permissions(manage_messages = True)
+    @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 20, commands.BucketType.user)
     async def mention(self, ctx, role: str):
         msg = ctx.message
@@ -24,21 +24,19 @@ class Mentions:
         msg.delete()
 
         if rolemention.mentionable == False:
-            await rolemention.edit(mentionable = True)
+            await rolemention.edit(mentionable=True)
 
         else:
             await ctx.send(rolemention.mention)
             return
 
         await ctx.send(rolemention.mention)
-        await rolemention.edit(mentionable = False)
+        await rolemention.edit(mentionable=False)
         return
 
-
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.has_permissions(manage_messages = True)
+    @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 20, commands.BucketType.user)
     async def annonce(self, ctx, role: str, *, content):
         msg = ctx.message
@@ -46,18 +44,15 @@ class Mentions:
         msg.delete()
 
         if rolemention.mentionable == False:
-            await rolemention.edit(mentionable = True)
+            await rolemention.edit(mentionable=True)
 
         if rolemention.mentionable == True:
             await ctx.send("{} \n{}".format(rolemention.mention, content))
             return
 
         await ctx.send("{} \n{}".format(rolemention.mention, content))
-        await rolemention.edit(mentionable = False)
+        await rolemention.edit(mentionable=False)
         return
-
-
-
 
 
 def setup(client):

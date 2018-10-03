@@ -7,6 +7,7 @@ import asyncio
 import pymongo
 from pymongo import MongoClient
 
+
 class Mod:
 
     conf = {}
@@ -23,19 +24,16 @@ class Mod:
         mongo = MongoClient('mongo', 27017)
         db = mongo.bot
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
-    @commands.has_permissions(manage_messages = True)
+    @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
-
 
         msg = ctx.message
         server = ctx.guild.name
         id = user.id
         role = discord.utils.get(ctx.guild.roles, name="Muted")
-
 
         unit = duration[-1]
         if unit == 's':
@@ -53,17 +51,17 @@ class Mod:
 
         db[server].update_one(
             {
-                'User_id' : id
+                'User_id': id
             },
             {
                 '$set': {
-                    'Name' : '{}#{}'.format(user.name, user.discriminator),
+                    'Name': '{}#{}'.format(user.name, user.discriminator),
                     'User_id': user.id,
 
                     'Mute': True,
-                    'Time' : time,
+                    'Time': time,
                     'Reason': reason
-                    }
+                }
             },
             True
         )
@@ -83,31 +81,30 @@ class Mod:
             await user.remove_roles(role)
             db[server].update_one(
                 {
-                    'User_id' : id
+                    'User_id': id
                 },
                 {
                     '$set': {
-                        'Name' : '{}#{}'.format(user.name, user.discriminator),
+                        'Name': '{}#{}'.format(user.name, user.discriminator),
                         'User_id': user.id,
 
                         'Mute': False,
-                        'Time' : None,
+                        'Time': None,
                         'Reason': None
-                        }
+                    }
                 },
                 True
             )
 
             return await ctx.send("{} has been unmuted".format(user.mention))
 
-
         except:
             pass
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
-    @commands.has_permissions(manage_messages = True)
+    @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         msg = ctx.message
@@ -118,25 +115,24 @@ class Mod:
         await msg.delete()
         db[server].update_one(
             {
-                'User_id' : id
+                'User_id': id
             },
             {
                 '$set': {
-                    'Name' : '{}#{}'.format(user.name, user.discriminator),
+                    'Name': '{}#{}'.format(user.name, user.discriminator),
                     'User_id': user.id,
 
                     'Mute': False,
-                    'Time' : None,
+                    'Time': None,
                     'Reason': None
-                    }
+                }
             },
             True
         )
 
         return await ctx.send("{} has been unmuted".format(user.display_name))
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
@@ -152,16 +148,18 @@ class Mod:
         except discord.Forbidden:
             return await ctx.send('Forbidden')
 
-
         embed = discord.Embed(
             title="Kick",
             description="The KickHammer stroke someone...",
-            color = discord.Colour.dark_red()
+            color=discord.Colour.dark_red()
         )
 
-        embed.add_field(name="Name", value="{}#{}".format(member.name, member.discriminator), inline=True)
-        embed.add_field(name="Created at", value=member.created_at.strftime('%A - %B - %e - %g at %H:%M'), inline=True)
-        embed.add_field(name="Kicked at", value=datetime.datetime.now().strftime('%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Name", value="{}#{}".format(
+            member.name, member.discriminator), inline=True)
+        embed.add_field(name="Created at", value=member.created_at.strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Kicked at", value=datetime.datetime.now().strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
         embed.add_field(name="ID", value=id, inline=True)
         embed.add_field(name="Reason", value=reason, inline=True)
         embed.add_field(name="Mod", value=moderator, inline=True)
@@ -171,10 +169,10 @@ class Mod:
         await ctx.send(embed=embed)
         return
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def hackban(self, ctx, id: int, *, reason: str = None):
 
         server = ctx.guild
@@ -182,26 +180,26 @@ class Mod:
         moderator = ctx.message.author
         member = discord.Object(id=id)
 
-
         try:
             await ctx.guild.ban(member)
 
-
         except discord.Forbidden:
             return await ctx.send("Forbidden")
-
 
         banned = await self.client.get_user_info(id)
 
         embed = discord.Embed(
             title="Hackban",
             description="The BanHammer stroke someone...",
-            color = discord.Colour.dark_red()
+            color=discord.Colour.dark_red()
         )
 
-        embed.add_field(name="Name", value="{}#{}".format(banned.name, banned.discriminator), inline=True)
-        embed.add_field(name="Created at", value=banned.created_at.strftime('%A - %B - %e - %g at %H:%M'), inline=True)
-        embed.add_field(name="Banned at", value=datetime.datetime.now().strftime('%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Name", value="{}#{}".format(
+            banned.name, banned.discriminator), inline=True)
+        embed.add_field(name="Created at", value=banned.created_at.strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Banned at", value=datetime.datetime.now().strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
         embed.add_field(name="ID", value=id, inline=True)
         embed.add_field(name="Reason", value=reason, inline=True)
         embed.add_field(name="Mod", value=moderator, inline=True)
@@ -211,11 +209,10 @@ class Mod:
         await ctx.send(embed=embed)
         return
 
-
-        @commands.command(pass_context = True)
+        @commands.command(pass_context=True)
         @commands.guild_only()
         @commands.cooldown(2, 10, commands.BucketType.user)
-        @commands.has_permissions(ban_members = True)
+        @commands.has_permissions(ban_members=True)
         async def unban(self, ctx, id: int):
 
             server = ctx.guild
@@ -223,17 +220,16 @@ class Mod:
             moderator = ctx.message.author
             member = discord.Object(id=id)
 
-
             try:
                 await ctx.guild.unban(member)
 
             except:
                 pass
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
 
         server = ctx.guild
@@ -242,7 +238,7 @@ class Mod:
         id = user.id
 
         try:
-            await ctx.guild.ban(user, reason = reason, delete_message_days=7)
+            await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
         except discord.Forbidden:
             return await ctx.send("Forbidden")
@@ -250,17 +246,18 @@ class Mod:
         except discord.HTTPException:
             return await ctx.send("HTTPException")
 
-
-
         embed = discord.Embed(
             title="Ban",
             description="The BanHammer stroke someone...",
-            color = discord.Colour.dark_red()
+            color=discord.Colour.dark_red()
         )
 
-        embed.add_field(name="Name", value="{}#{}".format(user.name, user.discriminator), inline=True)
-        embed.add_field(name="Created at", value=user.created_at.strftime('%A - %B - %e - %g at %H:%M'), inline=True)
-        embed.add_field(name="Banned at", value=datetime.datetime.now().strftime('%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Name", value="{}#{}".format(
+            user.name, user.discriminator), inline=True)
+        embed.add_field(name="Created at", value=user.created_at.strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Banned at", value=datetime.datetime.now().strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
         embed.add_field(name="ID", value=user.id, inline=True)
         embed.add_field(name="Reason", value=reason, inline=True)
         embed.add_field(name="Mod", value=moderator, inline=True)
@@ -270,11 +267,11 @@ class Mod:
         await ctx.send(embed=embed)
         return
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.has_permissions(manage_messages = True)
+    @commands.has_permissions(manage_messages=True)
     @commands.cooldown(2, 10, commands.BucketType.user)
-    async def purge(self,ctx, amount: int):
+    async def purge(self, ctx, amount: int):
 
         msg = ctx.message
 
@@ -285,18 +282,17 @@ class Mod:
         except:
             pass
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
-    @commands.has_permissions(ban_members = True)
+    @commands.has_permissions(ban_members=True)
     async def massban(self, ctx, reason: str = None, *members: int):
 
         try:
             for member_id in members:
                 user = await self.client.get_user_info(member_id)
-                await ctx.guild.ban(discord.Object(id=member_id), reason= "{} - {}".format(ctx.message.author, reason))
-                #await ctx.send("{user.name}#{user.discriminator} has been banned")
+                await ctx.guild.ban(discord.Object(id=member_id), reason="{} - {}".format(ctx.message.author, reason))
+                # await ctx.send("{user.name}#{user.discriminator} has been banned")
                 await ctx.send("Banned")
             return
         except Exception as e:

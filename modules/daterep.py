@@ -4,6 +4,7 @@ import json
 import datetime
 from romme import RepublicanDate
 
+
 class Date:
 
     conf = {}
@@ -15,7 +16,7 @@ class Date:
         global conf
         conf = config
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def rd(self, ctx):
@@ -34,6 +35,7 @@ class Date:
 
         except:
             pass
+
 
 def setup(client):
     client.add_cog(Date(client, client.config))

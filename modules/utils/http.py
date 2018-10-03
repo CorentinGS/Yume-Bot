@@ -6,7 +6,6 @@ from modules.utils import cache
 
 class HTTPSession(aiohttp.ClientSession):
 
-
     def __init__(self, loop=None):
         super().__init__(loop=loop or asyncio.get_event_loop())
 

@@ -15,8 +15,7 @@ class Say:
         global conf
         conf = config
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @checks.is_owner()
     async def echo(self, ctx, *, content):
 
@@ -29,13 +28,13 @@ class Say:
         except:
             pass
 
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @checks.is_owner()
     async def dm(self, ctx, user: discord.Member, *, content):
 
         msg = ctx.message
 
-        try :
+        try:
             await msg.delete()
             await ctx.send("{} has been dm".format(user.display_name))
             return await user.send(content)
@@ -43,14 +42,13 @@ class Say:
         except:
             pass
 
-
-    @commands.command(pass_context = True)
+    @commands.command(pass_context=True)
     @checks.is_owner()
     async def send(self, ctx, channel: discord.TextChannel, *, content):
 
         msg = ctx.message
 
-        try :
+        try:
             await msg.delete()
             return await channel.send(content)
 
