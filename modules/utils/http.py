@@ -1,7 +1,7 @@
 import asyncio
 import aiohttp
 
-from utils import cache
+from modules.utils import cache
 
 
 class HTTPSession(aiohttp.ClientSession):
@@ -29,4 +29,4 @@ async def get(url, *args, **kwargs):
 
 
 async def post(url, *args, **kwargs):
-return await query(url, "post", *args, **kwargs)
+    return await query(url, "post", *args, **kwargs)

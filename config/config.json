@@ -2,6 +2,6 @@
     "prefix" : "--",
     "owner_id" : "282233191916634113",
     "version": "1.0.0-stable",
-    "modules": ["mod", "help", "credit", "whois", "info", "ping", "shortcut", "daterep", "say", "mentions", "blacklist", "report"]
+    "modules": ["mod", "help", "credit", "whois", "info", "ping", "shortcut", "daterep", "say", "mentions", "blacklist", "report", "fun"]
 
 }

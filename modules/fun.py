@@ -25,7 +25,7 @@ class Fun:
 
     @commands.command(pass_context = True, aliases=['8ball'])
     @commands.guild_only()
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def eightball(self, ctx, *, question: str = None):
 
         if question is None:
@@ -40,25 +40,27 @@ class Fun:
 
     @commands.command(pass_context = True, aliases=['neko'])
     @commands.guild_only()
-    @commands.cooldown(1, 10, commands.BucketType.guild)
+    @commands.cooldown(1, 3, commands.BucketType.guild)
     async def cat(self, ctx):
         await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
 
     @commands.command(pass_context = True)
     @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.guild)
-    async def love(self, ctx, user: discord.Member = None):
+    @commands.cooldown(1, 3, commands.BucketType.guild)
+    async def lovepower(self, ctx, user: discord.Member = None):
+
         if user is None:
             user = ctx.message.author
 
-        random.seed(user.id)
-        r = random.randint(1, 100)
-        love = r / 1.6
+        seed = user.discriminator
+
+        random.seed(seed)
+        love = random.randint(1, 100)
 
         if love < 20:
             emoji = "💔"
-        elif live > 20:
+        elif love > 20:
             emoji = "❤"
         elif love > 50:
             emoji = '💖'
@@ -67,7 +69,7 @@ class Fun:
         elif love > 99:
             emoji = "🖤"
 
-        return await ctx.send(f"Love power of {user.name} is {love:.2f}! {emoji}")
+        await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji ))
 
 
 
