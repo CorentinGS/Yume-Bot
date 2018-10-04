@@ -8,8 +8,8 @@ class Shortcut:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -129,5 +129,5 @@ class Shortcut:
 # TODO: Add more shortcut on the same model (using utils/search.py)
 
 
-def setup(client):
-    client.add_cog(Shortcut(client, client.config))
+def setup(bot):
+    bot.add_cog(Shortcut(bot, bot.config))

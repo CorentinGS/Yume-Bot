@@ -14,8 +14,8 @@ class Report:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -32,7 +32,7 @@ class Report:
         auth = ctx.message.author
         guild = ctx.message.guild
 
-        owner = await self.client.get_user_info(OWNER)
+        owner = await self.bot.get_user_info(OWNER)
 
         await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention))
 
@@ -45,7 +45,7 @@ class Report:
                 return False
 
         try:
-            msg = await self.client.wait_for('message', timeout=60.0, check=check)
+            msg = await self.bot.wait_for('message', timeout=60.0, check=check)
             print('wait for')
             await owner.send("{}#{} in guild __{}__ has sent a feedback : \n **{}** \n ```{}```".format(auth.name, auth.discriminator, guild.name, msg.content, msg))
             print('sent')
@@ -60,10 +60,10 @@ class Report:
     async def debug(self, ctx,):
         channel = ctx.channel
         user = ctx.channel.recipient
-        owner = await self.client.get_user_info(434421758540644382)
+        owner = await self.bot.get_user_info(434421758540644382)
         await owner.send("{}#{} asked for a **debug** ! This is his informations :\n **ID** : {}".format(user.name, user.discriminator, user.id))
         return await channel.send("Can you create an issue please:\n <https://github.com/yumenetwork/Yume-Bot/issues>")
 
 
-def setup(client):
-    client.add_cog(Report(client, client.config))
+def setup(bot):
+    bot.add_cog(Report(bot, bot.config))

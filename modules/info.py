@@ -9,8 +9,8 @@ class Info:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -121,5 +121,5 @@ class Info:
         return await ctx.send(f"Avatar of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
 
-def setup(client):
-    client.add_cog(Info(client, client.config))
+def setup(bot):
+    bot.add_cog(Info(bot, bot.config))

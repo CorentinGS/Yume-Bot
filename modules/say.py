@@ -8,8 +8,8 @@ class Say:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -56,5 +56,5 @@ class Say:
             pass
 
 
-def setup(client):
-    client.add_cog(Say(client, client.config))
+def setup(bot):
+    bot.add_cog(Say(bot, bot.config))
