@@ -7,8 +7,8 @@ class Whois:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -52,7 +52,7 @@ class Whois:
     @commands.cooldown(2, 20, commands.BucketType.user)
     async def hackwhois(self, ctx, id: int):
 
-        user = await self.client.get_user_info(id)
+        user = await self.bot.get_user_info(id)
         msg = ctx.message
 
         embed = discord.Embed(
@@ -76,5 +76,5 @@ class Whois:
             pass
 
 
-def setup(client):
-    client.add_cog(Whois(client, client.config))
+def setup(bot):
+    bot.add_cog(Whois(bot, bot.config))
