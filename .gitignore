@@ -107,3 +107,4 @@ venv.bak/
 /config/token.json
 /data/db
 /package-lock.json
+/keys.json
