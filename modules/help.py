@@ -50,7 +50,7 @@ class Help:
             await msg.delete()
             return await ctx.send(embed=embed)
 
-        except:
+        except discord.HTTPException:
             pass
 
 

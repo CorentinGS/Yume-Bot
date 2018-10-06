@@ -72,7 +72,7 @@ class Mod:
 
             await ctx.send('{} has been muted for {} with the reason : {}.'.format(user.mention, duration, reason))
 
-        except:
+        except discord.HTTPException:
             pass
 
         await asyncio.sleep(time)
@@ -98,7 +98,7 @@ class Mod:
 
             return await ctx.send("{} has been unmuted".format(user.mention))
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)
@@ -223,7 +223,7 @@ class Mod:
             try:
                 await ctx.guild.unban(member)
 
-            except:
+            except discord.HTTPException:
                 pass
 
     @commands.command(pass_context=True)
@@ -279,7 +279,7 @@ class Mod:
             await msg.delete()
             return await ctx.channel.purge(limit=amount + 1)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)

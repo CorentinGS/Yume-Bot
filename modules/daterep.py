@@ -33,7 +33,7 @@ class Date:
             await msg.delete()
             return
 
-        except:
+        except discord.HTTPException:
             pass
 
 

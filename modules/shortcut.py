@@ -30,7 +30,7 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-            except:
+            except discord.HTTPException:
                 pass
 
     @commands.command(pass_context=True)
@@ -48,7 +48,7 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-            except:
+            except discord.HTTPException:
                 pass
 
     @commands.command(pass_context=True)
@@ -66,7 +66,7 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-            except:
+            except discord.HTTPException: 
                 pass
 
     @commands.command(pass_context=True)
@@ -84,7 +84,7 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-            except:
+            except discord.HTTPException:
                 pass
 
     @commands.command(pass_context=True)
@@ -102,7 +102,7 @@ class Shortcut:
                 await msg.delete()
                 return await ctx.send("This is your result  : **{}**" .format(result))
 
-            except:
+            except discord.HTTPException:
                 pass
 
 
