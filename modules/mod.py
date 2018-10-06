@@ -12,8 +12,8 @@ class Mod:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -186,7 +186,7 @@ class Mod:
         except discord.Forbidden:
             return await ctx.send("Forbidden")
 
-        banned = await self.client.get_user_info(id)
+        banned = await self.bot.get_user_info(id)
 
         embed = discord.Embed(
             title="Hackban",
@@ -290,7 +290,7 @@ class Mod:
 
         try:
             for member_id in members:
-                user = await self.client.get_user_info(member_id)
+                user = await self.bot.get_user_info(member_id)
                 await ctx.guild.ban(discord.Object(id=member_id), reason="{} - {}".format(ctx.message.author, reason))
                 # await ctx.send("{user.name}#{user.discriminator} has been banned")
                 await ctx.send("Banned")
@@ -299,5 +299,5 @@ class Mod:
             return await ctx.send(e)
 
 
-def setup(client):
-    client.add_cog(Mod(client, client.config))
+def setup(bot):
+    bot.add_cog(Mod(bot, bot.config))

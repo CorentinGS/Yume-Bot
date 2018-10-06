@@ -7,8 +7,8 @@ class Ping:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -29,5 +29,5 @@ class Ping:
         return await ctx.send("Ping")
 
 
-def setup(client):
-    client.add_cog(Ping(client, client.config))
+def setup(bot):
+    bot.add_cog(Ping(bot, bot.config))

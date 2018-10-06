@@ -11,8 +11,8 @@ class Credit:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
         self.process = psutil.Process(os.getpid())
 
@@ -32,7 +32,7 @@ class Credit:
 
         message = ctx.message
         await message.delete()
-        owner = await self.client.get_user_info(OWNER)
+        owner = await self.bot.get_user_info(OWNER)
 
         embed = discord.Embed(
             title="Credit",
@@ -89,10 +89,10 @@ class Credit:
 
         embed.add_field(name="RAM", value=f"{ramUsage:.2f} MB", inline=True)
         embed.add_field(name="Servers", value=len(
-            self.client.guilds), inline=True)
+            self.bot.guilds), inline=True)
 
         return await ctx.send(embed=embed)
 
 
-def setup(client):
-    client.add_cog(Credit(client, client.config))
+def setup(bot):
+    bot.add_cog(Credit(bot, bot.config))

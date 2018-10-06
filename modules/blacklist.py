@@ -10,8 +10,8 @@ class Blacklist:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -29,7 +29,7 @@ class Blacklist:
     async def bladd(self, ctx, id: int, *, reason: str = None):
 
         banned = discord.Object(id=id)
-        member = await self.client.get_user_info(id)
+        member = await self.bot.get_user_info(id)
         message = ctx.message
         message.delete()
 
@@ -56,7 +56,7 @@ class Blacklist:
     async def blrm(self, ctx, id: int):
 
         banned = discord.Object(id=id)
-        member = await self.client.get_user_info(id)
+        member = await self.bot.get_user_info(id)
         message = ctx.message
         message.delete()
 
@@ -124,5 +124,5 @@ class Blacklist:
         return
 
 
-def setup(client):
-    client.add_cog(Blacklist(client, client.config))
+def setup(bot):
+    bot.add_cog(Blacklist(bot, bot.config))

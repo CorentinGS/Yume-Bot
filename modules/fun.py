@@ -8,8 +8,8 @@ class Fun:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -69,5 +69,5 @@ class Fun:
         await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji))
 
 
-def setup(client):
-    client.add_cog(Fun(client, client.config))
+def setup(bot):
+    bot.add_cog(Fun(bot, bot.config))

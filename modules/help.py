@@ -7,8 +7,8 @@ class Help:
 
     conf = {}
 
-    def __init__(self, client, config):
-        self.client = client
+    def __init__(self, bot, config):
+        self.bot = bot
         self.config = config
 
         global conf
@@ -54,5 +54,5 @@ class Help:
             pass
 
 
-def setup(client):
-    client.add_cog(Help(client, client.config))
+def setup(bot):
+    bot.add_cog(Help(bot, bot.config))
