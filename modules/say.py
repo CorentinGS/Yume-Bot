@@ -55,6 +55,23 @@ class Say:
         except:
             pass
 
+    @commands.command(pass_context = True)
+    @checks.is_owner()
+    async def gsay(self, ctx, *, content):
+
+        msg = ctx.message
+        await msg.delete()
+
+
+        for server in self.bot.guilds:
+            channel = discord.utils.get(server.text_channels, name = "general")
+
+            if channel is None:
+                pass
+
+            else:
+                return await channel.send(content)
+
 
 def setup(bot):
     bot.add_cog(Say(bot, bot.config))
