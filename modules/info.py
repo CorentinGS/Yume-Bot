@@ -54,7 +54,7 @@ class Info:
             await msg.delete()
             return await ctx.send(embed=embed)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)
@@ -77,7 +77,7 @@ class Info:
             await msg.delete()
             return await ctx.send(embed=embed)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)
@@ -101,7 +101,7 @@ class Info:
             await msg.delete()
             return await ctx.send(embed=embed)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)

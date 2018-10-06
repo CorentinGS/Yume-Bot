@@ -25,7 +25,7 @@ class Say:
             await msg.delete()
             return await ctx.send(content)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)
@@ -39,7 +39,7 @@ class Say:
             await ctx.send("{} has been dm".format(user.display_name))
             return await user.send(content)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context=True)
@@ -52,7 +52,7 @@ class Say:
             await msg.delete()
             return await channel.send(content)
 
-        except:
+        except discord.HTTPException:
             pass
 
     @commands.command(pass_context = True)
