@@ -51,6 +51,10 @@ async def status_task():
         await bot.change_presence(activity=discord.Game(name="By Yume"))
         await asyncio.sleep(10)
 
+@bot.event
+async def on_connect():
+    print("Connected")
+
 
 @bot.event
 async def on_command_error(ctx, exception):
