@@ -94,7 +94,7 @@ class Say:
 
         answer = random.choice(lists.king)
 
-        return await ctx.send(f'{answer}'')
+        return await ctx.send(f'{answer}')
 
 
 
