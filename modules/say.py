@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from modules.utils import checks
+from modules.utils import lists
+import random
 import json
 
 
@@ -71,6 +73,20 @@ class Say:
 
             else:
                 return await channel.send(content)
+
+
+    @commands.command(pass_context = True)
+    @checks.is_owner()
+    async def speak(self, ctx):
+
+        msg = ctx.message
+        await msg.delete()
+
+        answer = random.choice(lists.speak)
+
+        return await ctx.send(f'{answer}')
+
+
 
 
 def setup(bot):
