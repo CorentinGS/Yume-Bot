@@ -104,7 +104,6 @@ venv.bak/
 .mypy_cache/
 
 #files
-/config/token.json
 /data/db
 /package-lock.json
-/config/keys.json
+/.gitignore
