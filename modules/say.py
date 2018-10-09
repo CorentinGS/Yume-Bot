@@ -86,6 +86,16 @@ class Say:
 
         return await ctx.send(f'{answer}')
 
+    @commands.command(pass_context = True, aliases = ["god", 'yume'])
+    async def king(self, ctx):
+
+        msg = ctx.message
+        await msg.delete()
+
+        answer = random.choice(lists.king)
+
+        return await ctx.send(f'{answer}'')
+
 
 
 

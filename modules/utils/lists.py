@@ -10,4 +10,8 @@ speak = [
     'Long live Linux', 'I bought a Tux at the supermarket yesterday',
     'Gentoo is for the bearded men', 'I threw the apple out the window'
 
+],
+
+king = [
+    'Yume the king !', "Yum Yum", 'YUYU ! <3', 'Yumeeeee', 'Peace and dream like Yume'
 ]
