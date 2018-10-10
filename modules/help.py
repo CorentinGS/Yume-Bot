@@ -2,6 +2,12 @@ import discord
 from discord.ext import commands
 import json
 
+with open('./config/config.json', 'r') as cjson:
+    config = json.load(cjson)
+
+global PREFIX
+PREFIX = config["prefix"]
+
 
 class Help:
 
@@ -20,35 +26,23 @@ class Help:
     async def help(self, ctx):
 
         msg = ctx.message
+        author = ctx.message.author
         embed = discord.Embed(
             set_author="Help Menu",
             color=discord.Colour.orange()
         )
 
-        embed.add_field(
-            name="Help", value="Display this message", inline=False)
+        embed.add_field(name = "**General**", content= f"{prefix}help General")
+        embed.add_field(name = "**Moderation**", content= f"{prefix}help Moderation")
+        embed.add_field(name = "**Fun**", content= f"{prefix}help Fun")
+        embed.add_field(name = "**Meteo**", content= f"{prefix}help Meteo")
+        embed.add_field(name = "**Blacklist**", content= f"{prefix}help Blacklist")
+        embed.add_field(name = "**Info**", content= f"{prefix}help Info")
 
-        embed.add_field(name="Whois", value="Display whois of someone", inline=False)
-        embed.add_field(name="HackWhois", value="Display hackwhois of someone", inline=False)
-        embed.add_field(name="Credit", value="Display the credit message", inline=False)
-        embed.add_field(name="Info", value="Display informations about the server", inline=False)
-        embed.add_field(name="Ping", value="Pong !!!", inline=False)
-        embed.add_field(name='Rd', value='Convert the date into Republican Date', inline=False)
-        embed.add_field(name='Ddg', value='Search on the web with DuckDuckGo', inline=False)
-        embed.add_field(name='Qwant', value='Search on the web with Qwant', inline=False)
-        embed.add_field(name='Discordpy', value='Search on the discord py doc', inline=False)
-        embed.add_field(name="Ban", value="Ban an user", inline=False)
-        embed.add_field(name="HackBan", value="HackBan an user", inline=False)
-        embed.add_field(name="Kick", value="Kick an user", inline=False)
-        embed.add_field(name="Mute", value="Mute an user", inline=False)
-        embed.add_field(name='Unmute', value='Unmute an user', inline=False)
-        embed.add_field(name='Purge', value='Purge the current channel', inline=False)
-        embed.add_field(name="Mention", value="Mention a role", inline=False)
-        embed.add_field(name="Annonce", value="Fait une annonce", inline=False)
 
         try:
             await msg.delete()
-            return await ctx.send(embed=embed)
+            return await author.send(embed=embed)
 
         except discord.HTTPException:
             pass

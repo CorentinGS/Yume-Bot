@@ -13,5 +13,6 @@ speak = [
 ],
 
 king = [
-    'Yume the king !', "Yum Yum", 'YUYU ! <3', 'Yumeeeee', 'Peace and dream like Yume'
+    'Yume the king !', "Yum Yum", 'YUYU ! <3', 'Yumeeeee', 'Peace and dream like Yume',
+    "Long live Yume"
 ]
