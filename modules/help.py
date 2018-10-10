@@ -2,11 +2,7 @@ import discord
 from discord.ext import commands
 import json
 
-with open('./config/config.json', 'r') as cjson:
-    config = json.load(cjson)
 
-global PREFIX
-PREFIX = config["prefix"]
 
 
 class Help:
@@ -22,8 +18,13 @@ class Help:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
     async def help(self, ctx):
+
+
+        with open('./config/config.json', 'r') as cjson:
+            config = json.load(cjson)
+
+        prefix = config["prefix"]
 
         msg = ctx.message
         author = ctx.message.author
@@ -32,12 +33,12 @@ class Help:
             color=discord.Colour.orange()
         )
 
-        embed.add_field(name = "**General**", content= f"{prefix}help General")
-        embed.add_field(name = "**Moderation**", content= f"{prefix}help Moderation")
-        embed.add_field(name = "**Fun**", content= f"{prefix}help Fun")
-        embed.add_field(name = "**Meteo**", content= f"{prefix}help Meteo")
-        embed.add_field(name = "**Blacklist**", content= f"{prefix}help Blacklist")
-        embed.add_field(name = "**Info**", content= f"{prefix}help Info")
+        embed.add_field(name = "**General**", value= f"{prefix}help General")
+        embed.add_field(name = "**Moderation**", value= f"{prefix}help Moderation")
+        embed.add_field(name = "**Fun**", value= f"{prefix}help Fun")
+        embed.add_field(name = "**Meteo**", value= f"{prefix}help Meteo")
+        embed.add_field(name = "**Blacklist**", value= f"{prefix}help Blacklist")
+        embed.add_field(name = "**Info**", value= f"{prefix}help Info")
 
 
         try:
