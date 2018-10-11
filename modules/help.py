@@ -36,12 +36,11 @@ class Help:
                 color=discord.Colour.orange()
             )
 
-            embed.add_field(name = "**General**", value= f"{prefix}help General")
-            embed.add_field(name = "**Moderation**", value= f"{prefix}help Moderation")
-            embed.add_field(name = "**Fun**", value= f"{prefix}help Fun")
-            embed.add_field(name = "**Meteo**", value= f"{prefix}help Meteo")
-            embed.add_field(name = "**Blacklist**", value= f"{prefix}help Blacklist")
-            embed.add_field(name = "**Info**", value= f"{prefix}help Info")
+            embed.add_field(name = "**General**", value= f"{prefix}help general")
+            embed.add_field(name = "**Moderation**", value= f"{prefix}help moderation")
+            embed.add_field(name = "**Fun**", value= f"{prefix}help fun")
+            embed.add_field(name = "**Meteo**", value= f"{prefix}help meteo")
+            embed.add_field(name = "**Blacklist**", value= f"{prefix}help blacklist")
 
 
             try:
@@ -58,8 +57,27 @@ class Help:
             )
 
             embed.add_field(name = "**Help**", value=f"{prefix}help")
+            embed.add_field(name = "**Ping**", value=f"{prefix}ping")
+            embed.add_field(name = "**FeedBack**", value=f"{prefix}feedback (send a feedback)")
+            embed.add_field(name = "**Debug**", value=f"{prefix}debug (dm only)")
+
+
+            try:
+                return await ctx.send(embed = embed)
+
+            except discord.HTTPException:
+                pass
+
+
+        elif arg == 'utils':
+            embed = discord.Embed(
+                set_author='Utils Help',
+                color=discord.Colour.blue()
+            )
+
             embed.add_field(name = "**Info**", value=f"{prefix}info (Server Informations)" )
             embed.add_field(name = "**Members**", value=f"{prefix}members (How many members ?)" )
+            embed.add_field(name = "**Owner**", value=f"{prefix}owner (Display the Owner)" )
 
             try:
                 return await ctx.send(embed = embed)
