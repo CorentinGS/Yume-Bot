@@ -37,6 +37,7 @@ class Help:
             )
 
             embed.add_field(name = "**General**", value= f"{prefix}help general")
+            embed.add_field(name = "**Blacklist**", value= f"{prefix}help blacklist")
             #embed.add_field(name = "**Moderation**", value= f"{prefix}help moderation")
             #embed.add_field(name = "**Fun**", value= f"{prefix}help fun")
 
@@ -50,7 +51,7 @@ class Help:
             except discord.HTTPException:
                 pass
 
-        elif arg == 'general':
+        elif arg == 'general' or "General":
             embed = discord.Embed(
                 set_author='General Help',
                 color=discord.Colour.blue()
@@ -70,7 +71,7 @@ class Help:
                 pass
 
 
-        elif arg == 'utils':
+        elif arg == 'utils' or "Utils":
             embed = discord.Embed(
                 set_author='Utils Help',
                 color=discord.Colour.blue()
@@ -79,6 +80,22 @@ class Help:
             embed.add_field(name = "**Info**", value=f"{prefix}info (Server Informations)" )
             embed.add_field(name = "**Members**", value=f"{prefix}members (How many members ?)" )
             embed.add_field(name = "**Owner**", value=f"{prefix}owner (Display the Owner)" )
+
+            try:
+                return await ctx.send(embed = embed)
+
+            except discord.HTTPException:
+                pass
+
+        elif arg == 'Blacklist' or "blacklist" or "bl":
+            embed = discord.Embed(
+                set_author='Blacklist Help',
+                color=discord.Colour.blue()
+            )
+
+            embed.add_field(name = "**Blacklist**", value=f"{prefix}blacklist (Apply Blacklist !)" )
+            embed.add_field(name = "**Soon**", value="Soon" )
+
 
             try:
                 return await ctx.send(embed = embed)
