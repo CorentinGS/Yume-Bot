@@ -51,7 +51,7 @@ class Help:
             except discord.HTTPException:
                 pass
 
-        elif arg == 'general' or "General":
+        elif arg == 'general' or arg == "General":
             embed = discord.Embed(
                 set_author='General Help',
                 color=discord.Colour.blue()
@@ -71,7 +71,7 @@ class Help:
                 pass
 
 
-        elif arg == 'utils' or "Utils":
+        elif arg == 'utils' or arg == "Utils":
             embed = discord.Embed(
                 set_author='Utils Help',
                 color=discord.Colour.blue()
@@ -87,7 +87,7 @@ class Help:
             except discord.HTTPException:
                 pass
 
-        elif arg == 'Blacklist' or "blacklist" or "bl":
+        elif arg == 'Blacklist' or arg == "blacklist" or arg == "bl":
             embed = discord.Embed(
                 set_author='Blacklist Help',
                 color=discord.Colour.blue()
