@@ -37,10 +37,10 @@ class Help:
             )
 
             embed.add_field(name = "**General**", value= f"{prefix}help general")
-            embed.add_field(name = "**Moderation**", value= f"{prefix}help moderation")
-            embed.add_field(name = "**Fun**", value= f"{prefix}help fun")
-            embed.add_field(name = "**Meteo**", value= f"{prefix}help meteo")
-            embed.add_field(name = "**Blacklist**", value= f"{prefix}help blacklist")
+            #embed.add_field(name = "**Moderation**", value= f"{prefix}help moderation")
+            #embed.add_field(name = "**Fun**", value= f"{prefix}help fun")
+
+            #embed.add_field(name = "**Blacklist**", value= f"{prefix}help blacklist")
 
 
             try:
@@ -60,6 +60,7 @@ class Help:
             embed.add_field(name = "**Ping**", value=f"{prefix}ping")
             embed.add_field(name = "**FeedBack**", value=f"{prefix}feedback (send a feedback)")
             embed.add_field(name = "**Debug**", value=f"{prefix}debug (dm only)")
+            embed.add_field(name = "**Weather**", value= f"{prefix}weather <city> (Display the weather)")
 
 
             try:
