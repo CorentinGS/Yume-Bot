@@ -42,6 +42,7 @@ class Help:
             embed.add_field(name = "**Moderation**", value= f"{prefix}help mod")
             embed.add_field(name = "**Fun**", value= f"{prefix}help fun")
             embed.add_field(name= "**Administration**", value= f"{prefix}help admin")
+            embed.add_field(name = "**Utils**", value= f"{prefix}help utils"
 
 
             try:
