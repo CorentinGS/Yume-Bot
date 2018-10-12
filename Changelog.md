@@ -6,84 +6,74 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [1.1.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.3) - 2018-10-12
 
-
 ### Added
 
-- Help commands
+-   Help commands
 
----
+* * *
 
 ## [1.1.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.2) - 2018-10-09
 
-
 ### Added
 
-- Speak commands
+-   Speak commands
 
----
+* * *
 
 ## [1.1.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.1) - 2018-10-06
 
-
 ### Added
 
-- Meteo
+-   Meteo
 
----
+* * *
 
 ## [1.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.0) - 2018-10-06
 
-
 ### Added
 
-- Connect event
-
+-   Connect event
 
 ### Changed
 
-- Client is now Bot
+-   Client is now Bot
 
----
+* * *
 
 ## [1.0.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.3) - 2018-10-03
 
-
 ### Added
 
-- Fun module
-- Http - lists - cache
+-   Fun module
+-   Http - lists - cache
 
 ### Changed
 
-- Beautify all
+-   Beautify all
 
-
----
+* * *
 
 ## [1.0.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.2) - 2018-10-03
 
-
 ### Added
 
-- MassBan
-- Avatar
-- Ram usage
+-   MassBan
+-   Avatar
+-   Ram usage
 
 ### Changed
 
-- is_owner check
+-   is_owner check
 
-
----
+* * *
 
 ## [1.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.1) - 2018-10-01
 
-
 ### Patched
 
-- Major feedback error
+-   Major feedback error
 
----
+* * *
 
 ## [Stable - 1.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.0) - 2018-10-01
 
@@ -91,21 +81,20 @@ All notable changes to this project will be documented in this file. The format 
 
 #### Folder
 
-- Add config folder
+-   Add config folder
 
 ### Patched
 
-- Owner ID
-- Github template files
+-   Owner ID
+-   Github template files
 
 ### Added
 
 #### Report
 
-- New feedback commands
+-   New feedback commands
 
-
----
+* * *
 
 ## [Pre-1.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.0a) - 2018-09-30
 
@@ -113,22 +102,21 @@ All notable changes to this project will be documented in this file. The format 
 
 #### Setup
 
-- Add token.json
-- New Github repo / account
+-   Add token.json
+-   New Github repo / account
 
 ### Patched
 
-- Kick embed errors
-- Some bug
+-   Kick embed errors
+-   Some bug
 
 ### Added
 
 #### Info
 
-- New info commands
+-   New info commands
 
-
----
+* * *
 
 ## [0.0.9](https://github.com/yumepantai/Yume-Bot/releases/tag/0.0.9) - 2018-09-12
 
@@ -136,19 +124,18 @@ All notable changes to this project will be documented in this file. The format 
 
 #### Docker
 
-- Patch docker error while starting
-- New DockerFile
+-   Patch docker error while starting
+-   New DockerFile
 
 ### Added
 
-- Some new features
-- Bug patching
+-   Some new features
+-   Bug patching
 
-
----
+* * *
 
 ## [0.0.8](https://github.com/yumepantai/Yume-Bot/releases/tag/0.0.8) - 2018-09-09
 
 ### Added
 
-- First pre-release!
+-   First pre-release!

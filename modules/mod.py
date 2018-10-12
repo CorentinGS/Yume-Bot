@@ -132,7 +132,7 @@ class Mod:
 
         return await ctx.send("{} has been unmuted".format(user.display_name))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, alises = ['away'])
     @commands.guild_only()
     @commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
@@ -169,7 +169,7 @@ class Mod:
         await ctx.send(embed=embed)
         return
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases= ['preventban', 'preban', 'idban'])
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
@@ -267,7 +267,7 @@ class Mod:
         await ctx.send(embed=embed)
         return
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, alises = ['clean'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(2, 10, commands.BucketType.user)

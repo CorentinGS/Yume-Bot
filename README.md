@@ -1,33 +1,32 @@
 # Yume Bot
 
-* An useful bot for discord
-
+-   An useful bot for discord
 
 ## Table of Contents
 
-1. [About the Project](#about-the-project)
-1. [Project Status](#project-status)
-1. [Getting Started](#getting-started)
-	1. [Dependencies](#dependencies)
-	1. [Building](#building)
-	1. [Installation](#installation)
-	1. [Usage](#usage)
-1. [Release Process](#release-process)
-	1. [Versioning](#versioning)
-	1. [Payload](#payload)
-1. [How to Get Help](#how-to-get-help)
-1. [Further Reading](#further-reading)
-1. [Contributing](#contributing)
-1. [License](#license)
-1. [Authors](#authors)
-1. [Acknowledgements](#acknowledgements)
+1.  [About the Project](#about-the-project)
+2.  [Project Status](#project-status)
+3.  [Getting Started](#getting-started)
+    1.  [Dependencies](#dependencies)
+    2.  [Building](#building)
+    3.  [Installation](#installation)
+    4.  [Usage](#usage)
+4.  [Release Process](#release-process)
+    1.  [Versioning](#versioning)
+    2.  [Payload](#payload)
+5.  [How to Get Help](#how-to-get-help)
+6.  [Further Reading](#further-reading)
+7.  [Contributing](#contributing)
+8.  [License](#license)
+9.  [Authors](#authors)
+10. [Acknowledgements](#acknowledgements)
 
 # About the Project
 
 Here you can provide more details about the project
-* We provide an useful discord bot
-* We want to improve the discord community
 
+-   We provide an useful discord bot
+-   We want to improve the discord community
 
 **[Back to top](#table-of-contents)**
 
@@ -43,35 +42,25 @@ Let's start here
 
 ## Dependencies
 
-https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
-
+<https://github.com/Rapptz/discord.py@rewrite#egg=discord.py>
 
 ## Getting the Source
 
-
-
 This project is [hosted on GitHub](https://github.com/yumenetwork/Yume-bot). You can clone this project directly using this command:
 
-```
-git clone https://github.com/yumenetwork/Yume-bot
-```
+    git clone https://github.com/yumenetwork/Yume-bot
 
 ## Building
 
 Instructions for how to build your project
 
-```
-docker-compose build
-```
-
+    docker-compose build
 
 ## Usage
 
 Instructions for using your project. Ways to run the program, how to include it in another project, etc.
 
-```
-docker-compose up -d
-```
+    docker-compose up -d
 
 If your project provides an API, either provide details for usage in this document or link to the appropriate API reference documents
 
@@ -117,7 +106,7 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 
 # Authors
 
-* **[Yume](https://github.com/yumenetwork)** - *Initial work*
+-   **[Yume](https://github.com/yumenetwork)** - _Initial work_
 
 See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/contributors) who participated in this project.
 
