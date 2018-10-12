@@ -24,7 +24,7 @@ class Mod:
         mongo = MongoClient('mongo', 27017)
         db = mongo.bot
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases = ["chut", "tg"])
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
@@ -226,7 +226,7 @@ class Mod:
             except discord.HTTPException:
                 pass
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases = ['ciao'])
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)

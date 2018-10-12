@@ -16,7 +16,7 @@ class Info:
         global conf
         conf = config
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases = ["server"])
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def info(self, ctx):
