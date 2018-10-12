@@ -154,7 +154,7 @@ class Help:
             embed.add_field(name = "**Info**", value=f"{prefix}info (Server Informations)", inline = False)
             embed.add_field(name = "**Members**", value=f"{prefix}members (How many members ?)", inline = False )
             embed.add_field(name = "**Owner**", value=f"{prefix}owner (Display the Owner)", inline = False )
-            embed.add_field(name = "**whois**", vaue= f"{prefix}whois <mention> (User Informations from Guild)", inline = False)
+            embed.add_field(name = "**whois**", value= f"{prefix}whois <mention> (User Informations from Guild)", inline = False)
             embed.add_field(name = "**Hackwhois**", value= f"{prefix}hackwhois <id> (User Informations from ID)", inline = False)
             embed.add_field(name = "**Awatar**", value= f"{prefix}avatar <mention> (Get an avatar)", inline = False)
             embed.add_field(name = "**Guild Icon**", value= f"{prefix}icon (Get the icon)", inline = False)
