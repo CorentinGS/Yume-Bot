@@ -26,7 +26,7 @@ class Ping:
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def pong(self, ctx):
 
-        return await ctx.send("Ping")
+        return await ctx.send("Ping !!")
 
 
 def setup(bot):
