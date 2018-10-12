@@ -57,12 +57,12 @@ class Help:
                 color=discord.Colour.blue()
             )
 
-            embed.add_field(name = "**Help**", value=f"{prefix}help")
-            embed.add_field(name = "**Ping**", value=f"{prefix}ping")
-            embed.add_field(name = "**FeedBack**", value=f"{prefix}feedback (send a feedback)")
-            embed.add_field(name = "**Debug**", value=f"{prefix}debug (dm only)")
-            embed.add_field(name = "**Weather**", value= f"{prefix}weather <city> (Display the weather)")
-            embed.add_field(name = "**Global Weather", value= f"{prefix}gweather <gweather>")
+            embed.add_field(name = "**Help**", value=f"{prefix}help", inline = False)
+            embed.add_field(name = "**Ping**", value=f"{prefix}ping", inline = False)
+            embed.add_field(name = "**FeedBack**", value=f"{prefix}feedback (send a feedback)", inline = False)
+            embed.add_field(name = "**Debug**", value=f"{prefix}debug (dm only)", inline = False)
+            embed.add_field(name = "**Weather**", value= f"{prefix}weather <city> (Display the weather)", inline = False)
+            embed.add_field(name = "**Global Weather", value= f"{prefix}gweather <gweather>", inline = False)
 
 
             try:
@@ -77,8 +77,8 @@ class Help:
                 color=discord.Colour.blue()
             )
 
-            embed.add_field(name = "**Mention**", value=f"{prefix}mention <role>")
-            embed.add_field(name = "**Annonce**", value=f"{prefix}annonce <role to mention> <message>")
+            embed.add_field(name = "**Mention**", value=f"{prefix}mention <role>", inline = False)
+            embed.add_field(name = "**Annonce**", value=f"{prefix}annonce <role to mention> <message>", inline = False)
 
 
             try:
@@ -110,10 +110,10 @@ class Help:
                 color=discord.Colour.blue()
             )
 
-            embed.add_field(name = "**Republican Date**", value=f"{prefix}rd (display the republican date)")
-            embed.add_field(name = "**EightBall**", value=f"{prefix}8ball <question>")
-            embed.add_field(name = "**Cat**", value=f"{prefix}cat")
-            embed.add_field(name = "**Love Power**", value=f"{prefix}lovepower <user>")
+            embed.add_field(name = "**Republican Date**", value=f"{prefix}rd (display the republican date)", inline = False)
+            embed.add_field(name = "**EightBall**", value=f"{prefix}8ball <question>", inline = False)
+            embed.add_field(name = "**Cat**", value=f"{prefix}cat", inline = False)
+            embed.add_field(name = "**Love Power**", value=f"{prefix}lovepower <user>", inline = False)
 
 
             try:
@@ -128,14 +128,14 @@ class Help:
                 color=discord.Colour.blue()
             )
 
-            embed.add_field(name = "**Mute**", value=f"{prefix}mute <mention> <time in m/h> <reason>(Mute an user)")
-            embed.add_field(name = "**Unmute**", value= f"{prefix}unmute <mention>")
-            embed.add_field(name = "**Kick**", value=f"{prefix}kick <mention> <reason>")
-            embed.add_field(name = "**Ban**", value=f"{prefix}ban <mention> <reason>")
-            embed.add_field(name = "**Hackban**", value=f"{prefix}hackban <id> <reason> (Prevent ban someone)")
-            embed.add_field(name = "**Unban**", value= f"{prefix}unban <id> (Unban Someone)")
-            embed.add_field(name = "**Massban**", value= f"{prefix}massban <reason> <ids> (Prevent Mass Ban)")
-            embed.add_field(name = "**Purge**", value= f"{prefix}purge <numbers> (Purge the chat)")
+            embed.add_field(name = "**Mute**", value=f"{prefix}mute <mention> <time in m/h> <reason>(Mute an user)", inline = False)
+            embed.add_field(name = "**Unmute**", value= f"{prefix}unmute <mention>", inline = False)
+            embed.add_field(name = "**Kick**", value=f"{prefix}kick <mention> <reason>", inline = False)
+            embed.add_field(name = "**Ban**", value=f"{prefix}ban <mention> <reason>", inline = False)
+            embed.add_field(name = "**Hackban**", value=f"{prefix}hackban <id> <reason> (Prevent ban someone)", inline = False)
+            embed.add_field(name = "**Unban**", value= f"{prefix}unban <id> (Unban Someone)", inline = False)
+            embed.add_field(name = "**Massban**", value= f"{prefix}massban <reason> <ids> (Prevent Mass Ban)", inline = False)
+            embed.add_field(name = "**Purge**", value= f"{prefix}purge <numbers> (Purge the chat)", inline = False)
 
 
             try:
@@ -151,13 +151,13 @@ class Help:
                 color=discord.Colour.blue()
             )
 
-            embed.add_field(name = "**Info**", value=f"{prefix}info (Server Informations)" )
-            embed.add_field(name = "**Members**", value=f"{prefix}members (How many members ?)" )
-            embed.add_field(name = "**Owner**", value=f"{prefix}owner (Display the Owner)" )
-            embed.add_field(name = "**whois**", vaue= f"{prefix}whois <mention> (User Informations from Guild)")
-            embed.add_field(name = "**Hackwhois**", value= f"{prefix}hackwhois <id> (User Informations from ID)")
-            embed.add_field(name = "**Awatar**", value= f"{prefix}avatar <mention> (Get an avatar)")
-            embed.add_field(name = "**Guild Icon**", value= f"{prefix}icon (Get the icon)")
+            embed.add_field(name = "**Info**", value=f"{prefix}info (Server Informations)", inline = False)
+            embed.add_field(name = "**Members**", value=f"{prefix}members (How many members ?)", inline = False )
+            embed.add_field(name = "**Owner**", value=f"{prefix}owner (Display the Owner)", inline = False )
+            embed.add_field(name = "**whois**", vaue= f"{prefix}whois <mention> (User Informations from Guild)", inline = False)
+            embed.add_field(name = "**Hackwhois**", value= f"{prefix}hackwhois <id> (User Informations from ID)", inline = False)
+            embed.add_field(name = "**Awatar**", value= f"{prefix}avatar <mention> (Get an avatar)", inline = False)
+            embed.add_field(name = "**Guild Icon**", value= f"{prefix}icon (Get the icon)", inline = False)
 
             try:
                 return await ctx.send(embed = embed)
