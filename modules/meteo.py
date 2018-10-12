@@ -16,7 +16,7 @@ class Meteo:
         global conf
         conf = config
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases = ['gmto', 'gweather'])
     async def gmeteo(self, ctx, city: str = "Paris"):
 
         msg = ctx.message

@@ -112,13 +112,13 @@ class Info:
         if user is None:
             user = ctx.author
 
-        return await ctx.send(f"Avatar to {user.name} \n {user.avatar_url_as(size=1024)}")
+        return await ctx.send(f"Avatar of {user.name} \n {user.avatar_url_as(size=1024)}")
 
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 120, commands.BucketType.guild)
-    async def avatar_guild(self, ctx):
-        return await ctx.send(f"Avatar of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
+    async def icon(self, ctx):
+        return await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
 
 def setup(bot):
