@@ -2,6 +2,7 @@ import discord
 import random
 from discord.ext import commands
 from modules.utils import lists, http
+import json
 
 
 class Fun:

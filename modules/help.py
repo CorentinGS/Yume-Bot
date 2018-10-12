@@ -114,6 +114,7 @@ class Help:
             embed.add_field(name = "**EightBall**", value=f"{prefix}8ball <question>", inline = False)
             embed.add_field(name = "**Cat**", value=f"{prefix}cat", inline = False)
             embed.add_field(name = "**Love Power**", value=f"{prefix}lovepower <user>", inline = False)
+            embed.add_field(name = "**King**", value = f"{prefix}king (who is the king)", inline= False)
 
 
             try:
