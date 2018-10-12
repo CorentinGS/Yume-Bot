@@ -41,7 +41,7 @@ class Fun:
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.guild)
     async def cat(self, ctx):
-        await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
+        return await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
     @commands.command(pass_context=True)
     @commands.guild_only()
