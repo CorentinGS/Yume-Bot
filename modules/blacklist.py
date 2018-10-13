@@ -31,7 +31,7 @@ class Blacklist:
         banned = discord.Object(id=id)
         member = await self.bot.get_user_info(id)
         message = ctx.message
-        message.delete()
+        await message.delete()
 
         users.update_one(
             {
