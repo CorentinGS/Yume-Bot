@@ -11,9 +11,7 @@ class Settings():
 
     async def get_glob_settings(self):
         doc = await self.glob.find_one({"_id": 0})
-        if not doc:
-            return {"_id" : {}}
-        return doc.get("_id")
+        return doc or {}
 
     async def set_glob_settings(self, settings):
         return await self.glob.replace_one({"_id": 0}, settings, True)
