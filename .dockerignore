@@ -2,5 +2,3 @@
 .gitignore
 .error.log
 .github
-/config/keys.json
-/config/token.json
