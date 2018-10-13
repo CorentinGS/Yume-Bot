@@ -4,8 +4,8 @@ import json
 import datetime
 from itertools import cycle
 import asyncio
-import pymongo
-from pymongo import MongoClient
+
+from modules.utils.db import Settings
 
 
 class Moderation:
@@ -19,11 +19,6 @@ class Moderation:
         global conf
         conf = config
 
-        global mongo
-        global db
-        mongo = MongoClient('mongo', 27017)
-        db = mongo.bot
-
     @commands.command(pass_context=True, aliases = ["chut", "tg"])
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
@@ -31,9 +26,10 @@ class Moderation:
     async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
 
         msg = ctx.message
-        server = ctx.guild.name
-        id = user.id
+        server = str(ctx.guild.id)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not role:
+            return await ctx.send('There is no role called Muted on your server! Please add one.')
 
         unit = duration[-1]
         if unit == 's':
@@ -48,58 +44,22 @@ class Moderation:
         else:
             await ctx.send('Invalid Unit! Use `s`, `m`, or `h`.')
             return
-
-        db[server].update_one(
-            {
-                'User_id': id
-            },
-            {
-                '$set': {
-                    'Name': '{}#{}'.format(user.name, user.discriminator),
-                    'User_id': user.id,
-
-                    'Mute': True,
-                    'Time': time,
-                    'Reason': reason
-                }
-            },
-            True
-        )
-
+        #await Settings().set_server_settings(server, {})
+        setting = await Settings().get_server_settings(server)
+        if 'Mute' not in setting:
+            setting['Mute'] = []
+        if user.id in setting['Mute']:
+            return await ctx.send('This user is already muted, use {}unmute to umute him.'.format(self.bot.config['prefix']))
+        setting['Mute'].append(user.id)
+        await Settings().set_server_settings(server, setting)
+        setting = await Settings().get_server_settings(server)
         try:
-            await msg.delete()
             await user.add_roles(role)
-
-            await ctx.send('{} has been muted for {} with the reason : {}.'.format(user.mention, duration, reason))
-
-        except discord.HTTPException:
-            pass
-
+        except HTTPException:
+            return await ctx.send('Failed to give Muted role to {}'.format(user))
+        await ctx.send('**{}** has been muted for **{}**.'.format(user, duration))
         await asyncio.sleep(time)
-
-        try:
-            await user.remove_roles(role)
-            db[server].update_one(
-                {
-                    'User_id': id
-                },
-                {
-                    '$set': {
-                        'Name': '{}#{}'.format(user.name, user.discriminator),
-                        'User_id': user.id,
-
-                        'Mute': False,
-                        'Time': None,
-                        'Reason': None
-                    }
-                },
-                True
-            )
-
-            return await ctx.send("{} has been unmuted".format(user.mention))
-
-        except discord.HTTPException:
-            pass
+        await ctx.invoke(self.unmute, user)
 
     @commands.command(pass_context=True)
     @commands.guild_only()
@@ -107,30 +67,23 @@ class Moderation:
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not role:
+            return await ctx.send('There is no role called Muted on your server! Please add one.')
         msg = ctx.message
-        server = ctx.guild.name
-        id = user.id
-
-        await user.remove_roles(role)
+        server = str(ctx.guild.id)
+        try:
+            await user.remove_roles(role)
+        except discord.HTTPException:
+            pass
         await msg.delete()
-        db[server].update_one(
-            {
-                'User_id': id
-            },
-            {
-                '$set': {
-                    'Name': '{}#{}'.format(user.name, user.discriminator),
-                    'User_id': user.id,
+        setting = await Settings().get_server_settings(server)
+        if setting['Mute']:
+            if user.id not in setting['Mute']:
+                return
+            setting['Mute'].remove(user.id)
+        await Settings().set_server_settings(server, setting)
 
-                    'Mute': False,
-                    'Time': None,
-                    'Reason': None
-                }
-            },
-            True
-        )
-
-        return await ctx.send("{} has been unmuted".format(user.display_name))
+        return await ctx.send("**{}** has been unmuted.".format(user))
 
     @commands.command(pass_context=True, alises = ['away'])
     @commands.guild_only()
@@ -298,6 +251,14 @@ class Moderation:
         except Exception as e:
             return await ctx.send(e)
 
+    async def on_member_join(self, member):
+        server = str(member.guild.id)
+        setting = await Settings().get_server_settings(server)
+        if 'Mute' in setting:          
+            if member.id in setting['Mute']:
+                role = discord.utils.get(member.guild.roles, name="Muted")
+                if role:
+                    await member.add_roles(role)    
 
 def setup(bot):
     bot.add_cog(Moderation(bot, bot.config))
