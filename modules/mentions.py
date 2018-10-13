@@ -56,4 +56,4 @@ class Mentions:
 
 
 def setup(bot):
-    bot.add_cog(Mention(bot, bot.config))
+    bot.add_cog(Mentions(bot, bot.config))

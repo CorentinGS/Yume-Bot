@@ -5,7 +5,7 @@ import os
 import psutil
 
 
-class Utils:
+class Utilities:
 
     conf = {}
 
@@ -185,4 +185,4 @@ class Utils:
 
 
 def setup(bot):
-    bot.add_cog(Utils(bot, bot.config))
+    bot.add_cog(Utilities(bot, bot.config))
