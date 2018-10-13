@@ -1,5 +1,9 @@
 # Commands
 
+Its orders can only be made by the Staff of the Discord Guilds!
+
+There will soon be an advanced permission system
+
 ## Mods
 
 | commands                           | description                           | aliases                     |

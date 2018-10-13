@@ -1,5 +1,7 @@
 # Commands
 
+All its commands can be executed by members of a Discord guild
+
 ## General
 
 | commands        | description                  | aliases       |
