@@ -19,7 +19,7 @@ class Moderation:
         global conf
         conf = config
 
-    @commands.command(pass_context=True, aliases = ["chut", "tg"])
+    @commands.command(pass_context=True, aliases=["chut", "tg"])
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
@@ -44,7 +44,7 @@ class Moderation:
         else:
             await ctx.send('Invalid Unit! Use `s`, `m`, or `h`.')
             return
-        #await Settings().set_server_settings(server, {})
+        # await Settings().set_server_settings(server, {})
         setting = await Settings().get_server_settings(server)
         if 'Mute' not in setting:
             setting['Mute'] = []
@@ -85,7 +85,7 @@ class Moderation:
 
         return await ctx.send("**{}** has been unmuted.".format(user))
 
-    @commands.command(pass_context=True, alises = ['away'])
+    @commands.command(pass_context=True, alises=['away'])
     @commands.guild_only()
     @commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
@@ -122,7 +122,7 @@ class Moderation:
         await ctx.send(embed=embed)
         return
 
-    @commands.command(pass_context=True, aliases= ['preventban', 'preban', 'idban'])
+    @commands.command(pass_context=True, aliases=['preventban', 'preban', 'idban'])
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
@@ -179,7 +179,7 @@ class Moderation:
             except discord.HTTPException:
                 pass
 
-    @commands.command(pass_context=True, aliases = ['ciao'])
+    @commands.command(pass_context=True, aliases=['ciao'])
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
@@ -220,7 +220,7 @@ class Moderation:
         await ctx.send(embed=embed)
         return
 
-    @commands.command(pass_context=True, alises = ['clean'])
+    @commands.command(pass_context=True, alises=['clean'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(2, 10, commands.BucketType.user)
@@ -254,11 +254,12 @@ class Moderation:
     async def on_member_join(self, member):
         server = str(member.guild.id)
         setting = await Settings().get_server_settings(server)
-        if 'Mute' in setting:          
+        if 'Mute' in setting:
             if member.id in setting['Mute']:
                 role = discord.utils.get(member.guild.roles, name="Muted")
                 if role:
-                    await member.add_roles(role)    
+                    await member.add_roles(role)
+
 
 def setup(bot):
     bot.add_cog(Moderation(bot, bot.config))

@@ -1,9 +1,11 @@
 import motor.motor_asyncio
 
+
 class Settings():
 
     def __init__(self):
-        self.client = motor.motor_asyncio.AsyncIOMotorClient('localhost', 27017)
+        self.client = motor.motor_asyncio.AsyncIOMotorClient(
+            'localhost', 27017)
         self.db = self.client.bot
         self.glob = self.db.glob
         self.guilds = self.db.guilds
