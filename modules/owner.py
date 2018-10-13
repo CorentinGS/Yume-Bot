@@ -6,7 +6,7 @@ import random
 import json
 
 
-class Say:
+class Owner:
 
     conf = {}
 
@@ -17,7 +17,7 @@ class Say:
         global conf
         conf = config
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases = ['say'])
     @checks.is_owner()
     async def echo(self, ctx, *, content):
 
@@ -86,18 +86,9 @@ class Say:
 
         return await ctx.send(f'{answer}')
 
-    @commands.command(pass_context = True, aliases = ["god", 'yume'])
-    async def king(self, ctx):
-
-        msg = ctx.message
-        await msg.delete()
-
-        answer = random.choice(lists.king)
-
-        return await ctx.send(f'{answer}')
 
 
 
 
 def setup(bot):
-    bot.add_cog(Say(bot, bot.config))
+    bot.add_cog(Owner(bot, bot.config))

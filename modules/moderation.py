@@ -7,7 +7,8 @@ import asyncio
 
 from modules.utils.db import Settings
 
-class Mod:
+
+class Moderation:
 
     conf = {}
 
@@ -29,6 +30,7 @@ class Mod:
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
             return await ctx.send('There is no role called Muted on your server! Please add one.')
+
         unit = duration[-1]
         if unit == 's':
             time = int(duration[:-1])
@@ -259,4 +261,4 @@ class Mod:
                     await member.add_roles(role)    
 
 def setup(bot):
-    bot.add_cog(Mod(bot, bot.config))
+    bot.add_cog(Moderation(bot, bot.config))

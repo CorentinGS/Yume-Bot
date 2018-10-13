@@ -1,6 +1,5 @@
 import motor.motor_asyncio
 
-
 class Settings():
 
     def __init__(self):

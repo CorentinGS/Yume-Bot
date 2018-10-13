@@ -6,24 +6,16 @@
 
 1.  [About the Project](#about-the-project)
 2.  [Project Status](#project-status)
-3.  [Getting Started](#getting-started)
-    1.  [Dependencies](#dependencies)
-    2.  [Building](#building)
-    3.  [Installation](#installation)
-    4.  [Usage](#usage)
-4.  [Release Process](#release-process)
+3.  [Release Process](#release-process)
     1.  [Versioning](#versioning)
-    2.  [Payload](#payload)
-5.  [How to Get Help](#how-to-get-help)
-6.  [Further Reading](#further-reading)
-7.  [Contributing](#contributing)
-8.  [License](#license)
-9.  [Authors](#authors)
-10. [Acknowledgements](#acknowledgements)
+4.  [How to Get Help](#how-to-get-help)
+5.  [Further Reading](#further-reading)
+6.  [Contributing](#contributing)
+7.  [License](#license)
+8.  [Authors](#authors)
+9.  [Acknowledgements](#acknowledgements)
 
 # About the Project
-
-Here you can provide more details about the project
 
 -   We provide an useful discord bot
 -   We want to improve the discord community
@@ -32,59 +24,25 @@ Here you can provide more details about the project
 
 # Project Status
 
-We are working on an easy self deployement of the bot on Linux VPS and trying to improve the features...
-
-**[Back to top](#table-of-contents)**
-
-# Getting Started
-
-Let's start here
-
-## Dependencies
-
-<https://github.com/Rapptz/discord.py@rewrite#egg=discord.py>
-
-## Getting the Source
-
-This project is [hosted on GitHub](https://github.com/yumenetwork/Yume-bot). You can clone this project directly using this command:
-
-    git clone https://github.com/yumenetwork/Yume-bot
-
-## Building
-
-Instructions for how to build your project
-
-    docker-compose build
-
-## Usage
-
-Instructions for using your project. Ways to run the program, how to include it in another project, etc.
-
-    docker-compose up -d
-
-If your project provides an API, either provide details for usage in this document or link to the appropriate API reference documents
+The project is still in the process of being developed! We are only at the beginning so don't hesitate to help us.
+We are looking for python developers and community managers.
 
 **[Back to top](#table-of-contents)**
 
 # Release Process
 
-Talk about the release process. How are releases made? What cadence? How to get new releases?
+We regularly update the bot regularly!
 
 ## Versioning
 
 This project uses [Semantic Versioning](http://semver.org/). For a list of available versions, see the [repository tag list](https://github.com/yumenetwork/Yume-bot/tags).
 
-## Payload
-
-**[Back to top](#table-of-contents)**
-
 # How to Get Help
 
-Provide any instructions or contact information for users who need to get further help with your project.
+-   [Email](mailto:yume.network@protonmail.com)
+-   [Discord](https://invite.gg/yumenetwork​)
 
 # Contributing
-
-Provide details about how people can contribute to your project. If you have a contributing guide, mention it here. e.g.:
 
 We encourage public contributions! Please review [CONTRIBUTING.md](https://github.com/yumenetwork/Yume-Bot/blob/master/.github/CONTRIBUTING.md) for details on our code of conduct and development process.
 
@@ -92,7 +50,9 @@ We encourage public contributions! Please review [CONTRIBUTING.md](https://githu
 
 # Further Reading
 
-Provide links to other relevant documentation here
+-   [Gitbook](https://yumenetwork.gitbook.io/yumebot)
+-   [Code](https://github.com/yumenetwork/Yume-Bot)
+-   [Support](https://invite.gg/yumenetwork)
 
 **[Back to top](#table-of-contents)**
 
@@ -107,6 +67,8 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 # Authors
 
 -   **[Yume](https://github.com/yumenetwork)** - _Initial work_
+
+You can check the Dev team [here](https://yumenetwork.gitbook.io/yumebot/informations/credit)
 
 See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/contributors) who participated in this project.
 

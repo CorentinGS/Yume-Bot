@@ -21,7 +21,7 @@ class Mentions:
     async def mention(self, ctx, role: str):
         msg = ctx.message
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
-        msg.delete()
+        await msg.delete()
 
         if rolemention.mentionable == False:
             await rolemention.edit(mentionable=True)
@@ -41,7 +41,7 @@ class Mentions:
     async def annonce(self, ctx, role: str, *, content):
         msg = ctx.message
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
-        msg.delete()
+        await msg.delete()
 
         if rolemention.mentionable == False:
             await rolemention.edit(mentionable=True)

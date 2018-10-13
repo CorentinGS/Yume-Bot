@@ -5,7 +5,7 @@ import os
 import psutil
 
 
-class Info:
+class Utilities:
 
     conf = {}
 
@@ -16,9 +16,9 @@ class Info:
         global conf
         conf = config
 
-    @commands.command(pass_context=True, aliases = ["server"])
+    @commands.command(pass_context=True, aliases=["server"])
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     async def info(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -38,7 +38,8 @@ class Info:
         embed.add_field(name="Name", value=server.name, inline=True)
         embed.add_field(name="ID", value=server.id, inline=True)
         embed.add_field(name="Roles", value=len(server.roles), inline=True)
-        embed.add_field(name="Members", value=len(server.members), inline=True)
+        embed.add_field(name="Members", value=len(
+            server.members), inline=True)
         embed.add_field(name="Channels", value=len(
             server.channels), inline=True)
         embed.add_field(name="Security",
@@ -59,7 +60,7 @@ class Info:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     async def members(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -70,7 +71,8 @@ class Info:
             color=discord.Colour.dark_gold()
         )
 
-        embed.add_field(name="Members", value=len(server.members), inline=True)
+        embed.add_field(name="Members", value=len(
+            server.members), inline=True)
         embed.set_thumbnail(url=server.icon_url)
 
         try:
@@ -82,7 +84,7 @@ class Info:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     async def owner(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -120,6 +122,67 @@ class Info:
     async def icon(self, ctx):
         return await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
+    @commands.command(pass_context=True)
+    @commands.guild_only()
+    @commands.cooldown(2, 20, commands.BucketType.user)
+    async def whois(self, ctx, user: discord.Member):
+
+        msg = ctx.message
+
+        embed = discord.Embed(
+            title="{}".format(user.name),
+            description="I found this...",
+            color=discord.Colour.magenta()
+        )
+
+        embed.add_field(name="Name", value="{}#{}".format(
+            user.name, user.discriminator), inline=True)
+        embed.add_field(name="ID", value=user.id, inline=True)
+        embed.add_field(name="Status", value=user.status, inline=True)
+        embed.add_field(name="Hightest role", value=user.top_role, inline=True)
+        embed.add_field(name="Joined", value=user.joined_at.strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Nick", value=user.nick, inline=True)
+        embed.add_field(name="Created", value=user.created_at.strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.add_field(name="Mention", value=user.mention, inline=True)
+        embed.set_thumbnail(url=user.avatar_url)
+
+        try:
+            await msg.delete()
+            return await ctx.send(embed=embed)
+
+        except discord.HTTPException:
+            pass
+
+    @commands.command(pass_context=True)
+    @commands.guild_only()
+    @commands.cooldown(2, 20, commands.BucketType.user)
+    async def hackwhois(self, ctx, id: int):
+
+        user = await self.bot.get_user_info(id)
+        msg = ctx.message
+
+        embed = discord.Embed(
+            title="{}".format(user.name),
+            description="I found this...",
+            color=discord.Colour.magenta()
+        )
+
+        embed.add_field(name="Name", value="{}#{}".format(
+            user.name, user.discriminator), inline=True)
+        embed.add_field(name="ID", value=user.id, inline=True)
+        embed.add_field(name="Created", value=user.created_at.strftime(
+            '%A - %B - %e - %g at %H:%M'), inline=True)
+        embed.set_thumbnail(url=user.avatar_url)
+
+        try:
+            await msg.delete()
+            return await ctx.send(embed=embed)
+
+        except discord.HTTPException:
+            pass
+
 
 def setup(bot):
-    bot.add_cog(Info(bot, bot.config))
+    bot.add_cog(Utilities(bot, bot.config))
