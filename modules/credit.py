@@ -94,5 +94,20 @@ class Credit:
         return await ctx.send(embed=embed)
 
 
+    @commands.command(pass_context=True)
+    async def support(self, ctx):
+
+        message = ctx.message
+        await message.delete()
+
+        embed = discord.Embed(title = "Support", color = discord.Colour.red())
+
+        embed.add_field(name= "**Support**", value = "https://invite.gg/yumenetwork")
+        embed.add_field(name= "Documentation", value= "Soon")
+        embed.add_field(name= "Github", value = "https://github.com/yumenetwork/Yume-Bot")
+
+        return await ctx.send(embed= embed)
+
+
 def setup(bot):
     bot.add_cog(Credit(bot, bot.config))
