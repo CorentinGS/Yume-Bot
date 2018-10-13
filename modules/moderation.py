@@ -162,22 +162,22 @@ class Moderation:
         await ctx.send(embed=embed)
         return
 
-        @commands.command(pass_context=True)
-        @commands.guild_only()
-        @commands.cooldown(2, 10, commands.BucketType.user)
-        @commands.has_permissions(ban_members=True)
-        async def unban(self, ctx, id: int):
+    @commands.command(pass_context=True)
+    @commands.guild_only()
+    @commands.cooldown(2, 10, commands.BucketType.user)
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx, id: int):
 
-            server = ctx.guild
-            msg = ctx.message
-            moderator = ctx.message.author
-            member = discord.Object(id=id)
+        server = ctx.guild
+        msg = ctx.message
+        moderator = ctx.message.author
+        member = discord.Object(id=id)
 
-            try:
-                await ctx.guild.unban(member)
+        try:
+            await ctx.guild.unban(member)
 
-            except discord.HTTPException:
-                pass
+        except discord.HTTPException:
+            pass
 
     @commands.command(pass_context=True, aliases=['ciao'])
     @commands.guild_only()
