@@ -33,3 +33,12 @@ All its commands can be executed by members of a Discord guild
 | Hackwhois `id`   | Get informations about an user        | -       |
 | Avatar `mention` | Download an avatar                    | -       |
 | Icon             | Get the server icon                   | -       |
+
+## About
+
+| commands | description        | aliases |
+| -------- | ------------------ | ------- |
+| Credit   | Display the credit | -       |
+| Lib      | Lib Informations   | -       |
+| About    | Some informations  | -       |
+| Support  | Get support help   | -       |

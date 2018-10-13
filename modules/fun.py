@@ -3,6 +3,8 @@ import random
 from discord.ext import commands
 from modules.utils import lists, http
 import json
+import datetime
+from romme import RepublicanDate
 
 
 class Fun:
@@ -43,6 +45,12 @@ class Fun:
     async def cat(self, ctx):
         return await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
+    @commands.command(pass_context=True, aliases=['Doggy'])
+    @commands.guild_only()
+    @commands.cooldown(1, 3, commands.BucketType.guild)
+    async def dog(self, ctx):
+        return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
+
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.guild)
@@ -68,6 +76,36 @@ class Fun:
             emoji = "🖤"
 
         await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji))
+
+    @commands.command(pass_context=True)
+    @commands.guild_only()
+    @commands.cooldown(1, 60, commands.BucketType.user)
+    async def rd(self, ctx):
+
+        msg = ctx.message
+        today = datetime.date.today()
+        print(today.year)
+        rd = RepublicanDate.from_gregorian(today.year, today.month, today.day)
+
+        print(rd)
+
+        try:
+            await ctx.send(rd)
+            await msg.delete()
+            return
+
+        except discord.HTTPException:
+            pass
+
+    @commands.command(pass_context=True, aliases=["god", 'yume'])
+    async def king(self, ctx):
+
+        msg = ctx.message
+        await msg.delete()
+
+        answer = random.choice(lists.king)
+
+        return await ctx.send(f'{answer}')
 
 
 def setup(bot):

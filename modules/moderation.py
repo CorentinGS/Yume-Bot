@@ -8,7 +8,7 @@ import pymongo
 from pymongo import MongoClient
 
 
-class Mod:
+class Moderation:
 
     conf = {}
 
@@ -300,4 +300,4 @@ class Mod:
 
 
 def setup(bot):
-    bot.add_cog(Mod(bot, bot.config))
+    bot.add_cog(Moderation(bot, bot.config))
