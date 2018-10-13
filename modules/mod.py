@@ -249,11 +249,11 @@ class Mod:
         except Exception as e:
             return await ctx.send(e)
 
-    async def on_member_join(member):
+    async def on_member_join(self, member):
         server = str(member.guild.id)
         setting = await Settings().get_server_settings(server)
         if 'Mute' in setting:          
-            if user.id in setting['Mute']:
+            if member.id in setting['Mute']:
                 role = discord.utils.get(member.guild.roles, name="Muted")
                 if role:
                     await member.add_roles(role)    
