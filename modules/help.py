@@ -65,7 +65,7 @@ class Help:
                             value=f"{prefix}debug (dm only)", inline=False)
             embed.add_field(
                 name="**Weather**", value=f"{prefix}weather <city> (Display the weather)", inline=False)
-            embed.add_field(name="**Global Weather",
+            embed.add_field(name="**Global Weather**",
                             value=f"{prefix}gweather <gweather>", inline=False)
 
             try:
