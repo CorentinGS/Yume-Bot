@@ -45,6 +45,12 @@ class Fun:
     async def cat(self, ctx):
         return await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
+    @commands.command(pass_context=True, aliases=['Doggy'])
+    @commands.guild_only()
+    @commands.cooldown(1, 3, commands.BucketType.guild)
+    async def dog(self, ctx):
+        return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
+
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.guild)
@@ -91,7 +97,7 @@ class Fun:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context = True, aliases = ["god", 'yume'])
+    @commands.command(pass_context=True, aliases=["god", 'yume'])
     async def king(self, ctx):
 
         msg = ctx.message
@@ -100,7 +106,6 @@ class Fun:
         answer = random.choice(lists.king)
 
         return await ctx.send(f'{answer}')
-
 
 
 def setup(bot):
