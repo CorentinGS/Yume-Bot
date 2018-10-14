@@ -21,6 +21,7 @@ class General:
         self.bot = bot
         self.config = config
 
+
         global conf
         conf = config
         global PREFIX
@@ -147,28 +148,35 @@ class General:
         return await ctx.send(embed=embed)
 
     @commands.command(pass_context = True, aliases=["away", "idle"])
-    async def afk(self, ctx, *, content: str = None):
-
+    async def afk(self, ctx):
         msg = ctx.message
         await msg.delete()
 
         user = ctx.message.author
 
-        setting = await Settings().get_users_settings(user.id)
-        setting['afk'] = True
-        setting['afk_reason'] = content
-        await Settings().set_users_settings(user.id, setting)
-        await ctx.send('{} is now afk with the reason {}'.format(user.name, content))
+        setting = await Settings().get_glob_settings()
+        if 'AFK' not in setting:
+            setting['AFK'] = []
 
-    async def on_typing(self, channel, user, when):
-        setting = await Settings().get_users_settings(user.id)
-        if setting.get['afk', True] :
-            setting['afk'] = False
-            setting['afk_reason'] = None
-            await Settings().set_users_settings(user_id, setting)
-            await ctx.send(f"{user.mention}, welcome back !")
+        setting['AFK'].append(user.id)
+        await Settings().set_glob_settings(setting)
+        await ctx.send(f"{user.name}, you're now AFK !")
 
     async def on_message(self, message):
+        author = message.author
+        setting = await Settings().get_glob_settings()
+        if 'AFK' in setting:
+            if author.id in setting['AFK']:
+                if message.content is '--afk':
+                    return
+                setting['AFK'].remove(author.id)
+                await Settings().set_glob_settings(setting)
+                await message.channel.send("{}, welcome back !".format(author.mention))
+            else:
+                for user in message.mentions:
+                    if user.id in setting['AFK']:
+                        await message.channel.send("{}#{} is AFK".format(user.name, user.discriminator))
+                        await message.delete()
 
 
 def setup(bot):
