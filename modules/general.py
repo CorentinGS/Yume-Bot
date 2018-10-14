@@ -5,6 +5,7 @@ import json
 import asyncio
 import requests
 from .utils.weather import url_meteo, data_fetch, data_return
+from modules.utils.db import Settings
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -73,7 +74,7 @@ class General:
     @commands.command(pass_context=True)
     @checks.is_dm()
     @commands.cooldown(1, 60, commands.BucketType.user)
-    async def debug(self, ctx,):
+    async def debug(self, ctx):
         channel = ctx.channel
         user = ctx.channel.recipient
         owner = await self.bot.get_user_info(434421758540644382)
@@ -144,6 +145,30 @@ class General:
             data['cloudiness']), inline=True)
 
         return await ctx.send(embed=embed)
+
+    @commands.command(pass_context = True, aliases=["away", "idle"])
+    async def afk(self, ctx, *, content: str = None):
+
+        msg = ctx.message
+        await msg.delete()
+
+        user = ctx.message.author
+
+        setting = await Settings().get_users_settings(user.id)
+        setting['afk'] = True
+        setting['afk_reason'] = content
+        await Settings().set_users_settings(user.id, setting)
+        await ctx.send('{} is now afk with the reason {}'.format(user.name, content))
+
+    async def on_typing(self, channel, user, when):
+        setting = await Settings().get_users_settings(user.id)
+        if setting.get['afk', True] :
+            setting['afk'] = False
+            setting['afk_reason'] = None
+            await Settings().set_users_settings(user_id, setting)
+            await ctx.send(f"{user.mention}, welcome back !")
+
+    async def on_message(self, message):
 
 
 def setup(bot):
