@@ -23,8 +23,8 @@ class Blacklist:
 
         banned = discord.Object(id=id)
         user = await self.bot.get_user_info(id)
-        message = ctx.message
-        await message.delete()
+        msg = ctx.message
+        await msg.delete()
 
         setting = await Settings().get_glob_settings()
         if 'Blacklist' not in setting:
@@ -34,7 +34,7 @@ class Blacklist:
             return await ctx.send("This user is already blacklisted")
         setting['Blacklist'].append(user.id)
         await Settings().set_glob_settings(setting)
-        return await ctx.send(f"{user.name}#{user.discriminator} is now blacklisted")
+        await ctx.send(f"{user.name}#{user.discriminator} is now blacklisted")
 
 
     @commands.command(pass_context=True)
@@ -43,8 +43,8 @@ class Blacklist:
 
         banned = discord.Object(id=id)
         user = await self.bot.get_user_info(id)
-        message = ctx.message
-        message.delete()
+        msg = ctx.message
+        await msg.delete()
 
         setting = await Settings().get_glob_settings()
         if setting['Blacklist']:
@@ -53,6 +53,16 @@ class Blacklist:
             setting['Blacklist'].remove(user.id)
         await Settings().set_glob_settings(setting)
         return await ctx.send("{}#{} is now remove from blacklist".format(user.name, user.discriminator))
+
+
+    async def on_member_join(self, member):
+        server = member.guild
+        setting = await Settings().get_glob_settings()
+        if 'Blacklist' in setting:
+            if member.id in setting['Blacklist']:
+                await server.ban(member, reason="Blacklist")
+                await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
+
 
 
 def setup(bot):
