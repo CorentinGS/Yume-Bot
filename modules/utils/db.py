@@ -9,6 +9,7 @@ class Settings():
         self.glob = self.db.glob
         self.guilds = self.db.guilds
         self.users = self.db.users
+        self.tag = self.db.tag
 
     async def get_glob_settings(self):
         doc = await self.glob.find_one({"_id": 0})
