@@ -41,6 +41,9 @@ class Moderation:
         elif unit == 'h':
             time = int(duration[:-1]) * 3600
             longunit = 'hours'
+        elif unit == 'd':
+            time = int(duration[:-1]) * 86400
+            longunit = 'days'
         else:
             await ctx.send('Invalid Unit! Use `s`, `m`, or `h`.')
             return
