@@ -45,8 +45,7 @@ class Moderation:
             time = int(duration[:-1]) * 86400
             longunit = 'days'
         else:
-            await ctx.send('Invalid Unit! Use `s`, `m`, or `h`.')
-            return
+            return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
         # await Settings().set_server_settings(server, {})
         setting = await Settings().get_server_settings(server)
         if 'Mute' not in setting:
