@@ -107,7 +107,6 @@ class Fun:
 
 
     @commands.command(pass_context=True, aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
-    @commands.cooldown(1, 10, commands.BucketType.user)
     async def poneybleuetrougeetblancetviolet(self, ctx):
         msg = ctx.message
         await msg.delete()
