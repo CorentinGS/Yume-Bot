@@ -16,3 +16,8 @@ king = [
     'Yume the king !', "Yum Yum", 'YUYU ! <3', 'Yumeeeee', 'Peace and dream like Yume',
     "Long live Yume"
 ]
+
+poney = [
+    'Little Poney !', "Poney Bleu", "Poney Rouge", "Poney Blanc", "Poney Violet", "PONEYYYYYYYYYYYYY",
+    'PETIT PONEY', 'PONEY LICORNE'
+]

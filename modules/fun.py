@@ -51,6 +51,7 @@ class Fun:
     async def dog(self, ctx):
         return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
+
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 3, commands.BucketType.guild)
@@ -103,6 +104,16 @@ class Fun:
         answer = random.choice(lists.king)
 
         return await ctx.send(f'{answer}')
+
+
+    @commands.command(pass_context=True, aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def poneybleuetrougeetblancetviolet(self, ctx):
+        msg = ctx.message
+        await msg.delete()
+
+        answer = random.choice(lists.poney)
+
 
 
 def setup(bot):

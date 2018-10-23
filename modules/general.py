@@ -21,7 +21,6 @@ class General:
         self.bot = bot
         self.config = config
 
-
         global conf
         conf = config
         global PREFIX
@@ -145,7 +144,7 @@ class General:
 
         return await ctx.send(embed=embed)
 
-    @commands.command(pass_context = True, aliases=["away", "idle"])
+    @commands.command(pass_context=True, aliases=["away", "idle"])
     async def afk(self, ctx):
         msg = ctx.message
         await msg.delete()
