@@ -171,7 +171,7 @@ class General:
                     return
                 setting['AFK'].remove(author.id)
                 await Settings().set_glob_settings(setting)
-                await message.channel.send("{}, welcome back !".format(author.mention))
+                await message.channel.send("{}, welcome back !".format(author.mention), delete_after=10)
             else:
                 for user in message.mentions:
                     if user.id in setting['AFK']:
