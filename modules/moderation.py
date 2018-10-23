@@ -237,6 +237,54 @@ class Moderation:
         except discord.HTTPException:
             pass
 
+
+    @commands.command(pass_context=True, aliases=['deafen'])
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def deaf(self, ctx, user: discord.Member):
+        msg = ctx.message
+        await msg.delete()
+
+        await user.edit(deafen = True)
+
+    @commands.command(pass_context=True, aliases= ['undeafen'])
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def undeaf(self, ctx, user: discord.Member):
+        msg = ctx.message
+        await msg.delete()
+
+        await user.edit(deafen = False)
+
+    @commands.command(pass_context=True, aliases= ['novoice'])
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def vmute(self, ctx, user: discord.Member):
+        msg = ctx.message
+        await msg.delete()
+
+        await user.edit(mute = True)
+
+
+    @commands.command(pass_context=True)
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def unvmute(self, ctx, user: discord.Member):
+        msg = ctx.message
+        await msg.delete()
+
+        await user.edit(mute = False)
+
+
+    @commands.command(pass_context=True)
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def nick(self, ctx, user: discord.Member, name: str = None):
+        msg = ctx.message
+        await msg.delete()
+
+        await user.edit(nick = name)
+
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(2, 10, commands.BucketType.user)
