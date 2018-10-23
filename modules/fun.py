@@ -114,6 +114,8 @@ class Fun:
 
         answer = random.choice(lists.poney)
 
+        return await ctx.send(f'{answer}')
+
 
 
 def setup(bot):
