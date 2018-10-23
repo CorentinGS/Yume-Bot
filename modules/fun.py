@@ -31,7 +31,7 @@ class Fun:
         content = message.content
         author = message.author
 
-        if content == "Ah" or content == "ah" or content == 'AH' or content == "A" or content == "HA" or content == "Ha", or content == "ha":
+        if content == "Ah" or content == "ah" or content == 'AH' or content == "A" or content == "HA" or content == "Ha" or content == "ha":
             return await message.channel.send("{}, Bbbbb".format(author.mention), delete_after=5)
 
 
