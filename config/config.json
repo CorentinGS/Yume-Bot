@@ -1,7 +1,7 @@
 {
     "prefix" : "--",
     "owner_id" : "282233191916634113",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "modules": ["about", "blacklist", "fun", "general", "help", "mentions", "moderation", "owner", "utilities"]
 
 }
