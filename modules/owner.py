@@ -39,7 +39,7 @@ class Owner:
         try:
             await msg.delete()
             await ctx.send("{} has been dm".format(user.display_name))
-            return await user.send(content)
+            return await user.send(content, delete_after=10)
 
         except discord.HTTPException:
             pass

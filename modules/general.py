@@ -51,7 +51,7 @@ class General:
 
         owner = await self.bot.get_user_info(OWNER)
 
-        await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention))
+        await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention), delete_after=70)
 
         print("Tell me feedback")
 
@@ -63,9 +63,7 @@ class General:
 
         try:
             msg = await self.bot.wait_for('message', timeout=60.0, check=check)
-            print('wait for')
             await owner.send("{}#{} in guild __{}__ has sent a feedback : \n **{}** \n ```{}```".format(auth.name, auth.discriminator, guild.name, msg.content, msg))
-            print('sent')
 
         except asyncio.TimeoutError:
             await ctx.send('👎')
@@ -175,7 +173,7 @@ class General:
             else:
                 for user in message.mentions:
                     if user.id in setting['AFK']:
-                        await message.channel.send("{}#{} is AFK".format(user.name, user.discriminator))
+                        await message.channel.send("{}#{} is AFK".format(user.name, user.discriminator), delete_after=10)
                         await message.delete()
 
 

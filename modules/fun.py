@@ -84,10 +84,7 @@ class Fun:
 
         msg = ctx.message
         today = datetime.date.today()
-        print(today.year)
         rd = RepublicanDate.from_gregorian(today.year, today.month, today.day)
-
-        print(rd)
 
         try:
             await ctx.send(rd)
