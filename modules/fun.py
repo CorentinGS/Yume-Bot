@@ -27,18 +27,20 @@ class Fun:
         await ctx.send(r[endpoint])
 
 
+'''
     async def on_message(self, message):
         content = message.content
         author = message.author
 
         if content == "Ah" or content == "ah" or content == 'AH' or content == "A" or content == "HA" or content == "Ha" or content == "ha":
             return await message.channel.send("{}, Bbbbb".format(author.mention), delete_after=5)
+            '''
 
 
-    @commands.command(pass_context=True, aliases=['8ball'])
-    @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def eightball(self, ctx, *, question: str = None):
+@commands.command(pass_context=True, aliases=['8ball'])
+ @commands.guild_only()
+  @commands.cooldown(1, 3, commands.BucketType.user)
+   async def eightball(self, ctx, *, question: str = None):
 
         if question is None:
             await ctx.send('Oh shit! The crystal ball fell off.... Come back later')
@@ -59,7 +61,6 @@ class Fun:
     @commands.cooldown(1, 3, commands.BucketType.guild)
     async def dog(self, ctx):
         return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
-
 
     @commands.command(pass_context=True)
     @commands.guild_only()
@@ -114,7 +115,6 @@ class Fun:
 
         return await ctx.send(f'{answer}')
 
-
     @commands.command(pass_context=True, aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
     async def poneybleuetrougeetblancetviolet(self, ctx):
         msg = ctx.message
@@ -123,7 +123,6 @@ class Fun:
         answer = random.choice(lists.poney)
 
         return await ctx.send(f'{answer}')
-
 
 
 def setup(bot):
