@@ -34,13 +34,13 @@ class Fun:
 
         if content == "Ah" or content == "ah" or content == 'AH' or content == "A" or content == "HA" or content == "Ha" or content == "ha":
             return await message.channel.send("{}, Bbbbb".format(author.mention), delete_after=5)
-            '''
+'''
 
 
-@commands.command(pass_context=True, aliases=['8ball'])
- @commands.guild_only()
-  @commands.cooldown(1, 3, commands.BucketType.user)
-   async def eightball(self, ctx, *, question: str = None):
+    @commands.command(pass_context=True, aliases=['8ball'])
+    @commands.guild_only()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def eightball(self, ctx, *, question: str = None):
 
         if question is None:
             await ctx.send('Oh shit! The crystal ball fell off.... Come back later')
