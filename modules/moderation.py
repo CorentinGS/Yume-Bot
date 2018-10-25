@@ -222,7 +222,7 @@ class Moderation:
         await msg.delete()
         await ctx.send(embed=embed)
 
-    @commands.command(pass_context=True, alises=['clean'])
+    @commands.command(pass_context=True, alises=['clean', 'clear'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(2, 10, commands.BucketType.user)
@@ -300,7 +300,7 @@ class Moderation:
             return
         except Exception as e:
             return await ctx.send(e)
-            
+
 
     async def on_member_join(self, member):
         server = str(member.guild.id)
