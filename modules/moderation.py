@@ -26,6 +26,7 @@ class Moderation:
     async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
 
         msg = ctx.message
+        await msg.delete()
         server = str(ctx.guild.id)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
@@ -72,6 +73,7 @@ class Moderation:
         if not role:
             return await ctx.send('There is no role called Muted on your server! Please add one.')
         msg = ctx.message
+        await msg.delete()
         server = str(ctx.guild.id)
         try:
             await user.remove_roles(role)
@@ -85,7 +87,7 @@ class Moderation:
             setting['Mute'].remove(user.id)
         await Settings().set_server_settings(server, setting)
 
-        return await ctx.send("**{}** has been unmuted.".format(user))
+        await ctx.send("**{}** has been unmuted.".format(user))
 
     @commands.command(pass_context=True, alises=['away'])
     @commands.guild_only()
@@ -122,7 +124,6 @@ class Moderation:
 
         await msg.delete()
         await ctx.send(embed=embed)
-        return
 
     @commands.command(pass_context=True, aliases=['preventban', 'preban', 'idban'])
     @commands.guild_only()
@@ -162,7 +163,6 @@ class Moderation:
 
         await msg.delete()
         await ctx.send(embed=embed)
-        return
 
     @commands.command(pass_context=True)
     @commands.guild_only()
@@ -172,6 +172,7 @@ class Moderation:
 
         server = ctx.guild
         msg = ctx.message
+        await msg.delete()
         moderator = ctx.message.author
         member = discord.Object(id=id)
 
@@ -220,7 +221,6 @@ class Moderation:
 
         await msg.delete()
         await ctx.send(embed=embed)
-        return
 
     @commands.command(pass_context=True, alises=['clean'])
     @commands.guild_only()
@@ -300,6 +300,7 @@ class Moderation:
             return
         except Exception as e:
             return await ctx.send(e)
+            
 
     async def on_member_join(self, member):
         server = str(member.guild.id)
