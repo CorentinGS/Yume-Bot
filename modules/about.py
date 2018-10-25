@@ -77,6 +77,7 @@ class About:
 
         return await ctx.send(embed=embed)
 
+
     @commands.command(pass_context=True)
     async def support(self, ctx):
 
@@ -90,6 +91,7 @@ class About:
         embed.add_field(name="Documentation", value="https://yumenetwork.gitbook.io/yumebot/")
         embed.add_field(
             name="Github", value="https://github.com/yumenetwork/Yume-Bot")
+        embed.add_field(name="Invite link", value="https://discordapp.com/api/oauth2/authorize?client_id=456504213262827524&permissions=8&redirect_uri=https%3A%2F%2Fgithub.com%2Fyumenetwork%2FYume-Bot&scope=bot")
 
         return await ctx.send(embed=embed)
 
