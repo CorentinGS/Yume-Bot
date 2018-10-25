@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.3.4](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.4) - 2018-10-25
+
+### Added
+
+- New alias
+- Invite link
+
+### Fixed
+
+- some delete messages
+- some return
+
+### Changed
+
+- Credit is now About
+- New help
+
+* * *
+
 
 ## [1.3.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.3) - 2018-10-23
 
