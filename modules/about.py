@@ -22,36 +22,6 @@ class About:
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.user)
-    async def credit(self, ctx):
-
-        with open('./config/config.json', 'r') as cjson:
-            config = json.load(cjson)
-
-        VERSION = config["version"]
-        OWNER = config["owner_id"]
-
-        message = ctx.message
-        await message.delete()
-        owner = await self.bot.get_user_info(OWNER)
-
-        embed = discord.Embed(
-            title="Credit",
-            description="I found this...",
-            color=discord.Colour.blue()
-        )
-
-        embed.add_field(name="Dev", value="{}#{}".format(
-            owner.name, owner.discriminator), inline=True)
-        embed.add_field(name="ID", value=owner.id, inline=True)
-        embed.add_field(name="Lib", value=discord.__version__, inline=True)
-        embed.add_field(name="Version", value=VERSION, inline=True)
-        embed.set_thumbnail(url=owner.avatar_url)
-
-        return await ctx.send(embed=embed)
-
-    @commands.command(pass_context=True)
-    @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
     async def lib(self, ctx):
 
         message = ctx.message
@@ -80,6 +50,14 @@ class About:
         message = ctx.message
         await message.delete()
 
+        with open('./config/config.json', 'r') as cjson:
+            config = json.load(cjson)
+
+        VERSION = config["version"]
+        OWNER = config["owner_id"]
+
+        owner = await self.bot.get_user_info(OWNER)
+
         ramUsage = self.process.memory_full_info().rss / 1024**2
 
         embed = discord.Embed(
@@ -90,6 +68,12 @@ class About:
         embed.add_field(name="RAM", value=f"{ramUsage:.2f} MB", inline=True)
         embed.add_field(name="Servers", value=len(
             self.bot.guilds), inline=True)
+        embed.add_field(name="Dev", value="{}#{}".format(
+            owner.name, owner.discriminator), inline=True)
+        embed.add_field(name="ID", value=owner.id, inline=True)
+        embed.add_field(name="Lib", value=discord.__version__, inline=True)
+        embed.add_field(name="Version", value=VERSION, inline=True)
+        embed.set_thumbnail(url=owner.avatar_url)
 
         return await ctx.send(embed=embed)
 
@@ -103,7 +87,7 @@ class About:
 
         embed.add_field(name="**Support**",
                         value="https://invite.gg/yumenetwork")
-        embed.add_field(name="Documentation", value="Soon")
+        embed.add_field(name="Documentation", value="https://yumenetwork.gitbook.io/yumebot/")
         embed.add_field(
             name="Github", value="https://github.com/yumenetwork/Yume-Bot")
 
