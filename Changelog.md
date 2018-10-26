@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.3.5](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.5) - 2018-10-25
+
+### Added
+
+- If mentionned user is AFK, you'll get back the message in dm
+
+### Fixed
+
+- Mute / unmute error
+- purge aliases
+
+### Changed
+
+- Lib command in about command
+
+* * *
+
 ## [1.3.4](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.4) - 2018-10-25
 
 ### Added
