@@ -73,7 +73,6 @@ class Moderation:
         if not role:
             return await ctx.send('There is no role called Muted on your server! Please add one.')
         msg = ctx.message
-        await msg.delete()
         server = str(ctx.guild.id)
         try:
             await user.remove_roles(role)
@@ -222,7 +221,7 @@ class Moderation:
         await msg.delete()
         await ctx.send(embed=embed)
 
-    @commands.command(pass_context=True, alises=['clean', 'clear'])
+    @commands.command(pass_context=True, aliases=['clean', 'clear'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(2, 10, commands.BucketType.user)
