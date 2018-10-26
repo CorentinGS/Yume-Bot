@@ -14,7 +14,6 @@ class Help:
         global conf
         conf = config
 
-
     @commands.command(pass_context=True)
     @commands.cooldown(1, 60, commands.BucketType.user)
     async def help(self, ctx):
@@ -34,7 +33,7 @@ class Help:
             name="**Invite**", value="[Click Here](https://discordapp.com/api/oauth2/authorize?client_id=456504213262827524&permissions=8&redirect_uri=https%3A%2F%2Fgithub.com%2Fyumenetwork%2FYume-Bot&scope=bot) to invite the bot", inline=False)
         embed.add_field(
             name="**Support**", value="Join [YumeBot Support](https://invite.gg/yumenetwork) if you want to get help.\n \n"
-                "You can also submit your ideas [here](https://github.com/yumenetwork/Yume-Bot/issues/new/choose)", inline=False)
+            "You can also submit your ideas [here](https://github.com/yumenetwork/Yume-Bot/issues/new/choose)", inline=False)
 
         await ctx.send(embed=embed)
 
