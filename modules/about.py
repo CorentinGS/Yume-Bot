@@ -19,29 +19,6 @@ class About:
         global conf
         conf = config
 
-    @commands.command(pass_context=True)
-    @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
-    async def lib(self, ctx):
-
-        message = ctx.message
-        await message.delete()
-
-        embed = discord.Embed(
-            title="Credit",
-            description="I found this...",
-            color=discord.Colour.blue()
-        )
-
-        embed.add_field(name="Lib", value=discord.__version__, inline=True)
-        embed.add_field(
-            name="Github", value="https://github.com/Rapptz/discord.py/tree/rewrite", inline=True)
-        embed.add_field(name="Documentation",
-                        value="https://discordpy.readthedocs.io/en/rewrite/index.html", inline=True)
-        embed.add_field(name="Discord Support",
-                        value="https://discordapp.com/invite/r3sSKJJ", inline=True)
-
-        return await ctx.send(embed=embed)
 
     @commands.command(pass_context=True)
     @checks.is_owner()
@@ -71,7 +48,8 @@ class About:
         embed.add_field(name="Dev", value="{}#{}".format(
             owner.name, owner.discriminator), inline=True)
         embed.add_field(name="ID", value=owner.id, inline=True)
-        embed.add_field(name="Lib", value=discord.__version__, inline=True)
+        embed.add_field(name="Lib version", value=discord.__version__, inline=True)
+        embed.add_field(name="Lib sources", value="https://github.com/Rapptz/discord.py/tree/rewrite", inline=True)
         embed.add_field(name="Version", value=VERSION, inline=True)
         embed.set_thumbnail(url=owner.avatar_url)
 
