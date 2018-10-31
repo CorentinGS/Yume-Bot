@@ -32,8 +32,23 @@ class About:
 
         VERSION = config["version"]
         OWNER = config["owner_id"]
-
         owner = await self.bot.get_user_info(OWNER)
+
+        total_users = len(self.bot.users)
+
+        voice_channels = []
+        text_channels = []
+        for guild in self.bot.guilds:
+            voice_channels.extend(guild.voice_channels)
+            text_channels.extend(guild.text_channels)
+
+        text = len(text_channels)
+        voice = len(voice_channels)
+
+        github = '[Sources](https://github.com/yumenetwork/Yume-Bot)'
+        site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
+        server = '[Discord](https://invite.gg/yumenetwork)'
+        lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
 
         ramUsage = self.process.memory_full_info().rss / 1024**2
 
@@ -41,15 +56,10 @@ class About:
             title="About",
             color=ctx.me.top_role.colour
         )
-
-        embed.add_field(name="RAM", value=f"{ramUsage:.2f} MB", inline=True)
-        embed.add_field(name="Servers", value=len(
-            self.bot.guilds), inline=True)
-        embed.add_field(name="Dev", value="{}#{}".format(
-            owner.name, owner.discriminator), inline=True)
-        embed.add_field(name="ID", value=owner.id, inline=True)
-        embed.add_field(name="[Lib version](https://github.com/Rapptz/discord.py/tree/rewrite)", value=discord.__version__, inline=True)
-        embed.add_field(name="Version", value=VERSION, inline=True)
+        embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(owner.name, owner.discriminator, owner.id), inline=True)
+        embed.add_field(name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n __Channels__ : {text} text & {voice} voice \n __Users__ : {total_users }", inline=True)
+        embed.add_field(name="Informations", value=f"__Version__ : {VERSION} \n __Github__ : {github} \n __Site__ : {site} \n __Support__ : {server} \n __Lib__ : {lib}", inline=True)
+        embed.add_field(name="RAM Usage", value=f"{ramUsage:.2f} MB", inline=False)
         embed.set_thumbnail(url=owner.avatar_url)
 
         return await ctx.send(embed=embed)
