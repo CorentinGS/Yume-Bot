@@ -9,11 +9,13 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - If mentionned user is AFK, you'll get back the message in dm
+- Tag module
+- Logout/stop commands
 
 ### Fixed
 
 - Mute / unmute error
-- purge aliases
+- Purge aliases
 
 ### Changed
 
