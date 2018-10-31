@@ -21,7 +21,7 @@ class Moderation:
 
     @commands.command(pass_context=True, aliases=["chut", "tg"])
     @commands.guild_only()
-    @commands.cooldown(2, 10, commands.BucketType.user)
+    #@commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
 
@@ -66,7 +66,7 @@ class Moderation:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(2, 10, commands.BucketType.user)
+    #@commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
@@ -90,7 +90,7 @@ class Moderation:
 
     @commands.command(pass_context=True, alises=['away'])
     @commands.guild_only()
-    @commands.cooldown(2, 20, commands.BucketType.user)
+    #@commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason: str = None):
 
@@ -126,7 +126,7 @@ class Moderation:
 
     @commands.command(pass_context=True, aliases=['preventban', 'preban', 'idban'])
     @commands.guild_only()
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    #@commands.cooldown(1, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def hackban(self, ctx, id: int, *, reason: str = None):
 
@@ -165,7 +165,7 @@ class Moderation:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(2, 10, commands.BucketType.user)
+    #@commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, id: int):
 
@@ -181,9 +181,10 @@ class Moderation:
         except discord.HTTPException:
             pass
 
+
     @commands.command(pass_context=True, aliases=['ciao'])
     @commands.guild_only()
-    @commands.cooldown(2, 10, commands.BucketType.user)
+    #@commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
 
@@ -224,7 +225,7 @@ class Moderation:
     @commands.command(pass_context=True, aliases=['clean', 'clear'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(2, 10, commands.BucketType.user)
+    #@commands.cooldown(2, 10, commands.BucketType.user)
     async def purge(self, ctx, amount: int):
 
         msg = ctx.message
@@ -286,7 +287,7 @@ class Moderation:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(2, 10, commands.BucketType.user)
+    #@commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def massban(self, ctx, reason: str = None, *members: int):
 

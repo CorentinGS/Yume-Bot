@@ -17,7 +17,7 @@ class Mentions:
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(1, 20, commands.BucketType.user)
+    #@commands.cooldown(1, 20, commands.BucketType.user)
     async def mention(self, ctx, role: str):
         msg = ctx.message
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
@@ -37,7 +37,7 @@ class Mentions:
     @commands.command(pass_context=True)
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(1, 20, commands.BucketType.user)
+    #@commands.cooldown(1, 20, commands.BucketType.user)
     async def annonce(self, ctx, role: str, *, content):
         msg = ctx.message
         rolemention = discord.utils.get(ctx.guild.roles, name=role)

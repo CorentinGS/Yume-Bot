@@ -48,8 +48,7 @@ class About:
         embed.add_field(name="Dev", value="{}#{}".format(
             owner.name, owner.discriminator), inline=True)
         embed.add_field(name="ID", value=owner.id, inline=True)
-        embed.add_field(name="Lib version", value=discord.__version__, inline=True)
-        embed.add_field(name="Lib sources", value="https://github.com/Rapptz/discord.py/tree/rewrite", inline=True)
+        embed.add_field(name="[Lib version](https://github.com/Rapptz/discord.py/tree/rewrite)", value=discord.__version__, inline=True)
         embed.add_field(name="Version", value=VERSION, inline=True)
         embed.set_thumbnail(url=owner.avatar_url)
 

@@ -27,19 +27,19 @@ class General:
         PREFIX = config["prefix"]
 
     @commands.command(pass_context=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    #@commands.cooldown(1, 10, commands.BucketType.user)
     async def ping(self, ctx):
 
         return await ctx.send("Pong !!")
 
     @commands.command(pass_context=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    #@commands.cooldown(1, 10, commands.BucketType.user)
     async def pong(self, ctx):
 
         return await ctx.send("Ping !!")
 
     @commands.command(pass_context=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    #@commands.cooldown(1, 30, commands.BucketType.user)
     async def feedback(self, ctx):
 
         cmd = ctx.message
@@ -71,7 +71,7 @@ class General:
 
     @commands.command(pass_context=True)
     @checks.is_dm()
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    #@commands.cooldown(1, 60, commands.BucketType.user)
     async def debug(self, ctx):
         channel = ctx.channel
         user = ctx.channel.recipient
@@ -80,7 +80,7 @@ class General:
         return await channel.send("Can you create an issue please:\n <https://github.com/yumenetwork/Yume-Bot/issues>")
 
     @commands.command(pass_context=True, aliases=['gmto', 'gweather'])
-    @commands.cooldown(1, 20, commands.BucketType.user)
+    #@commands.cooldown(1, 20, commands.BucketType.user)
     async def gmeteo(self, ctx, city: str = "Paris"):
 
         msg = ctx.message
@@ -116,7 +116,7 @@ class General:
         return await ctx.send(embed=embed)
 
     @commands.command(pass_context=True, aliases=["mto", "weather"])
-    @commands.cooldown(1, 20, commands.BucketType.user)
+    #@commands.cooldown(1, 20, commands.BucketType.user)
     async def meteo(self, ctx, city: str = "Paris"):
 
         msg = ctx.message

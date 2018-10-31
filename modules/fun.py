@@ -29,7 +29,7 @@ class Fun:
 
     @commands.command(pass_context=True, aliases=['8ball'])
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.user)
+    #@commands.cooldown(1, 3, commands.BucketType.user)
     async def eightball(self, ctx, *, question: str = None):
 
         if question is None:
@@ -42,19 +42,19 @@ class Fun:
 
     @commands.command(pass_context=True, aliases=['neko'])
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.guild)
+    #@commands.cooldown(1, 3, commands.BucketType.guild)
     async def cat(self, ctx):
         return await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
     @commands.command(pass_context=True, aliases=['Doggy'])
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.guild)
+    #@commands.cooldown(1, 3, commands.BucketType.guild)
     async def dog(self, ctx):
         return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 3, commands.BucketType.guild)
+    #@commands.cooldown(1, 3, commands.BucketType.guild)
     async def lovepower(self, ctx, user: discord.Member = None):
 
         if user is None:
@@ -80,7 +80,7 @@ class Fun:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    #@commands.cooldown(1, 60, commands.BucketType.user)
     async def rd(self, ctx):
 
         msg = ctx.message

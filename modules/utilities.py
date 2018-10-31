@@ -18,7 +18,7 @@ class Utilities:
 
     @commands.command(pass_context=True, aliases=["server"])
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.guild)
+    #@commands.cooldown(1, 60, commands.BucketType.guild)
     async def info(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -60,7 +60,7 @@ class Utilities:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.guild)
+    #@commands.cooldown(1, 60, commands.BucketType.guild)
     async def members(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -84,7 +84,7 @@ class Utilities:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 60, commands.BucketType.guild)
+    #@commands.cooldown(1, 60, commands.BucketType.guild)
     async def owner(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -108,7 +108,7 @@ class Utilities:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 20, commands.BucketType.user)
+    #@commands.cooldown(1, 20, commands.BucketType.user)
     async def avatar(self, ctx, *, user: discord.Member = None):
 
         if user is None:
@@ -118,13 +118,13 @@ class Utilities:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(1, 120, commands.BucketType.guild)
+    #@commands.cooldown(1, 120, commands.BucketType.guild)
     async def icon(self, ctx):
         return await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(2, 20, commands.BucketType.user)
+    #@commands.cooldown(2, 20, commands.BucketType.user)
     async def whois(self, ctx, user: discord.Member):
 
         msg = ctx.message
@@ -157,7 +157,7 @@ class Utilities:
 
     @commands.command(pass_context=True)
     @commands.guild_only()
-    @commands.cooldown(2, 20, commands.BucketType.user)
+    #@commands.cooldown(2, 20, commands.BucketType.user)
     async def hackwhois(self, ctx, id: int):
 
         user = await self.bot.get_user_info(id)

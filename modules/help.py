@@ -15,7 +15,7 @@ class Help:
         conf = config
 
     @commands.command(pass_context=True)
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    #@commands.cooldown(1, 60, commands.BucketType.user)
     async def help(self, ctx):
 
         msg = ctx.message
