@@ -1,5 +1,4 @@
 from discord.ext import commands
-import discord.utils
 
 owners = 282233191916634113
 

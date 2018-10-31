@@ -1,11 +1,10 @@
+import sys
+import random
 import discord
+
 from discord.ext import commands
 from modules.utils import checks
 from modules.utils import lists
-import random
-import json
-
-from modules.utils.db import Settings
 
 
 class Owner:
@@ -19,7 +18,7 @@ class Owner:
         global conf
         conf = config
 
-    @commands.command(pass_context=True, aliases = ['say'])
+    @commands.command(aliases=['say'])
     @checks.is_owner()
     async def echo(self, ctx, *, content):
 
@@ -32,7 +31,7 @@ class Owner:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @checks.is_owner()
     async def dm(self, ctx, user: discord.Member, *, content):
 
@@ -46,7 +45,7 @@ class Owner:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @checks.is_owner()
     async def send(self, ctx, channel: discord.TextChannel, *, content):
 
@@ -59,16 +58,15 @@ class Owner:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context = True)
+    @commands.command()
     @checks.is_owner()
     async def gsay(self, ctx, *, content):
 
         msg = ctx.message
         await msg.delete()
 
-
         for server in self.bot.guilds:
-            channel = discord.utils.get(server.text_channels, name = "general")
+            channel = discord.utils.get(server.text_channels, name="general")
 
             if channel is None:
                 pass
@@ -76,8 +74,7 @@ class Owner:
             else:
                 return await channel.send(content)
 
-
-    @commands.command(pass_context = True)
+    @commands.command()
     @checks.is_owner()
     async def speak(self, ctx):
 
@@ -88,13 +85,13 @@ class Owner:
 
         return await ctx.send(f'{answer}')
 
-    @commands.command(pass_context = True)
+    @commands.command()
     @checks.is_owner()
     async def logout(self, ctx):
         await ctx.send('`YumeBot is Logging out...`')
         await self.bot.logout()
 
-    @commands.command(pass_context = True)
+    @commands.command()
     @checks.is_owner()
     async def stop(self, ctx):
         await ctx.send("```YumeBot is Stopping...```")

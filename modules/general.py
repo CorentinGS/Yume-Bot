@@ -3,7 +3,6 @@ from discord.ext import commands
 from modules.utils import checks
 import json
 import asyncio
-import requests
 from .utils.weather import url_meteo, data_fetch, data_return
 from modules.utils.db import Settings
 
@@ -26,20 +25,20 @@ class General:
         global PREFIX
         PREFIX = config["prefix"]
 
-    @commands.command(pass_context=True)
-    #@commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.command()
+    #  @commands.cooldown(1, 10, commands.BucketType.user)
     async def ping(self, ctx):
 
         return await ctx.send("Pong !!")
 
-    @commands.command(pass_context=True)
-    #@commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.command()
+    #  @commands.cooldown(1, 10, commands.BucketType.user)
     async def pong(self, ctx):
 
         return await ctx.send("Ping !!")
 
-    @commands.command(pass_context=True)
-    #@commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.command()
+    #  @commands.cooldown(1, 30, commands.BucketType.user)
     async def feedback(self, ctx):
 
         cmd = ctx.message
@@ -69,9 +68,9 @@ class General:
         else:
             await ctx.send('👍')
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @checks.is_dm()
-    #@commands.cooldown(1, 60, commands.BucketType.user)
+    #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def debug(self, ctx):
         channel = ctx.channel
         user = ctx.channel.recipient
@@ -79,8 +78,8 @@ class General:
         await owner.send("{}#{} asked for a **debug** ! This is his informations :\n **ID** : {}".format(user.name, user.discriminator, user.id))
         return await channel.send("Can you create an issue please:\n <https://github.com/yumenetwork/Yume-Bot/issues>")
 
-    @commands.command(pass_context=True, aliases=['gmto', 'gweather'])
-    #@commands.cooldown(1, 20, commands.BucketType.user)
+    @commands.command(aliases=['gmto', 'gweather'])
+    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def gmeteo(self, ctx, city: str = "Paris"):
 
         msg = ctx.message
@@ -115,8 +114,8 @@ class General:
 
         return await ctx.send(embed=embed)
 
-    @commands.command(pass_context=True, aliases=["mto", "weather"])
-    #@commands.cooldown(1, 20, commands.BucketType.user)
+    @commands.command(aliases=["mto", "weather"])
+    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def meteo(self, ctx, city: str = "Paris"):
 
         msg = ctx.message
@@ -144,7 +143,7 @@ class General:
 
         return await ctx.send(embed=embed)
 
-    @commands.command(pass_context=True, aliases=["away", "idle"])
+    @commands.command(aliases=["away", "idle"])
     async def afk(self, ctx):
         msg = ctx.message
         await msg.delete()
