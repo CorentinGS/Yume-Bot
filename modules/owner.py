@@ -94,9 +94,12 @@ class Owner:
         await ctx.send('`YumeBot is Logging out...`')
         await self.bot.logout()
 
-
-
-
+    @commands.command(pass_context = True)
+    @checks.is_owner()
+    async def stop(self, ctx):
+        await ctx.send("```YumeBot is Stopping...```")
+        await self.bot.logout()
+        sys.exit(1)
 
 
 def setup(bot):
