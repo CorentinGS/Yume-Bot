@@ -58,6 +58,23 @@ class Utilities:
         except discord.HTTPException:
             pass
 
+    @commands.command(pass_context = True)
+    @commands.guild_only()
+    async def roleinfo(self, ctx, *, role: discord.Role):
+        guild = ctx.guild
+        colour = str(role.colour).upper()
+        color = role.colour
+
+        embed = discord.Embed(colour=color)
+
+        embed.set_author(name = role.name)
+        embed.add_field(name="Users", value=len(role.members))
+        embed.add_field(name="Hoist", value=role.hoist)
+        embed.add_field(name="Position", value=role.position)
+        embed.set_footer(text=f'Role ID: {role.id}')
+
+        await ctx.send(embed=embed)
+
     @commands.command(pass_context=True)
     @commands.guild_only()
     #@commands.cooldown(1, 60, commands.BucketType.guild)
