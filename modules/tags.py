@@ -18,8 +18,6 @@ class Tags:
         global conf
         conf = config
 
-
-
     @commands.command()
     async def tag(self, ctx, *, name: str=None):
         await ctx.message.delete()
