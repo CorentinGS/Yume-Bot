@@ -5,6 +5,8 @@ from modules.utils import lists
 import random
 import json
 
+from modules.utils.db import Settings
+
 
 class Owner:
 
@@ -85,6 +87,13 @@ class Owner:
         answer = random.choice(lists.speak)
 
         return await ctx.send(f'{answer}')
+
+    @commands.command(pass_context = True)
+    @checks.is_owner()
+    async def logout(self, ctx):
+        await ctx.send('`YumeBot is Logging out...`')
+        await self.bot.logout()
+
 
 
 
