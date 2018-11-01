@@ -15,8 +15,6 @@ class About:
         self.config = config
         self.process = psutil.Process(os.getpid())
 
-
-
         global conf
         conf = config
 
@@ -57,10 +55,14 @@ class About:
             colour=discord.Colour.dark_red()
         )
         embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
-        embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(owner.name, owner.discriminator, owner.id), inline=True)
-        embed.add_field(name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n __Channels__ : {text} text & {voice} voice \n __Users__ : {total_users }", inline=True)
-        embed.add_field(name="Informations", value=f"__Version__ : {VERSION} \n __Github__ : {github} \n __Site__ : {site} \n __Support__ : {server} \n __Lib__ : {lib}", inline=True)
-        embed.add_field(name="RAM Usage", value=f"{ramUsage:.2f} MB", inline=False)
+        embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
+            owner.name, owner.discriminator, owner.id), inline=True)
+        embed.add_field(
+            name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n __Channels__ : {text} text & {voice} voice \n __Users__ : {total_users }", inline=True)
+        embed.add_field(
+            name="Informations", value=f"__Version__ : {VERSION} \n __Github__ : {github} \n __Site__ : {site} \n __Support__ : {server} \n __Lib__ : {lib}", inline=True)
+        embed.add_field(name="RAM Usage",
+                        value=f"{ramUsage:.2f} MB", inline=False)
         embed.set_thumbnail(url=owner.avatar_url)
 
         return await ctx.send(embed=embed)
@@ -75,7 +77,8 @@ class About:
 
         embed.add_field(name="**Support**",
                         value="https://invite.gg/yumenetwork")
-        embed.add_field(name="Documentation", value="https://yumenetwork.gitbook.io/yumebot/")
+        embed.add_field(name="Documentation",
+                        value="https://yumenetwork.gitbook.io/yumebot/")
         embed.add_field(
             name="Github", value="https://github.com/yumenetwork/Yume-Bot")
         embed.add_field(name="Invite link", value="https://discordapp.com/api/oauth2/authorize?client_id=456504213262827524&permissions=8&redirect_uri=https%3A%2F%2Fgithub.com%2Fyumenetwork%2FYume-Bot&scope=bot")
