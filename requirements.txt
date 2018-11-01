@@ -3,3 +3,5 @@ git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 pymongo==3.7.1
 romme==0.1.0
 discord==0.0.2
+beautifulsoup4==4.6.3
+wikipedia==1.4.0

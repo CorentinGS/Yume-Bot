@@ -15,6 +15,8 @@ class About:
         self.config = config
         self.process = psutil.Process(os.getpid())
 
+
+
         global conf
         conf = config
 
@@ -52,8 +54,9 @@ class About:
 
         embed = discord.Embed(
             title="About",
-            color=ctx.me.top_role.colour
+            colour=discord.Colour.dark_red()
         )
+        embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
         embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(owner.name, owner.discriminator, owner.id), inline=True)
         embed.add_field(name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n __Channels__ : {text} text & {voice} voice \n __Users__ : {total_users }", inline=True)
         embed.add_field(name="Informations", value=f"__Version__ : {VERSION} \n __Github__ : {github} \n __Site__ : {site} \n __Support__ : {server} \n __Lib__ : {lib}", inline=True)
