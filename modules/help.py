@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import json
 
 
 class Help:
@@ -14,8 +13,8 @@ class Help:
         global conf
         conf = config
 
-    @commands.command(pass_context=True)
-    #@commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.command()
+    #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def help(self, ctx):
 
         msg = ctx.message

@@ -30,10 +30,9 @@ class Fun:
 
         await ctx.send(r[endpoint])
 
-
-    @commands.command(pass_context=True, aliases=['8ball'])
+    @commands.command(aliases=['8ball'])
     @commands.guild_only()
-    #@commands.cooldown(1, 3, commands.BucketType.user)
+    #  @commands.cooldown(1, 3, commands.BucketType.user)
     async def eightball(self, ctx, *, question: str = None):
 
         if question is None:
@@ -44,19 +43,20 @@ class Fun:
             answer = random.choice(lists.ballresponse)
             return await ctx.send(f"Question: {question}\nAnswer: {answer}")
 
-    @commands.command(pass_context=True, aliases=['neko'])
+    @commands.command(aliases=['neko'])
     @commands.guild_only()
-    #@commands.cooldown(1, 3, commands.BucketType.guild)
+    #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def cat(self, ctx):
         return await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
-    @commands.command(pass_context=True, aliases=['Doggy'])
+    @commands.command(aliases=['Doggy'])
     @commands.guild_only()
-    #@commands.cooldown(1, 3, commands.BucketType.guild)
+    #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def dog(self, ctx):
         return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
-    @commands.command(pass_context=True, aliases=['yt'])
+
+    @commands.command(aliases=['yt'])
     async def youtube(self, ctx, *, search: str):
         search = search.replace(' ', '+').lower()
         response = requests.get(f"https://www.youtube.com/results?search_query={search}").text
@@ -70,9 +70,9 @@ class Fun:
             pass
 
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(1, 3, commands.BucketType.guild)
+    #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def lovepower(self, ctx, user: discord.Member = None):
 
         if user is None:
@@ -96,9 +96,9 @@ class Fun:
 
         await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji))
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(1, 60, commands.BucketType.user)
+    #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def rd(self, ctx):
 
         msg = ctx.message
@@ -113,7 +113,7 @@ class Fun:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True, aliases=["god", 'yume'])
+    @commands.command(aliases=["god", 'yume'])
     async def king(self, ctx):
 
         msg = ctx.message
@@ -123,7 +123,7 @@ class Fun:
 
         return await ctx.send(f'{answer}')
 
-    @commands.command(pass_context=True, aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
+    @commands.command(aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
     async def poneybleuetrougeetblancetviolet(self, ctx):
         msg = ctx.message
         await msg.delete()

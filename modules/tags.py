@@ -1,14 +1,11 @@
-import discord
 from discord.ext import commands
 import json
-import os
-import psutil
 
 with open('modules/utils/tag.json', 'r') as cjson:
     tags = json.load(cjson)
 
-class Tags:
 
+class Tags:
     conf = {}
 
     def __init__(self, bot, config):
@@ -19,7 +16,7 @@ class Tags:
         conf = config
 
     @commands.command()
-    async def tag(self, ctx, *, name: str=None):
+    async def tag(self, ctx, *, name: str = None):
         await ctx.message.delete()
 
         if name in tags:

@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import json
 
 
 class Mentions:
@@ -14,16 +13,16 @@ class Mentions:
         global conf
         conf = config
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    #@commands.cooldown(1, 20, commands.BucketType.user)
+    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def mention(self, ctx, role: str):
         msg = ctx.message
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
         await msg.delete()
 
-        if rolemention.mentionable == False:
+        if not rolemention.mentionable:
             await rolemention.edit(mentionable=True)
 
         else:
@@ -34,19 +33,19 @@ class Mentions:
         await rolemention.edit(mentionable=False)
         return
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    #@commands.cooldown(1, 20, commands.BucketType.user)
+    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def annonce(self, ctx, role: str, *, content):
         msg = ctx.message
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
         await msg.delete()
 
-        if rolemention.mentionable == False:
+        if not rolemention.mentionable:
             await rolemention.edit(mentionable=True)
 
-        if rolemention.mentionable == True:
+        if rolemention.mentionable:
             await ctx.send("{} \n{}".format(rolemention.mention, content))
             return
 

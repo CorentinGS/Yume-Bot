@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
-import json
 import datetime
-from itertools import cycle
 import asyncio
 
 from modules.utils.db import Settings
@@ -20,14 +18,13 @@ class Moderation:
         global conf
         conf = config
 
-    @commands.command(pass_context=True, aliases=["chut", "tg"])
+    @commands.command(aliases=["chut", "tg"])
     @commands.guild_only()
-    # @commands.cooldown(2, 10, commands.BucketType.user)
+    #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
 
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
         server = str(ctx.guild.id)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
@@ -36,16 +33,12 @@ class Moderation:
         unit = duration[-1]
         if unit == 's':
             time = int(duration[:-1])
-            longunit = 'seconds'
         elif unit == 'm':
             time = int(duration[:-1]) * 60
-            longunit = 'minutes'
         elif unit == 'h':
             time = int(duration[:-1]) * 3600
-            longunit = 'hours'
         elif unit == 'd':
             time = int(duration[:-1]) * 86400
-            longunit = 'days'
         else:
             return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
         setting = await Settings().get_server_settings(server)
@@ -58,7 +51,7 @@ class Moderation:
         setting = await Settings().get_server_settings(server)
         try:
             await user.add_roles(role)
-        except HTTPException:
+        except discord.HTTPException:
             success = False
             return await ctx.send('Failed to give Muted role to {}'.format(user))
         else:
@@ -70,9 +63,9 @@ class Moderation:
         await asyncio.sleep(time)
         await ctx.invoke(self.unmute, user)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    # @commands.cooldown(2, 10, commands.BucketType.user)
+    #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
@@ -101,15 +94,13 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, user, success, 'unmute')
         await ctx.send(embed=em)
 
-    @commands.command(pass_context=True, alises=['away'])
+    @commands.command(aliases=['away'])
     @commands.guild_only()
-    # @commands.cooldown(2, 20, commands.BucketType.user)
+    #  @commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, user: discord.Member, *, reason: str = None):
 
         await ctx.message.delete()
-        server = ctx.guild
-        moderator = ctx.message.author
 
         try:
             await ctx.guild.kick(user)
@@ -124,17 +115,14 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, user, success, 'kick')
         await ctx.send(embed=em)
 
-    @commands.command(pass_context=True, aliases=['preventban', 'preban', 'idban'])
+    @commands.command(aliases=['preventban', 'preban', 'idban'])
     @commands.guild_only()
-    # @commands.cooldown(1, 10, commands.BucketType.user)
+    #  @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def hackban(self, ctx, id: int, *, reason: str = None):
 
-        server = ctx.guild
-        moderator = ctx.message.author
-        user = discord.Object(id=id)
-
         await ctx.message.delete()
+        user = discord.Object(id=id)
 
         try:
             await ctx.guild.ban(user)
@@ -151,18 +139,15 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, banned, success, 'hackban')
         await ctx.send(embed=em)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    # @commands.cooldown(2, 10, commands.BucketType.user)
+    #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, id: int):
 
-        server = ctx.guild
-        moderator = ctx.message.author
+        await ctx.message.delete()
         user = discord.Object(id=id)
         banned = await self.bot.get_user_info(id)
-
-        await ctx.message.delete()
 
         try:
             await ctx.guild.unban(user)
@@ -179,14 +164,12 @@ class Moderation:
 
     @commands.command(pass_context=True, aliases=['ciao'])
     @commands.guild_only()
-    # @commands.cooldown(2, 10, commands.BucketType.user)
+    #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
 
-        server = ctx.guild
         msg = ctx.message
         moderator = ctx.message.author
-        id = user.id
 
         await ctx.message.delete()
 
@@ -207,10 +190,10 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, user, success, 'ban')
         await ctx.send(embed=em)
 
-    @commands.command(pass_context=True, aliases=['clean', 'clear'])
+    @commands.command(aliases=['clean', 'clear'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    # @commands.cooldown(2, 10, commands.BucketType.user)
+    #  @commands.cooldown(2, 10, commands.BucketType.user)
     async def purge(self, ctx, amount: int):
 
         msg = ctx.message
@@ -222,7 +205,7 @@ class Moderation:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True, aliases=['deafen'])
+    @commands.command(aliases=['deafen'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def deaf(self, ctx, user: discord.Member):
@@ -231,7 +214,7 @@ class Moderation:
 
         await user.edit(deafen=True)
 
-    @commands.command(pass_context=True, aliases=['undeafen'])
+    @commands.command(aliases=['undeafen'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def undeaf(self, ctx, user: discord.Member):
@@ -240,7 +223,7 @@ class Moderation:
 
         await user.edit(deafen=False)
 
-    @commands.command(pass_context=True, aliases=['novoice'])
+    @commands.command(aliases=['novoice'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def vmute(self, ctx, user: discord.Member):
@@ -249,7 +232,7 @@ class Moderation:
 
         await user.edit(mute=True)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def unvmute(self, ctx, user: discord.Member):
@@ -258,7 +241,7 @@ class Moderation:
 
         await user.edit(mute=False)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def nick(self, ctx, user: discord.Member, name: str = None):
@@ -266,15 +249,15 @@ class Moderation:
 
         await user.edit(nick=name)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    # @commands.cooldown(2, 10, commands.BucketType.user)
+    #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def massban(self, ctx, reason: str = None, *members: int):
 
         try:
             for member_id in members:
-                user = await self.bot.get_user_info(member_id)
+                #  user = await self.bot.get_user_info(member_id)
                 await ctx.guild.ban(discord.Object(id=member_id), reason="{} - {}".format(ctx.message.author, reason))
 
         except Exception as e:
