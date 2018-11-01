@@ -94,7 +94,7 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, user, success, 'unmute')
         await ctx.send(embed=em)
 
-    @commands.command(aliases=['away'])
+    @commands.command(aliases=['out'])
     @commands.guild_only()
     #  @commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
