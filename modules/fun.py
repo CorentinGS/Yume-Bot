@@ -4,7 +4,11 @@ from discord.ext import commands
 from modules.utils import lists, http
 import json
 import datetime
+import requests
+
 from romme import RepublicanDate
+
+from bs4 import BeautifulSoup
 
 
 class Fun:
@@ -51,6 +55,20 @@ class Fun:
     #@commands.cooldown(1, 3, commands.BucketType.guild)
     async def dog(self, ctx):
         return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
+
+    @commands.command(pass_context=True, aliases=['yt'])
+    async def youtube(self, ctx, *, search: str):
+        search = search.replace(' ', '+').lower()
+        response = requests.get(f"https://www.youtube.com/results?search_query={search}").text
+        result = BeautifulSoup(response, "lxml")
+        dir_address = f"{result.find_all(attrs={'class': 'yt-uix-tile-link'})[0].get('href')}"
+        output=f"**Top Result:**\nhttps://www.youtube.com{dir_address}"
+        try:
+            await ctx.send(output)
+            await ctx.message.delete()
+        except discord.Forbidden:
+            pass
+
 
     @commands.command(pass_context=True)
     @commands.guild_only()
