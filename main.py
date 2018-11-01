@@ -1,16 +1,8 @@
 import re
-import os
 import sys
 import json
-import datetime
 import logging
 import asyncio
-import datetime
-
-from itertools import cycle
-
-import pymongo
-from pymongo import MongoClient
 
 try:
     from discord.ext import commands
@@ -46,6 +38,7 @@ print('Connecting...')
 
 bot.remove_command('help')
 
+
 async def status_task():
     while True:
         names = ['{}help'.format(PREFIX), 'Peace and Dream', 'By Yume']
@@ -53,15 +46,18 @@ async def status_task():
             await bot.change_presence(activity=discord.Game(name=name))
             await asyncio.sleep(10)
 
+
 @bot.event
 async def on_connect():
     print("Connected")
+
 
 @bot.event
 async def on_command_error(ctx, exception):
     log.error(str(exception))
     if re.match(r'^The check functions for command.*', str(exception)) is None:
         await ctx.send(str(exception))
+
 
 @bot.event
 async def on_error(event, *args, **kwargs):

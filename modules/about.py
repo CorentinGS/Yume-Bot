@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from modules.utils import checks
 import json
-from datetime import datetime
 import os
 import psutil
 
@@ -21,8 +20,7 @@ class About:
         global conf
         conf = config
 
-
-    @commands.command(pass_context=True)
+    @commands.command()
     @checks.is_owner()
     async def about(self, ctx):
 
@@ -67,8 +65,7 @@ class About:
 
         return await ctx.send(embed=embed)
 
-
-    @commands.command(pass_context=True)
+    @commands.command()
     async def support(self, ctx):
 
         message = ctx.message

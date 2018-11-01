@@ -1,8 +1,5 @@
 import discord
 from discord.ext import commands
-import json
-import os
-import psutil
 
 
 class Utilities:
@@ -16,9 +13,9 @@ class Utilities:
         global conf
         conf = config
 
-    @commands.command(pass_context=True, aliases=["server"])
+    @commands.command(aliases=["server"])
     @commands.guild_only()
-    #@commands.cooldown(1, 60, commands.BucketType.guild)
+    #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def info(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -58,16 +55,14 @@ class Utilities:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context = True)
+    @commands.command()
     @commands.guild_only()
     async def roleinfo(self, ctx, *, role: discord.Role):
-        guild = ctx.guild
-        colour = str(role.colour).upper()
         color = role.colour
 
         embed = discord.Embed(colour=color)
 
-        embed.set_author(name = role.name)
+        embed.set_author(name=role.name)
         embed.add_field(name="Users", value=len(role.members))
         embed.add_field(name="Hoist", value=role.hoist)
         embed.add_field(name="Position", value=role.position)
@@ -75,9 +70,9 @@ class Utilities:
 
         await ctx.send(embed=embed)
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(1, 60, commands.BucketType.guild)
+    #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def members(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -99,9 +94,9 @@ class Utilities:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(1, 60, commands.BucketType.guild)
+    #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def owner(self, ctx):
         msg = ctx.message
         server = ctx.message.guild
@@ -123,9 +118,9 @@ class Utilities:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(1, 20, commands.BucketType.user)
+    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def avatar(self, ctx, *, user: discord.Member = None):
 
         if user is None:
@@ -133,15 +128,15 @@ class Utilities:
 
         return await ctx.send(f"Avatar of {user.name} \n {user.avatar_url_as(size=1024)}")
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(1, 120, commands.BucketType.guild)
+    #  @commands.cooldown(1, 120, commands.BucketType.guild)
     async def icon(self, ctx):
         return await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(2, 20, commands.BucketType.user)
+    #  @commands.cooldown(2, 20, commands.BucketType.user)
     async def whois(self, ctx, user: discord.Member):
 
         msg = ctx.message
@@ -172,9 +167,9 @@ class Utilities:
         except discord.HTTPException:
             pass
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.guild_only()
-    #@commands.cooldown(2, 20, commands.BucketType.user)
+    #  @commands.cooldown(2, 20, commands.BucketType.user)
     async def hackwhois(self, ctx, id: int):
 
         user = await self.bot.get_user_info(id)
