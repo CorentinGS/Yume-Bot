@@ -21,6 +21,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - Some errors
 
+### Informations
+
+The bot is now public !
+
 
 * * *
 
