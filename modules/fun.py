@@ -41,7 +41,7 @@ class Fun:
 
         else:
             answer = random.choice(lists.ballresponse)
-            return await ctx.send(f"Question: {question}\nAnswer: {answer}")
+            await ctx.send(f"Question: {question}\nAnswer: {answer}")
 
     @commands.command(aliases=['neko'])
     @commands.guild_only()
@@ -67,7 +67,7 @@ class Fun:
             await ctx.send(output)
             await ctx.message.delete()
         except discord.Forbidden:
-            pass
+            return
 
 
     @commands.command()
