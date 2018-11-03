@@ -4,7 +4,24 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.0) - 2018-11-31
+## [1.4.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.1) - 2018-11-03
+
+### Added
+
+- New tags (Support, Documentation, Yume)
+
+### Fixed
+
+- Auto unmute command
+
+### Changed
+
+- Remove Support command
+
+
+* * *
+
+## [1.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.0) - 2018-10-31
 
 
 ### Added
