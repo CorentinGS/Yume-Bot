@@ -1,16 +1,18 @@
 from discord.ext import commands
 import json
 
-with open('modules/utils/tag.json', 'r') as cjson:
-    check = json.load(cjson)
 
+
+with open('config/config.json', 'r') as cjson:
+    config = json.load(cjson)
+
+owner = config["owner_id"]
+DEV = config['dev']
 
 def is_owner():
     async def is_owner_check(ctx):
         _id = ctx.message.author.id
-        if owner in check:
-            for owners in owner:
-                return _id == owners
+        return _id == owner
 
     return commands.check(is_owner_check)
 
@@ -24,9 +26,8 @@ def is_dm():
 def is_dev():
     async def is_dev_check(ctx):
         _id = ctx.message.author.id
-        if dev in check:
-            for users in dev:
-                return _id == users
+        for users in DEV:
+            return _id == users
     return commands.check(is_dev_check)
 
 
