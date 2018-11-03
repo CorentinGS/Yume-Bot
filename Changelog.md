@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - New tags (Support, Documentation, Yume)
+- New format for feedback embed
 
 ### Fixed
 
@@ -17,6 +18,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - Remove Support command
+- Remove Debug command
 
 
 * * *
