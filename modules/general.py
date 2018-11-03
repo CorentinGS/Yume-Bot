@@ -75,15 +75,6 @@ class General:
         em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
         await owner.send(embed=em)
 
-    @commands.command()
-    @checks.is_dm()
-    #  @commands.cooldown(1, 60, commands.BucketType.user)
-    async def debug(self, ctx):
-        channel = ctx.channel
-        user = ctx.channel.recipient
-        owner = await self.bot.get_user_info(434421758540644382)
-        await owner.send("{}#{} asked for a **debug** ! This is his informations :\n **ID** : {}".format(user.name, user.discriminator, user.id))
-        return await channel.send("Can you create an issue please:\n <https://github.com/yumenetwork/Yume-Bot/issues>")
 
     @commands.command(aliases=['gmto', 'gweather'])
     #  @commands.cooldown(1, 20, commands.BucketType.user)
