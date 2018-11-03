@@ -6,7 +6,7 @@ import json
 with open('config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
-owner = config["owner_id"]
+owner = int(config["owner_id"])
 DEV = config['dev']
 
 def is_owner_check(ctx):
