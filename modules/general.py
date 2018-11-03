@@ -4,7 +4,10 @@ from modules.utils import checks
 import json
 import asyncio
 from .utils.weather import url_meteo, data_fetch, data_return
+
 from modules.utils.db import Settings
+from modules.utils.format import Embeds
+
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -29,21 +32,20 @@ class General:
     #  @commands.cooldown(1, 10, commands.BucketType.user)
     async def ping(self, ctx):
 
-        return await ctx.send("Pong !!")
+        await ctx.send("Pong !!")
 
     @commands.command()
     #  @commands.cooldown(1, 10, commands.BucketType.user)
     async def pong(self, ctx):
 
-        return await ctx.send("Ping !!")
+        await ctx.send("Ping !!")
 
     @commands.command()
     #  @commands.cooldown(1, 30, commands.BucketType.user)
     async def feedback(self, ctx):
 
-        cmd = ctx.message
-        await cmd.delete()
-        print("FeedBack")
+        await ctx.message.delete()
+
         auth = ctx.message.author
         guild = ctx.message.guild
 
@@ -61,12 +63,17 @@ class General:
 
         try:
             msg = await self.bot.wait_for('message', timeout=60.0, check=check)
-            await owner.send("{}#{} in guild __{}__ has sent a feedback : \n **{}** \n ```{}```".format(auth.name, auth.discriminator, guild.name, msg.content, msg))
 
         except asyncio.TimeoutError:
             await ctx.send('👎')
+            success = False
+            return
         else:
+            success = True
             await ctx.send('👍')
+
+        em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
+        await owner.send(embed=em)
 
     @commands.command()
     @checks.is_dm()
