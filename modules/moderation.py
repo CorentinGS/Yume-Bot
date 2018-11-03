@@ -61,7 +61,11 @@ class Moderation:
         await ctx.send(embed=em)
 
         await asyncio.sleep(time)
-        await ctx.invoke(self.unmute, user)
+
+        if user.id in setting['Mute']:
+            await ctx.invoke(self.unmute, user)
+        else:
+            return
 
     @commands.command()
     @commands.guild_only()
