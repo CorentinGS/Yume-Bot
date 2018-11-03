@@ -1,3 +1,6 @@
 {
-  "github": "https://github.com/yumenetwork/Yume-Bot"
+  "github": "https://github.com/yumenetwork/Yume-Bot",
+  "doc": "https://yumenetwork.gitbook.io/yumebot/",
+  "support": "**Support** \n [Discord](https://invite.gg/yumenetwork) \n [Documentation](https://yumenetwork.gitbook.io/yumebot/) \n If you need help, user **--feedback** ^^ !",
+  "yume": " A little and cute Penguin"
 }
