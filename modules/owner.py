@@ -58,7 +58,6 @@ class Owner:
         except discord.HTTPException:
             pass
 
-
     @commands.command()
     @checks.is_owner()
     async def speak(self, ctx):
@@ -82,6 +81,13 @@ class Owner:
         await ctx.send("```YumeBot is Stopping...```")
         await self.bot.logout()
         sys.exit(1)
+
+    @commands.command()
+    @checks.is_owner()
+    async def exit(self, ctx):
+        sys.exit(1)
+
+        # TODO: Commands group for debugging...
 
 
 

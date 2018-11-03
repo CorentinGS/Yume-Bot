@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 - New tags (Support, Documentation, Yume)
 - New format for feedback embed
 
+
 ### Fixed
 
 - Auto unmute command
@@ -19,6 +20,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Remove Support command
 - Remove Debug command
+- check
 
 
 * * *

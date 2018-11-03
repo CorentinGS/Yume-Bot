@@ -1,11 +1,17 @@
 from discord.ext import commands
+import json
 
-owners = 282233191916634113
 
+
+with open('config/config.json', 'r') as cjson:
+    config = json.load(cjson)
+
+owner = int(config["owner_id"])
+DEV = config['dev']
 
 def is_owner_check(ctx):
     _id = ctx.message.author.id
-    return _id == owners
+    return _id == owner
 
 
 def is_owner():
@@ -27,3 +33,6 @@ def guild_only():
             return
         return True
     return commands.check(guild_only_check)
+
+
+# TODO: Rewrite all check and add dev is_check
