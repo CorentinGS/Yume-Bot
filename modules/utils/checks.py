@@ -15,13 +15,13 @@ def is_owner():
     return commands.check(is_owner_check)
 
 
-def is_dm:
+def is_dm:()
     async def is_dm_check(ctx):
         if ctx.guild is None:
             return True
     return commands.check(is_dm_check)
 
-def is_dev:
+def is_dev():
     async def is_dev_check(ctx):
         _id = ctx.message.author.id
         if dev in check:
