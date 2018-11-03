@@ -2,6 +2,6 @@
     "prefix" : "--",
     "owner_id" : "282233191916634113",
     "version": "1.4.0",
-    "modules": ["about", "blacklist", "fun", "general", "help", "mentions", "moderation", "owner", "utilities", "tags"]
+    "modules": ["about", "blacklist", "fun", "general", "help", "mentions", "moderation", "owner", "utilities", "tags", "event"]
 
 }
