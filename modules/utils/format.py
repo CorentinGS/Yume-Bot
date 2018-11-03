@@ -14,7 +14,7 @@ class Embeds():
             if command == 'ban'or command == 'hackban':
                 em.description = f'**{user}** was just {command}ned...'
             elif command == 'mute':
-                em.description = f'**{user}** was just muteded for {duration}...'
+                em.description = f'**{user}** was just muted for {duration}...'
             elif command == 'unmute':
                 em.description = f'**{user}** was just unmuted...'
             elif command == 'kick':
@@ -26,4 +26,17 @@ class Embeds():
         else:
             return
 
+        return em
+
+    async def format_feedback_embed(self, ctx, auth, guild, success, message):
+        em = discord.Embed(timestamp= ctx.message.created_at)
+        em.set_author(name="Feedback", icon_url=auth.avatar_url)
+        if success:
+            em.add_field(name = "Author", value=f"Name : {auth} \n ID : {auth.id}", inline = False)
+            em.add_field(name = "Guild", value=f"Name : {guild.name} \n ID : {guild.id}", inline = False)
+            em.add_field(name = "Content", value = f"{message.content}", inline= False)
+     # TODO: Add Auto invite link !
+            em.set_footer(text=message)
+        else:
+            pass
         return em
