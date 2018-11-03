@@ -9,26 +9,22 @@ with open('config/config.json', 'r') as cjson:
 owner = config["owner_id"]
 DEV = config['dev']
 
-def is_owner():
-    async def is_owner_check(ctx):
-        _id = ctx.message.author.id
-        return _id == owner
+def is_owner_check(ctx):
+    _id = ctx.message.author.id
+    return _id == owner
 
+
+def is_owner():
     return commands.check(is_owner_check)
 
 
-def is_dm():
-    async def is_dm_check(ctx):
-        if ctx.guild is None:
-            return True
-    return commands.check(is_dm_check)
+def is_dm_check(ctx):
+    if ctx.guild is None:
+        return True
 
-def is_dev():
-    async def is_dev_check(ctx):
-        _id = ctx.message.author.id
-        for users in DEV:
-            return _id == users
-    return commands.check(is_dev_check)
+
+def is_dm():
+    return commands.check(is_dm_check)
 
 
 def guild_only():
@@ -37,3 +33,6 @@ def guild_only():
             return
         return True
     return commands.check(guild_only_check)
+
+
+# TODO: Rewrite all check and add dev is_check
