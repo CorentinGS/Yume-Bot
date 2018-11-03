@@ -58,21 +58,6 @@ class Owner:
         except discord.HTTPException:
             pass
 
-    @commands.command()
-    @checks.is_owner()
-    async def gsay(self, ctx, *, content):
-
-        msg = ctx.message
-        await msg.delete()
-
-        for server in self.bot.guilds:
-            channel = discord.utils.get(server.text_channels, name="general")
-
-            if channel is None:
-                pass
-
-            else:
-                return await channel.send(content)
 
     @commands.command()
     @checks.is_owner()
@@ -97,6 +82,7 @@ class Owner:
         await ctx.send("```YumeBot is Stopping...```")
         await self.bot.logout()
         sys.exit(1)
+
 
 
 def setup(bot):

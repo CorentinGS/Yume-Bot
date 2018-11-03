@@ -41,7 +41,7 @@ bot.remove_command('help')
 
 async def status_task():
     while True:
-        names = ['{}help'.format(PREFIX), 'Peace and Dream', 'By Yume']
+        names = ['{}help'.format(PREFIX), 'Peace and Dream', 'By YumeNetwork']
         for name in names:
             await bot.change_presence(activity=discord.Game(name=name))
             await asyncio.sleep(10)
