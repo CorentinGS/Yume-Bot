@@ -19,11 +19,6 @@ class About:
         conf = config
 
 
-        github = '[Sources](https://github.com/yumenetwork/Yume-Bot)'
-        site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
-        server = '[Discord](https://invite.gg/yumenetwork)'
-        lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
-
     @commands.command()
     @checks.is_owner()
     async def about(self, ctx):
@@ -48,6 +43,12 @@ class About:
 
         text = len(text_channels)
         voice = len(voice_channels)
+
+
+        github = '[Sources](https://github.com/yumenetwork/Yume-Bot)'
+        site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
+        server = '[Discord](https://invite.gg/yumenetwork)'
+        lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
 
 
 
