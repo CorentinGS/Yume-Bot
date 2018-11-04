@@ -107,7 +107,11 @@ class Utilities:
             color=discord.Colour.dark_gold()
         )
 
+<<<<<<< HEAD
         embed.add_field(name="Members", value=server.owner.mention, inline=True)
+=======
+        embed.add_field(name="Owner", value=server.owner.mention, inline=True)
+>>>>>>> master
         embed.set_thumbnail(url=server.icon_url)
 
         try:
