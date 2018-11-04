@@ -49,14 +49,6 @@ class Blacklist:
         await Settings().set_glob_settings(setting)
         return await ctx.send("{}#{} is now remove from blacklist".format(user.name, user.discriminator))
 
-    async def on_member_join(self, member):
-        server = member.guild
-        setting = await Settings().get_glob_settings()
-        if 'Blacklist' in setting:
-            if member.id in setting['Blacklist']:
-                await server.ban(member, reason="Blacklist")
-                await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
-
 
 def setup(bot):
     bot.add_cog(Blacklist(bot, bot.config))
