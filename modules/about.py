@@ -19,11 +19,6 @@ class About:
         conf = config
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
     @commands.command()
     @checks.is_owner()
     async def about(self, ctx):
@@ -54,12 +49,6 @@ class About:
         site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
         server = '[Discord](https://invite.gg/yumenetwork)'
         lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> master
         ramUsage = self.process.memory_full_info().rss / 1024**2
 
         embed = discord.Embed(
