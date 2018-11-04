@@ -55,7 +55,6 @@ class Event:
                     if user.id in glob['AFK']:
                         await message.channel.send("{}#{} is AFK".format(user.name, user.discriminator), delete_after=10)
                         await message.delete()
-                        await author.send("{}#{} is AFK, this is your message : \n ```{}```".format(user.name, user.discriminator, message.content))
                     else:
                         pass
         else:
