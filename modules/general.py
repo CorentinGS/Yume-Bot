@@ -143,8 +143,7 @@ class General:
 
     @commands.command(aliases=["away", "idle"])
     async def afk(self, ctx):
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         user = ctx.message.author
 
@@ -154,7 +153,8 @@ class General:
 
         setting['AFK'].append(user.id)
         await Settings().set_glob_settings(setting)
-        await ctx.send(f"{user.name}, you're now AFK !")
+        await ctx.send(f"{user.name}, you're now AFK !", delete_after=10)
+
 
 
 

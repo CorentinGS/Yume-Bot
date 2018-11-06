@@ -59,9 +59,9 @@ class About:
         embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
             owner.name, owner.discriminator, owner.id), inline=True)
         embed.add_field(
-            name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n __Channels__ : {text} text & {voice} voice \n __Users__ : {total_users }", inline=True)
+            name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__ : {text} text & {voice} voice \n__Users__ : {total_users }", inline=True)
         embed.add_field(
-            name="Informations", value=f"__Version__ : {VERSION} \n __Github__ : {github} \n __Site__ : {site} \n __Support__ : {server} \n __Lib__ : {lib}", inline=True)
+            name="Informations", value=f"__Version__ : {VERSION} \n__Github__ : {github} \n__Site__ : {site} \n__Support__ : {server} \n__Lib__ : {lib}", inline=True)
         embed.add_field(name="RAM Usage",
                         value=f"{ramUsage:.2f} MB", inline=False)
         embed.set_thumbnail(url=owner.avatar_url)
