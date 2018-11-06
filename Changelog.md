@@ -10,11 +10,13 @@ All notable changes to this project will be documented in this file. The format 
 
 - New tags (Support, Documentation, Yume)
 - New format for feedback embed
+- New event
 
 
 ### Fixed
 
 - Auto unmute command
+- some errors
 
 ### Changed
 
