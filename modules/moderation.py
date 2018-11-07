@@ -27,8 +27,9 @@ class Moderation:
         await ctx.message.delete()
         server = str(ctx.guild.id)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
+
         if not role:
-            return await ctx.send('There is no role called Muted on your server! Please add one.')
+            return ctx.send('Role Muted not found ! Please create it')
 
         unit = duration[-1]
         if unit == 's':
