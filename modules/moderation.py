@@ -29,7 +29,8 @@ class Moderation:
         role = discord.utils.get(ctx.guild.roles, name="Muted")
 
         if not role:
-            return ctx.send('Role Muted not found ! Please create it')
+            toto = False
+            #return ctx.send('Role Muted not found ! Please create it')
 
         unit = duration[-1]
         if unit == 's':
@@ -50,13 +51,24 @@ class Moderation:
         setting['Mute'].append(user.id)
         await Settings().set_server_settings(server, setting)
         setting = await Settings().get_server_settings(server)
-        try:
-            await user.add_roles(role)
-        except discord.HTTPException:
-            success = False
-            return await ctx.send('Failed to give Muted role to {}'.format(user))
+
+        if toto is False:
+            try:
+                for chan in ctx.guild.text_channels:
+                    await chan.set_permissions(user, read_messages=True, send_messages=False )
+            except discord.HTTPException:
+                success = False
+                return await ctx.send('Failed to Mute {}'.format(user))
+            else:
+                success = True
         else:
-            success = True
+            try:
+                await user.add_roles(role)
+            except discord.HTTPException:
+                success = False
+                return await ctx.send('Failed to give Muted role to {}'.format(user))
+            else:
+                success = True
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'mute', duration)
         await ctx.send(embed=em)
@@ -75,19 +87,31 @@ class Moderation:
     async def unmute(self, ctx, user: discord.Member):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
-            return await ctx.send('There is no role called Muted on your server! Please add one.')
+            toto = False
+            #return await ctx.send('There is no role called Muted on your server! Please add one.')
 
         server = str(ctx.guild.id)
 
-        try:
-            await user.remove_roles(role)
-
-        except discord.HTTPException:
-            success = False
-            return
+        if toto is False:
+            try:
+                for chan in ctx.guild.text_channels:
+                    await chan.set_permissions(user, overwrite=None )
+            except discord.HTTPException:
+                success = False
+                return await ctx.send('Failed to Mute {}'.format(user))
+            else:
+                success = True
 
         else:
-            success = True
+            try:
+                await user.remove_roles(role)
+
+            except discord.HTTPException:
+                success = False
+                return
+
+            else:
+                success = True
 
         setting = await Settings().get_server_settings(server)
         if setting['Mute']:
