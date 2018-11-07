@@ -195,5 +195,12 @@ class Utilities:
             pass
 
 
+    @commands.command()
+    @commands.guild_only()
+    async def invite(self, ctx):
+
+        toto = await ctx.channel.create_invite(max_uses = 15)
+        await ctx.send(toto.code)
+
 def setup(bot):
     bot.add_cog(Utilities(bot, bot.config))

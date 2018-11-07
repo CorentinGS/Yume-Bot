@@ -191,7 +191,7 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, banned, success, 'unban')
         await ctx.send(embed=em)
 
-    @commands.command(pass_context=True, aliases=['ciao'])
+    @commands.command(aliases=['ciao'])
     @commands.guild_only()
     #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
@@ -218,6 +218,8 @@ class Moderation:
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'ban')
         await ctx.send(embed=em)
+
+
 
     @commands.command(aliases=['clean', 'clear'])
     @commands.guild_only()
