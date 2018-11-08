@@ -6,7 +6,7 @@ import asyncio
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
-class Settings:
+class Set:
 
     conf = {}
 
@@ -28,11 +28,23 @@ class Settings:
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def mute(self, ctx, arg: str = None):
+    async def muterole(self, ctx, arg: str = None):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+        if 'muteRole' not in set:
+            set['muteRole'] = False
+        if arg == "On":
+            set['muteRole'] = True
+        elif arg == "Off":
+            set ['muteRole'] = False
+        else:
+            return await ctx.send(f'{arg} is not a valid argument ! Please use **On** or **Off**')
+        await Settings().set_server_settings(server, set)
+
         return await ctx.send('LOL')
         # TODO: Choisir le mode de mute et le sauvegarder dans Mongo en boolean. Ensuite il faut ajouter le check des settings dans mod. Il faut aussi faire des embed pour présenter tout ca
 
 
 
 def setup(bot):
-    bot.add_cog(Settings(bot, bot.config))
+    bot.add_cog(Set(bot, bot.config))

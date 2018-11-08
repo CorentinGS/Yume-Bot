@@ -27,10 +27,11 @@ class Moderation:
         await ctx.message.delete()
         server = str(ctx.guild.id)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
+        setting = await Settings().get_server_settings(server)
 
         if not role:
-            toto = False
-            #return ctx.send('Role Muted not found ! Please create it')
+            setting['muteRole'] = False
+            await Settings().set_server_settings(server, setting)
 
         unit = duration[-1]
         if unit == 's':
@@ -43,16 +44,15 @@ class Moderation:
             time = int(duration[:-1]) * 86400
         else:
             return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
-        setting = await Settings().get_server_settings(server)
+
         if 'Mute' not in setting:
             setting['Mute'] = []
         if user.id in setting['Mute']:
             return await ctx.send('This user is already muted, use {}unmute to umute him.'.format(self.bot.config['prefix']))
         setting['Mute'].append(user.id)
         await Settings().set_server_settings(server, setting)
-        setting = await Settings().get_server_settings(server)
 
-        if toto is False:
+        if setting['muteRole'] is False:
             try:
                 for chan in ctx.guild.text_channels:
                     await chan.set_permissions(user, read_messages=True, send_messages=False )
@@ -86,13 +86,15 @@ class Moderation:
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
-        if not role:
-            toto = False
-            #return await ctx.send('There is no role called Muted on your server! Please add one.')
-
         server = str(ctx.guild.id)
+        setting = await Settings().get_server_settings(server)
 
-        if toto is False:
+        if not role:
+            setting['muteRole'] = False
+            await Settings().set_server_settings(server, setting)
+
+
+        if setting['muteRole'] is False:
             try:
                 for chan in ctx.guild.text_channels:
                     await chan.set_permissions(user, overwrite=None )
@@ -113,7 +115,6 @@ class Moderation:
             else:
                 success = True
 
-        setting = await Settings().get_server_settings(server)
         if setting['Mute']:
             if user.id not in setting['Mute']:
                 return
