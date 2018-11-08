@@ -200,7 +200,7 @@ class Utilities:
     async def invite(self, ctx):
 
         toto = await ctx.channel.create_invite(max_uses = 15)
-        await ctx.send(toto.code)
+        await ctx.send(f"https://discord.gg/{toto.code}")
 
 def setup(bot):
     bot.add_cog(Utilities(bot, bot.config))
