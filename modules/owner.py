@@ -87,7 +87,6 @@ class Owner:
     async def exit(self, ctx):
         sys.exit(1)
 
-        # TODO: Commands group for debugging...
 
     @commands.command()
     @checks.is_owner()
