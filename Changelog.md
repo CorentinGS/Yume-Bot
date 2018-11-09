@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. The format 
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [1.4.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.2) - 2018-11-03
+## [1.4.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.2) - 2018-11-09
 
 ### Added
 
