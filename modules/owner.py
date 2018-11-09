@@ -91,6 +91,7 @@ class Owner:
     @commands.command()
     @checks.is_owner()
     async def guild(self, ctx):
+        await ctx.message.delete()
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
             em.add_field(name = guild.name, value=f"ID : {guild.id} \n Members : {len(guild.members)}", inline = False)
