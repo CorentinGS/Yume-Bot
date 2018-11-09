@@ -97,7 +97,7 @@ class Owner:
             channel = discord.utils.get(guild.text_channels, position=0)
             try:
                 toto = await channel.create_invite(max_uses=15)
-            except HTTPException:
+            except discord.HTTPException:
                 em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}", inline = False)
             else:
                 em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)} \nInvite : https://discord.gg/{toto.code}", inline = False)
