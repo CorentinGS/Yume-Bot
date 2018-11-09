@@ -41,8 +41,7 @@ class Set:
             return await ctx.send(f'{arg} is not a valid argument ! Please use **On** or **Off**')
         await Settings().set_server_settings(server, set)
 
-        return await ctx.send('LOL')
-        # TODO: Choisir le mode de mute et le sauvegarder dans Mongo en boolean. Ensuite il faut ajouter le check des settings dans mod. Il faut aussi faire des embed pour présenter tout ca
+        await ctx.send('OK !', delete_after=10)
 
 
 
