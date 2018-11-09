@@ -99,6 +99,7 @@ class Owner:
                 toto = await channel.create_invite(max_uses=15)
             except discord.HTTPException:
                 em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}", inline = False)
+                pass
             else:
                 em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)} \nInvite : https://discord.gg/{toto.code}", inline = False)
         await ctx.author.send(embed = em)
