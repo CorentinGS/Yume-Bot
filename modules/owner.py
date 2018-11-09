@@ -94,7 +94,7 @@ class Owner:
         await ctx.message.delete()
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
-                em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}", inline = False)
+                em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`", inline = False)
 
         await ctx.author.send(embed = em)
 
