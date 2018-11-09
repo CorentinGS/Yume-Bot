@@ -23,7 +23,7 @@ class Set:
     @commands.has_permissions(administrator=True)
     async def setting(self, ctx):
         if ctx.invoked_subcommand is None:
-            return await ctx.send('Please specify something')
+            return
 
     @setting.command()
     @commands.guild_only()

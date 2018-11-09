@@ -89,5 +89,14 @@ class Owner:
 
         # TODO: Commands group for debugging...
 
+    @commands.command()
+    @checks.is_owner()
+    async def guild(self, ctx):
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        for guild in self.bot.guilds:
+            em.add_field(name = guild.name, value=f"ID : {guild.id} \n Members : {len(guild.members)}", inline = False)
+        await ctx.author.send(embed = em)
+
+
 def setup(bot):
     bot.add_cog(Owner(bot, bot.config))

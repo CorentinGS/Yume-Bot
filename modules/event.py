@@ -60,6 +60,15 @@ class Event:
         else:
             return
 
+    async def on_guild_join(self, guild):
+        server = str(guild.id)
+        set = await Settings().get_server_settings(server)
+        if 'muteRole' not in set:
+            set['muteRole'] = False
+        if 'mute' not in set:
+            set['mute'] = []
+        await Settings().set_server_settings(server, set)
+
 
 
 def setup(bot):
