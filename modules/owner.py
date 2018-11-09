@@ -95,8 +95,12 @@ class Owner:
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
             channel = discord.utils.get(guild.text_channels, position=0)
-            toto = await channel.create_invite(max_uses=15)
-            em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)} \nInvite : https://discord.gg/{toto.code}", inline = False)
+            try:
+                toto = await channel.create_invite(max_uses=15)
+            except HTTPException:
+                em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}", inline = False)
+            else:
+                em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)} \nInvite : https://discord.gg/{toto.code}", inline = False)
         await ctx.author.send(embed = em)
 
 
