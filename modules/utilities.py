@@ -6,12 +6,9 @@ class Utilities:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
+        self.config = bot.config
 
     @commands.command(aliases=["server"])
     @commands.guild_only()
@@ -200,4 +197,4 @@ class Utilities:
 
 
 def setup(bot):
-    bot.add_cog(Utilities(bot, bot.config))
+    bot.add_cog(Utilities(bot))

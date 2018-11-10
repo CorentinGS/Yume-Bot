@@ -10,13 +10,10 @@ class About:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
+        self.config = bot.config
         self.process = psutil.Process(os.getpid())
-
-        global conf
-        conf = config
 
     @commands.command()
     @checks.is_owner()
@@ -67,4 +64,4 @@ class About:
 
 
 def setup(bot):
-    bot.add_cog(About(bot, bot.config))
+    bot.add_cog(About(bot))

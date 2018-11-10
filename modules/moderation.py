@@ -11,12 +11,9 @@ class Moderation:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
+        self.config = bot.config
 
     @commands.command(aliases=["chut", "tg"])
     @commands.guild_only()
@@ -295,4 +292,4 @@ class Moderation:
 
 
 def setup(bot):
-    bot.add_cog(Moderation(bot, bot.config))
+    bot.add_cog(Moderation(bot))

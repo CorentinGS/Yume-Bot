@@ -9,13 +9,9 @@ class Event:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
-
+        self.config = bot.config
     async def on_member_join(self, member):
         guild = member.guild
         server = await Settings().get_server_settings(str(guild.id))
@@ -72,4 +68,4 @@ class Event:
 
 
 def setup(bot):
-    bot.add_cog(Event(bot, bot.config))
+    bot.add_cog(Event(bot))

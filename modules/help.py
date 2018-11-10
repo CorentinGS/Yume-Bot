@@ -6,12 +6,10 @@ class Help:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
+        self.config = bot.config
 
-        global conf
-        conf = config
 
     @commands.command()
     #  @commands.cooldown(1, 60, commands.BucketType.user)
@@ -36,4 +34,4 @@ class Help:
 
 
 def setup(bot):
-    bot.add_cog(Help(bot, bot.config))
+    bot.add_cog(Help(bot))

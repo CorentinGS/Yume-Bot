@@ -8,12 +8,9 @@ class Blacklist:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
+        self.config = bot.config
 
     @commands.command()
     @checks.is_owner()
@@ -49,4 +46,4 @@ class Blacklist:
 
 
 def setup(bot):
-    bot.add_cog(Blacklist(bot, bot.config))
+    bot.add_cog(Blacklist(bot))

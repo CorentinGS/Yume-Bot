@@ -8,12 +8,9 @@ with open('modules/utils/tag.json', 'r') as cjson:
 class Tags:
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
+        self.config = bot.config
 
     @commands.command()
     async def tag(self, ctx, *, name: str = None):
@@ -26,4 +23,4 @@ class Tags:
 
 
 def setup(bot):
-    bot.add_cog(Tags(bot, bot.config))
+    bot.add_cog(Tags(bot))

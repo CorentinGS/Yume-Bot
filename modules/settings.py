@@ -10,12 +10,10 @@ class Set:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
+        self.config = bot.config
 
-        global conf
-        conf = config
 
 
     @commands.group()
@@ -46,4 +44,4 @@ class Set:
 
 
 def setup(bot):
-    bot.add_cog(Set(bot, bot.config))
+    bot.add_cog(Set(bot))

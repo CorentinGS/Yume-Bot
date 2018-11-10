@@ -11,12 +11,9 @@ class Owner:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
+        self.config = bot.config
 
     @commands.command(aliases=['say'])
     @checks.is_owner()
@@ -96,4 +93,4 @@ class Owner:
 
 
 def setup(bot):
-    bot.add_cog(Owner(bot, bot.config))
+    bot.add_cog(Owner(bot))

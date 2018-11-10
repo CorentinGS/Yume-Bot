@@ -15,12 +15,9 @@ class Fun:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
-
-        global conf
-        conf = config
+        self.config = bot.config
 
     async def randomimageapi(self, ctx, url, endpoint):
         try:
@@ -133,4 +130,4 @@ class Fun:
 
 
 def setup(bot):
-    bot.add_cog(Fun(bot, bot.config))
+    bot.add_cog(Fun(bot))

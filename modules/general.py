@@ -19,14 +19,10 @@ class General:
 
     conf = {}
 
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config
+        self.config = bot.config
 
-        global conf
-        conf = config
-        global PREFIX
-        PREFIX = config["prefix"]
 
     @commands.command()
     #  @commands.cooldown(1, 10, commands.BucketType.user)
@@ -153,4 +149,4 @@ class General:
 
 
 def setup(bot):
-    bot.add_cog(General(bot, bot.config))
+    bot.add_cog(General(bot))
