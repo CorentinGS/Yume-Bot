@@ -20,8 +20,7 @@ class Blacklist:
     async def bladd(self, ctx, id: int):
 
         user = await self.bot.get_user_info(id)
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         setting = await Settings().get_glob_settings()
         if 'Blacklist' not in setting:
@@ -38,8 +37,7 @@ class Blacklist:
     async def blrm(self, ctx, id: int):
 
         user = await self.bot.get_user_info(id)
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         setting = await Settings().get_glob_settings()
         if setting['Blacklist']:
@@ -47,7 +45,7 @@ class Blacklist:
                 return ctx.send(f"{user.name} is not blacklisted")
             setting['Blacklist'].remove(user.id)
         await Settings().set_glob_settings(setting)
-        return await ctx.send("{}#{} is now remove from blacklist".format(user.name, user.discriminator))
+        await ctx.send("{}#{} is now remove from blacklist".format(user.name, user.discriminator))
 
 
 def setup(bot):

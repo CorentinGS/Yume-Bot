@@ -55,7 +55,7 @@ class Moderation:
         if setting['muteRole'] is False:
             try:
                 for chan in ctx.guild.text_channels:
-                    await chan.set_permissions(user, read_messages=True, send_messages=False )
+                    await chan.set_permissions(user, read_messages=True, send_messages=False)
             except discord.HTTPException:
                 success = False
                 return await ctx.send('Failed to Mute {}'.format(user))
@@ -93,11 +93,10 @@ class Moderation:
             setting['muteRole'] = False
             await Settings().set_server_settings(server, setting)
 
-
         if setting['muteRole'] is False:
             try:
                 for chan in ctx.guild.text_channels:
-                    await chan.set_permissions(user, overwrite=None )
+                    await chan.set_permissions(user, overwrite=None)
             except discord.HTTPException:
                 success = False
                 return await ctx.send('Failed to Mute {}'.format(user))
@@ -220,18 +219,15 @@ class Moderation:
         em = await Embeds().format_mod_embed(ctx, user, success, 'ban')
         await ctx.send(embed=em)
 
-
-
     @commands.command(aliases=['clean', 'clear'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     #  @commands.cooldown(2, 10, commands.BucketType.user)
     async def purge(self, ctx, amount: int):
 
-        msg = ctx.message
+        await ctx.message.delete()
 
         try:
-            await msg.delete()
             return await ctx.channel.purge(limit=amount + 1)
 
         except discord.HTTPException:
@@ -241,8 +237,7 @@ class Moderation:
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def deaf(self, ctx, user: discord.Member):
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         await user.edit(deafen=True)
 
@@ -250,8 +245,7 @@ class Moderation:
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def undeaf(self, ctx, user: discord.Member):
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         await user.edit(deafen=False)
 
@@ -259,8 +253,7 @@ class Moderation:
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def vmute(self, ctx, user: discord.Member):
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         await user.edit(mute=True)
 
@@ -268,8 +261,7 @@ class Moderation:
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def unvmute(self, ctx, user: discord.Member):
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         await user.edit(mute=False)
 

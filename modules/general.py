@@ -53,8 +53,6 @@ class General:
 
         await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention), delete_after=70)
 
-        print("Tell me feedback")
-
         def check(m):
             if m.author == ctx.message.author:
                 return True
@@ -68,6 +66,7 @@ class General:
             await ctx.send('👎')
             success = False
             return
+
         else:
             success = True
             await ctx.send('👍')
@@ -75,13 +74,11 @@ class General:
         em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
         await owner.send(embed=em)
 
-
     @commands.command(aliases=['gmto', 'gweather'])
     #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def gmeteo(self, ctx, city: str = "Paris"):
 
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         result = url_meteo(city)
         fetch = data_fetch(result)
@@ -110,14 +107,13 @@ class General:
         embed.add_field(name='Cloudiness', value="{}%".format(
             data['cloudiness']), inline=True)
 
-        return await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["mto", "weather"])
     #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def meteo(self, ctx, city: str = "Paris"):
 
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         result = url_meteo(city)
         fetch = data_fetch(result)
@@ -139,7 +135,7 @@ class General:
         embed.add_field(name='Cloudiness', value="{}%".format(
             data['cloudiness']), inline=True)
 
-        return await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["away", "idle"])
     async def afk(self, ctx):
@@ -154,8 +150,6 @@ class General:
         setting['AFK'].append(user.id)
         await Settings().set_glob_settings(setting)
         await ctx.send(f"{user.name}, you're now AFK !", delete_after=10)
-
-
 
 
 def setup(bot):

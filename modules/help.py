@@ -17,9 +17,7 @@ class Help:
     #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def help(self, ctx):
 
-        msg = ctx.message
-
-        await msg.delete()
+        await ctx.message.delete()
 
         embed = discord.Embed(
             set_author='Help',

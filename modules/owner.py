@@ -22,11 +22,10 @@ class Owner:
     @checks.is_owner()
     async def echo(self, ctx, *, content):
 
-        msg = ctx.message
+        await ctx.message.delete()
 
         try:
-            await msg.delete()
-            return await ctx.send(content)
+            await ctx.send(content)
 
         except discord.HTTPException:
             pass
@@ -35,12 +34,11 @@ class Owner:
     @checks.is_owner()
     async def dm(self, ctx, user: discord.Member, *, content):
 
-        msg = ctx.message
+        await ctx.message.delete()
 
         try:
-            await msg.delete()
             await ctx.send("{} has been dm".format(user.display_name))
-            return await user.send(content, delete_after=10)
+            await user.send(content, delete_after=10)
 
         except discord.HTTPException:
             pass
@@ -49,11 +47,10 @@ class Owner:
     @checks.is_owner()
     async def send(self, ctx, channel: discord.TextChannel, *, content):
 
-        msg = ctx.message
+        await ctx.message.delete()
 
         try:
-            await msg.delete()
-            return await channel.send(content)
+            await channel.send(content)
 
         except discord.HTTPException:
             pass
@@ -62,12 +59,11 @@ class Owner:
     @checks.is_owner()
     async def speak(self, ctx):
 
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         answer = random.choice(lists.speak)
 
-        return await ctx.send(f'{answer}')
+        await ctx.send(f'{answer}')
 
     @commands.command()
     @checks.is_owner()
@@ -87,16 +83,16 @@ class Owner:
     async def exit(self, ctx):
         sys.exit(1)
 
-
     @commands.command()
     @checks.is_owner()
     async def guild(self, ctx):
         await ctx.message.delete()
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
-                em.add_field(name = guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`", inline = False)
+            em.add_field(
+                name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
 
-        await ctx.author.send(embed = em)
+        await ctx.author.send(embed=em)
 
 
 def setup(bot):

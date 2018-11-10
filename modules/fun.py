@@ -34,10 +34,10 @@ class Fun:
     @commands.guild_only()
     #  @commands.cooldown(1, 3, commands.BucketType.user)
     async def eightball(self, ctx, *, question: str = None):
+        await ctx.message.delete()
 
         if question is None:
             await ctx.send('Oh shit! The crystal ball fell off.... Come back later')
-            return
 
         else:
             answer = random.choice(lists.ballresponse)
@@ -47,17 +47,20 @@ class Fun:
     @commands.guild_only()
     #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def cat(self, ctx):
-        return await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
+        await ctx.message.delete()
+        await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
     @commands.command(aliases=['Doggy'])
     @commands.guild_only()
     #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def dog(self, ctx):
-        return await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
+        await ctx.message.delete()
+        await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
 
     @commands.command(aliases=['yt'])
     async def youtube(self, ctx, *, search: str):
+        await ctx.message.delete()
         search = search.replace(' ', '+').lower()
         response = requests.get(f"https://www.youtube.com/results?search_query={search}").text
         result = BeautifulSoup(response, "lxml")
@@ -65,7 +68,6 @@ class Fun:
         output=f"**Top Result:**\nhttps://www.youtube.com{dir_address}"
         try:
             await ctx.send(output)
-            await ctx.message.delete()
         except discord.Forbidden:
             return
 
@@ -75,6 +77,7 @@ class Fun:
     #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def lovepower(self, ctx, user: discord.Member = None):
 
+        await ctx.message.delete()
         if user is None:
             user = ctx.message.author
 
@@ -101,14 +104,12 @@ class Fun:
     #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def rd(self, ctx):
 
-        msg = ctx.message
+        await ctx.message.delete()
         today = datetime.date.today()
         rd = RepublicanDate.from_gregorian(today.year, today.month, today.day)
 
         try:
             await ctx.send(rd)
-            await msg.delete()
-            return
 
         except discord.HTTPException:
             pass
@@ -116,21 +117,19 @@ class Fun:
     @commands.command(aliases=["god", 'yume'])
     async def king(self, ctx):
 
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         answer = random.choice(lists.king)
 
-        return await ctx.send(f'{answer}')
+        await ctx.send(f'{answer}')
 
     @commands.command(aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
     async def poneybleuetrougeetblancetviolet(self, ctx):
-        msg = ctx.message
-        await msg.delete()
+        await ctx.message.delete()
 
         answer = random.choice(lists.poney)
 
-        return await ctx.send(f'{answer}')
+        await ctx.send(f'{answer}')
 
 
 def setup(bot):

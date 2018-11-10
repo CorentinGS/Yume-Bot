@@ -18,13 +18,11 @@ class About:
         global conf
         conf = config
 
-
     @commands.command()
     @checks.is_owner()
     async def about(self, ctx):
 
-        message = ctx.message
-        await message.delete()
+        await ctx.message.delete()
 
         with open('./config/config.json', 'r') as cjson:
             config = json.load(cjson)
@@ -43,7 +41,6 @@ class About:
 
         text = len(text_channels)
         voice = len(voice_channels)
-
 
         github = '[Sources](https://github.com/yumenetwork/Yume-Bot)'
         site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
@@ -66,7 +63,7 @@ class About:
                         value=f"{ramUsage:.2f} MB", inline=False)
         embed.set_thumbnail(url=owner.avatar_url)
 
-        return await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
 def setup(bot):

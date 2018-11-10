@@ -17,7 +17,8 @@ class Utilities:
     @commands.guild_only()
     #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def info(self, ctx):
-        msg = ctx.message
+        await ctx.message.delete()
+
         server = ctx.message.guild
 
         if server.mfa_level == 1:
@@ -49,8 +50,7 @@ class Utilities:
         embed.set_thumbnail(url=server.icon_url)
 
         try:
-            await msg.delete()
-            return await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
         except discord.HTTPException:
             pass
@@ -74,7 +74,8 @@ class Utilities:
     @commands.guild_only()
     #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def members(self, ctx):
-        msg = ctx.message
+        await ctx.message.delete()
+
         server = ctx.message.guild
 
         embed = discord.Embed(
@@ -88,7 +89,6 @@ class Utilities:
         embed.set_thumbnail(url=server.icon_url)
 
         try:
-            await msg.delete()
             return await ctx.send(embed=embed)
 
         except discord.HTTPException:
@@ -98,7 +98,7 @@ class Utilities:
     @commands.guild_only()
     #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def owner(self, ctx):
-        msg = ctx.message
+        await ctx.message.delete()
         server = ctx.message.guild
 
         embed = discord.Embed(
@@ -111,8 +111,7 @@ class Utilities:
         embed.set_thumbnail(url=server.icon_url)
 
         try:
-            await msg.delete()
-            return await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
         except discord.HTTPException:
             pass
@@ -125,20 +124,20 @@ class Utilities:
         if user is None:
             user = ctx.author
 
-        return await ctx.send(f"Avatar of {user.name} \n {user.avatar_url_as(size=1024)}")
+        await ctx.send(f"Avatar of {user.name} \n {user.avatar_url_as(size=1024)}")
 
     @commands.command()
     @commands.guild_only()
     #  @commands.cooldown(1, 120, commands.BucketType.guild)
     async def icon(self, ctx):
-        return await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
+        await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
     @commands.command()
     @commands.guild_only()
     #  @commands.cooldown(2, 20, commands.BucketType.user)
     async def whois(self, ctx, user: discord.Member):
 
-        msg = ctx.message
+        await ctx.message.delete()
 
         embed = discord.Embed(
             title="{}".format(user.name),
@@ -160,8 +159,7 @@ class Utilities:
         embed.set_thumbnail(url=user.avatar_url)
 
         try:
-            await msg.delete()
-            return await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
         except discord.HTTPException:
             pass
@@ -172,7 +170,7 @@ class Utilities:
     async def hackwhois(self, ctx, id: int):
 
         user = await self.bot.get_user_info(id)
-        msg = ctx.message
+        await ctx.message.delete()
 
         embed = discord.Embed(
             title="{}".format(user.name),
@@ -188,8 +186,7 @@ class Utilities:
         embed.set_thumbnail(url=user.avatar_url)
 
         try:
-            await msg.delete()
-            return await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
         except discord.HTTPException:
             pass
