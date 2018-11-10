@@ -33,12 +33,12 @@ class Set:
         set = await Settings().get_server_settings(server)
         if 'muteRole' not in set:
             set['muteRole'] = False
-        if arg == "On":
+        elif arg.lower().startswith('on'):
             set['muteRole'] = True
-        elif arg == "Off":
+        elif arg.lower().startswith('off'):
             set ['muteRole'] = False
         else:
-            return await ctx.send(f'{arg} is not a valid argument ! Please use **On** or **Off**')
+            return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
         await Settings().set_server_settings(server, set)
 
         await ctx.send('OK !', delete_after=10)
