@@ -11,7 +11,7 @@ class Embeds():
         em.set_author(name=command.title(), icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
         if success:
-            if command == 'ban'or command == 'hackban':
+            if command == 'ban' or command == 'hackban':
                 em.description = f'**{user}** was just {command}ned...'
             elif command == 'mute':
                 em.description = f'**{user}** was just muted for {duration}...'
@@ -39,4 +39,18 @@ class Embeds():
             em.set_footer(text=message)
         else:
             pass
+        return em
+
+    async def format_set_embed(self, ctx, guild, command):
+        em = discord.Embed(timestamp= ctx.message.created_at)
+        em.set_author(name='Settings', icon_url=guild.icon_url)
+        if command == 'setting':
+            em.add_field(name= "🇲 **Mute**", value= "Settings for Mute")
+            em.add_field(name= "🇬 **Greet**", value= "Settings for Greet")
+
+        elif command == 'mutemenu':
+            em.add_field(name= "💂 **Role**", value= "Toggle Role Mute")
+            em.add_field(name= "💣 **Permissions**", value= "Toggle Permissions Mute")
+        else:
+            return
         return em

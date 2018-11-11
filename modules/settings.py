@@ -21,8 +21,46 @@ class Set:
     @commands.has_permissions(administrator=True)
     async def setting(self, ctx):
         if ctx.invoked_subcommand is None:
-            # TODO: System d'embed
-            return
+            guild = ctx.message.guild
+            em = await Embeds().format_set_embed(ctx, guild, 'setting')
+            def check(reaction, user):
+                return user == ctx.message.author and str(reaction.emoji)
+
+            msg = await ctx.send(embed=em)
+            reactions = ['🇲', '🇬']
+            for reaction in reactions:
+                await msg.add_reaction(reaction)
+
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+            except asyncio.TimeoutError:
+                await ctx.send('👎')
+
+            else:
+                if reaction.emoji == '🇲':
+                    await msg.clear_reactions()
+                    em = await Embeds().format_set_embed(ctx, guild, 'mutemenu')
+                    await msg.edit(embed=em)
+                    reactions = ['💂', '💣']
+                    for reaction in reactions:
+                        await msg.add_reaction(reaction)
+                    try:
+                        reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+                    except asyncio.TimeoutError:
+                        await ctx.send('👎')
+
+                    else:
+                        if reaction.emoji == '💂':
+                            arg = "on"
+                            await ctx.invoke(self.muterole, arg)
+                        elif reaction.emoji == '💣':
+                            arg = "off"
+                            await ctx.invoke(self.muterole, arg)
+
+
+
 
     @setting.command()
     @commands.guild_only()
