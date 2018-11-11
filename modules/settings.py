@@ -6,6 +6,7 @@ import asyncio
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
+
 class Set:
 
     conf = {}
@@ -14,8 +15,6 @@ class Set:
         self.bot = bot
         self.config = bot.config
 
-
-
     @commands.group()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
@@ -23,6 +22,7 @@ class Set:
         if ctx.invoked_subcommand is None:
             guild = ctx.message.guild
             em = await Embeds().format_set_embed(ctx, guild, 'setting')
+
             def check(reaction, user):
                 return user == ctx.message.author and str(reaction.emoji)
 
@@ -85,7 +85,8 @@ class Set:
                             await msg.delete()
                             await ctx.send('Please name a Channel !')
                             m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
-                            text_channel = discord.utils.get(ctx.guild.text_channels, name=m.content)
+                            text_channel = discord.utils.get(
+                                ctx.guild.text_channels, name=m.content)
                             await ctx.invoke(self.greetchannel, text_channel)
                         elif reaction.emoji == '📜':
                             arg = "on"
@@ -94,11 +95,9 @@ class Set:
                             await msg.delete()
                             return
 
-
                 elif reaction.emoji == '❌':
                     await msg.delete()
                     return
-
 
     @setting.command()
     @commands.guild_only()
@@ -111,7 +110,7 @@ class Set:
         elif arg.lower().startswith('on'):
             set['muteRole'] = True
         elif arg.lower().startswith('off'):
-            set ['muteRole'] = False
+            set['muteRole'] = False
         else:
             return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
         await Settings().set_server_settings(server, set)
@@ -124,7 +123,6 @@ class Set:
     async def greetchannel(self, ctx, channel: discord.TextChannel):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-
 
         if not channel:
             return await ctx.send('Invalid Channel')
@@ -154,8 +152,6 @@ class Set:
         await Settings().set_server_settings(server, set)
 
         await ctx.send('OK !', delete_after=10)
-
-
 
 
 def setup(bot):
