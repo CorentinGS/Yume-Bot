@@ -47,10 +47,18 @@ class Embeds():
         if command == 'setting':
             em.add_field(name= "🇲 **Mute**", value= "Settings for Mute")
             em.add_field(name= "🇬 **Greet**", value= "Settings for Greet")
+            em.add_field(name= "❌", value= "Leave")
 
         elif command == 'mutemenu':
             em.add_field(name= "💂 **Role**", value= "Toggle Role Mute")
             em.add_field(name= "💣 **Permissions**", value= "Toggle Permissions Mute")
-        else:
-            return
+            em.add_field(name= "❌", value= "Leave")
+
+
+        elif command == 'greetmenu':
+            em.add_field(name= "❔ **Channel**", value= "Set the greet channel")
+            em.add_field(name="📜 **Toggle**", value= "Toggle Greet")
+            em.add_field(name= "❌", value= "Leave")
+
+
         return em
