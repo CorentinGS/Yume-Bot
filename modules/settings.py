@@ -42,6 +42,43 @@ class Set:
 
         await ctx.send('OK !', delete_after=10)
 
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def greetchannel(self, ctx, channel: discord.TextChannel):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+
+        if not channel:
+            return await ctx.send('Invalid Channel')
+
+        else:
+            set['GreetChannel'] = int(channel.id)
+
+        await Settings().set_server_settings(server, set)
+
+        await ctx.send('OK !', delete_after=10)
+
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def greet(self, ctx, arg: str = None):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+        if 'Greet' not in set:
+            set['Greet'] = False
+        elif arg.lower().startswith('on'):
+            set['Greet'] = True
+        elif arg.lower().startswith('off'):
+            set['Greet'] = False
+        else:
+            return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
+
+        await Settings().set_server_settings(server, set)
+
+        await ctx.send('OK !', delete_after=10)
+
+
 
 
 def setup(bot):

@@ -12,6 +12,8 @@ class Event:
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+
     async def on_member_join(self, member):
         guild = member.guild
         server = await Settings().get_server_settings(str(guild.id))
@@ -26,14 +28,25 @@ class Event:
             else:
                 pass
 
-        elif 'Blacklist' in glob:
+        if 'Blacklist' in glob:
             if member.id in glob['Blacklist']:
                 await guild.ban(member, reason="Blacklist")
                 await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
             else:
                 pass
-        else:
-            return
+
+        if 'Greet' in server:
+            if server['Greet'] is True:
+                if 'GreetChannel' in server:
+                    channel = self.bot.get_channel(int(server['GreetChannel']))
+                    await channel.send('Welcome {} in {}'.format(member.mention, guild.name))
+                    # TODO: Add embed format !
+                else:
+                    pass
+            else:
+                pass
+
+
 
 
     async def on_message(self, message):
