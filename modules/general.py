@@ -67,6 +67,8 @@ class General:
             success = True
             await ctx.send('👍')
 
+
+        msg.delete()
         em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
         await owner.send(embed=em)
 
