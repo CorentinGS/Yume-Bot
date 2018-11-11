@@ -21,6 +21,7 @@ class Set:
     @commands.has_permissions(administrator=True)
     async def setting(self, ctx):
         if ctx.invoked_subcommand is None:
+            # TODO: System d'embed
             return
 
     @setting.command()
