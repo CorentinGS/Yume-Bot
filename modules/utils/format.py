@@ -54,7 +54,7 @@ class Embeds():
         elif command == 'mutemenu':
             em.add_field(name= "💂 **Role**", value= "Toggle Role Mute")
             em.add_field(name= "💣 **Permissions**", value= "Toggle Permissions Mute")
-            em.add_field(name= "❌", value= "Leave")
+            em.add_field(name= "❌", value= "Leave", inline=False)
 
 
         elif command == 'greetmenu':

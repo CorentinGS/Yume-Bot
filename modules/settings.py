@@ -60,9 +60,13 @@ class Set:
                         if reaction.emoji == '💂':
                             arg = "on"
                             await ctx.invoke(self.muterole, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
                         elif reaction.emoji == '💣':
                             arg = "off"
                             await ctx.invoke(self.muterole, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)                            
                         elif reaction.emoji == '❌':
                             await msg.delete()
                             return
@@ -88,9 +92,13 @@ class Set:
                             text_channel = discord.utils.get(
                                 ctx.guild.text_channels, name=m.content)
                             await ctx.invoke(self.greetchannel, text_channel)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
                         elif reaction.emoji == '📜':
                             arg = "on"
                             await ctx.invoke(self.greet, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
                         elif reaction.emoji == '❌':
                             await msg.delete()
                             return
@@ -115,7 +123,7 @@ class Set:
             return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
         await Settings().set_server_settings(server, set)
 
-        await ctx.send('OK !', delete_after=10)
+        await ctx.send('OK !', delete_after=5)
 
     @setting.command()
     @commands.guild_only()
@@ -132,7 +140,7 @@ class Set:
 
         await Settings().set_server_settings(server, set)
 
-        await ctx.send('OK !', delete_after=10)
+        await ctx.send('OK !', delete_after=5)
 
     @setting.command()
     @commands.guild_only()
@@ -151,7 +159,7 @@ class Set:
 
         await Settings().set_server_settings(server, set)
 
-        await ctx.send('OK !', delete_after=10)
+        await ctx.send('OK !', delete_after=5)
 
 
 def setup(bot):
