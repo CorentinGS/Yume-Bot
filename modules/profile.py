@@ -27,7 +27,7 @@ class Profile:
         user = str(ctx.message.author.id)
         set = await Settings().get_user_settings(user)
 
-        elif arg.lower().startswith('male'):
+        if arg.lower().startswith('male'):
             set['gender'] = "male"
         elif arg.lower().startswith('female'):
             set['gender'] = "female"
