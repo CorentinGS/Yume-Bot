@@ -77,6 +77,8 @@ class Event:
             set['muteRole'] = False
         if 'mute' not in set:
             set['mute'] = []
+        if 'Greet' not in set:
+            set['Greet'] = False
         await Settings().set_server_settings(server, set)
 
 

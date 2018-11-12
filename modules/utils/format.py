@@ -3,6 +3,8 @@ from discord.ext import commands
 import datetime
 import asyncio
 
+from modules.utils.db import Settings
+
 
 class Embeds():
 
@@ -59,6 +61,7 @@ class Embeds():
             em.add_field(name= "❔ **Channel**", value= "Set the greet channel")
             em.add_field(name="📜 **Toggle**", value= "Toggle Greet")
             em.add_field(name= "❌", value= "Leave")
+
 
 
         return em
