@@ -66,7 +66,7 @@ class Set:
                             arg = "off"
                             await ctx.invoke(self.muterole, arg)
                             await msg.delete()
-                            await ctx.invoke(self.setting)                            
+                            await ctx.invoke(self.setting)
                         elif reaction.emoji == '❌':
                             await msg.delete()
                             return
@@ -92,7 +92,6 @@ class Set:
                             text_channel = discord.utils.get(
                                 ctx.guild.text_channels, name=m.content)
                             await ctx.invoke(self.greetchannel, text_channel)
-                            await msg.delete()
                             await ctx.invoke(self.setting)
                         elif reaction.emoji == '📜':
                             arg = "on"
