@@ -92,7 +92,7 @@ class Set:
                             text_channel = discord.utils.get(
                                 ctx.guild.text_channels, name=m.content)
                             await ctx.invoke(self.greetchannel, text_channel)
-iv                            await ctx.invoke(self.setting)
+                            await ctx.invoke(self.setting)
                         elif reaction.emoji == '📜':
                             arg = "on"
                             await ctx.invoke(self.greet, arg)
@@ -112,9 +112,7 @@ iv                            await ctx.invoke(self.setting)
     async def muterole(self, ctx, arg: str = None):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if 'muteRole' not in set:
-            set['muteRole'] = False
-        elif arg.lower().startswith('on'):
+        if arg.lower().startswith('on'):
             set['muteRole'] = True
         elif arg.lower().startswith('off'):
             set['muteRole'] = False
@@ -147,9 +145,7 @@ iv                            await ctx.invoke(self.setting)
     async def greet(self, ctx, arg: str = None):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if 'Greet' not in set:
-            set['Greet'] = False
-        elif arg.lower().startswith('on'):
+        if arg.lower().startswith('on'):
             set['Greet'] = True
         elif arg.lower().startswith('off'):
             set['Greet'] = False
