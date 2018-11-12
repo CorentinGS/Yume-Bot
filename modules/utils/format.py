@@ -62,6 +62,4 @@ class Embeds():
             em.add_field(name="📜 **Toggle**", value= "Toggle Greet")
             em.add_field(name= "❌", value= "Leave")
 
-
-
         return em
