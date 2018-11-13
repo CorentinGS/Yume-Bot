@@ -97,7 +97,7 @@ class Owner:
     @checks.is_owner()
     async def vip(self, ctx):
         if ctx.invoked_subcommand is None:
-            return
+            return await ctx.send('specify an argument')
 
     @vip.command()
     async def add(self, ctx, id: int):
