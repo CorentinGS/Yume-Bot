@@ -6,6 +6,8 @@ from discord.ext import commands
 from modules.utils import checks
 from modules.utils import lists
 
+from modules.utils.db import Settings
+
 
 class Owner:
 
@@ -91,6 +93,42 @@ class Owner:
 
         await ctx.author.send(embed=em)
 
+    @commands.group()
+    @checks.is_owner()
+    async def vip(self, ctx):
+        if ctx.invoked_subcommand is None:
+            return
+
+    @vip.command()
+    async def add(self, ctx, id: int):
+        user = await self.bot.get_user_info(id)
+        await ctx.message.delete()
+
+        setting = await Settings().get_glob_settings()
+        if 'VIP' not in setting:
+            setting['VIP'] = []
+
+        if user.id in setting['VIP']:
+            return await ctx.send("This user is already VIP")
+        setting['VIP'].append(user.id)
+        await Settings().set_glob_settings(setting)
+        await ctx.send(f"{user} is now VIP")
+
+
+    @vip.command()
+    async def remove(self, ctx, id: int):
+        user = await self.bot.get_user_info(id)
+        await ctx.message.delete()
+        setting = await Settings().get_glob_settings()
+
+
+        if user.id in setting['VIP']:
+            setting['VIP'].remove(user.id)
+            await Settings().set_glob_settings(setting)
+            await ctx.send(f"{user} has been remove from VIP")
+
+        else:
+            return await ctx.send('User is not VIP')
 
 def setup(bot):
     bot.add_cog(Owner(bot))

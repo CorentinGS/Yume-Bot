@@ -63,3 +63,23 @@ class Embeds():
             em.add_field(name= "❌", value= "Leave")
 
         return em
+
+    async def format_profile_embed(self, ctx, user, command, vip):
+        em = discord.Embed(timestamp= ctx.message.created_at)
+        em.set_author(name='Settings', icon_url=user.avatar_url)
+        if command == "profile":
+            em.add_field(name= "❓ **Gender**", value= "Select a gender" )
+            em.add_field(name= "❌", value= "Leave", inline=False)
+
+        elif command == 'gender':
+            em.add_field(name= "👦", value= "Male")
+            em.add_field(name= "👩", value= "Female")
+            em.add_field(name= "💥", value= "Transgender")
+            em.add_field(name= '🐌', value= "Non-Binary")
+
+            if vip is True:
+                em.add_field(name= '🐧', value= 'Penguin')
+                em.add_field(name= '🐱', value= "Cat")
+            em.add_field(name= "❌", value= "Leave", inline=False)
+
+        return em

@@ -31,6 +31,7 @@ class Set:
                     return True
                 else:
                     return False
+                    
             msg = await ctx.send(embed=em)
             reactions = ['🇲', '🇬', '❌']
             for reaction in reactions:
