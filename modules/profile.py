@@ -122,11 +122,15 @@ class Profile:
 
         await Settings().set_user_settings(auth, set)
 
+    @profile.command()
+    async def info(self, ctx, user: discord.Member = None):
+        if user is None:
+            auth = str(ctx.message.author.id)
+        else:
+            auth = str(user.id)
+        set = await Settings().get_user_settings(auth)
 
-
-
-
-# TODO: Ajouter l'user.id dans glob & ajouter des paramtètres en utilisant le système d'embed pour configurer le Profile !
+        # TODO: Afficher les informations de qqun
 
 def setup(bot):
     bot.add_cog(Profile(bot))
