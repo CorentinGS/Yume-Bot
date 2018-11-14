@@ -18,87 +18,90 @@ class Profile:
     @commands.group()
     async def profile(self, ctx):
         if ctx.invoked_subcommand is None:
+            return
 
-            glob = await Settings().get_glob_settings()
+    @profile.command()
+    async def edit(self, ctx):
+        glob = await Settings().get_glob_settings()
 
-            auth = ctx.message.author
+        auth = ctx.message.author
 
-            if auth.id in glob["VIP"]:
-                vip = True
-            else:
-                vip = False
+        if auth.id in glob["VIP"]:
+            vip = True
+        else:
+            vip = False
 
-            em = await Embeds().format_profile_embed(ctx, auth, 'profile', vip)
+        em = await Embeds().format_profile_embed(ctx, auth, 'edit', vip)
 
 
-            def check(reaction, user):
-                return user == ctx.message.author and str(reaction.emoji)
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji)
 
-            msg = await ctx.send(embed=em)
-            reactions = ["❓", '❌']
-            for reaction in reactions:
-                await msg.add_reaction(reaction)
+        msg = await ctx.send(embed=em)
+        reactions = ["❓", '❌']
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
 
-            try:
-                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
-            except asyncio.TimeoutError:
-                await ctx.send('👎')
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
 
-            else:
-                if reaction.emoji == '❓':
-                    await msg.clear_reactions()
-                    em = await Embeds().format_profile_embed(ctx, auth, 'gender', vip)
-                    await msg.edit(embed=em)
-                    reactions = ['👦', '👩', '💥', '🐌', '❌']
-                    if vip is True:
-                        reactions.extend(['🐧', '🐱'])
-                    for reaction in reactions:
-                        await msg.add_reaction(reaction)
-                    try:
-                        reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+        else:
+            if reaction.emoji == '❓':
+                await msg.clear_reactions()
+                em = await Embeds().format_profile_embed(ctx, auth, 'gender', vip)
+                await msg.edit(embed=em)
+                reactions = ['👦', '👩', '💥', '🐌', '❌']
+                if vip is True:
+                    reactions.extend(['🐧', '🐱'])
+                for reaction in reactions:
+                    await msg.add_reaction(reaction)
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
-                    except asyncio.TimeoutError:
-                        await ctx.send('👎')
+                except asyncio.TimeoutError:
+                    await ctx.send('👎')
 
-                    else:
-                        if reaction.emoji == '👦':
-                            arg = "male"
-                            await ctx.invoke(self.gender, arg)
-                            await msg.delete()
-                            await ctx.invoke(self.profile)
-                        elif reaction.emoji == '👩':
-                            arg = "female"
-                            await ctx.invoke(self.gender, arg)
-                            await msg.delete()
-                            await ctx.invoke(self.profile)
-                        elif reaction.emoji == '💥':
-                            arg = "transgender"
-                            await ctx.invoke(self.gender, arg)
-                            await msg.delete()
-                            await ctx.invoke(self.profile)
-                        elif reaction.emoji == '🐌':
-                            arg = "non-binary"
-                            await ctx.invoke(self.gender, arg)
-                            await msg.delete()
-                            await ctx.invoke(self.profile)
-                        elif reaction.emoji == '🐧':
-                            arg = 'penguin'
-                            await ctx.invoke(self.gender, arg)
-                            await msg.delete()
-                            await ctx.invoke(self.profile)
-                        elif reaction.emoji == '🐱':
-                            arg = 'cat'
-                            await ctx.invoke(self.gender, arg)
-                            await msg.delete()
-                            await ctx.invoke(self.profile)
-                        elif reaction.emoji == '❌':
-                            await msg.delete()
-                            return
+                else:
+                    if reaction.emoji == '👦':
+                        arg = "male"
+                        await ctx.invoke(self.gender, arg)
+                        await msg.delete()
+                        await ctx.invoke(self.edit)
+                    elif reaction.emoji == '👩':
+                        arg = "female"
+                        await ctx.invoke(self.gender, arg)
+                        await msg.delete()
+                        await ctx.invoke(self.edit)
+                    elif reaction.emoji == '💥':
+                        arg = "transgender"
+                        await ctx.invoke(self.gender, arg)
+                        await msg.delete()
+                        await ctx.invoke(self.edit)
+                    elif reaction.emoji == '🐌':
+                        arg = "non-binary"
+                        await ctx.invoke(self.gender, arg)
+                        await msg.delete()
+                        await ctx.invoke(self.edit)
+                    elif reaction.emoji == '🐧':
+                        arg = 'penguin'
+                        await ctx.invoke(self.gender, arg)
+                        await msg.delete()
+                        await ctx.invoke(self.edit)
+                    elif reaction.emoji == '🐱':
+                        arg = 'cat'
+                        await ctx.invoke(self.gender, arg)
+                        await msg.delete()
+                        await ctx.invoke(self.edit)
+                    elif reaction.emoji == '❌':
+                        await msg.delete()
+                        return
 
-                elif reaction.emoji == '❌':
-                    await msg.delete()
-                    return
+            elif reaction.emoji == '❌':
+                await msg.delete()
+                return
 
     @profile.command()
     async def gender(self, ctx, arg: str = None):
