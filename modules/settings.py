@@ -31,6 +31,7 @@ class Set:
                     return True
                 else:
                     return False
+                    
             msg = await ctx.send(embed=em)
             reactions = ['🇲', '🇬', '❌']
             for reaction in reactions:
@@ -66,7 +67,7 @@ class Set:
                             arg = "off"
                             await ctx.invoke(self.muterole, arg)
                             await msg.delete()
-                            await ctx.invoke(self.setting)                            
+                            await ctx.invoke(self.setting)
                         elif reaction.emoji == '❌':
                             await msg.delete()
                             return
@@ -92,7 +93,6 @@ class Set:
                             text_channel = discord.utils.get(
                                 ctx.guild.text_channels, name=m.content)
                             await ctx.invoke(self.greetchannel, text_channel)
-                            await msg.delete()
                             await ctx.invoke(self.setting)
                         elif reaction.emoji == '📜':
                             arg = "on"
@@ -113,9 +113,7 @@ class Set:
     async def muterole(self, ctx, arg: str = None):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if 'muteRole' not in set:
-            set['muteRole'] = False
-        elif arg.lower().startswith('on'):
+        if arg.lower().startswith('on'):
             set['muteRole'] = True
         elif arg.lower().startswith('off'):
             set['muteRole'] = False
@@ -148,9 +146,7 @@ class Set:
     async def greet(self, ctx, arg: str = None):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if 'Greet' not in set:
-            set['Greet'] = False
-        elif arg.lower().startswith('on'):
+        if arg.lower().startswith('on'):
             set['Greet'] = True
         elif arg.lower().startswith('off'):
             set['Greet'] = False
