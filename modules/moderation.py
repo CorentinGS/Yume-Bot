@@ -19,7 +19,7 @@ class Moderation:
     @commands.guild_only()
     #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
-    async def mute(self, ctx, user: discord.Member, duration, *,  reason: str = None):
+    async def mute(self, ctx, user: discord.Member, duration):
 
         await ctx.message.delete()
         server = str(ctx.guild.id)
@@ -29,6 +29,8 @@ class Moderation:
         if not role:
             setting['muteRole'] = False
             await Settings().set_server_settings(server, setting)
+            await ctx.invoke(self.mute, user, duration)
+
 
         unit = duration[-1]
         if unit == 's':
