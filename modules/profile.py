@@ -16,15 +16,42 @@ class Profile:
         self.config = bot.config
 
     @commands.group()
-    async def profile(self, ctx):
+    async def profile(self, ctx, arg = None, user: discord.Member = None):
+        if arg == "edit":
+            return await ctx.invoke(self.edit)
+
+
         if ctx.invoked_subcommand is None:
+            if user is None:
+                user = ctx.message.author
+
+
+
+
+            set = await Settings().get_user_settings(str(user.id))
+            glob = await Settings().get_glob_settings()
+
+            if user.id in glob["VIP"]:
+                vip = True
+            else:
+                vip = False
+
+            gender = str(set['gender'])
+
+            em = await Embeds().format_get_profile_embed(ctx, user, vip, gender)
+            await ctx.send(embed= em)
+
             return
 
     @profile.command()
     async def edit(self, ctx):
-        glob = await Settings().get_glob_settings()
 
         auth = ctx.message.author
+
+        set = await Settings().get_user_settings(str(auth.id))
+        glob = await Settings().get_glob_settings()
+
+
 
         if auth.id in glob["VIP"]:
             vip = True

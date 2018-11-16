@@ -84,3 +84,25 @@ class Embeds():
 
 
         return em
+
+    async def format_get_profile_embed(self, ctx, user, vip, gender):
+        em = discord.Embed(timestamp = ctx.message.created_at)
+        em.set_author(name= 'Profile', icon_url = user.avatar_url)
+
+        em.add_field(name = "Vip", value= vip)
+        if gender == "male":
+            emote = "👦"
+        elif gender == 'female':
+            emote = '👩'
+        elif gender == "transgender":
+            emote = "💥"
+        elif gender == 'non-binary':
+            emote = "🐌"
+        elif gender == "penguin":
+            emote = '🐧'
+        elif gender == "cat":
+            emote = '🐱'
+
+        em.add_field(name = emote, value = gender)
+
+        return em
