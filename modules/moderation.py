@@ -280,7 +280,6 @@ class Moderation:
 
         try:
             for member_id in members:
-                #  user = await self.bot.get_user_info(member_id)
                 await ctx.guild.ban(discord.Object(id=member_id), reason="{} - {}".format(ctx.message.author, reason))
 
         except Exception as e:
