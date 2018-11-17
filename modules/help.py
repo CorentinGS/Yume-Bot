@@ -23,7 +23,7 @@ class Help:
         )
 
         embed.add_field(
-            name="**Commands**", value="[Click here for a full commands list](https://yumenetwork.gitbook.io/yumebot/)\n", inline=False)
+            name="**Commands**", value="[Click here for a full commands list](https://www.yumenetwork.fr)\n", inline=False)
         embed.add_field(
             name="**Invite**", value="[Click Here](https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot) to invite the bot", inline=False)
         embed.add_field(
