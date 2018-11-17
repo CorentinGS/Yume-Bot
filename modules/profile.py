@@ -20,7 +20,6 @@ class Profile:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get, ctx.message.author)
 
-
     @profile.command()
     async def get(self, ctx, user: discord.Member = None):
         if user is None:
@@ -32,7 +31,6 @@ class Profile:
         set = await Settings().get_user_settings(str(user.id))
         glob = await Settings().get_glob_settings()
 
-
         if user.id in glob["VIP"]:
             vip = True
         else:
@@ -41,7 +39,7 @@ class Profile:
         gender = set['gender']
 
         em = await Embeds().format_get_profile_embed(ctx, user, vip, gender)
-        await ctx.send(embed= em)
+        await ctx.send(embed=em)
 
         return
 
@@ -53,14 +51,12 @@ class Profile:
         set = await Settings().get_user_settings(str(auth.id))
         glob = await Settings().get_glob_settings()
 
-
         if auth.id in glob["VIP"]:
             vip = True
         else:
             vip = False
 
         em = await Embeds().format_profile_embed(ctx, auth, 'edit', vip)
-
 
         def check(reaction, user):
             return user == ctx.message.author and str(reaction.emoji)
