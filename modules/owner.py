@@ -1,4 +1,4 @@
-import sys
+ivimport sys
 import random
 import discord
 

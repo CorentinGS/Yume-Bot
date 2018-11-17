@@ -128,6 +128,14 @@ class Fun:
 
         await ctx.send(f'{answer}')
 
+    @commands.group()
+    async def love(ctx, self):
+        if ctx.invoked_subcommand is None:
+            def msgcheck(m):
+                return m.author == ctx.message.author
+
+            
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
