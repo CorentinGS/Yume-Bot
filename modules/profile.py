@@ -5,7 +5,7 @@ import asyncio
 
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-
+from modules.utils import checks
 
 
 class Profile:
@@ -16,32 +16,34 @@ class Profile:
         self.config = bot.config
 
     @commands.group()
-    async def profile(self, ctx, arg = None, user: discord.Member = None):
-        if arg == "edit":
-            return await ctx.invoke(self.edit)
-
-
+    async def profile(self, ctx):
         if ctx.invoked_subcommand is None:
-            if user is None:
-                user = ctx.message.author
+            await ctx.invoke(self.get, ctx.message.author)
 
 
+    @profile.command()
+    async def get(self, ctx, user: discord.Member = None):
+        if user is None:
+            user = ctx.message.author
+
+        if not await Settings().get_user_settings(str(user.id)):
+            await ctx.invoke(self.default, user)
+
+        set = await Settings().get_user_settings(str(user.id))
+        glob = await Settings().get_glob_settings()
 
 
-            set = await Settings().get_user_settings(str(user.id))
-            glob = await Settings().get_glob_settings()
+        if user.id in glob["VIP"]:
+            vip = True
+        else:
+            vip = False
 
-            if user.id in glob["VIP"]:
-                vip = True
-            else:
-                vip = False
+        gender = set['gender']
 
-            gender = str(set['gender'])
+        em = await Embeds().format_get_profile_embed(ctx, user, vip, gender)
+        await ctx.send(embed= em)
 
-            em = await Embeds().format_get_profile_embed(ctx, user, vip, gender)
-            await ctx.send(embed= em)
-
-            return
+        return
 
     @profile.command()
     async def edit(self, ctx):
@@ -50,7 +52,6 @@ class Profile:
 
         set = await Settings().get_user_settings(str(auth.id))
         glob = await Settings().get_glob_settings()
-
 
 
         if auth.id in glob["VIP"]:
@@ -147,6 +148,8 @@ class Profile:
             set['gender'] = "non-binary"
         elif arg.lower().startswith('penguin'):
             set['gender'] = 'penguin'
+        elif arg.lowder().startswith('?'):
+            set['gender'] = 'unknown'
         else:
             return await ctx.send(f'{arg} is not a valid argument !')
 
@@ -161,6 +164,29 @@ class Profile:
         set = await Settings().get_user_settings(auth)
 
         # TODO: Afficher les informations de qqun
+
+    @profile.command()
+    @checks.is_owner()
+    async def setup(self, ctx):
+        for guild in self.bot.guilds:
+            for user in guild.members:
+                set = await Settings().get_user_settings(str(user.id))
+                set['gender'] = 'unknown'
+                await Settings().set_user_settings(str(user.id), set)
+
+    @profile.command()
+    async def default(self, ctx, user: discord.Member = None):
+        if user is None:
+            user = ctx.message.author
+
+        if not await Settings().get_user_settings(str(user.id)):
+            set = await Settings().get_user_settings(str(user.id))
+            set['gender'] = 'unknown'
+            await Settings().set_user_settings(str(user.id), set)
+
+        else:
+            return
+
 
 def setup(bot):
     bot.add_cog(Profile(bot))

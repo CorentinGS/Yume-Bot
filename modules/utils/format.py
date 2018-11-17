@@ -102,6 +102,9 @@ class Embeds():
             emote = '🐧'
         elif gender == "cat":
             emote = '🐱'
+        else:
+            emote = '❓'
+            gender = 'Unknown'
 
         em.add_field(name = emote, value = gender)
 
