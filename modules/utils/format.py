@@ -89,7 +89,6 @@ class Embeds():
         em = discord.Embed(timestamp = ctx.message.created_at)
         em.set_author(name= 'Profile', icon_url = user.avatar_url)
 
-        em.add_field(name = "Vip", value= vip)
         if gender == "male":
             emote = "👦"
         elif gender == 'female':
@@ -107,5 +106,16 @@ class Embeds():
             gender = 'Unknown'
 
         em.add_field(name = emote, value = gender)
+        em.add_field(name = "Vip", value= vip)
 
         return em
+
+
+    async def format_love_embed(self, ctx, auth, command):
+        em = discord.Embed(timestamp = ctx.message.created_at)
+        em.set_author(name= 'Love', icon_url = auth.avatar_url)
+
+        if command == "love":
+            em.add_field(name= "👦", value= "Male")
+
+            # TODO: Un menu pour "LOVE"

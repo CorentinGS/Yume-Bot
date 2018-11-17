@@ -134,7 +134,16 @@ class Fun:
             def msgcheck(m):
                 return m.author == ctx.message.author
 
-            
+
+            try:
+                m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
+
+            except asyncio.TimeoutError:
+                await ctx.send('👎', delete_after = 10)
+
+
+
+
 
 
 def setup(bot):
