@@ -276,7 +276,7 @@ class Moderation:
     @commands.guild_only()
     #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
-    async def massban(self, ctx, reason: str = None, *members: int):
+    async def massban(self, ctx, *members: int):
 
         try:
             for member_id in members:
