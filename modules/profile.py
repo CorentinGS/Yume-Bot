@@ -39,10 +39,8 @@ class Profile:
         gender = set['gender']
         status = set['status']
 
-        if status == "taken":
-            lover = await self.bot.get_user_info(int(set['lover']))
-        else:
-            pass
+        lover = await self.bot.get_user_info(int(set['lover']))
+
 
         em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover)
         reactions = ["✏", '❌']
@@ -194,7 +192,7 @@ class Profile:
             set = await Settings().get_user_settings(str(user.id))
             set['gender'] = 'unknown'
             set['status'] = 'alone'
-            set['lover'] = int(user.id)
+            set['lover'] = user.id
             await Settings().set_user_settings(str(user.id), set)
 
         else:
