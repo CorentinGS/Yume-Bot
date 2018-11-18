@@ -51,6 +51,9 @@ class Profile:
         for reaction in reactions:
             await msg.add_reaction(reaction)
 
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji)
+
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
 
