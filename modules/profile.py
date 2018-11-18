@@ -43,30 +43,33 @@ class Profile:
 
 
         em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover)
+
         reactions = ["✏", '❌']
 
         msg = await ctx.send(embed=em)
-        for reaction in reactions:
-            await msg.add_reaction(reaction)
 
-        def check(reaction, user):
-            return user == ctx.message.author and str(reaction.emoji)
+        if user == ctx.message.author:
+            for reaction in reactions:
+                await msg.add_reaction(reaction)
 
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
+            def check(reaction, user):
+                return user == ctx.message.author and str(reaction.emoji)
 
-        except asyncio.TimeoutError:
-            await ctx.send('👎')
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
 
-        else:
-            if reaction.emoji == '✏':
-                await msg.clear_reactions()
-                await msg.delete()
-                await ctx.invoke(self.edit)
-            if reaction.emoji == '❌':
-                await msg.clear_reactions()
-                await msg.delete()
-                return
+            except asyncio.TimeoutError:
+                await ctx.send('👎')
+
+            else:
+                if reaction.emoji == '✏':
+                    await msg.clear_reactions()
+                    await msg.delete()
+                    await ctx.invoke(self.edit)
+                if reaction.emoji == '❌':
+                    await msg.clear_reactions()
+                    await msg.delete()
+                    return
 
     @profile.command()
     async def edit(self, ctx):
