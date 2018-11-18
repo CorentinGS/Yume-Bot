@@ -229,11 +229,11 @@ class Profile:
         else:
             toto = ctx.message.author
             user = m.mentions[0]
+
             if not await Settings().get_user_settings(str(user.id)):
                 await ctx.invoke(self.default, user)
-            set = await Settings().get_user_settings(str(user.id))
-            setting = await Settings().get_user_settings(str(toto.id))
 
+            set = await Settings().get_user_settings(str(user.id))
 
             em = await Embeds().format_love_embed(ctx, toto, 'declaration')
             reactions = ["✅", '❌']
@@ -258,10 +258,12 @@ class Profile:
                     await toto.send('{} said yes. <3'.format(user))
                     set['status'] = 'taken'
                     set['lover'] = toto.id
-                    setting['status'] = 'taken'
-                    setting['lover'] = user.id
-
                     await Settings().set_user_settings(str(user.id), set)
+
+
+                    set = await Settings().get_user_settings(str(toto.id))
+                    set['status'] = 'taken'
+                    set['lover'] = user.id
                     await Settings().set_user_settings(str(toto.id), setting)
 
                 elif reaction.emoji == '❌':
