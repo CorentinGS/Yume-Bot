@@ -227,7 +227,7 @@ class Profile:
             await ctx.send('👎', delete_after = 10)
 
         else:
-            toto = ctx.message.author
+            toto = m.author
             user = m.mentions[0]
 
             if not await Settings().get_user_settings(str(user.id)):
@@ -239,15 +239,14 @@ class Profile:
             reactions = ["✅", '❌']
 
             msg = await user.send(embed = em)
-            #msg = await user.send('toto')
             for reaction in reactions:
                 await msg.add_reaction(reaction)
 
-            def check(reaction, user):
-                return user == ctx.message.author and str(reaction.emoji)
+            def check(reaction, member):
+                return member == ctx.message.author and str(reaction.emoji)
 
             try:
-                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=86400)
+                reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=86400)
             except asyncio.TimeoutError:
                 await ctx.send('Time out')
 
