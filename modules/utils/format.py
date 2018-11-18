@@ -69,6 +69,7 @@ class Embeds():
         em.set_author(name='Profile', icon_url=user.avatar_url)
         if command == "edit":
             em.add_field(name= "❓ **Gender**", value= "Select a gender" )
+            em.add_field(name= "❤ **Love**", value= "Are u in love ?" )
             em.add_field(name= "❌", value= "Leave", inline=False)
 
         elif command == 'gender':
@@ -85,7 +86,7 @@ class Embeds():
 
         return em
 
-    async def format_get_profile_embed(self, ctx, user, vip, gender):
+    async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover):
         em = discord.Embed(timestamp = ctx.message.created_at)
         em.set_author(name= 'Profile', icon_url = user.avatar_url)
 
@@ -108,7 +109,14 @@ class Embeds():
         em.add_field(name = emote, value = gender)
         em.add_field(name = "Vip", value= vip)
 
+        if status == 'alone':
+            em.add_field(name = '💔', value = 'Alone...', inline = False)
+        else:
+            em.add_field(name ='❤', value = lover, inline = False)
+
         return em
+
+        # TODO: Simplifier le système d'emote
 
 
     async def format_love_embed(self, ctx, auth, command):
@@ -116,6 +124,13 @@ class Embeds():
         em.set_author(name= 'Love', icon_url = auth.avatar_url)
 
         if command == "love":
-            em.add_field(name= "👦", value= "Male")
+            em.add_field(name= "💘", value= "Love declaration")
+
+        elif command == 'declaration':
+            em.description = "{} is in love with you and wants to be in a relationship with you, do you accept? ".format(auth)
+            em.add_field(name ='✅', value = "Yes")
+            em.add_field(name = '❌', value = 'No')
+
+        return em
 
             # TODO: Un menu pour "LOVE"
