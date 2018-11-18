@@ -108,13 +108,13 @@ class Embeds():
             emote = '❓'
             gender = 'Unknown'
 
-        em.add_field(name = emote, value = gender)
-        em.add_field(name = "Vip", value= vip)
+        em.add_field(name = "**Gender**", value = f"{emote} {gender}", inline=False)
+        em.add_field(name = "**Vip**", value=vip, inline=False)
 
         if status == 'alone':
-            em.add_field(name = '💔', value = 'Alone...', inline = False)
+            em.add_field(name = '**Status**', value = '💔 Alone...', inline = False)
         else:
-            em.add_field(name ='❤', value = f'**{lover]**', inline = False)
+            em.add_field(name ='**Status**', value = f'❤ **{lover}**', inline = False)
 
         return em
 
