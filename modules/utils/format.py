@@ -132,5 +132,3 @@ class Embeds():
             em.description = "{} is in love with you and wants to be in a relationship with you, do you accept? ".format(auth)
 
         return em
-
-            # TODO: Un menu pour "LOVE"
