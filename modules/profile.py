@@ -168,7 +168,7 @@ class Profile:
             set = await Settings().get_user_settings(str(user.id))
             set['gender'] = 'unknown'
             set['status'] = 'alone'
-            set['lover'] = user.id
+            set['lover'] = int(user.id)
             await Settings().set_user_settings(str(user.id), set)
 
         else:
