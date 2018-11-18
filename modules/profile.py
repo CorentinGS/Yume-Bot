@@ -159,16 +159,6 @@ class Profile:
 
         await Settings().set_user_settings(auth, set)
 
-    @profile.command()
-    @checks.is_owner()
-    async def setup(self, ctx):
-        for guild in self.bot.guilds:
-            for user in guild.members:
-                set = await Settings().get_user_settings(str(user.id))
-                set['gender'] = 'unknown'
-                set['status'] = 'alone'
-                set['lover'] = ctx.message.author.id
-                await Settings().set_user_settings(str(user.id), set)
 
     @profile.command()
     async def default(self, ctx, user: discord.Member = None):
@@ -179,7 +169,7 @@ class Profile:
             set = await Settings().get_user_settings(str(user.id))
             set['gender'] = 'unknown'
             set['status'] = 'alone'
-            set['lover'] = 'nobody'
+            set['lover'] = user.id
             await Settings().set_user_settings(str(user.id), set)
 
         else:
@@ -228,13 +218,12 @@ class Profile:
             await ctx.send('👎', delete_after = 10)
 
         else:
-            toto = m.author
+            toto = ctx.message.author
             user = m.mentions[0]
 
             if not await Settings().get_user_settings(str(user.id)):
                 await ctx.invoke(self.default, user)
 
-            set = await Settings().get_user_settings(str(user.id))
 
             em = await Embeds().format_love_embed(ctx, toto, 'declaration')
             reactions = ["✅", '❌']
@@ -244,7 +233,7 @@ class Profile:
                 await msg.add_reaction(reaction)
 
             def check(reaction, member):
-                return member == ctx.message.author and str(reaction.emoji)
+                return member == user and str(reaction.emoji)
 
             try:
                 reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=86400)
@@ -254,26 +243,25 @@ class Profile:
 
             else:
                 if reaction.emoji == '✅':
+                    set = await Settings().get_user_settings(str(user.id))
+
+                    await user.send('OK')
                     await msg.delete()
                     await toto.send('{} said yes. <3'.format(user))
-                    set['status'] = 'taken'
-                    set['lover'] = str(toto.id)
+
+                    set['status'] = "taken"
+                    set['lover'] = toto.id
                     await Settings().set_user_settings(str(user.id), set)
 
 
                     set = await Settings().get_user_settings(str(toto.id))
                     set['status'] = 'taken'
-                    set['lover'] = str(user.id)
-                    await Settings().set_user_settings(str(toto.id), setting)
+                    set['lover'] = user.id
+                    await Settings().set_user_settings(str(toto.id), set)
 
                 elif reaction.emoji == '❌':
                     await msg.delete()
                     return await toto.send('{} said no... :cry: !'.format(user))
-
-
-
-
-
 
 def setup(bot):
     bot.add_cog(Profile(bot))
