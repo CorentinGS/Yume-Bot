@@ -159,7 +159,6 @@ class Profile:
 
         await Settings().set_user_settings(auth, set)
 
-
     @profile.command()
     async def default(self, ctx, user: discord.Member = None):
         if user is None:
@@ -193,7 +192,7 @@ class Profile:
                 reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
             except asyncio.TimeoutError:
-                await ctx.send('👎', delete_after = 10)
+                await ctx.send('👎', delete_after=10)
 
             else:
                 if reaction.emoji == '💘':
@@ -215,7 +214,7 @@ class Profile:
             m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
 
         except asyncio.TimeoutError:
-            await ctx.send('👎', delete_after = 10)
+            await ctx.send('👎', delete_after=10)
 
         else:
             toto = ctx.message.author
@@ -224,11 +223,10 @@ class Profile:
             if not await Settings().get_user_settings(str(user.id)):
                 await ctx.invoke(self.default, user)
 
-
             em = await Embeds().format_love_embed(ctx, toto, 'declaration')
             reactions = ["✅", '❌']
 
-            msg = await user.send(embed = em)
+            msg = await user.send(embed=em)
             for reaction in reactions:
                 await msg.add_reaction(reaction)
 
@@ -253,7 +251,6 @@ class Profile:
                     set['lover'] = toto.id
                     await Settings().set_user_settings(str(user.id), set)
 
-
                     set = await Settings().get_user_settings(str(toto.id))
                     set['status'] = 'taken'
                     set['lover'] = user.id
@@ -262,6 +259,7 @@ class Profile:
                 elif reaction.emoji == '❌':
                     await msg.delete()
                     return await toto.send('{} said no... :cry: !'.format(user))
+
 
 def setup(bot):
     bot.add_cog(Profile(bot))

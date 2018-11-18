@@ -30,8 +30,11 @@ class Event:
 
         if 'Blacklist' in glob:
             if member.id in glob['Blacklist']:
-                await guild.ban(member, reason="Blacklist")
-                await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
+                if server["bl"] is True:
+                    await guild.ban(member, reason="Blacklist")
+                    #await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
+                else:
+                    pass
             else:
                 pass
 
@@ -45,8 +48,6 @@ class Event:
                     pass
             else:
                 pass
-
-
 
 
     async def on_message(self, message):

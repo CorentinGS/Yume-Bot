@@ -31,9 +31,9 @@ class Set:
                     return True
                 else:
                     return False
-                    
+
             msg = await ctx.send(embed=em)
-            reactions = ['🇲', '🇬', '❌']
+            reactions = ['🇲', '🇬', '⛔', '❌']
             for reaction in reactions:
                 await msg.add_reaction(reaction)
 
@@ -66,6 +66,34 @@ class Set:
                         elif reaction.emoji == '💣':
                             arg = "off"
                             await ctx.invoke(self.muterole, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '❌':
+                            await msg.delete()
+                            return
+
+                if reaction.emoji == '⛔':
+                    await msg.clear_reactions()
+                    em = await Embeds().format_set_embed(ctx, guild, 'blacklistmenu')
+                    await msg.edit(embed = em)
+                    reactions = ['🚫', '🔓', '❌']
+                    for reaction in reactions:
+                        await msg.add_reaction(reaction)
+                    try:
+                        reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+                    except asyncio.TimeoutError:
+                        await ctx.send('👎')
+
+                    else:
+                        if reaction.emoji == '🚫':
+                            arg = True
+                            await ctx.invoke(self.bl, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '🔓':
+                            arg = False
+                            await ctx.invoke(self.bl, arg)
                             await msg.delete()
                             await ctx.invoke(self.setting)
                         elif reaction.emoji == '❌':
@@ -119,6 +147,19 @@ class Set:
             set['muteRole'] = False
         else:
             return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
+        await Settings().set_server_settings(server, set)
+
+        await ctx.send('OK !', delete_after=5)
+
+    @setting.command()
+    @commands.has_permissions(administrator = True)
+    async def bl(self, ctx, arg: bool = False):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+        if arg is True:
+            set['bl'] = True
+        else:
+            set['bl'] = False
         await Settings().set_server_settings(server, set)
 
         await ctx.send('OK !', delete_after=5)

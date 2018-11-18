@@ -33,3 +33,10 @@ class Settings():
 
     async def set_user_settings(self, id, settings):
         return await self.profiles.replace_one({"_id": id}, settings, True)
+
+    async def get_clan_settings(self, name):
+        doc = await self.profiles.find_one({"_id": id})
+        return doc or {}
+
+    async def set_clan_settings(self, name, settings):
+        return await self.profiles.replace_one({"_id": name}, settings, True)
