@@ -59,7 +59,7 @@ Please follow the coding style conventions detailed below:
 
 {guidelines}
 
-[1]: mailto:yume.network@protonmail.com
+[1]: mailto:contact@yumenetwork.fr
 [2]: https://github.com/yumenetwork/Yume-bot/issues/new
 [3]: https://github.com/yumenetwork/Yume-bot/compare
 [4]: https://github.com/yumenetwork/Yume-bot/pulls

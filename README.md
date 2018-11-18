@@ -39,7 +39,7 @@ This project uses [Semantic Versioning](http://semver.org/). For a list of avail
 
 # How to Get Help
 
--   [Email](mailto:yume.network@protonmail.com)
+-   [Email](mailto:contact@yumenetwork.fr)
 -   [Discord](https://invite.gg/yumenetwork​)
 
 # Contributing
@@ -50,7 +50,7 @@ We encourage public contributions! Please review [CONTRIBUTING.md](https://githu
 
 # Further Reading
 
--   [Gitbook](https://yumenetwork.gitbook.io/yumebot)
+-   [Site](https://www.yumenetwork.fr/)
 -   [Code](https://github.com/yumenetwork/Yume-Bot)
 -   [Support](https://invite.gg/yumenetwork)
 
@@ -67,8 +67,10 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 # Authors
 
 -   **[Yume](https://github.com/yumenetwork)** - _Initial work_
+-   **[LemonAdd](https://github.com/LemonAdd)** - _Web development_
+-   **[Zenrac](https://github.com/Zenrac)** - _Contributor_
 
-You can check the Dev team [here](https://yumenetwork.gitbook.io/yumebot/informations/credit)
+You can check the Dev team [here](https://www.yumenetwork.fr/credits.html)
 
 See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/contributors) who participated in this project.
 
