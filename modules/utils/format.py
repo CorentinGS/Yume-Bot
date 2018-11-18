@@ -128,8 +128,6 @@ class Embeds():
 
         elif command == 'declaration':
             em.description = "{} is in love with you and wants to be in a relationship with you, do you accept? ".format(auth)
-            em.add_field(name ='✅', value = "Yes")
-            em.add_field(name = '❌', value = 'No')
 
         return em
 

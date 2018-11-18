@@ -178,7 +178,7 @@ class Profile:
             set = await Settings().get_user_settings(str(user.id))
             set['gender'] = 'unknown'
             set['status'] = 'alone'
-            set['lover'] = ctx.message.author.id
+            set['lover'] = str('0')
             await Settings().set_user_settings(str(user.id), set)
 
         else:
@@ -247,22 +247,22 @@ class Profile:
 
             try:
                 reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=86400)
+
             except asyncio.TimeoutError:
-                await ctx.send('Time out')
+                await ctx.send('Too late')
 
             else:
-
                 if reaction.emoji == '✅':
                     await msg.delete()
                     await toto.send('{} said yes. <3'.format(user))
                     set['status'] = 'taken'
-                    set['lover'] = toto.id
+                    set['lover'] = str(toto.id)
                     await Settings().set_user_settings(str(user.id), set)
 
 
                     set = await Settings().get_user_settings(str(toto.id))
                     set['status'] = 'taken'
-                    set['lover'] = user.id
+                    set['lover'] = str(user.id)
                     await Settings().set_user_settings(str(toto.id), setting)
 
                 elif reaction.emoji == '❌':
