@@ -2,7 +2,7 @@
     "prefix" : "--",
     "owner_id" : "282233191916634113",
     "dev": ["282233191916634113"],
-    "version": "1.4.2",
+    "version": "1.4.4",
     "modules": ["about", "blacklist", "fun", "general", "help", "mentions", "moderation", "owner", "utilities", "tags", "event", "settings", "profile"]
 
 }
