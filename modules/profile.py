@@ -39,7 +39,10 @@ class Profile:
         gender = set['gender']
         status = set['status']
 
-        lover = await self.bot.get_user_info(int(set['lover']))
+        if status == "taken":
+            lover = await self.bot.get_user_info(int(set['lover']))
+        else:
+            pass
 
         em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover)
         await ctx.send(embed=em)
