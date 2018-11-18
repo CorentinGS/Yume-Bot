@@ -89,6 +89,8 @@ class Embeds():
     async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover):
         em = discord.Embed(timestamp = ctx.message.created_at)
         em.set_author(name= 'Profile', icon_url = user.avatar_url)
+        em.set_footer(text=" Use *--profile edit* to edit your profile")
+
 
         if gender == "male":
             emote = "👦"
@@ -112,7 +114,7 @@ class Embeds():
         if status == 'alone':
             em.add_field(name = '💔', value = 'Alone...', inline = False)
         else:
-            em.add_field(name ='❤', value = lover, inline = False)
+            em.add_field(name ='❤', value = f'**{lover]**', inline = False)
 
         return em
 
