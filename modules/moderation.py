@@ -70,7 +70,15 @@ class Moderation:
                 success = True
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'mute', duration)
-        await ctx.send(embed=em)
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(embed=em)
+            else:
+                pass
+        else:
+
+            await ctx.send(embed=em)
 
         await asyncio.sleep(time)
 
@@ -120,13 +128,22 @@ class Moderation:
         await Settings().set_server_settings(server, setting)
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'unmute')
-        await ctx.send(embed=em)
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(embed=em)
+            else:
+                pass
+        else:
+            await ctx.send(embed=em)
 
     @commands.command(aliases=['out'])
     @commands.guild_only()
     #  @commands.cooldown(2, 20, commands.BucketType.user)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, user: discord.Member, *, reason: str = None):
+        server = str(ctx.guild.id)
+        setting = await Settings().get_server_settings(server)
 
         await ctx.message.delete()
 
@@ -141,7 +158,16 @@ class Moderation:
             success = True
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'kick')
-        await ctx.send(embed=em)
+
+
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(embed=em)
+            else:
+                pass
+        else:
+            await ctx.send(embed=em)
 
     @commands.command(aliases=['preventban', 'preban', 'idban'])
     @commands.guild_only()
@@ -165,7 +191,19 @@ class Moderation:
         banned = await self.bot.get_user_info(id)
 
         em = await Embeds().format_mod_embed(ctx, banned, success, 'hackban')
-        await ctx.send(embed=em)
+
+        server = str(ctx.guild.id)
+        setting = await Settings().get_server_settings(server)
+
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(embed=em)
+            else:
+                pass
+        else:
+            await ctx.send(embed=em)
+
 
     @commands.command()
     @commands.guild_only()
@@ -188,7 +226,19 @@ class Moderation:
             success = True
 
         em = await Embeds().format_mod_embed(ctx, banned, success, 'unban')
-        await ctx.send(embed=em)
+
+        server = str(ctx.guild.id)
+        setting = await Settings().get_server_settings(server)
+
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(embed=em)
+            else:
+                pass
+        else:
+            await ctx.send(embed=em)
+
 
     @commands.command(aliases=['ciao'])
     @commands.guild_only()
@@ -216,7 +266,19 @@ class Moderation:
             success = True
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'ban')
-        await ctx.send(embed=em)
+
+        server = str(ctx.guild.id)
+        setting = await Settings().get_server_settings(server)
+
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(embed=em)
+            else:
+                pass
+        else:
+            await ctx.send(embed=em)
+
 
     @commands.command(aliases=['clean', 'clear'])
     @commands.guild_only()
@@ -277,6 +339,7 @@ class Moderation:
     #  @commands.cooldown(2, 10, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def massban(self, ctx, *members: int):
+        await ctx.message.delete()
 
         try:
             for member_id in members:
@@ -288,8 +351,18 @@ class Moderation:
         else:
             success = True
 
-        await ctx.send(f'{len(members)} users were banned')
-        await ctx.message.delete()
+        server = str(ctx.guild.id)
+        setting = await Settings().get_server_settings(server)
+
+        if setting['logging'] is True:
+            if 'LogChannel' in setting:
+                channel = self.bot.get_channel(int(setting['LogChannel']))
+                await channel.send(f'{len(members)} users were banned')
+            else:
+                pass
+        else:
+            await ctx.send(f'{len(members)} users were banned')
+
 
 
 def setup(bot):

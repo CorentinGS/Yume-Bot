@@ -46,13 +46,14 @@ class Embeds():
             pass
         return em
 
-    async def format_set_embed(self, ctx, guild, command):
+    async def format_set_embed(self, ctx, guild, command, vip):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Settings', icon_url=guild.icon_url)
         if command == 'setting':
-            em.add_field(name="🇲 **Mute**", value="Settings for Mute")
-            em.add_field(name="🇬 **Greet**", value="Settings for Greet")
+            em.add_field(name="🇲 **Mute**", value="Mute Menu")
+            em.add_field(name="🇬 **Greet**", value="Greet Menu")
             em.add_field(name= "⛔ **Blacklist**", value='Blacklist Menu')
+            em.add_field(name = "🖊 **Logging**", value= "Logging Menu")
             em.add_field(name="❌", value="Leave")
 
         elif command == 'mutemenu':
@@ -70,6 +71,17 @@ class Embeds():
             em.add_field(name="🚫 **Activate**", value="Activate the Global blacklist", inline= False)
             em.add_field(name="🔓 **Desactivate**", value="Desactivate the Global blacklist")
             em.add_field(name="❌", value="Leave")
+
+        elif command == 'loggingmenu':
+            em.add_field(name="📋 **Activate**", value="Activate Logging", inline= False)
+            em.add_field(name="🆓 **Desactivate**", value="Desactivate Logging", inline = False)
+            em.add_field(name="❔ **Channel**", value="Set the logging channel")
+            '''
+            if vip is True:
+                em.add_field(name="🎬 **Vip Logging**", value = 'Full logging', inline = False)
+            '''
+            em.add_field(name="❌", value="Leave")
+
 
         return em
 
@@ -97,7 +109,6 @@ class Embeds():
     async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
-        em.set_footer(text=" Use *--profile edit* to edit your profile")
 
         if gender == "male":
             emote = "👦"

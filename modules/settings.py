@@ -20,8 +20,11 @@ class Set:
     @commands.has_permissions(administrator=True)
     async def setting(self, ctx):
         if ctx.invoked_subcommand is None:
+            vip = False
+
             guild = ctx.message.guild
-            em = await Embeds().format_set_embed(ctx, guild, 'setting')
+            em = await Embeds().format_set_embed(ctx, guild, 'setting', vip)
+            glob = await Settings().get_glob_settings()
 
             def check(reaction, user):
                 return user == ctx.message.author and str(reaction.emoji)
@@ -33,7 +36,7 @@ class Set:
                     return False
 
             msg = await ctx.send(embed=em)
-            reactions = ['🇲', '🇬', '⛔', '❌']
+            reactions = ['🇲', '🇬', '⛔', '🖊', '❌']
             for reaction in reactions:
                 await msg.add_reaction(reaction)
 
@@ -46,7 +49,7 @@ class Set:
             else:
                 if reaction.emoji == '🇲':
                     await msg.clear_reactions()
-                    em = await Embeds().format_set_embed(ctx, guild, 'mutemenu')
+                    em = await Embeds().format_set_embed(ctx, guild, 'mutemenu', vip)
                     await msg.edit(embed=em)
                     reactions = ['💂', '💣', '❌']
                     for reaction in reactions:
@@ -72,9 +75,50 @@ class Set:
                             await msg.delete()
                             return
 
-                if reaction.emoji == '⛔':
+                elif reaction.emoji == '🖊':
+                    if ctx.message.author in glob["VIP"]:
+                        vip = True
+
                     await msg.clear_reactions()
-                    em = await Embeds().format_set_embed(ctx, guild, 'blacklistmenu')
+                    em = await Embeds().format_set_embed(ctx, guild, 'loggingmenu', vip)
+                    await msg.edit(embed=em)
+                    reactions = ['📋', '🆓', '❔', '❌']
+                    '''
+                    if vip is True:
+                        reactions.extend(['🎬'])
+                    '''
+                    for reaction in reactions:
+                        await msg.add_reaction(reaction)
+                    try:
+                        reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
+
+                    except asyncio.TimeoutError:
+                        await ctx.send('👎')
+
+                    else:
+                        if reaction.emoji == '📋':
+                            arg = "on"
+                            await ctx.invoke(self.logging, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '🆓':
+                            arg = 'off'
+                            await ctx.invoke(self.logging, arg)
+                            await msg.delete()
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '❔':
+                            await msg.delete()
+                            await ctx.send('Please name a Channel !')
+                            m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
+                            text_channel = m.channel_mentions[0]
+                            await ctx.invoke(self.loggingchannel, text_channel)
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '❌':
+                            await msg.delete()
+                            return
+                elif reaction.emoji == '⛔':
+                    await msg.clear_reactions()
+                    em = await Embeds().format_set_embed(ctx, guild, 'blacklistmenu', vip)
                     await msg.edit(embed = em)
                     reactions = ['🚫', '🔓', '❌']
                     for reaction in reactions:
@@ -100,9 +144,9 @@ class Set:
                             await msg.delete()
                             return
 
-                if reaction.emoji == '🇬':
+                elif reaction.emoji == '🇬':
                     await msg.clear_reactions()
-                    em = await Embeds().format_set_embed(ctx, guild, 'greetmenu')
+                    em = await Embeds().format_set_embed(ctx, guild, 'greetmenu', vip)
                     await msg.edit(embed=em)
                     reactions = ['❔', '📜', '❌']
                     for reaction in reactions:
@@ -118,8 +162,7 @@ class Set:
                             await msg.delete()
                             await ctx.send('Please name a Channel !')
                             m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
-                            text_channel = discord.utils.get(
-                                ctx.guild.text_channels, name=m.content)
+                            text_channel = m.channel_mentions[0]
                             await ctx.invoke(self.greetchannel, text_channel)
                             await ctx.invoke(self.setting)
                         elif reaction.emoji == '📜':
@@ -147,6 +190,39 @@ class Set:
             set['muteRole'] = False
         else:
             return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
+        await Settings().set_server_settings(server, set)
+
+        await ctx.send('OK !', delete_after=5)
+
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def logging(self, ctx, arg: str = None):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+        if arg.lower().startswith('on'):
+            set['logging'] = True
+        elif arg.lower().startswith('off'):
+            set['logging'] = False
+        else:
+            return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
+        await Settings().set_server_settings(server, set)
+
+        await ctx.send('OK !', delete_after=5)
+
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def loggingchannel(self, ctx, channel: discord.TextChannel):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+
+        if not channel:
+            return await ctx.send('Invalid Channel')
+
+        else:
+            set['LogChannel'] = int(channel.id)
+
         await Settings().set_server_settings(server, set)
 
         await ctx.send('OK !', delete_after=5)
