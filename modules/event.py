@@ -68,9 +68,13 @@ class Event:
 
                     else:
                         pass
-        else:
-            return
 
+        elif 'discord.gg/' in message.content:
+            await message.delete()
+
+        elif len(message.mentions) > 5:
+            await message.delete()
+            
     async def on_guild_join(self, guild):
         server = str(guild.id)
         set = await Settings().get_server_settings(server)
