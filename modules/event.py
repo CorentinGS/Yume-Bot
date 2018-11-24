@@ -4,7 +4,6 @@ from discord.ext import commands
 from modules.utils.db import Settings
 
 
-
 class Event:
 
     conf = {}
@@ -12,7 +11,6 @@ class Event:
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-
 
     async def on_member_join(self, member):
         guild = member.guild
@@ -32,7 +30,7 @@ class Event:
             if member.id in glob['Blacklist']:
                 if server["bl"] is True:
                     await guild.ban(member, reason="Blacklist")
-                    #await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
+                    # await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
                 else:
                     pass
             else:
@@ -48,7 +46,6 @@ class Event:
                     pass
             else:
                 pass
-
 
     async def on_message(self, message):
         guild = message.guild
@@ -87,7 +84,6 @@ class Event:
         if 'Greet' not in set:
             set['Greet'] = False
         await Settings().set_server_settings(server, set)
-
 
 
 def setup(bot):
