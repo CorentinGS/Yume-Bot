@@ -24,5 +24,5 @@ poney = [
 
 tip = [
     "Check our website : https://www.yumenetwork.fr", "Create your own profile using : --profile", "Share the bot to your friends",
-    "Don't forget to vote : https://discordbots.org/bot/456504213262827524"
+    "Don't forget to vote : https://discordbots.org/bot/456504213262827524", "Check the source here : https://anon.to/VNzGBX"
 ]
