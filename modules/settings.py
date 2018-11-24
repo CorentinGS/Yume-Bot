@@ -23,6 +23,7 @@ class Set:
             vip = False
 
             guild = ctx.message.guild
+            set = await Settings().get_server_settings(str(guild.id))
             em = await Embeds().format_set_embed(ctx, guild, 'setting', vip)
             glob = await Settings().get_glob_settings()
 
@@ -36,7 +37,7 @@ class Set:
                     return False
 
             msg = await ctx.send(embed=em)
-            reactions = ['🇲', '🇬', '⛔', '🖊', '❌']
+            reactions = ['🇲', '🇬', '⛔', '🖊', '🔨', '❌']
             for reaction in reactions:
                 await msg.add_reaction(reaction)
 
@@ -58,7 +59,7 @@ class Set:
                         reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
                     except asyncio.TimeoutError:
-                        await ctx.send('👎')
+                        await ctx.send('👎', delete_after=10)
 
                     else:
                         if reaction.emoji == '💂':
@@ -74,6 +75,45 @@ class Set:
                         elif reaction.emoji == '❌':
                             await msg.delete()
                             return
+
+                elif reaction.emoji == '🔨':
+                    await msg.clear_reactions()
+                    if ctx.message.author in glob["VIP"]:
+                        vip = True
+                    em = await Embeds().format_set_embed(ctx, guild, 'automenu', vip)
+                    await msg.edit(embed=em)
+                    reactions = ['✅', '🚫', '❌']
+                    if vip is True:
+                        reactions.extend(['⛔'])
+                    for reaction in reactions:
+                        await msg.add_reaction(reaction)
+
+                    try:
+                        reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+                    except asyncio.TimeoutError:
+                        await ctx.send('👎', delete_after=10)
+
+                    else:
+                        if reaction.emoji == '✅':
+                            set["automod"] = True
+                            await msg.delete()
+                            await Settings().set_server_settings(str(guild.id), set)
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '🚫':
+                            set['automod'] = False
+                            await msg.delete()
+                            await Settings().set_server_settings(str(guild.id), set)
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '⛔':
+                            await msg.delete()
+                            await ctx.send("Not ready ! Ccoming Soon")
+                            await ctx.invoke(self.setting)
+                        elif reaction.emoji == '❌':
+                            await msg.delete()
+                            return
+
+
 
                 elif reaction.emoji == '🖊':
                     if ctx.message.author in glob["VIP"]:

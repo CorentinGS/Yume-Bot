@@ -54,6 +54,7 @@ class Embeds():
             em.add_field(name="🇬 **Greet**", value="Greet Menu")
             em.add_field(name= "⛔ **Blacklist**", value='Blacklist Menu')
             em.add_field(name = "🖊 **Logging**", value= "Logging Menu")
+            em.add_field(name= "🔨 **Automoderation**", value= "AutoMod Menu")
             em.add_field(name="❌", value="Leave")
 
         elif command == 'mutemenu':
@@ -82,6 +83,14 @@ class Embeds():
             '''
             em.add_field(name="❌", value="Leave")
 
+        elif command == 'automenu':
+            em.add_field(name = '✅ **Activate**', value = 'Activate AutoModeration', inline=False)
+            em.add_field(name = '🚫 **Desactivate**', value = 'Desactivate AutoModeration', inline=False)
+
+            if vip is True:
+                em.add_field(name='⛔ **AntiRaid**', value = 'Toggle Antiraid', inline=False)
+
+            em.add_field(name="❌", value="Leave")
 
         return em
 

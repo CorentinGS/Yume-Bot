@@ -51,6 +51,8 @@ class Event:
 
 
     async def on_message(self, message):
+        guild = message.guild
+        server = await Settings().get_server_settings(str(guild.id))
         author = message.author
         glob = await Settings().get_glob_settings()
         if 'AFK' in glob:
@@ -68,13 +70,13 @@ class Event:
 
                     else:
                         pass
+        if server["automod"] is True:
+            if 'discord.gg/' in message.content:
+                await message.delete()
 
-        elif 'discord.gg/' in message.content:
-            await message.delete()
+            elif len(message.mentions) > 5:
+                await message.delete()
 
-        elif len(message.mentions) > 5:
-            await message.delete()
-            
     async def on_guild_join(self, guild):
         server = str(guild.id)
         set = await Settings().get_server_settings(server)
