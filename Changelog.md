@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.4.6](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.5) - 2018-11-24
+## [1.4.7](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.7) - 2018-11-2
+
+### Added
+
+- Tips on Embed
+- Jump to a message command (general.py)
+
+##### Notes
+  This version is still in beta...
+
+
+* * *
+
+## [1.4.6](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.6) - 2018-11-24
 
 ### Added
 
