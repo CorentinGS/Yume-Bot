@@ -52,9 +52,9 @@ class Embeds():
         if command == 'setting':
             em.add_field(name="🇲 **Mute**", value="Mute Menu")
             em.add_field(name="🇬 **Greet**", value="Greet Menu")
-            em.add_field(name= "⛔ **Blacklist**", value='Blacklist Menu')
-            em.add_field(name = "🖊 **Logging**", value= "Logging Menu")
-            em.add_field(name= "🔨 **Automoderation**", value= "AutoMod Menu")
+            em.add_field(name="⛔ **Blacklist**", value='Blacklist Menu')
+            em.add_field(name="🖊 **Logging**", value="Logging Menu")
+            em.add_field(name="🔨 **Automoderation**", value="AutoMod Menu")
             em.add_field(name="❌", value="Leave")
 
         elif command == 'mutemenu':
@@ -69,13 +69,17 @@ class Embeds():
             em.add_field(name="❌", value="Leave")
 
         elif command == 'blacklistmenu':
-            em.add_field(name="🚫 **Activate**", value="Activate the Global blacklist", inline= False)
-            em.add_field(name="🔓 **Desactivate**", value="Desactivate the Global blacklist")
+            em.add_field(name="🚫 **Activate**",
+                         value="Activate the Global blacklist", inline=False)
+            em.add_field(name="🔓 **Desactivate**",
+                         value="Desactivate the Global blacklist")
             em.add_field(name="❌", value="Leave")
 
         elif command == 'loggingmenu':
-            em.add_field(name="📋 **Activate**", value="Activate Logging", inline= False)
-            em.add_field(name="🆓 **Desactivate**", value="Desactivate Logging", inline = False)
+            em.add_field(name="📋 **Activate**",
+                         value="Activate Logging", inline=False)
+            em.add_field(name="🆓 **Desactivate**",
+                         value="Desactivate Logging", inline=False)
             em.add_field(name="❔ **Channel**", value="Set the logging channel")
             '''
             if vip is True:
@@ -84,11 +88,14 @@ class Embeds():
             em.add_field(name="❌", value="Leave")
 
         elif command == 'automenu':
-            em.add_field(name = '✅ **Activate**', value = 'Activate AutoModeration', inline=False)
-            em.add_field(name = '🚫 **Desactivate**', value = 'Desactivate AutoModeration', inline=False)
+            em.add_field(name='✅ **Activate**',
+                         value='Activate AutoModeration', inline=False)
+            em.add_field(name='🚫 **Desactivate**',
+                         value='Desactivate AutoModeration', inline=False)
 
             if vip is True:
-                em.add_field(name='⛔ **AntiRaid**', value = 'Toggle Antiraid', inline=False)
+                em.add_field(name='⛔ **AntiRaid**',
+                             value='Toggle Antiraid', inline=False)
 
             em.add_field(name="❌", value="Leave")
 
@@ -157,6 +164,7 @@ class Embeds():
             em.add_field(name="💘", value="Love declaration")
 
         elif command == 'declaration':
-            em.description = "{} is in love with you and wants to be in a relationship with you, do you accept? ".format(auth)
+            em.description = "{} is in love with you and wants to be in a relationship with you, do you accept? ".format(
+                auth)
 
         return em
