@@ -113,8 +113,6 @@ class Set:
                             await msg.delete()
                             return
 
-
-
                 elif reaction.emoji == '🖊':
                     if ctx.message.author in glob["VIP"]:
                         vip = True
@@ -159,7 +157,7 @@ class Set:
                 elif reaction.emoji == '⛔':
                     await msg.clear_reactions()
                     em = await Embeds().format_set_embed(ctx, guild, 'blacklistmenu', vip)
-                    await msg.edit(embed = em)
+                    await msg.edit(embed=em)
                     reactions = ['🚫', '🔓', '❌']
                     for reaction in reactions:
                         await msg.add_reaction(reaction)
@@ -268,7 +266,7 @@ class Set:
         await ctx.send('OK !', delete_after=5)
 
     @setting.command()
-    @commands.has_permissions(administrator = True)
+    @commands.has_permissions(administrator=True)
     async def bl(self, ctx, arg: bool = False):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
