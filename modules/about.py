@@ -22,6 +22,8 @@ class About:
     async def about(self, ctx):
 
         await ctx.message.delete()
+        tip = random.choice(lists.tip)
+
 
         with open('./config/config.json', 'r') as cjson:
             config = json.load(cjson)
@@ -51,7 +53,7 @@ class About:
             title="About",
             colour=discord.Colour.dark_red()
         )
-        em.set_footer(text=f'Tip: {tip}')
+        embed.set_footer(text=f'Tip: {tip}')
         embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
         embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
             owner.name, owner.discriminator, owner.id), inline=True)

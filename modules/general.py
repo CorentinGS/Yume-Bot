@@ -17,6 +17,7 @@ with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
 OWNER = config["owner_id"]
+tip = random.choice(lists.tip)
 
 
 class General:
@@ -90,7 +91,7 @@ class General:
             title="Meteo",
             color=discord.Colour.dark_red()
         )
-        em.set_footer(text=f'Tip: {tip}')
+        embed.set_footer(text=f'Tip: {tip}')
 
         embed.add_field(name='City', value=data['city'], inline=True)
         embed.add_field(name='Country', value=data['country'], inline=True)
@@ -126,7 +127,7 @@ class General:
             title="Meteo",
             color=discord.Colour.dark_red()
         )
-        em.set_footer(text=f'Tip: {tip}')
+        embed.set_footer(text=f'Tip: {tip}')
 
         embed.add_field(name='City', value=data['city'], inline=True)
         embed.add_field(name='Country', value=data['country'], inline=True)

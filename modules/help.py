@@ -17,6 +17,7 @@ class Help:
     @commands.command()
     #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def help(self, ctx):
+        tip = random.choice(lists.tip)
 
         await ctx.message.delete()
 

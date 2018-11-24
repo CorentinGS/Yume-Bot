@@ -4,6 +4,9 @@ import random
 
 from modules.utils import lists
 
+tip = random.choice(lists.tip)
+
+
 class Utilities:
 
     conf = {}
@@ -31,7 +34,7 @@ class Utilities:
             description="I found this...",
             color=discord.Colour.dark_gold()
         )
-        em.set_footer(text=f'Tip: {tip}')
+        embed.set_footer(text=f'Tip: {tip}')
 
 
         embed.add_field(name="Name", value=server.name, inline=True)
