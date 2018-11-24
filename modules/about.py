@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
-from modules.utils import checks
+
 import json
 import os
 import psutil
+import random
 
+from modules.utils import checks, lists
 
 class About:
 
@@ -49,6 +51,7 @@ class About:
             title="About",
             colour=discord.Colour.dark_red()
         )
+        em.set_footer(text=f'Tip: {tip}')
         embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
         embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
             owner.name, owner.discriminator, owner.id), inline=True)

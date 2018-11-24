@@ -67,6 +67,7 @@ class Event:
 
                     else:
                         pass
+        #if not message.author == message.guild.owner:
         if server["automod"] is True:
             if 'discord.gg/' in message.content:
                 await message.delete()
@@ -83,6 +84,8 @@ class Event:
             set['mute'] = []
         if 'Greet' not in set:
             set['Greet'] = False
+        if 'automod' not in set:
+            set['automod'] = False
         await Settings().set_server_settings(server, set)
 
 

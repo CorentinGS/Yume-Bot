@@ -1,6 +1,9 @@
 import discord
 from discord.ext import commands
 
+import random
+
+from modules.utils import lists
 
 class Help:
 
@@ -21,6 +24,7 @@ class Help:
             set_author='Help',
             color=discord.Colour.magenta()
         )
+        em.set_footer(text=f'Tip: {tip}')
 
         embed.add_field(
             name="**Commands**", value="[Click here for a full commands list](https://www.yumenetwork.fr)\n", inline=False)

@@ -1,12 +1,16 @@
 import discord
 from discord.ext import commands
-from modules.utils import checks
+
 import json
 import asyncio
+import random
+
 from .utils.weather import url_meteo, data_fetch, data_return
 
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
+from modules.utils import checks, lists
+
 
 
 with open('./config/config.json', 'r') as cjson:
@@ -86,6 +90,7 @@ class General:
             title="Meteo",
             color=discord.Colour.dark_red()
         )
+        em.set_footer(text=f'Tip: {tip}')
 
         embed.add_field(name='City', value=data['city'], inline=True)
         embed.add_field(name='Country', value=data['country'], inline=True)
@@ -121,6 +126,7 @@ class General:
             title="Meteo",
             color=discord.Colour.dark_red()
         )
+        em.set_footer(text=f'Tip: {tip}')
 
         embed.add_field(name='City', value=data['city'], inline=True)
         embed.add_field(name='Country', value=data['country'], inline=True)

@@ -21,3 +21,7 @@ poney = [
     'Little Poney !', "Poney Bleu", "Poney Rouge", "Poney Blanc", "Poney Violet", "PONEYYYYYYYYYYYYY",
     'PETIT PONEY', 'PONEY LICORNE'
 ]
+
+tip = [
+    "Check our website : https://www.yumenetwork.fr", "Create your own profile using : --profile"
+]
