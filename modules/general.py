@@ -156,6 +156,15 @@ class General:
         await Settings().set_glob_settings(setting)
         await ctx.send(f"{user.name}, you're now AFK !", delete_after=10)
 
+    @commands.command()
+    async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
+        if channel is None:
+            channel = ctx.message.channel
+        messages = await channel.history(limit = 200).flatten()
+        for msg in messages:
+            if msg.id == id:
+                await ctx.send('Url :{}'.format(msg.jump_url))
+
 
 def setup(bot):
     bot.add_cog(General(bot))
