@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+
 from modules.utils.db import Settings
 
 
@@ -67,7 +68,7 @@ class Event:
 
                     else:
                         pass
-        #if not message.author == message.guild.owner:
+        # if not message.author == message.guild.owner:
         if server["automod"] is True:
             if 'discord.gg/' in message.content:
                 await message.delete()
