@@ -100,6 +100,7 @@ class Embeds():
                          value='Activate AutoModeration', inline=False)
             em.add_field(name='🚫 **Desactivate**',
                          value='Desactivate AutoModeration', inline=False)
+            em.add_field(name = '!!!!!', value= 'This module is still experimental, Please report all issues using --feedback')
 
             if vip is True:
                 em.add_field(name='⛔ **AntiRaid**',
