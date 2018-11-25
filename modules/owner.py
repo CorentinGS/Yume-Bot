@@ -1,6 +1,7 @@
 import sys
 import random
 import discord
+import secrets
 
 from discord.ext import commands
 from modules.utils import checks
@@ -81,6 +82,16 @@ class Owner:
     @checks.is_owner()
     async def exit(self, ctx):
         sys.exit(1)
+
+    @commands.command()
+    @checks.is_owner()
+    async def key(self, ctx, name):
+        key = secrets.token_urlsafe(20)
+        set = await Settings().get_key_settings(str(name))
+        set['key'] = key
+        set = await Settings().set_key_settings(str(name), set)
+        await ctx.author.send('The key is : **{}**'.format(str(key)))
+
 
     @commands.command()
     @checks.is_owner()
