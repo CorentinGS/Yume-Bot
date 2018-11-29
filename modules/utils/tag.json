@@ -3,5 +3,6 @@
   "support": "**Support** \n Discord: <https://invite.gg/yumenetwork> \n Documentation: <https://www.yumenetwork.fr> \n",
   "yume": " A little and cute Penguin",
   "vote": "https://discordbots.org/bot/456504213262827524/vote",
-  "site": "https://www.yumenetwork.fr"
+  "site": "https://www.yumenetwork.fr",
+  "profile:" : "You can setup your profile using --profile"
 }

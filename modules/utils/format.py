@@ -147,10 +147,11 @@ class Embeds():
         return em
 
 
-    async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover):
+    async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover, desc):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
+        em.description= '{}'.format(desc)
 
         if gender == "male":
             emote = "👦"

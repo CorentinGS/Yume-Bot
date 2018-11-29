@@ -20,16 +20,25 @@ class Profile:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get, ctx.message.author)
 
+
     @profile.command()
     async def get(self, ctx, user: discord.Member = None):
         if user is None:
             user = ctx.message.author
 
-        if not await Settings().get_user_settings(str(user.id)):
-            await ctx.invoke(self.default, user)
-
         set = await Settings().get_user_settings(str(user.id))
         glob = await Settings().get_glob_settings()
+
+        if not set['gender']:
+            set['gender'] = 'unknown'
+        if not set['status']:
+            set['status'] = 'alone'
+        if not set['lover']:
+            set['lover'] = user.id
+        if not set['desc']:
+            set['desc'] = "A discord user"
+
+        await Settings().set_user_settings(str(user.id), set)
 
         if user.id in glob["VIP"]:
             vip = True
@@ -39,11 +48,9 @@ class Profile:
         gender = set['gender']
         status = set['status']
         desc = set['desc']
-
         lover = await self.bot.get_user_info(int(set['lover']))
 
-
-        em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover)
+        em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover, desc)
 
         reactions = ["✏", '❌']
 
@@ -75,9 +82,6 @@ class Profile:
     @profile.command()
     async def edit(self, ctx):
         auth = ctx.message.author
-
-        if not await Settings().get_user_settings(str(auth.id)):
-            await ctx.invoke(self.default, auth)
 
         set = await Settings().get_user_settings(str(auth.id))
         glob = await Settings().get_glob_settings()
@@ -191,22 +195,6 @@ class Profile:
         await Settings().set_user_settings(auth, set)
 
     @profile.command()
-    async def default(self, ctx, user: discord.Member = None):
-        if user is None:
-            user = ctx.message.author
-
-        if not await Settings().get_user_settings(str(user.id)):
-            set = await Settings().get_user_settings(str(user.id))
-            set['gender'] = 'unknown'
-            set['status'] = 'alone'
-            set['lover'] = user.id
-            set['desc'] = "A discord user"
-            await Settings().set_user_settings(str(user.id), set)
-
-        else:
-            return
-
-    @profile.command()
     async def desc(self, ctx):
         user = ctx.message.author
         set = await Settings().get_user_settings(str(user.id))
@@ -249,8 +237,6 @@ class Profile:
         elif reaction.emoji == '❌':
             await msg.delete()
             return
-
-
 
 
     @commands.group()
