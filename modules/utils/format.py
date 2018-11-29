@@ -118,6 +118,7 @@ class Embeds():
         if command == "edit":
             em.add_field(name="❓ **Gender**", value="Select a gender")
             em.add_field(name="❤ **Love**", value="Are u in love ?")
+            em.add_field(name= "🖊 **Description**", value='Who are you ?')
             em.add_field(name="❌", value="Leave", inline=False)
 
         elif command == 'gender':
@@ -132,6 +133,20 @@ class Embeds():
             em.add_field(name="❌", value="Leave", inline=False)
 
         return em
+
+    async def format_desc_profile_embed(self, ctx, user, content):
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        em.set_author(name='Profile', icon_url=user.avatar_url)
+        em.set_footer(text=f'Tip: {tip}')
+
+
+        em.add_field(name='🖊', value='Edit')
+        em.add_field(name="❌", value="Leave", inline=False)
+
+        em.description= '{}'.format(str(content))
+
+        return em
+
 
     async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover):
         em = discord.Embed(timestamp=ctx.message.created_at)
