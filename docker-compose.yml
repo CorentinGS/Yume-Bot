@@ -15,17 +15,15 @@ services:
     links:
         - mongo
     volumes:
-        - bot-data:/usr/src/app
+        - .:/usr/src/app
   web:
     build: ./api
     restart: always
     ports:
       - 4437:4437
     volumes:
-      - web-data:/usr/src/web
+      - .:/usr/src/web
     links:
       - mongo
 volumes:
   mongo-data:
-  bot-data:
-  web-data:
