@@ -38,6 +38,7 @@ class Profile:
 
         gender = set['gender']
         status = set['status']
+        desc = set['desc']
 
         lover = await self.bot.get_user_info(int(set['lover']))
 
@@ -73,7 +74,6 @@ class Profile:
 
     @profile.command()
     async def edit(self, ctx):
-
         auth = ctx.message.author
 
         if not await Settings().get_user_settings(str(auth.id)):
@@ -93,7 +93,7 @@ class Profile:
             return user == ctx.message.author and str(reaction.emoji)
 
         msg = await ctx.send(embed=em)
-        reactions = ["❓", '❤', '❌']
+        reactions = ["❓", '❤', '🖊', '❌']
         for reaction in reactions:
             await msg.add_reaction(reaction)
 
@@ -158,6 +158,10 @@ class Profile:
                 await msg.delete()
                 await ctx.invoke(self.love)
 
+            elif reaction.emoji == '🖊':
+                await msg.delete()
+                await ctx.invoke(self.desc)
+
             elif reaction.emoji == '❌':
                 await msg.delete()
                 return
@@ -196,10 +200,58 @@ class Profile:
             set['gender'] = 'unknown'
             set['status'] = 'alone'
             set['lover'] = user.id
+            set['desc'] = "A discord user"
             await Settings().set_user_settings(str(user.id), set)
 
         else:
             return
+
+    @profile.command()
+    async def desc(self, ctx):
+        user = ctx.message.author
+        set = await Settings().get_user_settings(str(user.id))
+
+
+        def msgcheck(m):
+            if m.author == ctx.message.author:
+                return True
+            else:
+                return False
+
+        if not set['desc'] or set['desc'] is None:
+            content = None
+        else:
+            content = set['content']
+
+        reactions = ['🖊', '❌']
+
+        em = await Embeds().format_desc_profile_embed(ctx, user, content)
+
+        msg = await ctx.send(embed=em)
+
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+        if reaction.emoji == '🖊':
+            await msg.delete()
+            await ctx.send('Please ! Write your description', delete_after=380)
+
+            try:
+
+                m = await self.bot.wait_for('message', timeout=380.0, check=msgcheck)
+
+            except asyncio.TimeoutError:
+                await ctx.send('👎', delete_after=10)
+
+            else:
+                set['desc'] = str(m.content)
+
+        elif reaction.emoji == '❌':
+            await msg.delete()
+            return
+
+
+
 
     @commands.group()
     async def love(self, ctx):
