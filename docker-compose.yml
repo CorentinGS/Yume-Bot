@@ -20,7 +20,7 @@ services:
     build: ./api
     restart: always
     ports:
-      - 5000:5000
+      - 4437:4437
     volumes:
       - web-data:/usr/src/web
     links:
