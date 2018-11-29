@@ -111,7 +111,6 @@ class Embeds():
         return em
 
     async def format_profile_embed(self, ctx, user, command, vip):
-
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
