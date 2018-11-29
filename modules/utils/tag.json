@@ -4,5 +4,7 @@
   "yume": " A little and cute Penguin",
   "vote": "https://discordbots.org/bot/456504213262827524/vote",
   "site": "https://www.yumenetwork.fr",
-  "profile:" : "You can setup your profile using --profile"
+  "profile" : "You can setup your profile using --profile",
+  "linux": "Remember to use the best OS --> GNU/Linux",
+  "setting": "You can setup your own settings using --setting"
 }
