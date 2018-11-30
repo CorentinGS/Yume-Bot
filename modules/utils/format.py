@@ -120,17 +120,14 @@ class Embeds():
         em.set_author(name='Settings')
         em.set_footer(text=f'Tip: {tip}')
 
-        em.add_field(name = "Mute Role", value = mute)
-        em.add_field(name = "Greet", value = greet)
-        em.add_field(name = "Greet Channel", value = greetchannel)
-        em.add_field(name = "Blacklist", value = blacklist)
-        em.add_field(name = "Logging", value = logging)
-        em.add_field(name = "Log Channel", value = logchannel)
-
+        em.add_field(name="Mute Role", value=mute)
+        em.add_field(name="Greet", value=greet)
+        em.add_field(name="Greet Channel", value=greetchannel)
+        em.add_field(name="Blacklist", value=blacklist)
+        em.add_field(name="Logging", value=logging)
+        em.add_field(name="Log Channel", value=logchannel)
 
         return em
-
-
 
     async def format_profile_embed(self, ctx, user, command, vip):
         tip = random.choice(lists.tip)

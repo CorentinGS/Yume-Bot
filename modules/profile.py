@@ -28,7 +28,6 @@ class Profile:
         set = await Settings().get_user_settings(str(user.id))
         glob = await Settings().get_glob_settings()
 
-
         if 'gender' not in set:
             set['gender'] = 'unknown'
         if 'status' not in set:
