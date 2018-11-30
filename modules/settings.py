@@ -35,8 +35,8 @@ class Set:
 
         if not 'mute' in set:
             set['muteRole'] = False
-        if not 'greet' in set:
-            set['greet'] = False
+        if not 'Greet' in set:
+            set['Greet'] = False
         if not 'bl' in set:
             set['bl'] = False
         if not 'logging' in set:
@@ -49,7 +49,7 @@ class Set:
         await Settings().set_server_settings(str(guild.id), set)
 
         mute = set['muteRole']
-        greet = set['greet']
+        greet = set['Greet']
         blacklist = set['bl']
         logging = set['logging']
         greetchannel = set['GreetChannel']
