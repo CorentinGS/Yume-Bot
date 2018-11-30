@@ -34,12 +34,12 @@ class User(Resource):
             set = Settings().get_user_settings(str(id))
             return set, 200
 
-
     def post(self, id):
         parser = reqparse.RequestParser()
         parser.add_argument('gender')
         parser.add_argument('status')
         parser.add_argument('lover')
+        parser.add_argument('desc')
         args = parser.parse_args()
 
         if Settings().get_user_settings(str(id)):
@@ -49,6 +49,7 @@ class User(Resource):
             set["gender"] = args['gender']
             set['status'] = args['status']
             set['lover'] = args['lover']
+            set['desc'] = args['desc']
 
             Settings().set_user_settings(str(id), set)
 
@@ -59,12 +60,15 @@ class User(Resource):
         parser.add_argument('gender')
         parser.add_argument('status')
         parser.add_argument('lover')
+        parser.add_argument('desc')
+
         args = parser.parse_args()
 
         set = Settings().get_user_settings(str(id))
         set["gender"] = args['gender']
         set['status'] = args['status']
         set['lover'] = args['lover']
+        set['desc'] = args['desc']
 
         Settings().set_user_settings(str(id), set)
 
@@ -73,4 +77,4 @@ class User(Resource):
 
 api.add_resource(User, "/user/<string:id>")
 
-app.run(host = '0.0.0.0', port=4437, debug=True)
+app.run(host='0.0.0.0', port=4437, debug=True)
