@@ -151,7 +151,7 @@ class Embeds():
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
-        em.description= '{}'.format(desc)
+        em.description= desc
 
         if gender == "male":
             emote = "👦"

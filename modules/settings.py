@@ -5,6 +5,7 @@ import asyncio
 
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
+from modules.utils import checks
 
 
 class Set:
@@ -311,6 +312,7 @@ class Set:
         await Settings().set_server_settings(server, set)
 
         await ctx.send('OK !', delete_after=5)
+
 
 
 def setup(bot):

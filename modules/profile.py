@@ -20,7 +20,6 @@ class Profile:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get, ctx.message.author)
 
-
     @profile.command()
     async def get(self, ctx, user: discord.Member = None):
         if user is None:
@@ -29,14 +28,10 @@ class Profile:
         set = await Settings().get_user_settings(str(user.id))
         glob = await Settings().get_glob_settings()
 
-        if not set['gender']:
-            set['gender'] = 'unknown'
-        if not set['status']:
-            set['status'] = 'alone'
-        if not set['lover']:
-            set['lover'] = user.id
-        if not set['desc']:
-            set['desc'] = "A discord user"
+        set['gender'] = 'unknown'
+        set['status'] = 'alone'
+        set['lover'] = user.id
+        set['desc'] = "A discord user"
 
         await Settings().set_user_settings(str(user.id), set)
 
@@ -47,10 +42,10 @@ class Profile:
 
         gender = set['gender']
         status = set['status']
-        desc = set['desc']
+        description = set['desc']
         lover = await self.bot.get_user_info(int(set['lover']))
 
-        em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover, desc)
+        em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover, description)
 
         reactions = ["✏", '❌']
 
@@ -199,19 +194,17 @@ class Profile:
         user = ctx.message.author
         set = await Settings().get_user_settings(str(user.id))
 
-
         def msgcheck(m):
             if m.author == ctx.message.author:
                 return True
             else:
                 return False
 
-        if not set['desc'] or set['desc'] is None:
-            content = None
-        else:
-            content = set['content']
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji)
 
         reactions = ['🖊', '❌']
+        content = set['desc']
 
         em = await Embeds().format_desc_profile_embed(ctx, user, content)
 
@@ -220,24 +213,28 @@ class Profile:
         for reaction in reactions:
             await msg.add_reaction(reaction)
 
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
+
         if reaction.emoji == '🖊':
             await msg.delete()
             await ctx.send('Please ! Write your description', delete_after=380)
 
             try:
-
                 m = await self.bot.wait_for('message', timeout=380.0, check=msgcheck)
 
             except asyncio.TimeoutError:
                 await ctx.send('👎', delete_after=10)
 
-            else:
-                set['desc'] = str(m.content)
+            set['desc'] = m.content
+            await Settings().set_user_settings(str(user.id), set)
 
         elif reaction.emoji == '❌':
             await msg.delete()
             return
-
 
     @commands.group()
     async def love(self, ctx):
