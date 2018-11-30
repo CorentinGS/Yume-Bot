@@ -28,6 +28,7 @@ class Profile:
         set = await Settings().get_user_settings(str(user.id))
         glob = await Settings().get_glob_settings()
 
+
         set['gender'] = 'unknown'
         set['status'] = 'alone'
         set['lover'] = user.id
