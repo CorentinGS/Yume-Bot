@@ -2,12 +2,12 @@ from discord.ext import commands
 import json
 
 
-
 with open('config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
 owner = int(config["owner_id"])
 DEV = config['dev']
+
 
 def is_owner_check(ctx):
     _id = ctx.message.author.id

@@ -14,7 +14,6 @@ class Settings():
         self.clans = self.db.clans
         self.keys = self.db.keys
 
-
     async def get_glob_settings(self):
         doc = await self.glob.find_one({"_id": 0})
         return doc or {}
@@ -44,7 +43,7 @@ class Settings():
         return await self.clans.replace_one({"_id": name}, settings, True)
 
     async def get_key_settings(self, name):
-        doc = await self.keys.find_one({"_id" : name})
+        doc = await self.keys.find_one({"_id": name})
         return doc or {}
 
     async def set_key_settings(self, name, settings):

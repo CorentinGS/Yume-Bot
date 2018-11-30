@@ -12,7 +12,6 @@ from modules.utils.format import Embeds
 from modules.utils import checks, lists
 
 
-
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
@@ -27,7 +26,6 @@ class General:
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-
 
     @commands.command()
     #  @commands.cooldown(1, 10, commands.BucketType.user)
@@ -71,7 +69,6 @@ class General:
         else:
             success = True
             await ctx.send('👍')
-
 
         msg.delete()
         em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
@@ -160,7 +157,7 @@ class General:
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
         if channel is None:
             channel = ctx.message.channel
-        messages = await channel.history(limit = 200).flatten()
+        messages = await channel.history(limit=200).flatten()
         for msg in messages:
             if msg.id == id:
                 await ctx.send('Url :{}'.format(msg.jump_url))

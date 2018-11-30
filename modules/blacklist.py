@@ -12,7 +12,7 @@ class Blacklist:
         self.bot = bot
         self.config = bot.config
 
-    @commands.group(aliases = ['bl'])
+    @commands.group(aliases=['bl'])
     @checks.is_owner()
     async def blacklist(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -35,7 +35,7 @@ class Blacklist:
         await Settings().set_glob_settings(setting)
         await ctx.send(f"{user.name}#{user.discriminator} is now blacklisted")
 
-    @blacklist.command(aliases = ['remove'])
+    @blacklist.command(aliases=['remove'])
     @checks.is_owner()
     async def rm(self, ctx, id: int):
 

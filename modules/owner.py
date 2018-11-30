@@ -92,7 +92,6 @@ class Owner:
         set = await Settings().set_key_settings(str(name), set)
         await ctx.author.send('The key is : **{}**'.format(str(key)))
 
-
     @commands.command()
     @checks.is_owner()
     async def guild(self, ctx):
@@ -125,13 +124,11 @@ class Owner:
         await Settings().set_glob_settings(setting)
         await ctx.send(f"{user} is now VIP")
 
-
     @vip.command()
     async def remove(self, ctx, id: int):
         user = await self.bot.get_user_info(id)
         await ctx.message.delete()
         setting = await Settings().get_glob_settings()
-
 
         if user.id in setting['VIP']:
             setting['VIP'].remove(user.id)
@@ -140,6 +137,7 @@ class Owner:
 
         else:
             return await ctx.send('User is not VIP')
+
 
 def setup(bot):
     bot.add_cog(Owner(bot))

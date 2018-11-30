@@ -36,7 +36,6 @@ class Utilities:
         )
         embed.set_footer(text=f'Tip: {tip}')
 
-
         embed.add_field(name="Name", value=server.name, inline=True)
         embed.add_field(name="ID", value=server.id, inline=True)
         embed.add_field(name="Roles", value=len(server.roles), inline=True)
@@ -66,7 +65,6 @@ class Utilities:
 
         embed = discord.Embed(colour=color)
 
-
         embed.set_author(name=role.name)
         embed.add_field(name="Users", value=len(role.members))
         embed.add_field(name="Hoist", value=role.hoist)
@@ -92,7 +90,6 @@ class Utilities:
         embed.add_field(name="Members", value=len(
             server.members), inline=True)
         embed.set_thumbnail(url=server.icon_url)
-
 
         try:
             return await ctx.send(embed=embed)

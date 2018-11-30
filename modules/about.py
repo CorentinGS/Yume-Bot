@@ -8,6 +8,7 @@ import random
 
 from modules.utils import checks, lists
 
+
 class About:
 
     conf = {}
@@ -23,7 +24,6 @@ class About:
 
         await ctx.message.delete()
         tip = random.choice(lists.tip)
-
 
         with open('./config/config.json', 'r') as cjson:
             config = json.load(cjson)

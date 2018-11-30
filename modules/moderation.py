@@ -31,7 +31,6 @@ class Moderation:
             await Settings().set_server_settings(server, setting)
             await ctx.invoke(self.mute, user, duration)
 
-
         unit = duration[-1]
         if unit == 's':
             time = int(duration[:-1])
@@ -159,7 +158,6 @@ class Moderation:
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'kick')
 
-
         if setting['logging'] is True:
             if 'LogChannel' in setting:
                 channel = self.bot.get_channel(int(setting['LogChannel']))
@@ -204,7 +202,6 @@ class Moderation:
         else:
             await ctx.send(embed=em)
 
-
     @commands.command()
     @commands.guild_only()
     #  @commands.cooldown(2, 10, commands.BucketType.user)
@@ -238,7 +235,6 @@ class Moderation:
                 pass
         else:
             await ctx.send(embed=em)
-
 
     @commands.command(aliases=['ciao'])
     @commands.guild_only()
@@ -278,7 +274,6 @@ class Moderation:
                 pass
         else:
             await ctx.send(embed=em)
-
 
     @commands.command(aliases=['clean', 'clear'])
     @commands.guild_only()
@@ -362,7 +357,6 @@ class Moderation:
                 pass
         else:
             await ctx.send(f'{len(members)} users were banned')
-
 
 
 def setup(bot):

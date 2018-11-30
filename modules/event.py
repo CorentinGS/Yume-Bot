@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from modules.utils.db import Settings
 
+
 class Event:
 
     conf = {}

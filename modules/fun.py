@@ -54,20 +54,19 @@ class Fun:
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
-
     @commands.command(aliases=['yt'])
     async def youtube(self, ctx, *, search: str):
         await ctx.message.delete()
         search = search.replace(' ', '+').lower()
-        response = requests.get(f"https://www.youtube.com/results?search_query={search}").text
+        response = requests.get(
+            f"https://www.youtube.com/results?search_query={search}").text
         result = BeautifulSoup(response, "lxml")
         dir_address = f"{result.find_all(attrs={'class': 'yt-uix-tile-link'})[0].get('href')}"
-        output=f"**Top Result:**\nhttps://www.youtube.com{dir_address}"
+        output = f"**Top Result:**\nhttps://www.youtube.com{dir_address}"
         try:
             await ctx.send(output)
         except discord.Forbidden:
             return
-
 
     @commands.command()
     @commands.guild_only()
@@ -127,6 +126,7 @@ class Fun:
         answer = random.choice(lists.poney)
 
         await ctx.send(f'{answer}')
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))
