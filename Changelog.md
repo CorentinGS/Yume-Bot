@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- a lot of bug
+- A lot of bug
 
 ##### Notes
  I've spent a lot of time on this version... If you've any issues with the bot, please contact me or open an issue !
