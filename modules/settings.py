@@ -21,6 +21,71 @@ class Set:
     @commands.has_permissions(administrator=True)
     async def setting(self, ctx):
         if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.get)
+
+
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def get(self, ctx):
+        guild = ctx.message.guild
+        set = await Settings().get_server_settings(str(guild.id))
+
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji)
+
+
+        if not 'mute' in set:
+            set['muteRole'] = False
+        if not 'greet' in set:
+            set['greet'] = False
+        if not 'bl' in set:
+            set['bl'] = False
+        if not 'logging' in set:
+            set['logging'] = False
+        if not 'GreetChannel' in set:
+            set['GreetChannel'] = None
+        if not 'LogChannel' in set:
+            set['LogChannel'] = None
+
+        await Settings().set_server_settings(str(guild.id), set)
+
+        mute = set['muteRole']
+        greet = set['greet']
+        blacklist = set['bl']
+        logging = set['logging']
+        greetchannel = set['GreetChannel']
+        logchannel = set['LogChannel']
+
+        em = await Embeds().format_get_set_embed(ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel)
+
+        reactions = ["✏", '❌']
+
+        msg = await ctx.send(embed=em)
+
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎', delete_after=10)
+
+        else:
+            if reaction.emoji == '✏':
+                await msg.clear_reactions()
+                await msg.delete()
+                await ctx.invoke(self.edit)
+            if reaction.emoji == '❌':
+                await msg.clear_reactions()
+                await msg.delete()
+                return
+
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def edit(self, ctx):
             vip = False
 
             guild = ctx.message.guild

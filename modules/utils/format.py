@@ -113,6 +113,25 @@ class Embeds():
 
         return em
 
+    async def format_get_set_embed(self, ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel):
+        tip = random.choice(lists.tip)
+
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        em.set_author(name='Settings')
+        em.set_footer(text=f'Tip: {tip}')
+
+        em.add_field(name = "Mute Role", value = mute)
+        em.add_field(name = "Greet", value = greet)
+        em.add_field(name = "Greet Channel", value = greetchannel)
+        em.add_field(name = "Blacklist", value = blacklist)
+        em.add_field(name = "Logging", value = logging)
+        em.add_field(name = "Log Channel", value = logchannel)
+
+
+        return em
+
+
+
     async def format_profile_embed(self, ctx, user, command, vip):
         tip = random.choice(lists.tip)
 
