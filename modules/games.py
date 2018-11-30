@@ -14,6 +14,7 @@ class Games:
         self.config = bot.config
 
 # TODO: Ajouter des jeux automatiques !
+# TODO: Trouver des partenaires de jeux
 
 def setup(bot):
     bot.add_cog(Games(bot))
