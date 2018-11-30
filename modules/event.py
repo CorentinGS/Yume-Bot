@@ -74,19 +74,6 @@ class Event:
             elif len(message.mentions) > 5:
                 await message.delete()
 
-    async def on_guild_join(self, guild):
-        server = str(guild.id)
-        set = await Settings().get_server_settings(server)
-        if 'muteRole' not in set:
-            set['muteRole'] = False
-        if 'mute' not in set:
-            set['mute'] = []
-        if 'Greet' not in set:
-            set['Greet'] = False
-        if 'automod' not in set:
-            set['automod'] = False
-        await Settings().set_server_settings(server, set)
-
 
 def setup(bot):
     bot.add_cog(Event(bot))
