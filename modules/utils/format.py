@@ -8,12 +8,12 @@ from modules.utils.db import Settings
 
 from modules.utils import lists
 
-tip = random.choice(lists.tip)
-
 
 class Embeds():
 
     async def format_mod_embed(self, ctx, user, success, command, duration=None):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name=command.title(), icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
@@ -36,6 +36,8 @@ class Embeds():
         return em
 
     async def format_feedback_embed(self, ctx, auth, guild, success, message):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name="Feedback", icon_url=auth.avatar_url)
         if success:
@@ -52,6 +54,8 @@ class Embeds():
         return em
 
     async def format_set_embed(self, ctx, guild, command, vip):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Settings', icon_url=guild.icon_url)
         em.set_footer(text=f'Tip: {tip}')
@@ -110,6 +114,8 @@ class Embeds():
         return em
 
     async def format_profile_embed(self, ctx, user, command, vip):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
@@ -133,6 +139,8 @@ class Embeds():
         return em
 
     async def format_desc_profile_embed(self, ctx, user, content):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
@@ -145,6 +153,8 @@ class Embeds():
         return em
 
     async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover, desc):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
@@ -181,6 +191,8 @@ class Embeds():
         # TODO: Simplifier le système d'emote
 
     async def format_love_embed(self, ctx, auth, command):
+        tip = random.choice(lists.tip)
+
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Love', icon_url=auth.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
