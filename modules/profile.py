@@ -29,10 +29,14 @@ class Profile:
         glob = await Settings().get_glob_settings()
 
 
-        set['gender'] = 'unknown'
-        set['status'] = 'alone'
-        set['lover'] = user.id
-        set['desc'] = "A discord user"
+        if 'gender' not in set:
+            set['gender'] = 'unknown'
+        if 'status' not in set:
+            set['status'] = 'alone'
+        if 'lover' not in set:
+            set['lover'] = user.id
+        if 'desc' not in set:
+            set['desc'] = "A discord user"
 
         await Settings().set_user_settings(str(user.id), set)
 
@@ -63,7 +67,7 @@ class Profile:
                 reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
 
             except asyncio.TimeoutError:
-                await ctx.send('👎')
+                await ctx.send('👎', delete_after=10)
 
             else:
                 if reaction.emoji == '✏':
@@ -101,7 +105,7 @@ class Profile:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
         except asyncio.TimeoutError:
-            await ctx.send('👎')
+            await ctx.send('👎', delete_after=10)
 
         else:
             if reaction.emoji == '❓':
@@ -117,7 +121,7 @@ class Profile:
                     reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
                 except asyncio.TimeoutError:
-                    await ctx.send('👎')
+                    await ctx.send('👎', delete_after=10)
 
                 else:
                     if reaction.emoji == '👦':
@@ -218,7 +222,7 @@ class Profile:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
 
         except asyncio.TimeoutError:
-            await ctx.send('👎')
+            await ctx.send('👎', delete_after=10)
 
         if reaction.emoji == '🖊':
             await msg.delete()
@@ -300,7 +304,7 @@ class Profile:
                 reaction, member = await self.bot.wait_for('reaction_add', check=check, timeout=86400)
 
             except asyncio.TimeoutError:
-                await ctx.send('Too late')
+                await ctx.send('Too late', delete_after=10)
 
             else:
                 if reaction.emoji == '✅':

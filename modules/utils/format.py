@@ -13,8 +13,6 @@ tip = random.choice(lists.tip)
 
 class Embeds():
 
-
-
     async def format_mod_embed(self, ctx, user, success, command, duration=None):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name=command.title(), icon_url=user.avatar_url)
@@ -100,7 +98,8 @@ class Embeds():
                          value='Activate AutoModeration', inline=False)
             em.add_field(name='🚫 **Desactivate**',
                          value='Desactivate AutoModeration', inline=False)
-            em.add_field(name = '!!!!!', value= 'This module is still experimental, Please report all issues using --feedback')
+            em.add_field(
+                name='!!!!!', value='This module is still experimental, Please report all issues using --feedback')
 
             if vip is True:
                 em.add_field(name='⛔ **AntiRaid**',
@@ -117,7 +116,7 @@ class Embeds():
         if command == "edit":
             em.add_field(name="❓ **Gender**", value="Select a gender")
             em.add_field(name="❤ **Love**", value="Are u in love ?")
-            em.add_field(name= "🖊 **Description**", value='Who are you ?')
+            em.add_field(name="🖊 **Description**", value='Who are you ?')
             em.add_field(name="❌", value="Leave", inline=False)
 
         elif command == 'gender':
@@ -138,20 +137,18 @@ class Embeds():
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
 
-
         em.add_field(name='🖊', value='Edit')
         em.add_field(name="❌", value="Leave", inline=False)
 
-        em.description= '{}'.format(str(content))
+        em.description = '{}'.format(str(content))
 
         return em
-
 
     async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover, desc):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Profile', icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
-        em.description= desc
+        em.description = desc
 
         if gender == "male":
             emote = "👦"
@@ -187,7 +184,6 @@ class Embeds():
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Love', icon_url=auth.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
-
 
         if command == "love":
             em.add_field(name="💘", value="Love declaration")
