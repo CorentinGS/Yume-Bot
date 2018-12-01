@@ -286,9 +286,6 @@ class Profile:
             toto = ctx.message.author
             user = m.mentions[0]
 
-            if not await Settings().get_user_settings(str(user.id)):
-                await ctx.invoke(self.default, user)
-
             em = await Embeds().format_love_embed(ctx, toto, 'declaration')
             reactions = ["✅", '❌']
 
