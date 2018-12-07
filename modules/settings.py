@@ -268,8 +268,7 @@ class Set:
                         await ctx.invoke(self.greetchannel, text_channel)
                         await ctx.invoke(self.setting)
                     elif reaction.emoji == '📜':
-                        arg = "on"
-                        await ctx.invoke(self.greet, arg)
+                        await ctx.invoke(self.greet)
                         await msg.delete()
                         await ctx.invoke(self.setting)
                     elif reaction.emoji == '❌':
@@ -362,15 +361,13 @@ class Set:
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def greet(self, ctx, arg: str = None):
+    async def greet(self, ctx):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if arg.lower().startswith('on'):
-            set['Greet'] = True
-        elif arg.lower().startswith('off'):
+        if set['Greet'] is True:
             set['Greet'] = False
         else:
-            return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
+            set['Greet'] = True
 
         await Settings().set_server_settings(server, set)
 

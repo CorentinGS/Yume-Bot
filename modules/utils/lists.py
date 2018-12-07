@@ -29,3 +29,8 @@ tip = [
     "You should ask the Crystal Ball: --8ball [question]", "You want to know who made me ? Check here : https://www.yumenetwork.fr",
     "Remember the Fifth of November...", "Let threw the apple out the windows...", 'Long live Linux'
 ]
+
+greet = [
+    "Welcome in the server ! ", "Have a good time!", "Welcome ! Don't forget to read the rules",
+    "Hello, little thing! Have a good time. "
+]

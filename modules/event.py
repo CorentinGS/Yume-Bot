@@ -16,6 +16,7 @@ class Event:
         self.config = bot.config
 
     async def on_member_join(self, member):
+        guild = member.guild
         server = await Settings().get_server_settings(str(guild.id))
         glob = await Settings().get_glob_settings()
         if 'Mute' in server:
@@ -42,7 +43,13 @@ class Event:
             if server['Greet'] is True:
                 if 'GreetChannel' in server:
                     channel = self.bot.get_channel(int(server['GreetChannel']))
-                    await channel.send(f'Welcome {member.mention} ! Remember to read the server rules')
+                    greet = random.choice(lists.greet)
+
+                    em = discord.Embed(timestamp=member.joined_at)
+                    em.set_author(name="Welcome", icon_url=member.avatar_url)
+                    em.set_footer(text=f'{member.name}')
+                    em.description = f"{greet}"
+                    await channel.send(embed=em)
                 else:
                     pass
             else:
