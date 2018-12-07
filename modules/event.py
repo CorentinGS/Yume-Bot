@@ -1,7 +1,10 @@
 import discord
+import random
+
 from discord.ext import commands
 
 from modules.utils.db import Settings
+from modules.utils import checks, lists
 
 
 class Event:
@@ -13,7 +16,6 @@ class Event:
         self.config = bot.config
 
     async def on_member_join(self, member):
-        guild = member.guild
         server = await Settings().get_server_settings(str(guild.id))
         glob = await Settings().get_glob_settings()
         if 'Mute' in server:
@@ -40,8 +42,7 @@ class Event:
             if server['Greet'] is True:
                 if 'GreetChannel' in server:
                     channel = self.bot.get_channel(int(server['GreetChannel']))
-                    await channel.send('Welcome {} in {}'.format(member.mention, guild.name))
-                    # TODO: Add embed format !
+                    await channel.send(f'Welcome {member.mention} ! Remember to read the server rules')
                 else:
                     pass
             else:
