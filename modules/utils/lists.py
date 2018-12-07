@@ -2,8 +2,12 @@ ballresponse = [
     'Yes', 'No', 'Take a wild guess...', 'Very doubtful',
     'Sure', 'Without a doubt', 'Most likely', 'Might be possible',
     "You'll be the judge", 'no... (╯°□°）╯︵ ┻━┻', 'no... baka',
-    'senpai, pls no ;-;', 'It is highly possible', "I don't know! The crystal ball is broken"
-]
+    'senpai, pls no ;-;', 'It is highly possible', "I don't know! The crystal ball is broken",
+    "As I see it, yes", "It is certain", "It is decidedly so",
+    "Signs point to yes", "Yes – definitely", "You may rely on it",
+    "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again",
+    "Don't count on it", "My sources say no"]
+
 
 speak = [
     'Yume is your god! Bow down', 'Submit to Yume', 'Penguin > all',
