@@ -19,7 +19,6 @@ class About:
         self.process = psutil.Process(os.getpid())
 
     @commands.command()
-    @checks.is_owner()
     async def about(self, ctx):
 
         await ctx.message.delete()
