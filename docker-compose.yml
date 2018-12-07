@@ -11,19 +11,13 @@ services:
     volumes:
         - mongo-data:/usr/src/db
   bot:
+    restart: always
     build: .
+    ports:
+      - 4437:4437
     links:
         - mongo
     volumes:
         - .:/usr/src/app
-  web:
-    build: ./api
-    restart: always
-    ports:
-      - 4437:4437
-    volumes:
-      - .:/usr/src/web
-    links:
-      - mongo
 volumes:
   mongo-data:
