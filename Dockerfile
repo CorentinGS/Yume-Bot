@@ -8,7 +8,7 @@ COPY requirements.txt ./
 RUN apk update && \
     apk upgrade && \
     apk add git && \
-    pip install -r requirements.txt
+    pip install -r -U requirements.txt
 
 
 COPY . .
