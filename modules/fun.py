@@ -89,7 +89,7 @@ class Fun:
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def love(self, ctx, user: discord.Member = None):
+    async def loving(self, ctx, user: discord.Member = None):
         await ctx.message.delete()
         if user is None:
             user = ctx.message.author
