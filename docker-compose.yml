@@ -18,7 +18,6 @@ services:
         - .:/usr/src/app
   web:
     restart: always
-    build: .
     ports:
       - 4437:4437
     restart: always
