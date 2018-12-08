@@ -89,6 +89,60 @@ class Fun:
         await ctx.send(embed=embed)
 
     @commands.command()
+    async def love(self, ctx, user: discord.Member = None):
+        await ctx.message.delete()
+        if user is None:
+            user = ctx.message.author
+        embed = discord.Embed(colour=discord.Colour.blue())
+        embed.description = "Hug {}".format(user.mention)
+        GIPHY_API_KEY = keys["giphy"]
+
+        response = requests.get(
+            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=love").text
+
+        data = json.loads(response)
+
+        embed.set_image(url=data['data']['images']['original']['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def kiss(self, ctx, user: discord.Member = None):
+        await ctx.message.delete()
+        if user is None:
+            user = ctx.message.author
+        embed = discord.Embed(colour=discord.Colour.blue())
+        embed.description = "Hug {}".format(user.mention)
+        GIPHY_API_KEY = keys["giphy"]
+
+        response = requests.get(
+            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=kiss").text
+
+        data = json.loads(response)
+
+        embed.set_image(url=data['data']['images']['original']['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def gif(self, ctx, arg: str = None):
+        await ctx.message.delete()
+        if arg is None:
+            arg = "anime"
+        embed = discord.Embed(colour=discord.Colour.blue())
+        embed.description = "{}".format(arg)
+        GIPHY_API_KEY = keys["giphy"]
+
+        response = requests.get(
+            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag={arg}").text
+
+        data = json.loads(response)
+
+        embed.set_image(url=data['data']['images']['original']['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
     @commands.guild_only()
     async def lovepower(self, ctx, user: discord.Member = None):
 
