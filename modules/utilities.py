@@ -17,7 +17,6 @@ class Utilities:
 
     @commands.command(aliases=["server"])
     @commands.guild_only()
-    #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def info(self, ctx):
         await ctx.message.delete()
 
@@ -75,7 +74,6 @@ class Utilities:
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def members(self, ctx):
         await ctx.message.delete()
 
@@ -99,7 +97,6 @@ class Utilities:
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(1, 60, commands.BucketType.guild)
     async def owner(self, ctx):
         await ctx.message.delete()
         server = ctx.message.guild
@@ -121,7 +118,6 @@ class Utilities:
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def avatar(self, ctx, *, user: discord.Member = None):
 
         if user is None:
@@ -131,13 +127,11 @@ class Utilities:
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(1, 120, commands.BucketType.guild)
     async def icon(self, ctx):
         await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(2, 20, commands.BucketType.user)
     async def whois(self, ctx, user: discord.Member):
 
         await ctx.message.delete()
@@ -169,7 +163,6 @@ class Utilities:
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(2, 20, commands.BucketType.user)
     async def hackwhois(self, ctx, id: int):
 
         user = await self.bot.get_user_info(id)

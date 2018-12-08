@@ -14,7 +14,6 @@ class Mentions:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def mention(self, ctx, role: str):
 
         await ctx.message.delete()
@@ -29,7 +28,6 @@ class Mentions:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def annonce(self, ctx, role: str, *, content):
         await ctx.message.delete()
         rolemention = discord.utils.get(ctx.guild.roles, name=role)

@@ -28,19 +28,16 @@ class General:
         self.config = bot.config
 
     @commands.command()
-    #  @commands.cooldown(1, 10, commands.BucketType.user)
     async def ping(self, ctx):
 
         await ctx.send("Pong !!")
 
     @commands.command()
-    #  @commands.cooldown(1, 10, commands.BucketType.user)
     async def pong(self, ctx):
 
         await ctx.send("Ping !!")
 
     @commands.command()
-    #  @commands.cooldown(1, 30, commands.BucketType.user)
     async def feedback(self, ctx):
 
         await ctx.message.delete()
@@ -75,7 +72,6 @@ class General:
         await owner.send(embed=em)
 
     @commands.command(aliases=['gmto', 'gweather'])
-    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def gmeteo(self, ctx, city: str = "Paris"):
 
         await ctx.message.delete()
@@ -111,7 +107,6 @@ class General:
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["mto", "weather"])
-    #  @commands.cooldown(1, 20, commands.BucketType.user)
     async def meteo(self, ctx, city: str = "Paris"):
 
         await ctx.message.delete()
