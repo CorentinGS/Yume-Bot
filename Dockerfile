@@ -1,9 +1,14 @@
-FROM gorialis/discord.py:rewrite
+FROM python:3-alpine
 
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN pip install -r requirements.txt
+
+
+RUN apk update && \
+    apk upgrade && \
+    apk add git && \
+    pip install -r requirements.txt
 
 
 COPY . .

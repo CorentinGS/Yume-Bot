@@ -11,6 +11,7 @@ services:
     volumes:
         - mongo-data:/usr/src/db
   bot:
+    restart: always
     build: .
     links:
         - mongo
