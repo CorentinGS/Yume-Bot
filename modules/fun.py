@@ -5,10 +5,15 @@ from modules.utils import lists, http
 import json
 import datetime
 import requests
+import aiohttp
+
 
 from romme import RepublicanDate
 
 from bs4 import BeautifulSoup
+
+with open('./config/keys.json', 'r') as cjson:
+    keys = json.load(cjson)
 
 
 class Fun:
@@ -29,7 +34,6 @@ class Fun:
 
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
-    #  @commands.cooldown(1, 3, commands.BucketType.user)
     async def eightball(self, ctx, *, question: str = None):
         await ctx.message.delete()
 
@@ -42,14 +46,12 @@ class Fun:
 
     @commands.command(aliases=['neko'])
     @commands.guild_only()
-    #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def cat(self, ctx):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
     @commands.command(aliases=['Doggy'])
     @commands.guild_only()
-    #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def dog(self, ctx):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
@@ -69,8 +71,25 @@ class Fun:
             return
 
     @commands.command()
+    async def hug(self, ctx, user: discord.Member = None):
+        await ctx.message.delete()
+        if user is None:
+            user = ctx.message.author
+        embed = discord.Embed(colour=discord.Colour.blue())
+        embed.description = "Hug {}".format(user.mention)
+        GIPHY_API_KEY = keys["giphy"]
+
+        response = requests.get(
+            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=hug").text
+
+        data = json.loads(response)
+
+        embed.set_image(url=data['data']['images']['original']['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(1, 3, commands.BucketType.guild)
     async def lovepower(self, ctx, user: discord.Member = None):
 
         await ctx.message.delete()
@@ -97,7 +116,6 @@ class Fun:
 
     @commands.command()
     @commands.guild_only()
-    #  @commands.cooldown(1, 60, commands.BucketType.user)
     async def rd(self, ctx):
 
         await ctx.message.delete()
