@@ -29,7 +29,6 @@ class Fun:
             r = await http.get(url, res_method="json", no_cache=True)
         except json.JSONDecodeError:
             return await ctx.send("Couldn't find anything from the API")
-
         await ctx.send(r[endpoint])
 
     @commands.command(aliases=['8ball'])
@@ -78,14 +77,11 @@ class Fun:
         embed = discord.Embed(colour=discord.Colour.blue())
         embed.description = "Hug {}".format(user.mention)
         GIPHY_API_KEY = keys["giphy"]
-
         response = requests.get(
             f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=hug").text
 
         data = json.loads(response)
-
         embed.set_image(url=data['data']['images']['original']['url'])
-
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -101,9 +97,7 @@ class Fun:
             f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=love").text
 
         data = json.loads(response)
-
         embed.set_image(url=data['data']['images']['original']['url'])
-
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -114,14 +108,11 @@ class Fun:
         embed = discord.Embed(colour=discord.Colour.blue())
         embed.description = "Kiss {}".format(user.mention)
         GIPHY_API_KEY = keys["giphy"]
-
         response = requests.get(
             f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=kiss").text
 
         data = json.loads(response)
-
         embed.set_image(url=data['data']['images']['original']['url'])
-
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -137,21 +128,16 @@ class Fun:
             f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag={arg}").text
 
         data = json.loads(response)
-
         embed.set_image(url=data['data']['images']['original']['url'])
-
         await ctx.send(embed=embed)
 
     @commands.command()
     @commands.guild_only()
     async def lovepower(self, ctx, user: discord.Member = None):
-
         await ctx.message.delete()
         if user is None:
             user = ctx.message.author
-
         seed = user.discriminator
-
         random.seed(seed)
         love = random.randint(1, 100)
 
@@ -171,7 +157,6 @@ class Fun:
     @commands.command()
     @commands.guild_only()
     async def rd(self, ctx):
-
         await ctx.message.delete()
         today = datetime.date.today()
         rd = RepublicanDate.from_gregorian(today.year, today.month, today.day)
@@ -184,19 +169,14 @@ class Fun:
 
     @commands.command(aliases=["god", 'yume'])
     async def king(self, ctx):
-
         await ctx.message.delete()
-
         answer = random.choice(lists.king)
-
         await ctx.send(f'{answer}')
 
     @commands.command(aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
     async def poneybleuetrougeetblancetviolet(self, ctx):
         await ctx.message.delete()
-
         answer = random.choice(lists.poney)
-
         await ctx.send(f'{answer}')
 
 
