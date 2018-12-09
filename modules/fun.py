@@ -94,7 +94,7 @@ class Fun:
         if user is None:
             user = ctx.message.author
         embed = discord.Embed(colour=discord.Colour.blue())
-        embed.description = "Hug {}".format(user.mention)
+        embed.description = "Loving {}".format(user.mention)
         GIPHY_API_KEY = keys["giphy"]
 
         response = requests.get(
@@ -112,7 +112,7 @@ class Fun:
         if user is None:
             user = ctx.message.author
         embed = discord.Embed(colour=discord.Colour.blue())
-        embed.description = "Hug {}".format(user.mention)
+        embed.description = "Kiss {}".format(user.mention)
         GIPHY_API_KEY = keys["giphy"]
 
         response = requests.get(
