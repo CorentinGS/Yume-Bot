@@ -72,20 +72,13 @@ class Event:
                         await message.channel.send("{}#{} is AFK".format(user.name, user.discriminator), delete_after=10)
                         await user.send(f"{author} has mentionned you in {message.guild} : \n`{message.content}`")
 
-                    else:
-                        pass
-        # if not message.author == message.guild.owner:
-        if server["automod"] is True:
+
+        if server['automod'] == True:
             if 'discord.gg/' in message.content:
                 await message.delete()
 
-            if len(message.mentions) > 5:
+            elif len(message.mentions) > 5:
                 await message.delete()
-
-            for msg in message.channel.history(limit = 5, before=message):
-                if msg.author == message.author:
-                    if msg.clean_content.lower() == message.clean_content.lower():
-                        await message.delete()
 
         else:
             pass
