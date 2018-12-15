@@ -45,6 +45,8 @@ class Set:
             set['GreetChannel'] = None
         if not 'LogChannel' in set:
             set['LogChannel'] = None
+        if not 'automod' in set:
+            set['automod'] = False
 
         await Settings().set_server_settings(str(guild.id), set)
 
@@ -54,8 +56,9 @@ class Set:
         logging = set['logging']
         greetchannel = set['GreetChannel']
         logchannel = set['LogChannel']
+        automod = set['automod']
 
-        em = await Embeds().format_get_set_embed(ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel)
+        em = await Embeds().format_get_set_embed(ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel, automod)
 
         reactions = ["✏", '❌']
 

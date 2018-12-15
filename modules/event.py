@@ -56,8 +56,7 @@ class Event:
                 pass
 
     async def on_message(self, message):
-        guild = message.guild
-        server = await Settings().get_server_settings(str(guild.id))
+        server = await Settings().get_server_settings(str(message.guild.id))
         author = message.author
         glob = await Settings().get_glob_settings()
         if 'AFK' in glob:
@@ -80,8 +79,19 @@ class Event:
             if 'discord.gg/' in message.content:
                 await message.delete()
 
-            elif len(message.mentions) > 5:
+            if len(message.mentions) > 5:
                 await message.delete()
+
+            for msg in message.channel.history(limit = 5, before=message):
+                if msg.author == message.author:
+                    if msg.clean_content.lower() == message.clean_content.lower():
+                        await message.delete()
+
+        else:
+            pass
+
+
+
 
 
 def setup(bot):

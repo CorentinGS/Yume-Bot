@@ -113,7 +113,7 @@ class Embeds():
 
         return em
 
-    async def format_get_set_embed(self, ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel):
+    async def format_get_set_embed(self, ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel, automod):
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)
@@ -126,6 +126,7 @@ class Embeds():
         em.add_field(name="Blacklist", value=blacklist)
         em.add_field(name="Logging", value=logging)
         em.add_field(name="Log Channel", value=logchannel)
+        em.add_field(name = 'Automod', value=automod)
 
         return em
 
