@@ -83,9 +83,5 @@ class Event:
         else:
             pass
 
-
-
-
-
 def setup(bot):
     bot.add_cog(Event(bot))
