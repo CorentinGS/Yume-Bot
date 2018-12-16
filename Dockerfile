@@ -5,10 +5,8 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 
 
-RUN apk update && \
-    apk upgrade && \
-    apk add git && \
-    pip install -U -r requirements.txt
+RUN apk add git && \
+    pip install -r requirements.txt
 
 
 COPY . .
