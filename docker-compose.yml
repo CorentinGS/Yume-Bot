@@ -10,27 +10,6 @@ services:
         - MONGO_LOG_DIR=/dev/null
     volumes:
         - mongo-data:/usr/src/db
-  bot:
-    restart: always
-    build: .
-    links:
-        - mongo
-    volumes:
-        - .:/usr/src/app
-  web:
-    restart: always
-    build: .
-    ports:
-      - 4437:4437
-    restart: always
-    volumes:
-        - .:/usr/src/web
-    links:
-        - mongo
-    depends_on:
-        - bot
-    command: >
-      sh -c "python ./api/rest.py"
 
 volumes:
   mongo-data:

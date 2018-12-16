@@ -4,7 +4,7 @@ import motor.motor_asyncio
 class Settings():
 
     def __init__(self):
-        self.client = motor.motor_asyncio.AsyncIOMotorClient('mongo', 27017)
+        self.client = motor.motor_asyncio.AsyncIOMotorClient('127.0.0.1', 27018)
 
         self.db = self.client.bot
 
