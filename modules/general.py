@@ -16,6 +16,7 @@ with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
 OWNER = config["owner_id"]
+
 tip = random.choice(lists.tip)
 
 
@@ -37,39 +38,7 @@ class General:
 
         await ctx.send("Ping !!")
 
-    @commands.command()
-    async def feedback(self, ctx):
 
-        await ctx.message.delete()
-
-        auth = ctx.message.author
-        guild = ctx.message.guild
-
-        owner = await self.bot.get_user_info(OWNER)
-
-        await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention), delete_after=70)
-
-        def check(m):
-            if m.author == ctx.message.author:
-                return True
-            else:
-                return False
-
-        try:
-            msg = await self.bot.wait_for('message', timeout=60.0, check=check)
-
-        except asyncio.TimeoutError:
-            await ctx.send('👎')
-            success = False
-            return
-
-        else:
-            success = True
-            await ctx.send('👍')
-
-        msg.delete()
-        em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
-        await owner.send(embed=em)
 
     @commands.command(aliases=['gmto', 'gweather'])
     async def gmeteo(self, ctx, city: str = "Paris"):
