@@ -44,7 +44,7 @@ class Gestion:
         await msg.delete()
 
         em = discord.Embed(timestamp=ctx.message.created_at)
-        em.set_author(name="ℹ Changelog ! version: {version}")
+        em.set_author(name=f"ℹ Changelog, {version}")
         em.set_footer(text=f'Tip: {tip}')
         em.description = f'{msg.content}'
 
