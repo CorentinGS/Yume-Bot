@@ -2,7 +2,8 @@ FROM python:3-alpine
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
+
+COPY requirements.txt .
 
 
 RUN apk add git && \
