@@ -4,17 +4,6 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-16-08
-
-### Added
-
-- Suggestions
-- Changelog
-
-### Changed
-
-- Docker on python 3.6
-
 
 
 ## [pre-2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/pre-2.0.0) - 2018-12-08
@@ -30,7 +19,6 @@ All notable changes to this project will be documented in this file. The format 
 - Rewrite docker : new image
 - Fix some issues
 
-* * *
 
 
 ## [1.4.8](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.7) - 2018-11-30
