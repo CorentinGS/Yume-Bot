@@ -4,42 +4,43 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-16-08
+## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-18
 
 ### Added
 
-- Suggestions
-- Changelog
+-   Easier channel setup for guild settings
+
+## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-16
+
+### Added
+
+-   Suggestions
+-   Changelog
 
 ### Changed
 
-- Docker on python 3.6
-
-
+-   Docker on python 3.6
 
 ## [pre-2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/pre-2.0.0) - 2018-12-08
 
 ### Added
 
-- Gif commands
-- AutoModeration
-- tips patched
+-   Gif commands
+-   AutoModeration
+-   tips patched
 
 ### Changed
 
-- Rewrite docker : new image
-- Fix some issues
+-   Rewrite docker : new image
+-   Fix some issues
 
 * * *
-
 
 ## [1.4.8](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.7) - 2018-11-30
 
 ### Added
 
-- Get settings
-
-
+-   Get settings
 
 * * *
 
@@ -47,18 +48,18 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Tips on Embed
-- Jump to a message command (general.py)
-- Description on profile
-- Rest API
+-   Tips on Embed
+-   Jump to a message command (general.py)
+-   Description on profile
+-   Rest API
 
 ### Fixed
 
-- A lot of bug
+-   A lot of bug
 
 ##### Notes
- I've spent a lot of time on this version... If you've any issues with the bot, please contact me or open an issue !
 
+ I've spent a lot of time on this version... If you've any issues with the bot, please contact me or open an issue !
 
 * * *
 
@@ -66,12 +67,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Settings for AutoModeration
-
+-   Settings for AutoModeration
 
 ##### Notes
-  This version is still in beta...
 
+  This version is still in beta...
 
 * * *
 
@@ -79,12 +79,11 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Logging
+-   Logging
 
 ### Fixed
 
-- Some errors
-
+-   Some errors
 
 * * *
 
@@ -92,16 +91,16 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Love Settings
-- Blacklist Settings
+-   Love Settings
+-   Blacklist Settings
 
 ### Fixed
 
-- Some errors
+-   Some errors
 
 ### Changed
 
-- Format embed for profile
+-   Format embed for profile
 
 * * *
 
@@ -109,7 +108,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- User profile
+-   User profile
 
 * * *
 
@@ -117,9 +116,9 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Setting system
-- New mute method
-- Auto config guild
+-   Setting system
+-   New mute method
+-   Auto config guild
 
 * * *
 
@@ -127,46 +126,42 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- New tags (Support, Documentation, Yume)
-- New format for feedback embed
-- New event
-
+-   New tags (Support, Documentation, Yume)
+-   New format for feedback embed
+-   New event
 
 ### Fixed
 
-- Auto unmute command
-- some errors
+-   Auto unmute command
+-   some errors
 
 ### Changed
 
-- Remove Support command
-- Remove Debug command
-- check
-
+-   Remove Support command
+-   Remove Debug command
+-   check
 
 * * *
 
 ## [1.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.0) - 2018-10-31
 
-
 ### Added
 
-- New embed style
+-   New embed style
 
 ### Changed
 
-- Review all the code (thx @Zenrac)
-- New embed system (for moderation only)
-- Remove cooldown
+-   Review all the code (thx @Zenrac)
+-   New embed system (for moderation only)
+-   Remove cooldown
 
 ### Fixed
 
-- Some errors
+-   Some errors
 
 ### Informations
 
 The bot is now public !
-
 
 * * *
 
@@ -174,18 +169,18 @@ The bot is now public !
 
 ### Added
 
-- If mentionned user is AFK, you'll get back the message in dm
-- Tag module
-- Logout/stop commands
+-   If mentionned user is AFK, you'll get back the message in dm
+-   Tag module
+-   Logout/stop commands
 
 ### Fixed
 
-- Mute / unmute error
-- Purge aliases
+-   Mute / unmute error
+-   Purge aliases
 
 ### Changed
 
-- Lib command in about command
+-   Lib command in about command
 
 * * *
 
@@ -193,44 +188,39 @@ The bot is now public !
 
 ### Added
 
-- New alias
-- Invite link
+-   New alias
+-   Invite link
 
 ### Fixed
 
-- some delete messages
-- some return
+-   some delete messages
+-   some return
 
 ### Changed
 
-- Credit is now About
-- New help
+-   Credit is now About
+-   New help
 
 * * *
 
-
 ## [1.3.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.3) - 2018-10-23
-
 
 ### Added
 
-- Members edit commands
-- Poney command
+-   Members edit commands
+-   Poney command
 
 ### Changed
 
-- Autodelete messages
-
+-   Autodelete messages
 
 * * *
 
 ## [1.3.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.2) - 2018-10-14
 
-
 ### Added
 
-- AFK commands
-
+-   AFK commands
 
 * * *
 
@@ -238,18 +228,17 @@ The bot is now public !
 
 ### Changed
 
-- Pymongo --> Motor async
-- New Mute module
-- New Blacklist module
+-   Pymongo --> Motor async
+-   New Mute module
+-   New Blacklist module
 
 ### Fixed
 
-- [issue](https://github.com/yumenetwork/Yume-Bot/issues/2)
+-   [issue](https://github.com/yumenetwork/Yume-Bot/issues/2)
 
 ### Added
 
-- db.py
-
+-   db.py
 
 * * *
 
@@ -257,12 +246,12 @@ The bot is now public !
 
 ### Changed
 
-- Rename all modules
-- New main.py
+-   Rename all modules
+-   New main.py
 
 ### Added
 
-- Some features
+-   Some features
 
 * * *
 
@@ -270,12 +259,12 @@ The bot is now public !
 
 ### Fixed
 
-- Some errors
+-   Some errors
 
 ### Added
 
-- New modules
-- Help commands
+-   New modules
+-   Help commands
 
 * * *
 
