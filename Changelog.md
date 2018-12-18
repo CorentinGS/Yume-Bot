@@ -10,9 +10,6 @@ All notable changes to this project will be documented in this file. The format 
 
 -   New suggestion / feedback / changelog channel system
 
-### Added
-
--   Easier channel setup for guild settings
 
 ## [2.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-18
 
