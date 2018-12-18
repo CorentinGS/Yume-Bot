@@ -8,4 +8,3 @@ wikipedia==1.4.0
 Flask==1.0.2
 Flask-HTTPAuth==3.2.4
 Flask-RESTful==0.3.6
-psutil==5.4.8
