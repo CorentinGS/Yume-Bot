@@ -16,6 +16,7 @@ with open('./config/config.json', 'r') as cjson:
 CHANGELOG = config['changelog']
 SUGGESTION = config['suggestion']
 FEEDBACK = config["feedback"]
+GUILD = config['support']
 
 
 class Gestion:
@@ -52,7 +53,11 @@ class Gestion:
 
     @commands.command()
     async def suggestion(self, ctx, *, content: str):
-        channel = self.bot.get_channel(int(SUGGESTION))
+
+        guild = self.bot.get_guild(int(GUILD))
+        for chan in guild.channels:
+            if chan.id == int(SUGGESTION):
+                channel = chan
         tip = random.choice(lists.tip)
 
         await ctx.message.delete()
@@ -79,7 +84,10 @@ class Gestion:
         guild = ctx.message.guild
 
         # owner = await self.bot.get_user_info(OWNER)
-        channel = self.bot.get_channel(int(FEEDBACK))
+        server = self.bot.get_guild(int(GUILD))
+        for chan in server.channels:
+            if chan.id == int(FEEDBACK):
+                channel = chan
 
         await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention), delete_after=70)
 
