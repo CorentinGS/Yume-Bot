@@ -10,15 +10,13 @@ from modules.utils import lists
 import random
 
 
-
-
-
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
-    
+
 CHANGELOG = config['changelog']
 SUGGESTION = config['suggestion']
 FEEDBACK = config["feedback"]
+
 
 class Gestion:
     conf = {}
@@ -27,14 +25,11 @@ class Gestion:
         self.bot = bot
         self.config = bot.config
 
-
-
     @commands.command()
     @checks.is_owner()
     async def changelog(self, ctx, version: str):
         channel = self.bot.get_channel(int(CHANGELOG))
         tip = random.choice(lists.tip)
-
 
         await ctx.send("{}, Tell me your Changelog".format(ctx.message.author.mention), delete_after=500)
 
@@ -49,7 +44,7 @@ class Gestion:
         await msg.delete()
 
         em = discord.Embed(timestamp=ctx.message.created_at)
-        em.set_author(name="ℹ Changelog ! version: {version}")
+        em.set_author(name=f"ℹ Changelog, {version}")
         em.set_footer(text=f'Tip: {tip}')
         em.description = f'{msg.content}'
 
@@ -60,11 +55,11 @@ class Gestion:
         channel = self.bot.get_channel(int(SUGGESTION))
         tip = random.choice(lists.tip)
 
-
         await ctx.message.delete()
 
         em = discord.Embed(timestamp=ctx.message.created_at)
-        em.set_author(name=f"Suggestion from {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
+        em.set_author(
+            name=f"Suggestion from {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
         em.description = f'{content}'
 
@@ -83,7 +78,7 @@ class Gestion:
         auth = ctx.message.author
         guild = ctx.message.guild
 
-        #owner = await self.bot.get_user_info(OWNER)
+        # owner = await self.bot.get_user_info(OWNER)
         channel = self.bot.get_channel(int(FEEDBACK))
 
         await ctx.send("{}, Tell me your feedback".format(ctx.message.author.mention), delete_after=70)
@@ -109,6 +104,7 @@ class Gestion:
         msg.delete()
         em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
         await channel.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Gestion(bot))
