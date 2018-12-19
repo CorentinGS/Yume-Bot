@@ -1,16 +1,14 @@
+import asyncio
+import json
+import random
+
 import discord
 from discord.ext import commands
 
-import json
-import asyncio
-import random
-
-from .utils.weather import url_meteo, data_fetch, data_return
-
+from modules.utils import checks, lists
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils import checks, lists
-
+from modules.utils.weather import data_fetch, data_return, url_meteo
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)

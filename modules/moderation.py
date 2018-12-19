@@ -1,7 +1,8 @@
+import asyncio
+import datetime
+
 import discord
 from discord.ext import commands
-import datetime
-import asyncio
 
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
@@ -236,8 +237,6 @@ class Moderation:
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
 
-        msg = ctx.message
-        moderator = ctx.message.author
 
         await ctx.message.delete()
 
@@ -330,13 +329,10 @@ class Moderation:
 
         try:
             for member_id in members:
-                await ctx.guild.ban(discord.Object(id=member_id), reason="{} - {}".format(ctx.message.author, reason))
+                await ctx.guild.ban(discord.Object(id=member_id), reason="{} - massban".format(ctx.message.author))
 
         except Exception as e:
-            success = False
             return await ctx.send(e)
-        else:
-            success = True
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -349,6 +345,33 @@ class Moderation:
                 pass
         else:
             await ctx.send(f'{len(members)} users were banned')
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def mention(self, ctx, role: str):
+
+        await ctx.message.delete()
+        rolemention = discord.utils.get(ctx.guild.roles, name=role)
+
+        if not rolemention.mentionable:
+            await rolemention.edit(mentionable=True)
+
+        await ctx.send(rolemention.mention)
+        await rolemention.edit(mentionable=False)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def annonce(self, ctx, role: str, *, content):
+        await ctx.message.delete()
+        rolemention = discord.utils.get(ctx.guild.roles, name=role)
+
+        if not rolemention.mentionable:
+            await rolemention.edit(mentionable=True)
+
+        await ctx.send("{} \n{}".format(rolemention.mention, content))
+        await rolemention.edit(mentionable=False)
 
 
 def setup(bot):

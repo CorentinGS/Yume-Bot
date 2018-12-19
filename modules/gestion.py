@@ -1,14 +1,13 @@
-from discord.ext import commands
-import discord
-
+import asyncio
 import json
-
-from modules.utils.db import Settings
-from modules.utils.format import Embeds
-from modules.utils import checks
-from modules.utils import lists
 import random
 
+import discord
+from discord.ext import commands
+
+from modules.utils import checks, lists
+from modules.utils.db import Settings
+from modules.utils.format import Embeds
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
