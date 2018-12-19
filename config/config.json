@@ -3,7 +3,7 @@
   "owner_id": "282233191916634113",
   "dev": ["282233191916634113"],
   "version": "2.0.0",
-  "modules": ["about", "blacklist", "fun", "general", "help", "mentions", "moderation", "owner", "utilities", "tags", "event", "settings", "profile", "gestion"],
+  "modules": ["about", "blacklist", "fun", "general", "help", "moderation", "owner", "utilities", "tags", "event", "settings", "profile", "gestion"],
   "support": "488765635439099914",
   "changelog": "523809918684495882",
   "feedback": "523810908317810698",
