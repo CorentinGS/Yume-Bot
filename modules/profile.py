@@ -3,6 +3,7 @@ from discord.ext import commands
 import datetime
 import asyncio
 
+from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 from modules.utils import checks
