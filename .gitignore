@@ -109,3 +109,4 @@ venv.bak/
 /.gitignore
 /config/token.json
 /config/keys.json
+/.vscode
