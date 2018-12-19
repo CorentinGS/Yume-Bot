@@ -1,12 +1,12 @@
+import asyncio
+import datetime
+
 import discord
 from discord.ext import commands
-import datetime
-import asyncio
 
 from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils import checks
 
 
 class Profile:
@@ -83,7 +83,6 @@ class Profile:
     async def edit(self, ctx):
         auth = ctx.message.author
 
-        set = await Settings().get_user_settings(str(auth.id))
         glob = await Settings().get_glob_settings()
 
         if auth.id in glob["VIP"]:

@@ -1,7 +1,8 @@
+import asyncio
+import datetime
+
 import discord
 from discord.ext import commands
-import datetime
-import asyncio
 
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
@@ -236,8 +237,6 @@ class Moderation:
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
 
-        msg = ctx.message
-        moderator = ctx.message.author
 
         await ctx.message.delete()
 
@@ -330,13 +329,10 @@ class Moderation:
 
         try:
             for member_id in members:
-                await ctx.guild.ban(discord.Object(id=member_id), reason="{} - {}".format(ctx.message.author, reason))
+                await ctx.guild.ban(discord.Object(id=member_id), reason="{} - massban".format(ctx.message.author))
 
         except Exception as e:
-            success = False
             return await ctx.send(e)
-        else:
-            success = True
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)

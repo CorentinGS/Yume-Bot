@@ -1,5 +1,6 @@
-from discord.ext import commands
 import json
+
+from discord.ext import commands
 
 with open('modules/utils/tag.json', 'r') as cjson:
     tags = json.load(cjson)
