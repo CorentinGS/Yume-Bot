@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [pre-2.0.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-20
+
+
+### Added
+
+-   List all Tags (tags command)
+
+
+* * *
+
+
 ## [2.0.2](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-19
 
 ### Added
@@ -16,12 +27,17 @@ All notable changes to this project will be documented in this file. The format 
 -   Rewrite mention & annonce into moderation
 -   Fix old unused variables
 
+* * *
+
 
 ## [2.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-18
 
 ### Added
 
 -   Easier channel setup for guild settings
+
+* * *
+
 
 ## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-16
 
@@ -33,6 +49,9 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 -   Docker on python 3.6
+
+* * *
+
 
 ## [pre-2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/pre-2.0.0) - 2018-12-08
 
