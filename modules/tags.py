@@ -22,6 +22,13 @@ class Tags:
         else:
             await ctx.send("Unknown tag")
 
+    @commands.command()
+    async def tags(self, ctx):
+        await ctx.message.delete()
+
+        await ctx.send('[%s]' % ', '.join(map(str, tags)))
+
+
 
 def setup(bot):
     bot.add_cog(Tags(bot))
