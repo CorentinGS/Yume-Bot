@@ -37,6 +37,12 @@ class Profile:
             set['lover'] = user.id
         if 'desc' not in set:
             set['desc'] = "A discord user"
+        if 'xp' not in set:
+            set['xp'] = 0
+        if 'level' not in set:
+            set['level'] = 0
+        if 'reach' not in set:
+            set['reach'] = 0
 
         await Settings().set_user_settings(str(user.id), set)
 
