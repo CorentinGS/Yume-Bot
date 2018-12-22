@@ -21,7 +21,6 @@ class Moderation:
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, duration):
 
-        await ctx.message.delete()
         server = str(ctx.guild.id)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         setting = await Settings().get_server_settings(server)
