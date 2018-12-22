@@ -1,16 +1,15 @@
-import discord
-import random
-from discord.ext import commands
-from modules.utils import lists, http
-import json
 import datetime
-import requests
+import json
+import random
+
 import aiohttp
-
-
+import discord
+import requests
+from bs4 import BeautifulSoup
+from discord.ext import commands
 from romme import RepublicanDate
 
-from bs4 import BeautifulSoup
+from modules.utils import http, lists
 
 with open('./config/keys.json', 'r') as cjson:
     keys = json.load(cjson)

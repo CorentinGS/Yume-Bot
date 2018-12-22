@@ -1,6 +1,6 @@
 from discord.ext import commands
-from modules.utils import checks
 
+from modules.utils import checks
 from modules.utils.db import Settings
 
 

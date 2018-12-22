@@ -48,7 +48,7 @@ class Embeds():
             em.add_field(name="Content",
                          value=f"{message.content}", inline=False)
      # TODO: Add Auto invite link !
-            em.set_footer(text=message)
+            em.set_footer(text=tip)
         else:
             pass
         return em

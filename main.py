@@ -1,8 +1,8 @@
-import re
-import sys
+import asyncio
 import json
 import logging
-import asyncio
+import re
+import sys
 
 try:
     from discord.ext import commands

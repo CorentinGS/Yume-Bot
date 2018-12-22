@@ -1,11 +1,12 @@
+import asyncio
+import datetime
+
 import discord
 from discord.ext import commands
-import datetime
-import asyncio
 
+from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils import checks
 
 
 class Set:
@@ -210,7 +211,13 @@ class Set:
                         arg = 'off'
                         await ctx.invoke(self.logging, arg)
                         await msg.delete()
-                        await ctx.invoke(self.setting)
+                        if set['LogChannel'] is None:
+                            await ctx.send('Please name a Channel !')
+                            m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
+                            text_channel = m.channel_mentions[0]
+                            await ctx.invoke(self.loggingchannel, text_channel)
+                        else:
+                            await ctx.invoke(self.setting)
                     elif reaction.emoji == '❔':
                         await msg.delete()
                         await ctx.send('Please name a Channel !')
@@ -273,7 +280,13 @@ class Set:
                     elif reaction.emoji == '📜':
                         await ctx.invoke(self.greet)
                         await msg.delete()
-                        await ctx.invoke(self.setting)
+                        if set['GreetChannel'] is None:
+                            await ctx.send('Please name a Channel !')
+                            m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
+                            text_channel = m.channel_mentions[0]
+                            await ctx.invoke(self.greetchannel, text_channel)
+                        else:
+                            await ctx.invoke(self.setting)
                     elif reaction.emoji == '❌':
                         await msg.delete()
                         return
@@ -306,6 +319,7 @@ class Set:
         set = await Settings().get_server_settings(server)
         if arg.lower().startswith('on'):
             set['logging'] = True
+
         elif arg.lower().startswith('off'):
             set['logging'] = False
         else:

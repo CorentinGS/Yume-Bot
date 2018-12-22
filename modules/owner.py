@@ -1,12 +1,11 @@
-import sys
 import random
-import discord
 import secrets
+import sys
 
+import discord
 from discord.ext import commands
-from modules.utils import checks
-from modules.utils import lists
 
+from modules.utils import checks, lists
 from modules.utils.db import Settings
 
 

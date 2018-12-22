@@ -1,5 +1,6 @@
-from discord.ext import commands
 import json
+
+from discord.ext import commands
 
 with open('modules/utils/tag.json', 'r') as cjson:
     tags = json.load(cjson)
@@ -20,6 +21,13 @@ class Tags:
             await ctx.send(f"{tags[str(name)]}")
         else:
             await ctx.send("Unknown tag")
+
+    @commands.command()
+    async def tags(self, ctx):
+        await ctx.message.delete()
+
+        await ctx.send('[%s]' % ', '.join(map(str, tags)))
+
 
 
 def setup(bot):

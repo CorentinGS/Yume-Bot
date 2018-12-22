@@ -1,8 +1,13 @@
 {
-    "prefix" : "--",
-    "owner_id" : "282233191916634113",
-    "dev": ["282233191916634113"],
-    "version": "pre-2.0.0",
-    "modules": ["about", "blacklist", "fun", "general", "help", "mentions", "moderation", "owner", "utilities", "tags", "event", "settings", "profile"]
+  "prefix": "--",
+  "owner_id": "282233191916634113",
+  "dev": ["282233191916634113"],
+  "version": "2.0.3",
+  "modules": ["about", "blacklist", "fun", "general", "help", "moderation", "owner", "utilities", "tags", "event", "settings", "profile", "gestion"],
+  "support": "488765635439099914",
+  "changelog": "526037348245438485",
+  "feedback": "526037358491992065",
+  "suggestion": "526037350925598735"
+
 
 }
