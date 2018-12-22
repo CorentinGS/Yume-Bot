@@ -373,6 +373,27 @@ class Moderation:
         await ctx.send("{} \n{}".format(rolemention.mention, content))
         await rolemention.edit(mentionable=False)
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def addrole(self, ctx, role: str):
+        await ctx.message.delete()
+        role = discord.utils.get(ctx.guild.roles, name=role)
+
+        for user in ctx.guild.members:
+            await user.add_roles(role)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def removerole(self, ctx, role: str):
+        await ctx.message.delete()
+        role = discord.utils.get(ctx.guild.roles, name=role)
+
+        for user in ctx.guild.members:
+            await user.remove_roles(role)
+
+     
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
