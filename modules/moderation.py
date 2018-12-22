@@ -382,6 +382,7 @@ class Moderation:
 
         for user in ctx.guild.members:
             await user.add_roles(role)
+            await asyncio.sleep(1)
 
     @commands.command()
     @commands.guild_only()
@@ -392,6 +393,7 @@ class Moderation:
 
         for user in ctx.guild.members:
             await user.remove_roles(role)
+            await asyncio.sleep(1)
 
      
 
