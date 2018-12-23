@@ -169,7 +169,7 @@ class Embeds():
 
         return em
 
-    async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover, desc):
+    async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover, desc, xp, reach, level):
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)
@@ -202,6 +202,9 @@ class Embeds():
         else:
             em.add_field(name='**Status**',
                          value=f'❤ **{lover}**', inline=False)
+
+        em.add_field(name = "**Level**", value = f"{level}")
+        em.add_field(name = '**Xp**', value=f"{xp}/{reach}")
 
         return em
 

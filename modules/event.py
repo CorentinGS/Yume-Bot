@@ -74,11 +74,14 @@ class Event:
 
 
         if server['automod'] == True:
-            if 'discord.gg/' in message.content:
-                await message.delete()
+            if not message.author == message.guild.owner:
+                if 'discord.gg/' in message.content:
+                    await message.delete()
 
-            elif len(message.mentions) > 5:
-                await message.delete()
+                elif len(message.mentions) > 5:
+                    await message.delete()
+            else:
+                pass
 
         else:
             pass
