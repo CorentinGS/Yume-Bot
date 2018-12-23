@@ -16,6 +16,20 @@ class Level:
         self.bot = bot
         self.config = bot.config
 
+    @commands.command()
+    async def rank(self, ctx, user: discord.Member = None):
+        if user is None:
+            user = ctx.message.author
+
+        set = await Settings().get_user_settings(str(user.id))
+
+        if 'xp' not in set:
+            set['xp'] = 0
+        if 'level' not in set:
+            set['level'] = 0
+
+        await ctx.send("{} is level {} | {} / {}".format(user.name, set['level'], set['xp'], set['reach']))
+
 
     async def on_message(self, message):
         user = message.author

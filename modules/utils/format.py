@@ -113,7 +113,6 @@ class Embeds():
         em.set_author(name='Settings')
         em.set_footer(text=f'Tip: {tip}')
 
-        em.add_field(name="Mute Role", value=mute)
         em.add_field(name="Greet", value=greet)
         em.add_field(name="Greet Channel", value=greetchannel)
         em.add_field(name="Blacklist", value=blacklist)
