@@ -15,7 +15,7 @@ class Embeds():
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)
-        em.set_author(name=command.title(), icon_url=user.avatar_url)
+        em.set_author(name=f"{command}", icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
         if success:
             if command == 'ban' or command == 'hackban':

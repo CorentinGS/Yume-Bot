@@ -21,14 +21,8 @@ class Moderation:
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, duration):
 
-        server = str(ctx.guild.id)
-        role = discord.utils.get(ctx.guild.roles, name="Muted")
-        setting = await Settings().get_server_settings(server)
-
-        if not role:
-            setting['muteRole'] = False
-            await Settings().set_server_settings(server, setting)
-            await ctx.invoke(self.mute, user, duration)
+        guild = ctx.message.guild
+        set = await Settings().get_server_settings(str(guild.id))
 
         unit = duration[-1]
         if unit == 's':
@@ -42,45 +36,40 @@ class Moderation:
         else:
             return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
 
-        if 'Mute' not in setting:
-            setting['Mute'] = []
-        if user.id in setting['Mute']:
-            return await ctx.send('This user is already muted, use {}unmute to umute him.'.format(self.bot.config['prefix']))
-        setting['Mute'].append(user.id)
-        await Settings().set_server_settings(server, setting)
+        if not 'Mute' in set:
+            set['Mute'] = []
 
-        if setting['muteRole'] is False:
-            try:
-                for chan in ctx.guild.text_channels:
-                    await chan.set_permissions(user, read_messages=True, send_messages=False)
-            except discord.HTTPException:
-                success = False
-                return await ctx.send('Failed to Mute {}'.format(user))
-            else:
-                success = True
+        if user.id in set['Mute']:
+            return await ctx.send('This user is already muted, use {}unmute to umute him.'.format(self.bot.config['prefix']))
+
+        set['Mute'].append(user.id)
+        await Settings().set_server_settings(str(guild.id), set)
+
+
+        try:
+            for chan in ctx.guild.text_channels:
+                await chan.set_permissions(user, send_messages=False)
+        except discord.HTTPException:
+            success = False
+            return await ctx.send('Failed to Mute {}'.format(user))
         else:
-            try:
-                await user.add_roles(role)
-            except discord.HTTPException:
-                success = False
-                return await ctx.send('Failed to give Muted role to {}'.format(user))
-            else:
-                success = True
+            success = True
+ 
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'mute', duration)
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
+
+        if set['logging'] is True:
+            if 'LogChannel' in set:
+                channel = self.bot.get_channel(int(set['LogChannel']))
                 await channel.send(embed=em)
             else:
                 pass
         else:
-
             await ctx.send(embed=em)
 
         await asyncio.sleep(time)
 
-        if user.id in setting['Mute']:
+        if user.id in set['Mute']:
             await ctx.invoke(self.unmute, user)
         else:
             return
@@ -89,45 +78,30 @@ class Moderation:
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member):
-        role = discord.utils.get(ctx.guild.roles, name="Muted")
-        server = str(ctx.guild.id)
-        setting = await Settings().get_server_settings(server)
+        guild = ctx.message.guild
+        set = await Settings().get_server_settings(str(guild.id))
 
-        if not role:
-            setting['muteRole'] = False
-            await Settings().set_server_settings(server, setting)
 
-        if setting['muteRole'] is False:
-            try:
-                for chan in ctx.guild.text_channels:
-                    await chan.set_permissions(user, overwrite=None)
-            except discord.HTTPException:
-                success = False
-                return await ctx.send('Failed to Mute {}'.format(user))
-            else:
-                success = True
-
+        try:
+            for chan in ctx.guild.text_channels:
+                await chan.set_permissions(user, overwrite=None)
+        except discord.HTTPException:
+            success = False
+            return await ctx.send('Failed to unmute {}'.format(user))
         else:
-            try:
-                await user.remove_roles(role)
+            success = True
 
-            except discord.HTTPException:
-                success = False
+        
+        if set['Mute']:
+            if user.id not in set['Mute']:
                 return
-
-            else:
-                success = True
-
-        if setting['Mute']:
-            if user.id not in setting['Mute']:
-                return
-            setting['Mute'].remove(user.id)
-        await Settings().set_server_settings(server, setting)
+            set['Mute'].remove(user.id)
+        await Settings().set_server_settings(str(guild.id), set)
 
         em = await Embeds().format_mod_embed(ctx, user, success, 'unmute')
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
+        if set['logging'] is True:
+            if 'LogChannel' in set:
+                channel = self.bot.get_channel(int(set['LogChannel']))
                 await channel.send(embed=em)
             else:
                 pass

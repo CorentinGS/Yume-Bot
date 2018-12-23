@@ -48,6 +48,8 @@ class Set:
             set['LogChannel'] = None
         if not 'automod' in set:
             set['automod'] = False
+        if not 'Mute' in set:
+            set['Mute'] = []
 
         await Settings().set_server_settings(str(guild.id), set)
 
