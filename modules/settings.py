@@ -107,7 +107,7 @@ class Set:
                 return False
 
         msg = await ctx.send(embed=em)
-        reactions = ['🇲', '🇬', '⛔', '🖊', '🔨', '❌']
+        reactions = ['🇬', '⛔', '🖊', '🔨', '❌']
         for reaction in reactions:
             await msg.add_reaction(reaction)
 
@@ -118,35 +118,8 @@ class Set:
             await ctx.send('👎')
 
         else:
-            if reaction.emoji == '🇲':
-                await msg.clear_reactions()
-                em = await Embeds().format_set_embed(ctx, guild, 'mutemenu', vip)
-                await msg.edit(embed=em)
-                reactions = ['💂', '💣', '❌']
-                for reaction in reactions:
-                    await msg.add_reaction(reaction)
-                try:
-                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=60)
-
-                except asyncio.TimeoutError:
-                    await ctx.send('👎', delete_after=10)
-
-                else:
-                    if reaction.emoji == '💂':
-                        arg = "on"
-                        await ctx.invoke(self.muterole, arg)
-                        await msg.delete()
-                        await ctx.invoke(self.setting)
-                    elif reaction.emoji == '💣':
-                        arg = "off"
-                        await ctx.invoke(self.muterole, arg)
-                        await msg.delete()
-                        await ctx.invoke(self.setting)
-                    elif reaction.emoji == '❌':
-                        await msg.delete()
-                        return
-
-            elif reaction.emoji == '🔨':
+        
+            if reaction.emoji == '🔨':
                 await msg.clear_reactions()
                 if ctx.message.author in glob["VIP"]:
                     vip = True

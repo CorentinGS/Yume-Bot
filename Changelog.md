@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file. The format 
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+
+## [2.0.5](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-23
+
+
+### Fixed
+
+-  Mute error
+
+### Remove
+
+-  Role mute
+
+
+* * *
+
 ## [2.0.4](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-23
 
 

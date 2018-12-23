@@ -60,18 +60,11 @@ class Embeds():
         em.set_author(name='Settings', icon_url=guild.icon_url)
         em.set_footer(text=f'Tip: {tip}')
         if command == 'setting':
-            em.add_field(name="🇲 **Mute**", value="Mute Menu")
             em.add_field(name="🇬 **Greet**", value="Greet Menu")
             em.add_field(name="⛔ **Blacklist**", value='Blacklist Menu')
             em.add_field(name="🖊 **Logging**", value="Logging Menu")
             em.add_field(name="🔨 **Automoderation**", value="AutoMod Menu")
             em.add_field(name="❌", value="Leave")
-
-        elif command == 'mutemenu':
-            em.add_field(name="💂 **Role**", value="Toggle Role Mute")
-            em.add_field(name="💣 **Permissions**",
-                         value="Toggle Permissions Mute")
-            em.add_field(name="❌", value="Leave", inline=False)
 
         elif command == 'greetmenu':
             em.add_field(name="❔ **Channel**", value="Set the greet channel")
