@@ -12,3 +12,4 @@ RUN apk add git && \
 COPY . .
 
 CMD [ "python", "./main.py" ]
+CMD [ "python", "./api/rest.py"]
