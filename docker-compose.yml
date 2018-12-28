@@ -32,6 +32,6 @@ services:
     links:
         - mongo
 volumes:
-    - type: bind
-      name: mongodb
-      source: ./data/mongodb
+  - type: bind
+    name: mongodb
+    source: ./data/mongodb
