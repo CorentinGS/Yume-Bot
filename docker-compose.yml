@@ -4,17 +4,17 @@ services:
     image: mongo:4.0.5
     restart: always
     ports:
-        - 27018:27017
+      - 27018:27017
     environment:
-        - MONGO_DATA_DIR=/var/lib/data/db
-        - MONGO_LOG_DIR=/dev/null
+      - MONGO_DATA_DIR=/var/lib/data/db
+      - MONGO_LOG_DIR=/dev/null
     volumes:
-        - mongodb:/var/lib/data/db
+      - mongodb:/var/lib/data/db
   bot:
     restart: always
     build:
-        context: .
-        dockerfile: Dockerfile_bot
+      context: .
+      dockerfile: Dockerfile_bot
     links:
         - mongo
     #volumes:
@@ -22,15 +22,15 @@ services:
   web:
     restart: always
     build:
-        context: .
-        dockerfile: Dockerfile_web
+      context: .
+      dockerfile: Dockerfile_web
     ports:
       - 4437:4437
     restart: always
     #volumes:
     #    - .:/usr/src/web
     links:
-        - mongo
+      - mongo
 volumes:
   - type: bind
     name: mongodb
