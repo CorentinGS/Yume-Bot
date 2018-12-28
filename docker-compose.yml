@@ -6,10 +6,9 @@ services:
     ports:
       - 27018:27017
     environment:
-      - MONGO_DATA_DIR=/var/lib/data/db
       - MONGO_LOG_DIR=/dev/null
     volumes:
-      - ./data/mongodb:/var/lib/data/db
+      - ./data/mongodb:/data/db
   bot:
     restart: always
     build:
