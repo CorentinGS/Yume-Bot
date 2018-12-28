@@ -1,36 +1,33 @@
 version: '3'
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:4.0.5
     restart: always
     ports:
-        - 27018:27017
+      - 27018:27017
     environment:
-        - MONGO_DATA_DIR=/var/lib/data/db
-        - MONGO_LOG_DIR=/dev/null
+      - MONGO_LOG_DIR=/dev/null
     volumes:
-        - mongo-data:/usr/src/db
+      - ./data/mongodb:/data/db
   bot:
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
     links:
         - mongo
-    volumes:
-        - .:/usr/src/app
+    #volumes:
+    #    - .:/usr/src/app
   web:
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile_web
     ports:
       - 4437:4437
     restart: always
-    volumes:
-        - .:/usr/src/web
+    #volumes:
+    #    - .:/usr/src/web
     links:
-        - mongo
-    depends_on:
-        - bot
-    command: >
-      sh -c "python ./api/rest.py"
+      - mongo
 
-volumes:
-  mongo-data:

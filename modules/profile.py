@@ -34,7 +34,7 @@ class Profile:
         if 'status' not in set:
             set['status'] = 'alone'
         if 'lover' not in set:
-            set['lover'] = user.id
+            set['lover'] = str(user.id)
         if 'desc' not in set:
             set['desc'] = "A discord user"
         if 'xp' not in set:
@@ -320,12 +320,12 @@ class Profile:
                     await toto.send('{} said yes. <3'.format(user))
 
                     set['status'] = "taken"
-                    set['lover'] = toto.id
+                    set['lover'] = str(toto.id)
                     await Settings().set_user_settings(str(user.id), set)
 
                     set = await Settings().get_user_settings(str(toto.id))
                     set['status'] = 'taken'
-                    set['lover'] = user.id
+                    set['lover'] = str(user.id)
                     await Settings().set_user_settings(str(toto.id), set)
 
                 elif reaction.emoji == '❌':

@@ -1,0 +1,14 @@
+FROM python:3.7.2-alpine3.8
+
+WORKDIR /usr/src/web
+
+COPY requirements_web.txt ./
+
+
+RUN apk add git && \
+    pip install -r requirements_web.txt
+
+
+COPY ./api .
+
+CMD ["python", "rest.py"]

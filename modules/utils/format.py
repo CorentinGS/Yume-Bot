@@ -106,7 +106,7 @@ class Embeds():
 
         return em
 
-    async def format_get_set_embed(self, ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel, automod):
+    async def format_get_set_embed(self, ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod):
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)

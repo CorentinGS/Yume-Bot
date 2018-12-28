@@ -34,8 +34,6 @@ class Set:
         def check(reaction, user):
             return user == ctx.message.author and str(reaction.emoji)
 
-        if not 'mute' in set:
-            set['muteRole'] = False
         if not 'Greet' in set:
             set['Greet'] = False
         if not 'bl' in set:
@@ -53,7 +51,6 @@ class Set:
 
         await Settings().set_server_settings(str(guild.id), set)
 
-        mute = set['muteRole']
         greet = set['Greet']
         blacklist = set['bl']
         logging = set['logging']
@@ -61,7 +58,7 @@ class Set:
         logchannel = set['LogChannel']
         automod = set['automod']
 
-        em = await Embeds().format_get_set_embed(ctx, guild, mute, greet, greetchannel, blacklist, logging, logchannel, automod)
+        em = await Embeds().format_get_set_embed(ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod)
 
         reactions = ["✏", '❌']
 
@@ -118,7 +115,7 @@ class Set:
             await ctx.send('👎')
 
         else:
-        
+
             if reaction.emoji == '🔨':
                 await msg.clear_reactions()
                 if ctx.message.author in glob["VIP"]:
