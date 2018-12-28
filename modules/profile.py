@@ -43,6 +43,8 @@ class Profile:
             set['level'] = 0
         if 'reach' not in set:
             set['reach'] = 0
+        if 'vip' not in set:
+            set['vip'] = False
 
         await Settings().set_user_settings(str(user.id), set)
 
