@@ -23,6 +23,61 @@ def get_password(username):
 def unauthorized():
     return 'Not authorized', 404
 
+class Global(Resource):
+    @auth.login_required
+    
+
+    def get(self, id):
+            set = Settings().get_glob_settings()
+            return set, 200
+
+    def put(self, id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('VIP')
+
+
+        args = parser.parse_args()
+
+        set = Settings().get_glob_settings()
+        set["VIP"] = args['VIP']
+
+        Settings().set_glob_settings(set)
+
+        return set, 201
+
+class Guild(Resource):
+    @auth.login_required
+    def get(self, id):
+
+        if not Settings().get_server_settings(str(id)):
+            return 'Guild not found', 404
+        else:
+            set = Settings().get_server_settings(str(id))
+            return set, 200
+
+    def put(self, id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('Greet')
+        parser.add_argument('bl')
+        parser.add_argument('logging')
+        parser.add_argument('GreetChannel')
+        parser.add_argument('LogChannel')
+        parser.add_argument('automod')
+
+
+        args = parser.parse_args()
+
+        set = Settings().get_user_settings(str(id))
+        set["Greet"] = args['Greet']
+        set['bl'] = args['bl']
+        set['logging'] = args['logging']
+        set['GreetChannel'] = args['GreetChannel']
+        set['automod'] = args['automod']
+
+        Settings().set_server_settings(str(id), set)
+
+        return set, 201
+
 
 class User(Resource):
     @auth.login_required
