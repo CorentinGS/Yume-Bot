@@ -131,5 +131,7 @@ class User(Resource):
 
 
 api.add_resource(User, "/user/<string:id>")
+api.add_resource(Guild, "/guild/<string:id>")
+api.add_resource(Global, "/global")
 
 app.run(host='0.0.0.0', port=4437, debug=True)
