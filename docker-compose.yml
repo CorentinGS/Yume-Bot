@@ -14,7 +14,7 @@ services:
     restart: always
     build:
         context: .
-        Dockerfile: Dockerfile_bot
+        dockerfile: Dockerfile_bot
     links:
         - mongo
     #volumes:
@@ -23,7 +23,7 @@ services:
     restart: always
     build:
         context: .
-        Dockerfile: Dockerfile_web
+        dockerfile: Dockerfile_web
     ports:
       - 4437:4437
     restart: always
