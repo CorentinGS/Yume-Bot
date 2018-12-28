@@ -9,7 +9,7 @@ services:
       - MONGO_DATA_DIR=/var/lib/data/db
       - MONGO_LOG_DIR=/dev/null
     volumes:
-      - mongodb:/var/lib/data/db
+      - ./data/mongodb:/var/lib/data/db
   bot:
     restart: always
     build:
@@ -31,7 +31,4 @@ services:
     #    - .:/usr/src/web
     links:
       - mongo
-volumes:
-  - type: bind
-    name: mongodb
-    source: ./data/mongodb
+
