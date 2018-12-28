@@ -31,7 +31,7 @@ bot.config = config
 bot.ready = False
 
 log = logging.getLogger('bot')
-logging.basicConfig(level=logging.ERROR, filename="error.log", filemode="a+",
+logging.basicConfig(level=logging.CRITICAL, filename="error.log", filemode="a+",
                     format="%(asctime)-15s %(levelname)-8s %(message)s")
 
 print('Connecting...')
@@ -52,7 +52,7 @@ async def on_connect():
     print("Connected")
 
 
-
+'''
 @bot.event
 async def on_command_error(ctx, exception):
     log.error(str(exception))
@@ -60,7 +60,7 @@ async def on_command_error(ctx, exception):
         await ctx.send(str(exception))
 
 
-'''
+
 @bot.event
 async def on_error(event, *args, **kwargs):
    cl log.error(event + ' : ' + str(args) + " " + str(kwargs))
