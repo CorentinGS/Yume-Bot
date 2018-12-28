@@ -1,6 +1,6 @@
 FROM python:3.7.2-alpine3.8
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/web
 
 COPY requirements_web.txt ./
 
@@ -11,4 +11,4 @@ RUN apk add git && \
 
 COPY ./api .
 
-CMD ["python", "./api/rest.py"]
+CMD ["python", "rest.py"]
