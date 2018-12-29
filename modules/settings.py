@@ -268,6 +268,8 @@ class Set:
                 return
 
 
+# TODO : Refaire le system de channels et les proposer automatiquement quand on active !
+
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
