@@ -267,21 +267,6 @@ class Set:
                 await msg.delete()
                 return
 
-    @setting.command()
-    @commands.guild_only()
-    @commands.has_permissions(administrator=True)
-    async def muterole(self, ctx, arg: str = None):
-        server = str(ctx.guild.id)
-        set = await Settings().get_server_settings(server)
-        if arg.lower().startswith('on'):
-            set['muteRole'] = True
-        elif arg.lower().startswith('off'):
-            set['muteRole'] = False
-        else:
-            return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
-        await Settings().set_server_settings(server, set)
-
-        await ctx.send('OK !', delete_after=5)
 
     @setting.command()
     @commands.guild_only()
@@ -311,7 +296,7 @@ class Set:
             return await ctx.send('Invalid Channel')
 
         else:
-            set['LogChannel'] = int(channel.id)
+            set['LogChannel'] = str(channel.id)
 
         await Settings().set_server_settings(server, set)
 
@@ -341,7 +326,7 @@ class Set:
             return await ctx.send('Invalid Channel')
 
         else:
-            set['GreetChannel'] = int(channel.id)
+            set['GreetChannel'] = str(channel.id)
 
         await Settings().set_server_settings(server, set)
 
