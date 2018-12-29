@@ -3,7 +3,7 @@ import pymongo
 class Settings():
 
     def __init__(self):
-        self.client = pymongo.MongoClient('127.0.0.1', 27017)
+        self.client = pymongo.MongoClient('mongo', 27017)
 
         self.db = self.client.bot
 
