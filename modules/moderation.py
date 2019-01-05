@@ -45,18 +45,10 @@ class Moderation:
         set['Mute'].append(user.id)
         await Settings().set_server_settings(str(guild.id), set)
 
+        for chan in ctx.guild.text_channels:
+            await chan.set_permissions(user, send_messages=False)
 
-        try:
-            for chan in ctx.guild.text_channels:
-                await chan.set_permissions(user, send_messages=False)
-        except discord.HTTPException:
-            success = False
-            return await ctx.send('Failed to Mute {}'.format(user))
-        else:
-            success = True
- 
-
-        em = await Embeds().format_mod_embed(ctx, user, success, 'mute', duration)
+        em = await Embeds().format_mod_embed(ctx, user, 'mute', duration)
 
         if set['logging'] is True:
             if 'LogChannel' in set:
@@ -68,6 +60,8 @@ class Moderation:
             await ctx.send(embed=em)
 
         await asyncio.sleep(time)
+
+        set = await Settings().get_server_settings(str(guild.id))
 
         if user.id in set['Mute']:
             await ctx.invoke(self.unmute, user)
@@ -81,24 +75,16 @@ class Moderation:
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
 
+        for chan in ctx.guild.text_channels:
+            await chan.set_permissions(user, overwrite=None)
 
-        try:
-            for chan in ctx.guild.text_channels:
-                await chan.set_permissions(user, overwrite=None)
-        except discord.HTTPException:
-            success = False
-            return await ctx.send('Failed to unmute {}'.format(user))
-        else:
-            success = True
-
-        
         if set['Mute']:
             if user.id not in set['Mute']:
                 return
             set['Mute'].remove(user.id)
         await Settings().set_server_settings(str(guild.id), set)
 
-        em = await Embeds().format_mod_embed(ctx, user, success, 'unmute')
+        em = await Embeds().format_mod_embed(ctx, user, 'unmute')
         if set['logging'] is True:
             if 'LogChannel' in set:
                 channel = self.bot.get_channel(int(set['LogChannel']))
@@ -117,17 +103,9 @@ class Moderation:
 
         await ctx.message.delete()
 
-        try:
-            await ctx.guild.kick(user)
+        await ctx.guild.kick(user)
 
-        except discord.Forbidden:
-            success = False
-            return await ctx.send('Forbidden')
-
-        else:
-            success = True
-
-        em = await Embeds().format_mod_embed(ctx, user, success, 'kick')
+        em = await Embeds().format_mod_embed(ctx, user, 'kick')
 
         if setting['logging'] is True:
             if 'LogChannel' in setting:
@@ -145,20 +123,11 @@ class Moderation:
 
         await ctx.message.delete()
         user = discord.Object(id=id)
-
-        try:
-            await ctx.guild.ban(user)
-
-        except discord.Forbidden:
-            success = False
-            return await ctx.send("Forbidden")
-
-        else:
-            success = True
+        await ctx.guild.ban(user)
 
         banned = await self.bot.get_user_info(id)
 
-        em = await Embeds().format_mod_embed(ctx, banned, success, 'hackban')
+        em = await Embeds().format_mod_embed(ctx, banned, 'hackban')
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -181,17 +150,9 @@ class Moderation:
         user = discord.Object(id=id)
         banned = await self.bot.get_user_info(id)
 
-        try:
-            await ctx.guild.unban(user)
+        await ctx.guild.unban(user)
 
-        except discord.HTTPException:
-            success = False
-            return
-
-        else:
-            success = True
-
-        em = await Embeds().format_mod_embed(ctx, banned, success, 'unban')
+        em = await Embeds().format_mod_embed(ctx, banned, 'unban')
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -210,24 +171,11 @@ class Moderation:
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
 
-
         await ctx.message.delete()
 
-        try:
-            await ctx.guild.ban(user, reason=reason, delete_message_days=7)
+        await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
-        except discord.Forbidden:
-            success = False
-            return await ctx.send("Forbidden")
-
-        except discord.HTTPException:
-            success = False
-            return await ctx.send("HTTPException")
-
-        else:
-            success = True
-
-        em = await Embeds().format_mod_embed(ctx, user, success, 'ban')
+        em = await Embeds().format_mod_embed(ctx, user, 'ban')
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -368,7 +316,6 @@ class Moderation:
             await user.remove_roles(role)
             await asyncio.sleep(1)
 
-     
 
 def setup(bot):
     bot.add_cog(Moderation(bot))

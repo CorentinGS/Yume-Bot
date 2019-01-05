@@ -15,8 +15,6 @@ with open('./config/config.json', 'r') as cjson:
 
 OWNER = config["owner_id"]
 
-tip = random.choice(lists.tip)
-
 
 class General:
 
@@ -40,6 +38,7 @@ class General:
 
     @commands.command(aliases=['gmto', 'gweather'])
     async def gmeteo(self, ctx, city: str = "Paris"):
+        tip = random.choice(lists.tip)
 
         await ctx.message.delete()
 
@@ -75,6 +74,8 @@ class General:
 
     @commands.command(aliases=["mto", "weather"])
     async def meteo(self, ctx, city: str = "Paris"):
+
+        tip = random.choice(lists.tip)
 
         await ctx.message.delete()
 

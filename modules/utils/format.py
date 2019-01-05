@@ -11,25 +11,22 @@ from modules.utils import lists
 
 class Embeds():
 
-    async def format_mod_embed(self, ctx, user, success, command, duration=None):
+    async def format_mod_embed(self, ctx, user, command, duration=None):
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name=f"{command}", icon_url=user.avatar_url)
         em.set_footer(text=f'Tip: {tip}')
-        if success:
-            if command == 'ban' or command == 'hackban':
-                em.description = f'**{user}** was just {command}ned...'
-            elif command == 'mute':
-                em.description = f'**{user}** was just muted for {duration}...'
-            elif command == 'unmute':
-                em.description = f'**{user}** was just unmuted...'
-            elif command == 'kick':
-                em.description = f'**{user}** was just kicked...'
-            elif command == 'unban':
-                em.description = f'**{user}** was just unbanned...'
-            else:
-                pass
+        if command == 'ban' or command == 'hackban':
+            em.description = f'**{user}** was just {command}ned...'
+        elif command == 'mute':
+            em.description = f'**{user}** was just muted for {duration}...'
+        elif command == 'unmute':
+            em.description = f'**{user}** was just unmuted...'
+        elif command == 'kick':
+            em.description = f'**{user}** was just kicked...'
+        elif command == 'unban':
+            em.description = f'**{user}** was just unbanned...'
         else:
             return
 
@@ -118,7 +115,7 @@ class Embeds():
         em.add_field(name="Blacklist", value=blacklist)
         em.add_field(name="Logging", value=logging)
         em.add_field(name="Log Channel", value=logchannel)
-        em.add_field(name = 'Automod', value=automod)
+        em.add_field(name='Automod', value=automod)
 
         return em
 
@@ -195,8 +192,8 @@ class Embeds():
             em.add_field(name='**Status**',
                          value=f'❤ **{lover}**', inline=False)
 
-        em.add_field(name = "**Level**", value = f"{level}")
-        em.add_field(name = '**Xp**', value=f"{xp}/{reach}")
+        em.add_field(name="**Level**", value=f"{level}")
+        em.add_field(name='**Xp**', value=f"{xp}/{reach}")
 
         return em
 

@@ -21,11 +21,14 @@ class Event:
         glob = await Settings().get_glob_settings()
         if 'Mute' in server:
             if member.id in server['Mute']:
-                role = discord.utils.get(member.guild.roles, name="Muted")
-                if role:
-                    await member.add_roles(role)
-                else:
-                    pass
+                for chan in guild.text_channels:
+                    await chan.set_permissions(member, send_messages=False)
+                if server['logging'] is True:
+                    if 'LogChannel' in server:
+                        channel = self.bot.get_channel(int(server['LogChannel']))
+                    else:
+                        pass
+  
             else:
                 pass
 
