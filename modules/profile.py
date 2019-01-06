@@ -274,6 +274,8 @@ class Profile:
                     await msg.delete()
                     await ctx.invoke(self.declaration)
 
+                    # TODO: Add divorce
+
                 elif reaction.emoji == '❌':
                     await msg.delete()
                     return
@@ -281,6 +283,7 @@ class Profile:
     @love.command()
     async def declaration(self, ctx):
         await ctx.send('Please Mention the person you love !')
+
 
         def msgcheck(m):
             return m.author == ctx.message.author
@@ -294,6 +297,14 @@ class Profile:
         else:
             toto = ctx.message.author
             user = m.mentions[0]
+            set = await Settings().get_user_settings(str(toto.id))
+
+            if set['status'] == "taken":
+                ex = await self.bot.get_user_info(int(set['lover']))
+                set = await Settings().get_user_settings(str(ex.id))
+                set['status'] = "alone"
+                set['lover'] = str(ex.id)
+                await Settings().set_user_settings(str(ex.id), set)
 
             em = await Embeds().format_love_embed(ctx, toto, 'declaration')
             reactions = ["✅", '❌']
