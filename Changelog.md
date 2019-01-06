@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.1.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.1.3) - 2018-06-01
+
+### Added
+
+- Stats channels
+- Antimute bypass
+
+### Fixed
+
+- Unmute
+- Embed system
+
+
 ## [2.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-29
 
 
