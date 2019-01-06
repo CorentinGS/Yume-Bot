@@ -38,3 +38,7 @@ greet = [
     "Welcome in the server ! ", "Have a good time!", "Welcome ! Don't forget to read the rules",
     "Hello, little thing! Have a good time. "
 ]
+
+leave = [
+    "See you soon", "Thank you for participating in the server", "See you next time", 'Goodbye', "Have a good continuation", "Take care of yourself"
+]

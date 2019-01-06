@@ -52,7 +52,7 @@ async def on_connect():
     print("Connected")
 
 
-'''
+
 @bot.event
 async def on_command_error(ctx, exception):
     log.error(str(exception))
@@ -63,8 +63,8 @@ async def on_command_error(ctx, exception):
 
 @bot.event
 async def on_error(event, *args, **kwargs):
-   cl log.error(event + ' : ' + str(args) + " " + str(kwargs))
-'''
+   log.error(event + ' : ' + str(args) + " " + str(kwargs))
+
 
 @bot.event
 async def on_ready():

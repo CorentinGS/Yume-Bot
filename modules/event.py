@@ -25,10 +25,11 @@ class Event:
                     await chan.set_permissions(member, send_messages=False)
                 if server['logging'] is True:
                     if 'LogChannel' in server:
-                        channel = self.bot.get_channel(int(server['LogChannel']))
+                        channel = self.bot.get_channel(
+                            int(server['LogChannel']))
                     else:
                         pass
-  
+
             else:
                 pass
 
@@ -60,6 +61,64 @@ class Event:
             else:
                 pass
 
+        if 'Display' in server:
+            if server['Display'] is True:
+                category = discord.utils.get(
+                    member.guild.categories, id=int(server['category']))
+                for channel in category.channels:
+                    await channel.delete()
+
+                overwrite = {
+                    member.guild.default_role: discord.PermissionOverwrite(connect=False),
+                } 
+                    
+                await member.guild.create_voice_channel(f'Users : {len(member.guild.members)}', overwrites = overwrite, category = category)
+                bots = []
+                for user in member.guild.members:
+                    if user.bot is True:
+                        bots.append(user)
+                await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites = overwrite, category = category)
+                await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}', overwrites = overwrite, category = category)
+
+
+    async def on_member_remove(self, member):
+        guild = member.guild
+        server = await Settings().get_server_settings(str(guild.id))
+
+        if 'Display' in server:
+            if server['Display'] is True:
+                category = discord.utils.get(
+                    member.guild.categories, id=int(server['category']))
+                for channel in category.channels:
+                    await channel.delete()
+
+                overwrite = {
+                    member.guild.default_role: discord.PermissionOverwrite(connect=False),
+                } 
+                    
+                await member.guild.create_voice_channel(f'Users : {len(member.guild.members)}', overwrites = overwrite, category = category)
+                bots = []
+                for user in member.guild.members:
+                    if user.bot is True:
+                        bots.append(user)
+                await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites = overwrite, category = category)
+                await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}', overwrites = overwrite, category = category)
+
+        if 'Greet' in server:
+            if server['Greet'] is True:
+                if 'GreetChannel' in server:
+                    channel = self.bot.get_channel(int(server['GreetChannel']))
+                    leave = random.choice(lists.leave)
+
+                    em = discord.Embed(timestamp=member.joined_at)
+                    em.set_author(name="Left", icon_url=member.avatar_url)
+                    em.set_footer(text=f'{member.name}')
+                    em.description = f"{leave}"
+                    await channel.send(embed=em)
+                else:
+                    pass
+            else:
+                pass
     async def on_message(self, message):
         server = await Settings().get_server_settings(str(message.guild.id))
         author = message.author

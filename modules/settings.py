@@ -48,6 +48,10 @@ class Set:
             set['automod'] = False
         if not 'Mute' in set:
             set['Mute'] = []
+        if not 'Display' in set:
+            set['Display'] = False
+        if not 'category' in set:
+            set['category'] = None
 
         await Settings().set_server_settings(str(guild.id), set)
 
@@ -57,8 +61,9 @@ class Set:
         greetchannel = set['GreetChannel']
         logchannel = set['LogChannel']
         automod = set['automod']
+        display = set['Display']
 
-        em = await Embeds().format_get_set_embed(ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod)
+        em = await Embeds().format_get_set_embed(ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod, display)
 
         reactions = ["✏", '❌']
 
@@ -349,6 +354,39 @@ class Set:
 
         await ctx.send('OK !', delete_after=5)
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def display(self, ctx):
+        server = str(ctx.guild.id)
+        set = await Settings().get_server_settings(server)
+        if 'Display' not in set:
+            set['Display'] = False
+
+        if set['Display'] is True:
+            set['Display'] = False
+            await ctx.send('Stats display is now disable')
+            await Settings().set_server_settings(server, set)
+
+        else:
+            set['Display'] = True
+
+            overwrite = {
+                ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
+            }
+
+            category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
+            set['category'] = str(category.id)
+
+            await Settings().set_server_settings(server, set)
+
+            await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite, category=category)
+            bots = []
+            for user in ctx.guild.members:
+                if user.bot is True:
+                    bots.append(user)
+            await ctx.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
+            await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}', overwrites=overwrite, category=category)
 
 
 def setup(bot):
