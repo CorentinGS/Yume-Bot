@@ -53,7 +53,11 @@ class Moderation:
         if set['logging'] is True:
             if 'LogChannel' in set:
                 channel = self.bot.get_channel(int(set['LogChannel']))
-                await channel.send(embed=em)
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
+
             else:
                 pass
         else:
@@ -88,7 +92,10 @@ class Moderation:
         if set['logging'] is True:
             if 'LogChannel' in set:
                 channel = self.bot.get_channel(int(set['LogChannel']))
-                await channel.send(embed=em)
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
             else:
                 pass
         else:
@@ -110,7 +117,10 @@ class Moderation:
         if setting['logging'] is True:
             if 'LogChannel' in setting:
                 channel = self.bot.get_channel(int(setting['LogChannel']))
-                await channel.send(embed=em)
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
             else:
                 pass
         else:
@@ -135,7 +145,10 @@ class Moderation:
         if setting['logging'] is True:
             if 'LogChannel' in setting:
                 channel = self.bot.get_channel(int(setting['LogChannel']))
-                await channel.send(embed=em)
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
             else:
                 pass
         else:
@@ -160,7 +173,10 @@ class Moderation:
         if setting['logging'] is True:
             if 'LogChannel' in setting:
                 channel = self.bot.get_channel(int(setting['LogChannel']))
-                await channel.send(embed=em)
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
             else:
                 pass
         else:
@@ -183,7 +199,10 @@ class Moderation:
         if setting['logging'] is True:
             if 'LogChannel' in setting:
                 channel = self.bot.get_channel(int(setting['LogChannel']))
-                await channel.send(embed=em)
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
             else:
                 pass
         else:
