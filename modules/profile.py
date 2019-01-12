@@ -55,8 +55,8 @@ class Profile:
         status = set['status']
         description = set['desc']
         lover = await self.bot.get_user_info(int(set['lover']))
-        xp = set['xp']
-        reach = set['reach']
+        xp = int(set['xp'])
+        reach = int(set['reach'])
         level = set['level']
 
         em = await Embeds().format_get_profile_embed(ctx, user, vip, gender, status, lover, description, xp, reach, level)
