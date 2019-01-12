@@ -33,7 +33,6 @@ class Event:
             else:
                 pass
 
-    # TODO: Faire le système d'auto remute au leave/join ! Faire des logs pour les join d'user muted
 
         if 'Blacklist' in glob:
             if member.id in glob['Blacklist']:

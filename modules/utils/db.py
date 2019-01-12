@@ -13,6 +13,7 @@ class Settings():
         self.profiles = self.db.profiles
         self.clans = self.db.clans
         self.keys = self.db.keys
+        self.sanction = self.db.sanction
 
     async def get_glob_settings(self):
         doc = await self.glob.find_one({"_id": 0})
@@ -36,7 +37,7 @@ class Settings():
         return await self.profiles.replace_one({"_id": id}, settings, True)
 
     async def get_clan_settings(self, name):
-        doc = await self.clans.find_one({"_id": id})
+        doc = await self.clans.find_one({"_id": name})
         return doc or {}
 
     async def set_clan_settings(self, name, settings):
@@ -48,3 +49,11 @@ class Settings():
 
     async def set_key_settings(self, name, settings):
         return await self.keys.replace_one({"_id": name}, settings, True)
+
+    async def get_sanction_settings(self, id):
+        doc = await self.sanction.find_one({"_id": id})
+        return doc or {}
+
+    async def set_sanction_settings(self, id, settings):
+        return await self.sanction.replace_one({"_id": id}, settings, True)
+ 

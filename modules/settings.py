@@ -24,6 +24,7 @@ class Set:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get)
 
+
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)

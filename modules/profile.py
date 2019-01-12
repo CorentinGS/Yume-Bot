@@ -274,8 +274,6 @@ class Profile:
                     await msg.delete()
                     await ctx.invoke(self.declaration)
 
-                    # TODO: Add divorce
-
                 elif reaction.emoji == '❌':
                     await msg.delete()
                     return

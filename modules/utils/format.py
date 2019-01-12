@@ -44,7 +44,6 @@ class Embeds():
                 name="Guild", value=f"Name : {guild.name} \n ID : {guild.id}", inline=False)
             em.add_field(name="Content",
                          value=f"{message.content}", inline=False)
-     # TODO: Add Auto invite link !
             em.set_footer(text=tip)
         else:
             pass

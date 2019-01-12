@@ -35,4 +35,5 @@ def guild_only():
     return commands.check(guild_only_check)
 
 
+
 # TODO: Rewrite all check and add dev is_check
