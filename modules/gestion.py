@@ -39,7 +39,7 @@ class Gestion:
             else:
                 return False
 
-        msg = await self.bot.wait_for('message', timeout=60.0, check=check)
+        msg = await self.bot.wait_for('message', timeout=240, check=check)
 
         await msg.delete()
 
