@@ -11,12 +11,12 @@ from modules.utils import lists
 
 class Embeds():
 
-    async def format_mod_embed(self, ctx, user, command, duration=None):
-        tip = random.choice(lists.tip)
+    async def format_mod_embed(self, ctx, user, command, sanction=None, duration=None):
 
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name=f"{command}", icon_url=user.avatar_url)
-        em.set_footer(text=f'Tip: {tip}')
+        if sanction is not None:    
+            em.set_footer(text=f'Sanction ID: {sanction}')
         if command == 'ban' or command == 'hackban':
             em.description = f'**{user}** was just {command}ned...'
         elif command == 'mute':
@@ -27,6 +27,8 @@ class Embeds():
             em.description = f'**{user}** was just kicked...'
         elif command == 'unban':
             em.description = f'**{user}** was just unbanned...'
+        elif command == 'strike':
+            em.description = f'**{user}** was just {command}d...'
         else:
             return
 

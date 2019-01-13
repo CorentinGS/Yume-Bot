@@ -56,4 +56,9 @@ class Settings():
 
     async def set_sanction_settings(self, id, settings):
         return await self.sanction.replace_one({"_id": id}, settings, True)
- 
+
+    async def get_strike_settings(self, guild, user):
+        doc = []
+        async for docu in self.sanction.find({"guild_id" : guild, "user_id": user, "event": "Strike"}):
+            doc.append(docu['_id'])
+        return doc or {}

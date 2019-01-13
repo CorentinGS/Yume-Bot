@@ -44,9 +44,10 @@ class Level:
         if set['level'] == 0:
             set['reach'] = 20
 
-        xp = randint(2, 6)
+  
+        gain = randint(2, 6)
 
-        set['xp'] += xp
+        set['xp'] += gain
         
 
         if set['xp'] >= set['reach']:

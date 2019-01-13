@@ -5,6 +5,8 @@ from discord.ext import commands
 
 from modules.utils import checks, lists
 from modules.utils.db import Settings
+from modules.sanction import Sanction
+
 
 
 class Event:
@@ -118,6 +120,7 @@ class Event:
                     pass
             else:
                 pass
+
     async def on_message(self, message):
         server = await Settings().get_server_settings(str(message.guild.id))
         author = message.author
@@ -140,7 +143,7 @@ class Event:
             if not message.author == message.guild.owner:
                 if 'discord.gg/' in message.content:
                     await message.delete()
-
+                    await Sanction().create_strike(message.author, "Strike", message.guild, "Discord invite link")
                 elif len(message.mentions) > 5:
                     await message.delete()
             else:

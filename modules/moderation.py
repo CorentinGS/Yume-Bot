@@ -6,6 +6,7 @@ from discord.ext import commands
 
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
+from modules.sanction import Sanction
 
 
 class Moderation:
@@ -16,11 +17,40 @@ class Moderation:
         self.bot = bot
         self.config = bot.config
 
+    @commands.command()
+    @commands.guild_only()
+    async def sanction(self, ctx, id):
+        await ctx.message.delete()
+        em = await Sanction().find_sanction(ctx, id)
+        await ctx.send(embed=em)
+
+    @commands.command()
+    @commands.guild_only()
+    async def get(self, ctx, user: discord.Member):
+        await ctx.message.delete()
+        set = await Settings().get_strike_settings(str(ctx.message.guild.id), str(user.id))
+        toto = len(set)
+        for id in set:
+            em = await Sanction().find_sanction(ctx, id)
+            await ctx.send(embed=em)
+        await ctx.send(toto)
+
+
+
+    @commands.command()
+    @commands.guild_only()
+    async def strike(self, ctx, user: discord.Member, reason=None):
+        await ctx.message.delete()
+        
+        id = await Sanction().create_sanction(ctx, user, 'Strike', ctx.message.author, ctx.message.guild, reason)
+        em = await Embeds().format_mod_embed(ctx, user, 'strike', id)
+        await ctx.send(embed=em)
+ 
     @commands.command(aliases=["chut", "tg"])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    async def mute(self, ctx, user: discord.Member, duration):
-
+    async def mute(self, ctx, user: discord.Member, duration, reason=None):
+ 
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
 
@@ -48,7 +78,8 @@ class Moderation:
         for chan in ctx.guild.text_channels:
             await chan.set_permissions(user, send_messages=False)
 
-        em = await Embeds().format_mod_embed(ctx, user, 'mute', duration)
+        id = await Sanction().create_sanction(ctx, user, 'Mute', ctx.message.author, guild, reason, time)
+        em = await Embeds().format_mod_embed(ctx, user, 'mute', id, duration)
 
         if set['logging'] is True:
             if 'LogChannel' in set:
@@ -111,8 +142,8 @@ class Moderation:
         await ctx.message.delete()
 
         await ctx.guild.kick(user)
-
-        em = await Embeds().format_mod_embed(ctx, user, 'kick')
+        id = await Sanction().create_sanction(ctx, user, 'Kick', ctx.message.author, ctx.message.guild, reason)
+        em = await Embeds().format_mod_embed(ctx, user, 'kick', id)
 
         if setting['logging'] is True:
             if 'LogChannel' in setting:
@@ -137,7 +168,8 @@ class Moderation:
 
         banned = await self.bot.get_user_info(id)
 
-        em = await Embeds().format_mod_embed(ctx, banned, 'hackban')
+        _id = await Sanction().create_sanction(ctx, banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
+        em = await Embeds().format_mod_embed(ctx, banned, 'hackban', _id)
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -166,7 +198,6 @@ class Moderation:
         await ctx.guild.unban(user)
 
         em = await Embeds().format_mod_embed(ctx, banned, 'unban')
-
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
 
@@ -191,7 +222,8 @@ class Moderation:
 
         await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
-        em = await Embeds().format_mod_embed(ctx, user, 'ban')
+        id = await Sanction().create_sanction(ctx, user, 'Ban', ctx.message.author, ctx.message.guild, reason)
+        em = await Embeds().format_mod_embed(ctx, user, 'ban', id)
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -335,6 +367,6 @@ class Moderation:
             await user.remove_roles(role)
             await asyncio.sleep(1)
 
-
+ 
 def setup(bot):
     bot.add_cog(Moderation(bot))
