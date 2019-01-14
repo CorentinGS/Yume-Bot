@@ -23,7 +23,7 @@ class Moderation:
         await ctx.message.delete()
         em = await Sanction().find_sanction(ctx, id)
         await ctx.send(embed=em)
-
+    '''
     @commands.command()
     @commands.guild_only()
     async def get(self, ctx, user: discord.Member):
@@ -34,12 +34,12 @@ class Moderation:
             em = await Sanction().find_sanction(ctx, id)
             await ctx.send(embed=em)
         await ctx.send(toto)
-
+    '''
 
 
     @commands.command()
     @commands.guild_only()
-    async def strike(self, ctx, user: discord.Member, reason=None):
+    async def strike(self, ctx, user: discord.Member, *, reason=None):
         await ctx.message.delete()
         
         id = await Sanction().create_sanction(ctx, user, 'Strike', ctx.message.author, ctx.message.guild, reason)
@@ -49,7 +49,7 @@ class Moderation:
     @commands.command(aliases=["chut", "tg"])
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    async def mute(self, ctx, user: discord.Member, duration, reason=None):
+    async def mute(self, ctx, user: discord.Member, duration, *, reason=None):
  
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
