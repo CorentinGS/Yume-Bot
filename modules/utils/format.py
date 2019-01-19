@@ -8,6 +8,22 @@ from modules.utils.db import Settings
 
 from modules.utils import lists
 
+class Mod():
+
+    async def check_embed(self, member, guild, sanctions, time):
+
+        em = discord.Embed(
+            title="{}".format(member.name),
+            description="A new user has joined",
+            color=discord.Colour.magenta()
+        )
+        em.set_author(name=f"{guild.name}")
+        em.set_thumbnail(url=member.avatar_url)
+        em.add_field(name="User", value = f"Name : {member.mention} \nID : {member.id}")
+        em.add_field(name ="Informations", value = f"Sanctions : {sanctions} \nAge : {time}days")
+
+        return em
+
 
 class Embeds():
 
@@ -81,7 +97,6 @@ class Embeds():
                          value="Activate Logging", inline=False)
             em.add_field(name="🆓 **Desactivate**",
                          value="Desactivate Logging", inline=False)
-            em.add_field(name="❔ **Channel**", value="Set the logging channel")
             '''
             if vip is True:
                 em.add_field(name="🎬 **Vip Logging**", value = 'Full logging', inline = False)

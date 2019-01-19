@@ -23,6 +23,7 @@ class Moderation:
         await ctx.message.delete()
         em = await Sanction().find_sanction(ctx, id)
         await ctx.send(embed=em)
+        
     '''
     @commands.command()
     @commands.guild_only()

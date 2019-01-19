@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import random
+from datetime import datetime, timedelta
 
 from modules.utils import lists
 
@@ -115,6 +116,14 @@ class Utilities:
 
         except discord.HTTPException:
             pass
+
+    @commands.command()
+    @commands.guild_only()
+    async def date(self, ctx, member: discord.Member):
+        now = datetime.now()
+        create =  member.created_at
+        time = (now - create).days
+        await ctx.send(f'**{member.name}** has created his account **{time}** days ago')
 
     @commands.command()
     @commands.guild_only()

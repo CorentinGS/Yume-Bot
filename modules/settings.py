@@ -24,6 +24,15 @@ class Set:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get)
 
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def setup(self, ctx):
+        guild = ctx.message.guild
+        set = await Settings().get_server_settings(str(guild.id))
+        return 
+        # TODO: Ajouter des msg à reactions pour chaque paramètres
+
 
     @setting.command()
     @commands.guild_only()
@@ -166,7 +175,7 @@ class Set:
                 await msg.clear_reactions()
                 em = await Embeds().format_set_embed(ctx, guild, 'loggingmenu', vip)
                 await msg.edit(embed=em)
-                reactions = ['📋', '🆓', '❔', '❌']
+                reactions = ['📋', '🆓', '❌']
                 '''
                     if vip is True:
                         reactions.extend(['🎬'])
@@ -189,20 +198,6 @@ class Set:
                         arg = 'off'
                         await ctx.invoke(self.logging, arg)
                         await msg.delete()
-                        if set['LogChannel'] is None:
-                            await ctx.send('Please name a Channel !')
-                            m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
-                            text_channel = m.channel_mentions[0]
-                            await ctx.invoke(self.loggingchannel, text_channel)
-                        else:
-                            await ctx.invoke(self.setting)
-                    elif reaction.emoji == '❔':
-                        await msg.delete()
-                        await ctx.send('Please name a Channel !')
-                        m = await self.bot.wait_for('message', timeout=60.0, check=msgcheck)
-                        text_channel = m.channel_mentions[0]
-                        await ctx.invoke(self.loggingchannel, text_channel)
-                        await ctx.invoke(self.setting)
                     elif reaction.emoji == '❌':
                         await msg.delete()
                         return
@@ -284,27 +279,18 @@ class Set:
         set = await Settings().get_server_settings(server)
         if arg.lower().startswith('on'):
             set['logging'] = True
+            channel = self.bot.get_channel(int(set['LogChannel']))
+            if set['LogChannel'] is None or not channel:
+                overwrite = {
+                ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+                ctx.guild.me : discord.PermissionOverwrite(send_messages = True)
+                }
+                log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
+                set['LogChannel'] = str(log.id)
 
         elif arg.lower().startswith('off'):
             set['logging'] = False
-        else:
-            return await ctx.send(f'{arg} is not a valid argument ! Please use **ON** or **OFF**')
-        await Settings().set_server_settings(server, set)
 
-        await ctx.send('OK !', delete_after=5)
-
-    @setting.command()
-    @commands.guild_only()
-    @commands.has_permissions(administrator=True)
-    async def loggingchannel(self, ctx, channel: discord.TextChannel):
-        server = str(ctx.guild.id)
-        set = await Settings().get_server_settings(server)
-
-        if not channel:
-            return await ctx.send('Invalid Channel')
-
-        else:
-            set['LogChannel'] = str(channel.id)
 
         await Settings().set_server_settings(server, set)
 
