@@ -2,7 +2,7 @@
   "prefix": "--",
   "owner_id": "282233191916634113",
   "dev": ["282233191916634113"],
-  "version": "2.2.2",
+  "version": "2.2.3",
   "modules": ["about", "blacklist", "fun", "general", "help", "moderation", "owner", "utilities", "tags", "event", "settings", "profile", "gestion", "level", "automod"],
   "support": "488765635439099914",
   "changelog": "526037348245438485",
