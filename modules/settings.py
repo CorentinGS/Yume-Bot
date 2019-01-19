@@ -55,15 +55,12 @@ class Set:
         else:
             if reaction.emoji == '✅':
                 set['logging'] = True
-                channel = self.bot.get_channel(int(set['LogChannel']))
-                if set['LogChannel'] is None or not channel:
-                    overwrite = {
-                        ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
-                        ctx.guild.me: discord.PermissionOverwrite(
-                            send_messages=True)
-                    }
-                    log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
-                    set['LogChannel'] = str(log.id)
+                overwrite = {
+                    ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+                    ctx.guild.me: discord.PermissionOverwrite(send_messages=True)
+                }
+                log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
+                set['LogChannel'] = str(log.id)
             elif reaction.emoji == '🚫':
                 set['logging'] = False
 
