@@ -30,9 +30,138 @@ class Set:
     async def setup(self, ctx):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
-        return 
-        # TODO: Ajouter des msg à reactions pour chaque paramètres
+        glob = await Settings().get_glob_settings()
+        reactions = ['✅', '🚫']
+        await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
+        msg = await ctx.send("Do you want to activate the logging  ?")
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
 
+        def check(reaction, user):
+            return user == ctx.message.author and str(reaction.emoji)
+
+        def msgcheck(m):
+            if m.author == ctx.message.author:
+                return True
+            else:
+                return False
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
+
+        else:
+            if reaction.emoji == '✅':
+                set['logging'] = True
+                channel = self.bot.get_channel(int(set['LogChannel']))
+                if set['LogChannel'] is None or not channel:
+                    overwrite = {
+                        ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+                        ctx.guild.me: discord.PermissionOverwrite(
+                            send_messages=True)
+                    }
+                    log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
+                    set['LogChannel'] = str(log.id)
+            elif reaction.emoji == '🚫':
+                set['logging'] = False
+
+        await ctx.send("Ok ! ", delete_after=3)
+        msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
+
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
+
+        else:
+            if reaction.emoji == '✅':
+                set['Greet'] = True
+                await msg.delete()
+                if set['GreetChannel'] is None:
+                    msg = await ctx.send('Please name a Channel !')
+                    m = await self.bot.wait_for('message', timeout=120, check=msgcheck)
+                    text_channel = m.channel_mentions[0]
+                    await msg.delete()
+                    set['GreetChannel'] = str(text_channel.id)
+            elif reaction.emoji == '🚫':
+                set['Greet'] = False
+
+        await ctx.send("Ok ! ", delete_after=3)
+        msg = await ctx.send("Do you want to activate the member stats channels ?")
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
+
+        else:
+            if reaction.emoji == '✅':
+                arg = True
+
+            elif reaction.emoji == '🚫':
+                arg = False
+
+            await msg.delete()
+            await ctx.invoke(self.display, arg)
+
+        await ctx.send("Ok ! ", delete_after=3)
+        msg = await ctx.send("Do you want to activate the blacklist ?")
+
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
+
+        except asyncio.TimeoutError:
+            await ctx.send('👎')
+
+        else:
+            if reaction.emoji == '✅':
+                arg = True
+
+            elif reaction.emoji == '🚫':
+                arg = False
+
+            await msg.delete()
+            set['bl'] = arg
+
+        await ctx.send("Ok ! ", delete_after=3)
+
+        if ctx.message.author in glob["VIP"]:
+            msg = await ctx.send("Do you want to activate the automoderation ?")
+
+            for reaction in reactions:
+                await msg.add_reaction(reaction)
+
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
+
+            except asyncio.TimeoutError:
+                await ctx.send('👎')
+
+            else:
+                if reaction.emoji == '✅':
+                    arg = True
+
+                elif reaction.emoji == '🚫':
+                    arg = False
+
+                set['automod'] = arg
+                await msg.delete()
+
+        await ctx.send('Setup is now done ! Have a good time')
+
+        await Settings().set_server_settings(str(guild.id), set)
 
     @setting.command()
     @commands.guild_only()
@@ -282,15 +411,15 @@ class Set:
             channel = self.bot.get_channel(int(set['LogChannel']))
             if set['LogChannel'] is None or not channel:
                 overwrite = {
-                ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
-                ctx.guild.me : discord.PermissionOverwrite(send_messages = True)
+                    ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+                    ctx.guild.me: discord.PermissionOverwrite(
+                        send_messages=True)
                 }
                 log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
                 set['LogChannel'] = str(log.id)
 
         elif arg.lower().startswith('off'):
             set['logging'] = False
-
 
         await Settings().set_server_settings(server, set)
 
@@ -344,28 +473,21 @@ class Set:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def display(self, ctx):
+    async def display(self, ctx, arg: bool = True):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if 'Display' not in set:
-            set['Display'] = False
 
-        if set['Display'] is True:
-            set['Display'] = False
-            await ctx.send('Stats display is now disable')
-            await Settings().set_server_settings(server, set)
+        set['Display'] = arg
 
-        else:
-            set['Display'] = True
-
+        if arg is True:
             overwrite = {
                 ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
             }
 
             category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
             set['category'] = str(category.id)
-
             await Settings().set_server_settings(server, set)
+
 
             await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite, category=category)
             bots = []
@@ -374,6 +496,8 @@ class Set:
                     bots.append(user)
             await ctx.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
             await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}', overwrites=overwrite, category=category)
+
+        await Settings().set_server_settings(server, set)
 
 
 def setup(bot):
