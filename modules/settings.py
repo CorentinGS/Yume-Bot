@@ -27,6 +27,26 @@ class Set:
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
+    async def role(self, ctx, value, role: discord.Role=None):
+        guild = ctx.message.guild
+        set = await Settings().get_server_settings(str(guild.id))
+
+        if value.lower() == 'mod':
+            set['Mods'].append(str(role.id))
+        elif value.lower() == 'admin':
+            set['Admins'].append(str(role.id))
+        elif value.lower() == 'auto':
+            for role in guild.roles:
+                if role.permissions.administrator or role.permissions.manage_guild is True:
+                    set['Admins'].append(str(role.id))
+                elif role.permissions.ban_members or role.permissions.kick_members is True:
+                    set['Mods'].append(str(role.id))
+
+        await Settings().set_server_settings(str(guild.id), set)
+
+    @setting.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
     async def setup(self, ctx):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
@@ -57,7 +77,8 @@ class Set:
                 set['logging'] = True
                 overwrite = {
                     ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
-                    ctx.guild.me: discord.PermissionOverwrite(send_messages=True)
+                    ctx.guild.me: discord.PermissionOverwrite(
+                        send_messages=True)
                 }
                 log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
                 set['LogChannel'] = str(log.id)
@@ -188,6 +209,10 @@ class Set:
             set['Display'] = False
         if not 'category' in set:
             set['category'] = None
+        if not 'Admins' in set:
+            set['Admins'] = []
+        if not 'Mods' in set:
+            set['Mods'] = []
 
         await Settings().set_server_settings(str(guild.id), set)
 
@@ -397,6 +422,7 @@ class Set:
 
 # TODO : Refaire le system de channels et les proposer automatiquement quand on active !
 
+
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
@@ -484,7 +510,6 @@ class Set:
             category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
             set['category'] = str(category.id)
             await Settings().set_server_settings(server, set)
-
 
             await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite, category=category)
             bots = []

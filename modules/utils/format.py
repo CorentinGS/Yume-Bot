@@ -45,8 +45,6 @@ class Embeds():
             em.description = f'**{user}** was just unbanned...'
         elif command == 'strike':
             em.description = f'**{user}** was just {command}d...'
-        else:
-            return
 
         return em
 

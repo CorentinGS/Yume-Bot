@@ -4,9 +4,19 @@ import datetime
 import discord
 from discord.ext import commands
 
+from modules.sanction import Sanction
+from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.sanction import Sanction
+
+class Check:
+
+    async def check(self, ctx, user: discord.Member):
+        if ctx.message.author.top_role > user.top_role:
+            return True
+        else:
+            await ctx.send("Permission error")
+            return False
 
 
 class Moderation:
@@ -23,35 +33,25 @@ class Moderation:
         await ctx.message.delete()
         em = await Sanction().find_sanction(ctx, id)
         await ctx.send(embed=em)
-        
-    '''
-    @commands.command()
-    @commands.guild_only()
-    async def get(self, ctx, user: discord.Member):
-        await ctx.message.delete()
-        set = await Settings().get_strike_settings(str(ctx.message.guild.id), str(user.id))
-        toto = len(set)
-        for id in set:
-            em = await Sanction().find_sanction(ctx, id)
-            await ctx.send(embed=em)
-        await ctx.send(toto)
-    '''
-
 
     @commands.command()
-    @commands.guild_only()
+    @checks.is_mod()
     async def strike(self, ctx, user: discord.Member, *, reason=None):
+        perm = await Check().check(ctx, user)
+        if perm is False:
+            return
         await ctx.message.delete()
-        
+
         id = await Sanction().create_sanction(ctx, user, 'Strike', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, 'strike', id)
         await ctx.send(embed=em)
- 
+
     @commands.command(aliases=["chut", "tg"])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def mute(self, ctx, user: discord.Member, duration, *, reason=None):
- 
+        perm = await Check().check(ctx, user)
+        if perm is False:
+            return
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
 
@@ -105,8 +105,7 @@ class Moderation:
             return
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
@@ -134,9 +133,11 @@ class Moderation:
             await ctx.send(embed=em)
 
     @commands.command(aliases=['out'])
-    @commands.guild_only()
-    @commands.has_permissions(kick_members=True)
+    @checks.is_mod()
     async def kick(self, ctx, user: discord.Member, *, reason: str = None):
+        perm = await Check().check(ctx, user)
+        if perm is False:
+            return
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
 
@@ -159,8 +160,7 @@ class Moderation:
             await ctx.send(embed=em)
 
     @commands.command(aliases=['preventban', 'preban', 'idban'])
-    @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
+    @checks.is_admin()
     async def hackban(self, ctx, id: int, *, reason: str = None):
 
         await ctx.message.delete()
@@ -188,8 +188,7 @@ class Moderation:
             await ctx.send(embed=em)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
+    @checks.is_admin()
     async def unban(self, ctx, id: int):
 
         await ctx.message.delete()
@@ -215,10 +214,11 @@ class Moderation:
             await ctx.send(embed=em)
 
     @commands.command(aliases=['ciao'])
-    @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
+    @checks.is_mod()
     async def ban(self, ctx, user: discord.Member, *, reason: str = None):
-
+        perm = await Check().check(ctx, user)
+        if perm is False:
+            return
         await ctx.message.delete()
 
         await ctx.guild.ban(user, reason=reason, delete_message_days=7)
@@ -242,8 +242,7 @@ class Moderation:
             await ctx.send(embed=em)
 
     @commands.command(aliases=['clean', 'clear'])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def purge(self, ctx, amount: int):
 
         await ctx.message.delete()
@@ -255,48 +254,42 @@ class Moderation:
             pass
 
     @commands.command(aliases=['deafen'])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def deaf(self, ctx, user: discord.Member):
         await ctx.message.delete()
 
         await user.edit(deafen=True)
 
     @commands.command(aliases=['undeafen'])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def undeaf(self, ctx, user: discord.Member):
         await ctx.message.delete()
 
         await user.edit(deafen=False)
 
     @commands.command(aliases=['novoice'])
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def vmute(self, ctx, user: discord.Member):
         await ctx.message.delete()
 
         await user.edit(mute=True)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def unvmute(self, ctx, user: discord.Member):
         await ctx.message.delete()
 
         await user.edit(mute=False)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def nick(self, ctx, user: discord.Member, name: str = None):
         await ctx.message.delete()
 
         await user.edit(nick=name)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
+    @checks.is_admin()
     async def massban(self, ctx, *members: int):
         await ctx.message.delete()
 
@@ -320,8 +313,7 @@ class Moderation:
             await ctx.send(f'{len(members)} users were banned')
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def mention(self, ctx, role: str):
 
         await ctx.message.delete()
@@ -334,8 +326,7 @@ class Moderation:
         await rolemention.edit(mentionable=False)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @checks.is_mod()
     async def annonce(self, ctx, role: str, *, content):
         await ctx.message.delete()
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
@@ -347,8 +338,7 @@ class Moderation:
         await rolemention.edit(mentionable=False)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_roles=True)
+    @checks.is_admin()
     async def addrole(self, ctx, role: str):
         await ctx.message.delete()
         role = discord.utils.get(ctx.guild.roles, name=role)
@@ -358,8 +348,7 @@ class Moderation:
             await asyncio.sleep(1)
 
     @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(manage_roles=True)
+    @checks.is_admin()
     async def removerole(self, ctx, role: str):
         await ctx.message.delete()
         role = discord.utils.get(ctx.guild.roles, name=role)
@@ -368,6 +357,6 @@ class Moderation:
             await user.remove_roles(role)
             await asyncio.sleep(1)
 
- 
+
 def setup(bot):
     bot.add_cog(Moderation(bot))
