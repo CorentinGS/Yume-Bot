@@ -35,6 +35,11 @@ class Moderation:
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
+    async def reset(self, ctx, member: discord.Member):
+        await Settings().rm_strike_settings(str(ctx.guild.id), str(member.id))
+
+    @commands.command()
     @checks.is_mod()
     async def strike(self, ctx, user: discord.Member, *, reason=None):
         perm = await Check().check(ctx, user)
@@ -196,6 +201,8 @@ class Moderation:
         banned = await self.bot.get_user_info(id)
 
         await ctx.guild.unban(user)
+        await Settings().rm_strike_settings(str(ctx.guild.id), str(id))
+
 
         em = await Embeds().format_mod_embed(ctx, banned, 'unban')
         server = str(ctx.guild.id)

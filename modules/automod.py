@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import asyncio
 
 import discord
 from discord.ext import commands
@@ -7,6 +8,7 @@ from modules.sanction import Sanction
 from modules.utils import checks, lists
 from modules.utils.db import Settings
 from modules.utils.format import Embeds, Mod
+from modules.moderation import Moderation
 
 
 class Checks():
@@ -34,20 +36,17 @@ class Automod:
 
     async def on_message(self, message):
         set = await Settings().get_server_settings(str(message.guild.id))
-        if set['automod'] == True:
-            if not message.author == message.guild.owner:
-
-                if 'discord.gg/' in message.content:
-                    await message.delete()
-                    await Sanction().create_strike(message.author, "Strike", message.guild, "Discord invite link")
-                elif len(message.mentions) > 5:
-                    await message.delete()
-                    await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
+        if message.author is message.guild.author:
+            return
+        elif set['automod'] is True:
+            if 'discord.gg/' in message.content:
+                await message.delete()
+                await Sanction().create_strike(message.author, "Strike", message.guild, "Discord invite link")
+            elif len(message.mentions) > 5:
+                await message.delete()
+                await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
             else:
                 pass
-
-        else:
-            pass
 
     async def on_member_join(self, member):
         guild = member.guild

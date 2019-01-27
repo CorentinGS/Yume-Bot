@@ -4,12 +4,21 @@ All notable changes to this project will be documented in this file. The format 
 [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.4](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2018-23-01
+
+### Added
+
+- Fix permissions
+
+* * * 
+  
 ## [2.2.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2018-19-01
 
 ### Added
 
 - Setup
 
+* * * 
 
 ## [2.2.2](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2018-19-01
 
@@ -21,6 +30,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - some bugs
 
+* * *
+  
 ## [2.2.1](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2018-13-01
 
 ### Added
@@ -33,7 +44,8 @@ All notable changes to this project will be documented in this file. The format 
 
 - some bugs
 
-
+* * *
+  
 ## [2.1.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.1.3) - 2018-06-01
 
 ### Added
@@ -46,7 +58,8 @@ All notable changes to this project will be documented in this file. The format 
 - Unmute
 - Embed system
 
-
+* * *
+  
 ## [2.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-29
 
 

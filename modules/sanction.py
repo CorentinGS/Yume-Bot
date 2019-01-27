@@ -8,6 +8,7 @@ from discord.ext import commands
 
 from modules.utils import checks, lists
 from modules.utils.db import Settings
+from modules.automod import Checks
 
 
 class Sanction:

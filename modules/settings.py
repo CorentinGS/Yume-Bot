@@ -41,7 +41,6 @@ class Set:
                     set['Admins'].append(str(role.id))
                 elif role.permissions.ban_members or role.permissions.kick_members is True:
                     set['Mods'].append(str(role.id))
-
         await Settings().set_server_settings(str(guild.id), set)
 
     @setting.command()
@@ -154,29 +153,8 @@ class Set:
             set['bl'] = arg
 
         await ctx.send("Ok ! ", delete_after=3)
-
-        if ctx.message.author in glob["VIP"]:
-            msg = await ctx.send("Do you want to activate the automoderation ?")
-
-            for reaction in reactions:
-                await msg.add_reaction(reaction)
-
-            try:
-                reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
-
-            except asyncio.TimeoutError:
-                await ctx.send('👎')
-
-            else:
-                if reaction.emoji == '✅':
-                    arg = True
-
-                elif reaction.emoji == '🚫':
-                    arg = False
-
-                set['automod'] = arg
-                await msg.delete()
-
+        await ctx.send('Detecting mod and admin role...', delete_after=5)
+        await ctx.invoke(self.role, 'auto')
         await ctx.send('Setup is now done ! Have a good time')
 
         await Settings().set_server_settings(str(guild.id), set)
