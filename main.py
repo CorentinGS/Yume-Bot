@@ -36,7 +36,7 @@ logging.basicConfig(level=logging.CRITICAL, filename="error.log", filemode="a+",
 
 print('Connecting...')
 
-bot.remove_command('help')
+#bot.remove_command('help')
 
 
 async def status_task():
