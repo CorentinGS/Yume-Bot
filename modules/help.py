@@ -16,7 +16,7 @@ class Help:
 
 
     @commands.command()
-    async def help(self, ctx):
+    async def commands(self, ctx):
         tip = random.choice(lists.tip)
 
         await ctx.message.delete()
