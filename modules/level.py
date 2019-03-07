@@ -54,7 +54,6 @@ class Level:
             set['reach'] = set['reach'] * 1.5
             set['xp'] = 0
             set['level'] += 1
-
         await Settings().set_user_settings(str(user.id), set)
 
 

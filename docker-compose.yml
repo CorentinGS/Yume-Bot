@@ -9,6 +9,11 @@ services:
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./data/mongodb:/data/db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "2"
   bot:
     restart: always
     build:
@@ -16,8 +21,11 @@ services:
       dockerfile: Dockerfile_bot
     links:
         - mongo
-    #volumes:
-    #    - .:/usr/src/app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "3"
   web:
     restart: always
     build:
@@ -26,8 +34,12 @@ services:
     ports:
       - 4437:4437
     restart: always
-    #volumes:
-    #    - .:/usr/src/web
+
     links:
       - mongo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "2"
 

@@ -37,7 +37,6 @@ logging.basicConfig(level=logging.CRITICAL, filename="error.log", filemode="a+",
 print('Connecting...')
 
 
-
 async def status_task():
     while True:
         names = ['{}help'.format(PREFIX), 'Peace and Dream', 'By YumeNetwork']
