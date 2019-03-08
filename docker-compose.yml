@@ -1,7 +1,7 @@
 version: '3'
 services:
   mongo:
-    image: mongo:4.0.6
+    image: mongo:3.6.11
     restart: always
     ports:
       - 27018:27017
@@ -13,7 +13,7 @@ services:
       driver: "json-file"
       options:
         max-size: "500k"
-        max-file: "2"
+        max-file: "5"
   bot:
     restart: always
     build:
@@ -21,11 +21,7 @@ services:
       dockerfile: Dockerfile_bot
     links:
         - mongo
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "500k"
-        max-file: "3"
+
   web:
     restart: always
     build:
@@ -41,5 +37,5 @@ services:
       driver: "json-file"
       options:
         max-size: "500k"
-        max-file: "2"
+        max-file: "5"
 
