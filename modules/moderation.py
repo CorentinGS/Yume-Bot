@@ -9,7 +9,7 @@ from modules.utils.format import Embeds
 from modules.sanction import Sanction
 
 
-class Moderation:
+class Moderation(commands.Cog):
 
     conf = {}
 

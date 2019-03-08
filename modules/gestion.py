@@ -18,7 +18,7 @@ FEEDBACK = config["feedback"]
 GUILD = config['support']
 
 
-class Gestion:
+class Gestion(commands.Cog):
     conf = {}
 
     def __init__(self, bot):

@@ -10,7 +10,7 @@ from modules.utils import checks, lists
 from modules.utils.db import Settings
 
 
-class Sanction:
+class Sanction(commands.Cog):
 
     async def create_sanction(self, ctx, user, event, mod, guild, reason=None, time=None):
         a = datetime.now()

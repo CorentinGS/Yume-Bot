@@ -9,7 +9,7 @@ from modules.utils import checks, lists
 from modules.utils.db import Settings
 
 
-class Owner:
+class Owner(commands.Cog):
 
     conf = {}
 

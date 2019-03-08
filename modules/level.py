@@ -8,7 +8,7 @@ from modules.utils import checks, lists
 from modules.utils.db import Settings
 
 
-class Level:
+class Level(commands.Cog):
 
     conf = {}
 

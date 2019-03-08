@@ -16,7 +16,7 @@ with open('./config/config.json', 'r') as cjson:
 OWNER = config["owner_id"]
 
 
-class General:
+class General(commands.Cog):
 
     conf = {}
 

@@ -8,7 +8,7 @@ from discord.ext import commands
 from modules.utils import checks, lists
 
 
-class About:
+class About(commands.Cog):
 
     conf = {}
 

@@ -9,7 +9,7 @@ from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
 
-class Profile:
+class Profile(commands.Cog):
     conf = {}
 
     def __init__(self, bot):

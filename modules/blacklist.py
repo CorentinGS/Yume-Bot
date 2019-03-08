@@ -4,7 +4,7 @@ from modules.utils import checks
 from modules.utils.db import Settings
 
 
-class Blacklist:
+class Blacklist(commands.Cog):
 
     conf = {}
 

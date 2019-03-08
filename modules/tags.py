@@ -6,7 +6,7 @@ with open('modules/utils/tag.json', 'r') as cjson:
     tags = json.load(cjson)
 
 
-class Tags:
+class Tags(commands.Cog):
     conf = {}
 
     def __init__(self, bot):

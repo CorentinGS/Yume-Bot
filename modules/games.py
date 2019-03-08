@@ -6,7 +6,7 @@ from modules.utils.format import Embeds
 
 
 
-class Games:
+class Games(commands.Cog):
     conf = {}
 
     def __init__(self, bot):
