@@ -8,7 +8,7 @@ from modules.utils import lists
 tip = random.choice(lists.tip)
 
 
-class Utilities:
+class Utilities(commands.Cog):
 
     conf = {}
 

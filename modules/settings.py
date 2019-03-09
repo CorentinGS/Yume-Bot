@@ -9,7 +9,7 @@ from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
 
-class Set:
+class Set(commands.Cog):
 
     conf = {}
 

@@ -19,7 +19,7 @@ class Check:
             return False
 
 
-class Moderation:
+class Moderation(commands.Cog):
 
     conf = {}
 

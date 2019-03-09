@@ -4,7 +4,7 @@ from discord.ext import commands
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
-class Clan:
+class Clan(commands.Cog):
 
     conf = {}
 

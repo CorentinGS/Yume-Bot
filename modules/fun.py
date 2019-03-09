@@ -15,7 +15,7 @@ with open('./config/keys.json', 'r') as cjson:
     keys = json.load(cjson)
 
 
-class Fun:
+class Fun(commands.Cog):
 
     conf = {}
 

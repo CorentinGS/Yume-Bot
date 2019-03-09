@@ -6,7 +6,7 @@ from discord.ext import commands
 from modules.utils import lists
 
 
-class Help:
+class Help(commands.Cog):
 
     conf = {}
 

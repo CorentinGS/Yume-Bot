@@ -26,7 +26,7 @@ class Checks():
         return sanctions, time
 
 
-class Automod:
+class Automod(commands.Cog):
 
     conf = {}
 
