@@ -1,6 +1,8 @@
 import json
 import os
 import random
+import aiohttp
+
 
 import discord
 from discord.ext import commands
@@ -15,6 +17,22 @@ class About(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+    @commands.command()
+    async def req(self, ctx):
+        url = "http://localhost:8080/people/4"
+
+        async with aiohttp.ClientSession() as cs:
+            async with cs.post(url, data= ({"firstname": "Toto",
+                  "lastname": "Yume",
+                    "address": { 
+                        "city": "Nice",   
+                        "state": "06"  }
+                        })) as r:
+
+                toto = await r.text()
+                await ctx.send(toto)
+
 
     @commands.command()
     async def about(self, ctx):
