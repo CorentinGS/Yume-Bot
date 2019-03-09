@@ -9,7 +9,7 @@ from modules.sanction import Sanction
 
 
 
-class Event(commands.Cog)
+class Event(commands.Cog):
 
     conf = {}
 
