@@ -2,6 +2,8 @@ import json
 import os
 import random
 import aiohttp
+import requests
+
 
 
 import discord
@@ -20,19 +22,23 @@ class About(commands.Cog):
 
     @commands.command()
     async def req(self, ctx):
-        url = "http://localhost:8080/people/4"
+        url = "http://akumu:8080/people/2"
+        data = "{\n  \"firstname\": \"Toto\",\n  \"lastname\": \"Yume\",\n  \"address\": {\n    \"city\": \"Nice\",\n    \"state\": \"CA\"\n  }\n}"
 
         async with aiohttp.ClientSession() as cs:
-            async with cs.post(url, data= ({"firstname": "Toto",
-                  "lastname": "Yume",
-                    "address": { 
-                        "city": "Nice",   
-                        "state": "06"  }
-                        })) as r:
+            async with cs.post(url, data=data) as r:
 
                 toto = await r.text()
                 await ctx.send(toto)
 
+    @commands.command()
+    async def toto(self, ctx):
+        url = "http://akumu:8080/people/6"
+
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(url) as r:
+                toto = await r.text()
+                await ctx.send(toto)
 
     @commands.command()
     async def about(self, ctx):
