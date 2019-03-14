@@ -6,12 +6,10 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-from modules.utils import checks, lists
 from modules.utils.db import Settings
-from modules.automod import Checks
 
 
-class Sanction(commands.Cog):
+class Sanction():
 
     async def create_sanction(self, ctx, user, event, mod, guild, reason=None, time=None):
         a = datetime.now()
@@ -82,6 +80,3 @@ class Sanction(commands.Cog):
             em.add_field(name="Date", value=set['date'])
 
         return em
-
-
-# TODO: Ajouter les "event" dans la base

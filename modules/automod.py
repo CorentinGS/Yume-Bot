@@ -5,13 +5,12 @@ import discord
 from discord.ext import commands
 
 from modules.sanction import Sanction
-from modules.utils import checks, lists
 from modules.utils.db import Settings
 from modules.utils.format import Embeds, Mod
 from modules.moderation import Moderation
 
 
-class Checks():
+class Checks:
 
     async def member_check(self, member):
         guild = member.guild

@@ -4,6 +4,8 @@ import logging
 import re
 import sys
 
+import traceback
+
 try:
     from discord.ext import commands
     import discord
@@ -78,6 +80,10 @@ async def on_ready():
                 loaded -= 1
                 print('Failed to load module {} : {}'.format(module, e))
                 log.error('Failed to load module {} : {}'.format(module, e))
+                print(f'Failed to load extension {extension}.', file=sys.stderr)
+
+                traceback.print_exc()
+
 
         print('Logged in.')
         print('Username : ' + bot.user.name)
