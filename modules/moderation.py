@@ -9,7 +9,7 @@ from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
-class Check:
+class Check(commands.Cog):
 
     async def check(self, ctx, user: discord.Member):
         if ctx.message.author.top_role > user.top_role:
@@ -26,6 +26,7 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+        print('lol')
 
     @commands.command()
     @commands.guild_only()
@@ -366,4 +367,5 @@ class Moderation(commands.Cog):
 
 
 def setup(bot):
+    print("toto")
     bot.add_cog(Moderation(bot))
