@@ -56,6 +56,8 @@ class Level(commands.Cog):
             set['level'] += 1
         await Settings().set_user_settings(str(user.id), set)
 
+        await bot.process_commands(message)
+
 
 
 

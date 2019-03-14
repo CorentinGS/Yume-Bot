@@ -116,5 +116,7 @@ class Event(commands.Cog):
         else:
             pass
 
+        await bot.process_commands(message)
+
 def setup(bot):
     bot.add_cog(Event(bot))

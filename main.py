@@ -31,7 +31,7 @@ bot.config = config
 bot.ready = False
 
 log = logging.getLogger('bot')
-logging.basicConfig(level=logging.CRITICAL, filename="error.log", filemode="a+",
+logging.basicConfig(level=logging.ERROR, filename="error.log", filemode="a+",
                     format="%(asctime)-15s %(levelname)-8s %(message)s")
 
 print('Connecting...')

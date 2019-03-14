@@ -48,6 +48,8 @@ class Automod(commands.Cog):
             else:
                 pass
 
+        await bot.process_commands(message)
+
     async def on_member_join(self, member):
         guild = member.guild
         set = await Settings().get_server_settings(str(guild.id))
