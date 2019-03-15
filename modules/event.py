@@ -17,6 +17,7 @@ class Event(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         guild = member.guild
         server = await Settings().get_server_settings(str(guild.id))
@@ -56,7 +57,7 @@ class Event(commands.Cog):
                 await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites = overwrite, category = category)
                 await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}', overwrites = overwrite, category = category)
 
-
+    @commands.Cog.listener()
     async def on_member_remove(self, member):
         guild = member.guild
         server = await Settings().get_server_settings(str(guild.id))
@@ -95,7 +96,8 @@ class Event(commands.Cog):
                     pass
             else:
                 pass
-
+                
+    @commands.Cog.listener()
     async def on_message(self, message):
         author = message.author
         glob = await Settings().get_glob_settings()

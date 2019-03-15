@@ -30,7 +30,7 @@ class Level(commands.Cog):
 
         await ctx.send("{} is level {} | {} / {}".format(user.name, set['level'], set['xp'], set['reach']))
 
-
+    @commands.Cog.listener()
     async def on_message(self, message):
         user = message.author
 
