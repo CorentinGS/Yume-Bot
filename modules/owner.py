@@ -17,6 +17,37 @@ class Owner(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
+    @commands.command(hidden=True)
+    @checks.is_owner()
+    async def load(self, ctx, *, cog:str):
+        try:
+            self.bot.load_extension('modules.' + cog)
+        except Exception as e:
+            await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
+        else:
+            await ctx.send('**`SUCCESS`**')    
+
+    @commands.command(hidden=True)
+    @checks.is_owner()
+    async def unload(self, ctx, *, cog:str):
+        try:
+            self.bot.unload_extension('modules.' + cog)
+        except Exception as e:
+            await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
+        else:
+            await ctx.send('**`SUCCESS`**')   
+
+    @commands.command(hidden=True)
+    @checks.is_owner()
+    async def reload(self, ctx, *, cog:str):
+        try:
+            self.bot.unload_extension('modules.' + cog)
+            self.bot.load_extension('modules.' + cog)
+        except Exception as e:
+            await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
+        else:
+            await ctx.send('**`SUCCESS`**')   
+
     @commands.command(aliases=['say'])
     @checks.is_owner()
     async def echo(self, ctx, *, content):
@@ -28,6 +59,7 @@ class Owner(commands.Cog):
 
         except discord.HTTPException:
             pass
+
 
     @commands.command()
     @checks.is_owner()
@@ -136,7 +168,6 @@ class Owner(commands.Cog):
 
         else:
             return await ctx.send('User is not VIP')
-
 
 def setup(bot):
     bot.add_cog(Owner(bot))

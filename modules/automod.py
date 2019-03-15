@@ -33,6 +33,7 @@ class Automod(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         set = await Settings().get_server_settings(str(message.guild.id))
         if message.author is message.guild.author:
@@ -47,6 +48,7 @@ class Automod(commands.Cog):
             else:
                 pass
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         guild = member.guild
         set = await Settings().get_server_settings(str(guild.id))
