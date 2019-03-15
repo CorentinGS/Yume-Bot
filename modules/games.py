@@ -56,6 +56,8 @@ class Games(commands.Cog):
         if hub is None:
             return await ctx.send("You must setup your guild before starting the game !\nUse **--werewolf setup**")
 
+        await ctx.send("Loading...")
+
 
 def setup(bot):
     bot.add_cog(Games(bot))
