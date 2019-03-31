@@ -58,6 +58,17 @@ class Games(commands.Cog):
 
         await ctx.send("Loading...")
 
+    
+        if len(hub.members) < 15:
+            return await ctx.send("You should be at least 15 to play !")
+
+        #TODO: Ajouter des possibilités à moins que 15 mais virer certains roles ! 
+
+        if len(hub.members) > 20:
+            return await ctx.send("You can't be more than 20 !")
+
+        
+
 
 def setup(bot):
     bot.add_cog(Games(bot))
