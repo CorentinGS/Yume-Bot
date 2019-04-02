@@ -18,7 +18,6 @@ class Help(commands.Cog):
     @commands.command()
     async def commands(self, ctx):
         tip = random.choice(lists.tip)
-
         await ctx.message.delete()
 
         embed = discord.Embed(
