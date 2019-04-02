@@ -61,7 +61,7 @@ class Owner(commands.Cog):
             pass
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def dm(self, ctx, user: discord.Member, *, content):
 
@@ -74,7 +74,7 @@ class Owner(commands.Cog):
         except discord.HTTPException:
             pass
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def send(self, ctx, channel: discord.TextChannel, *, content):
 
@@ -86,7 +86,7 @@ class Owner(commands.Cog):
         except discord.HTTPException:
             pass
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def speak(self, ctx):
 
@@ -96,25 +96,25 @@ class Owner(commands.Cog):
 
         await ctx.send(f'{answer}')
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def logout(self, ctx):
         await ctx.send('`YumeBot is Logging out...`')
         await self.bot.logout()
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def stop(self, ctx):
         await ctx.send("```YumeBot is Stopping...```")
         await self.bot.logout()
         sys.exit(1)
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def exit(self, ctx):
         sys.exit(1)
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def key(self, ctx, name):
         key = secrets.token_urlsafe(20)
@@ -123,7 +123,7 @@ class Owner(commands.Cog):
         set = await Settings().set_key_settings(str(name), set)
         await ctx.author.send('The key is : **{}**'.format(str(key)))
 
-    @commands.command()
+    @commands.command(hidden=True)
     @checks.is_owner()
     async def guild(self, ctx):
         await ctx.message.delete()
@@ -134,13 +134,13 @@ class Owner(commands.Cog):
 
         await ctx.author.send(embed=em)
 
-    @commands.group()
+    @commands.group(hidden=True)
     @checks.is_owner()
     async def vip(self, ctx):
         if ctx.invoked_subcommand is None:
             return await ctx.send('specify an argument')
 
-    @vip.command()
+    @vip.command(hidden=True)
     async def add(self, ctx, id: int):
         user = await self.bot.get_user_info(id)
         await ctx.message.delete()
@@ -155,7 +155,7 @@ class Owner(commands.Cog):
         await Settings().set_glob_settings(setting)
         await ctx.send(f"{user} is now VIP")
 
-    @vip.command()
+    @vip.command(hidden=True)
     async def remove(self, ctx, id: int):
         user = await self.bot.get_user_info(id)
         await ctx.message.delete()
