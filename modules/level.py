@@ -43,11 +43,8 @@ class Level(commands.Cog):
     @level.command()
     @commands.has_permissions(administrator=True)
     async def set(self, ctx, level: int, role: str):
-  
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
         set = await Settings().get_server_settings(str(ctx.message.guild.id))
-        if not "levels" in set:
-            set["levels"] = {}
         toto = set["levels"]
         toto[str(level)] = str(rolemention.id)
 
@@ -66,8 +63,6 @@ class Level(commands.Cog):
             dic['xp'] = 0
         if 'level' not in dic:
             dic['level'] = 0
-        if 'levels' not in toto:
-            toto["levels"] = {}
 
         if dic['level'] == 0:
             dic['reach'] = 20
@@ -80,6 +75,7 @@ class Level(commands.Cog):
             dic['reach'] = dic['reach'] * 1.5
             dic['xp'] = 0
             dic['level'] += 1
+
             lvl = toto["levels"]
             for key in lvl:
                 if int(key) == dic['level']:
