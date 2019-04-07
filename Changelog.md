@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- Update cogs ! 
+- Update cogs !
 
 ## [2.2.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2019-19-01
 
@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Setup
 
-* * * 
+---
 
 ## [2.2.2](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2019-19-01
 
@@ -44,7 +44,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - some bugs
 
-
 ## [2.1.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.1.3) - 2019-06-01
 
 ### Added
@@ -57,10 +56,9 @@ All notable changes to this project will be documented in this file. The format 
 - Unmute
 - Embed system
 
-* * *
-  
-## [2.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-29
+---
 
+## [2.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-29
 
 ### Changed
 
@@ -75,401 +73,391 @@ All notable changes to this project will be documented in this file. The format 
 - Profiles
 - Fun modules
 
-* * *
+---
 
 ## [2.0.5](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-23
 
-
 ### Fixed
 
--  Mute error
+- Mute error
 
 ### Remove
 
--  Role mute
+- Role mute
 
-
-* * *
+---
 
 ## [2.0.4](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-23
 
-
 ### Added
 
--   Global Level system
--   Level on Profile
+- Global Level system
+- Level on Profile
 
-
-* * *
+---
 
 ## [2.0.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-22
 
-
 ### Added
 
--   List all Tags (tags command)
--   Add role to all members
--   Remove role to all members
+- List all Tags (tags command)
+- Add role to all members
+- Remove role to all members
 
-
-* * *
-
+---
 
 ## [2.0.2](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-19
 
 ### Added
 
--   New suggestion / feedback / changelog channel system
+- New suggestion / feedback / changelog channel system
 
 ### Changed
 
--   Review all import
--   Rewrite mention & annonce into moderation
--   Fix old unused variables
+- Review all import
+- Rewrite mention & annonce into moderation
+- Fix old unused variables
 
-* * *
-
+---
 
 ## [2.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-18
 
 ### Added
 
--   Easier channel setup for guild settings
+- Easier channel setup for guild settings
 
-* * *
-
+---
 
 ## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-16
 
 ### Added
 
--   Suggestions
--   Changelog
+- Suggestions
+- Changelog
 
 ### Changed
 
--   Docker on python 3.6
+- Docker on python 3.6
 
-* * *
-
+---
 
 ## [pre-2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/pre-2.0.0) - 2018-12-08
 
 ### Added
 
--   Gif commands
--   AutoModeration
--   tips patched
+- Gif commands
+- AutoModeration
+- tips patched
 
 ### Changed
 
--   Rewrite docker : new image
--   Fix some issues
+- Rewrite docker : new image
+- Fix some issues
 
-* * *
+---
 
 ## [1.4.8](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.7) - 2018-11-30
 
 ### Added
 
--   Get settings
+- Get settings
 
-* * *
+---
 
 ## [1.4.7](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.7) - 2018-11-30
 
 ### Added
 
--   Tips on Embed
--   Jump to a message command (general.py)
--   Description on profile
--   Rest API
+- Tips on Embed
+- Jump to a message command (general.py)
+- Description on profile
+- Rest API
 
 ### Fixed
 
--   A lot of bug
+- A lot of bug
 
 ##### Notes
 
- I've spent a lot of time on this version... If you've any issues with the bot, please contact me or open an issue !
+I've spent a lot of time on this version... If you've any issues with the bot, please contact me or open an issue !
 
-* * *
+---
 
 ## [1.4.6](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.6) - 2018-11-24
 
 ### Added
 
--   Settings for AutoModeration
+- Settings for AutoModeration
 
 ##### Notes
 
-  This version is still in beta...
+This version is still in beta...
 
-* * *
+---
 
 ## [1.4.5](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.5) - 2018-11-19
 
 ### Added
 
--   Logging
+- Logging
 
 ### Fixed
 
--   Some errors
+- Some errors
 
-* * *
+---
 
 ## [1.4.4](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.4) - 2018-11-18
 
 ### Added
 
--   Love Settings
--   Blacklist Settings
+- Love Settings
+- Blacklist Settings
 
 ### Fixed
 
--   Some errors
+- Some errors
 
 ### Changed
 
--   Format embed for profile
+- Format embed for profile
 
-* * *
+---
 
 ## [1.4.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.3) - 2018-11-17
 
 ### Added
 
--   User profile
+- User profile
 
-* * *
+---
 
 ## [1.4.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.2) - 2018-11-09
 
 ### Added
 
--   Setting system
--   New mute method
--   Auto config guild
+- Setting system
+- New mute method
+- Auto config guild
 
-* * *
+---
 
 ## [1.4.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.1) - 2018-11-03
 
 ### Added
 
--   New tags (Support, Documentation, Yume)
--   New format for feedback embed
--   New event
+- New tags (Support, Documentation, Yume)
+- New format for feedback embed
+- New event
 
 ### Fixed
 
--   Auto unmute command
--   some errors
+- Auto unmute command
+- some errors
 
 ### Changed
 
--   Remove Support command
--   Remove Debug command
--   check
+- Remove Support command
+- Remove Debug command
+- check
 
-* * *
+---
 
 ## [1.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.0) - 2018-10-31
 
 ### Added
 
--   New embed style
+- New embed style
 
 ### Changed
 
--   Review all the code (thx @Zenrac)
--   New embed system (for moderation only)
--   Remove cooldown
+- Review all the code (thx @Zenrac)
+- New embed system (for moderation only)
+- Remove cooldown
 
 ### Fixed
 
--   Some errors
+- Some errors
 
 ### Informations
 
 The bot is now public !
 
-* * *
+---
 
 ## [1.3.5](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.5) - 2018-10-31
 
 ### Added
 
--   If mentionned user is AFK, you'll get back the message in dm
--   Tag module
--   Logout/stop commands
+- If mentionned user is AFK, you'll get back the message in dm
+- Tag module
+- Logout/stop commands
 
 ### Fixed
 
--   Mute / unmute error
--   Purge aliases
+- Mute / unmute error
+- Purge aliases
 
 ### Changed
 
--   Lib command in about command
+- Lib command in about command
 
-* * *
+---
 
 ## [1.3.4](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.4) - 2018-10-25
 
 ### Added
 
--   New alias
--   Invite link
+- New alias
+- Invite link
 
 ### Fixed
 
--   some delete messages
--   some return
+- some delete messages
+- some return
 
 ### Changed
 
--   Credit is now About
--   New help
+- Credit is now About
+- New help
 
-* * *
+---
 
 ## [1.3.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.3) - 2018-10-23
 
 ### Added
 
--   Members edit commands
--   Poney command
+- Members edit commands
+- Poney command
 
 ### Changed
 
--   Autodelete messages
+- Autodelete messages
 
-* * *
+---
 
 ## [1.3.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.2) - 2018-10-14
 
 ### Added
 
--   AFK commands
+- AFK commands
 
-* * *
+---
 
 ## [1.3.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.1) - 2018-10-14
 
 ### Changed
 
--   Pymongo --> Motor async
--   New Mute module
--   New Blacklist module
+- Pymongo --> Motor async
+- New Mute module
+- New Blacklist module
 
 ### Fixed
 
--   [issue](https://github.com/yumenetwork/Yume-Bot/issues/2)
+- [issue](https://github.com/yumenetwork/Yume-Bot/issues/2)
 
 ### Added
 
--   db.py
+- db.py
 
-* * *
+---
 
 ## [1.3.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.0) - 2018-10-13
 
 ### Changed
 
--   Rename all modules
--   New main.py
+- Rename all modules
+- New main.py
 
 ### Added
 
--   Some features
+- Some features
 
-* * *
+---
 
 ## [1.2.0a](https://github.com/yumepantai/Yume-Bot/releases/tag/1.2.0a) - 2018-10-13 - OUTDATE
 
 ### Fixed
 
--   Some errors
+- Some errors
 
 ### Added
 
--   New modules
--   Help commands
+- New modules
+- Help commands
 
-* * *
+---
 
 ## [1.1.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.3) - 2018-10-12
 
 ### Added
 
--   Help commands
+- Help commands
 
-* * *
+---
 
 ## [1.1.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.2) - 2018-10-09
 
 ### Added
 
--   Speak commands
+- Speak commands
 
-* * *
+---
 
 ## [1.1.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.1) - 2018-10-06
 
 ### Added
 
--   Meteo
+- Meteo
 
-* * *
+---
 
 ## [1.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.0) - 2018-10-06
 
 ### Added
 
--   Connect event
+- Connect event
 
 ### Changed
 
--   Client is now Bot
+- Client is now Bot
 
-* * *
+---
 
 ## [1.0.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.3) - 2018-10-03
 
 ### Added
 
--   Fun module
--   Http - lists - cache
+- Fun module
+- Http - lists - cache
 
 ### Changed
 
--   Beautify all
+- Beautify all
 
-* * *
+---
 
 ## [1.0.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.2) - 2018-10-03
 
 ### Added
 
--   MassBan
--   Avatar
--   Ram usage
+- MassBan
+- Avatar
+- Ram usage
 
 ### Changed
 
--   is_owner check
+- is_owner check
 
-* * *
+---
 
 ## [1.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.1) - 2018-10-01
 
 ### Patched
 
--   Major feedback error
+- Major feedback error
 
-* * *
+---
 
 ## [Stable - 1.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.0) - 2018-10-01
 
@@ -477,20 +465,20 @@ The bot is now public !
 
 #### Folder
 
--   Add config folder
+- Add config folder
 
 ### Patched
 
--   Owner ID
--   Github template files
+- Owner ID
+- Github template files
 
 ### Added
 
 #### Report
 
--   New feedback commands
+- New feedback commands
 
-* * *
+---
 
 ## [Pre-1.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.0a) - 2018-09-30
 
@@ -498,21 +486,21 @@ The bot is now public !
 
 #### Setup
 
--   Add token.json
--   New Github repo / account
+- Add token.json
+- New Github repo / account
 
 ### Patched
 
--   Kick embed errors
--   Some bug
+- Kick embed errors
+- Some bug
 
 ### Added
 
 #### Info
 
--   New info commands
+- New info commands
 
-* * *
+---
 
 ## [0.0.9](https://github.com/yumepantai/Yume-Bot/releases/tag/0.0.9) - 2018-09-12
 
@@ -520,18 +508,18 @@ The bot is now public !
 
 #### Docker
 
--   Patch docker error while starting
--   New DockerFile
+- Patch docker error while starting
+- New DockerFile
 
 ### Added
 
--   Some new features
--   Bug patching
+- Some new features
+- Bug patching
 
-* * *
+---
 
 ## [0.0.8](https://github.com/yumepantai/Yume-Bot/releases/tag/0.0.8) - 2018-09-09
 
 ### Added
 
--   First pre-release!
+- First pre-release!
