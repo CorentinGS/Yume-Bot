@@ -130,7 +130,10 @@ class Owner(commands.Cog):
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
             chan = guild.text_channels[-1]
-            invite = await chan.create_invite()
+            try:
+                invite = await chan.create_invite()
+            except discord.Forbidden:
+                pass
             em.add_field(
                 name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}", inline=False)
 
