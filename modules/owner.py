@@ -19,34 +19,34 @@ class Owner(commands.Cog):
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def load(self, ctx, *, cog:str):
+    async def load(self, ctx, *, cog: str):
         try:
             self.bot.load_extension('modules.' + cog)
         except Exception as e:
             await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
         else:
-            await ctx.send('**`SUCCESS`**')    
+            await ctx.send('**`SUCCESS`**')
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def unload(self, ctx, *, cog:str):
+    async def unload(self, ctx, *, cog: str):
         try:
             self.bot.unload_extension('modules.' + cog)
         except Exception as e:
             await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
         else:
-            await ctx.send('**`SUCCESS`**')   
+            await ctx.send('**`SUCCESS`**')
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def reload(self, ctx, *, cog:str):
+    async def reload(self, ctx, *, cog: str):
         try:
             self.bot.unload_extension('modules.' + cog)
             self.bot.load_extension('modules.' + cog)
         except Exception as e:
             await ctx.send(f'**`ERROR:`** {type(e).__name__} - {e}')
         else:
-            await ctx.send('**`SUCCESS`**')   
+            await ctx.send('**`SUCCESS`**')
 
     @commands.command(aliases=['say'])
     @checks.is_owner()
@@ -59,7 +59,6 @@ class Owner(commands.Cog):
 
         except discord.HTTPException:
             pass
-
 
     @commands.command(hidden=True)
     @checks.is_owner()
@@ -133,9 +132,11 @@ class Owner(commands.Cog):
             try:
                 invite = await chan.create_invite()
             except discord.Forbidden:
-                pass
-            em.add_field(
-                name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}", inline=False)
+                em.add_field(
+                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
+            else:
+                em.add_field(
+                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}", inline=False)
 
         await ctx.author.send(embed=em)
 
@@ -173,6 +174,7 @@ class Owner(commands.Cog):
 
         else:
             return await ctx.send('User is not VIP')
+
 
 def setup(bot):
     bot.add_cog(Owner(bot))
