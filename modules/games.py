@@ -40,8 +40,13 @@ class Games(commands.Cog):
         set = await Settings().get_games_settings(str(ctx.message.guild.id))
         set['play'] = False
         game = set['game']
-        chan = discord.utils.get(ctx.guild.voice_channels, id=int(game))
-        await chan.delete()
+        try:
+            chan = discord.utils.get(ctx.guild.voice_channels, id=int(game))
+            await chan.delete()
+        except discord.NotFound:
+            pass
+        except discord.Forbidden:
+            return await ctx.send("I need more permissions to be able to to that")
  
         await Settings().set_games_settings(str(ctx.message.guild.id), set)
 
