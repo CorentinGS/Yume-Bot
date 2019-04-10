@@ -409,6 +409,17 @@ class Set(commands.Cog):
         set = await Settings().get_server_settings(server)
         if arg.lower().startswith('on'):
             set['logging'] = True
+
+            if not set['LogChannel'] is None:
+                channel = set['LogChannel']
+                try:
+                    chan = ctx.guild.get_channel(int(channel))
+                    await chan.delete()
+                except discord.NotFound:
+                    pass
+                except discord.Forbidden:
+                    return await ctx.send("I need more permissions to be able to to that")
+
             channel = self.bot.get_channel(int(set['LogChannel']))
             if set['LogChannel'] is None or not channel:
                 overwrite = {
@@ -486,7 +497,6 @@ class Set(commands.Cog):
                 cat = set["category"]
                 try:
                     chan = discord.utils.get(ctx.guild.categories, id=int(cat))
-                    print(chan.name)
                     for channel in chan.channels:
                         await channel.delete()
                     await chan.delete()
