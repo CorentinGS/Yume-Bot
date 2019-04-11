@@ -27,7 +27,7 @@ class Set(commands.Cog):
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def role(self, ctx, value, role: discord.Role=None):
+    async def role(self, ctx, value, role: discord.Role = None):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
 
@@ -409,6 +409,17 @@ class Set(commands.Cog):
         set = await Settings().get_server_settings(server)
         if arg.lower().startswith('on'):
             set['logging'] = True
+
+            if not set['LogChannel'] is None:
+                channel = set['LogChannel']
+                try:
+                    chan = ctx.guild.get_channel(int(channel))
+                    await chan.delete()
+                except discord.NotFound:
+                    pass
+                except discord.Forbidden:
+                    return await ctx.send("I need more permissions to be able to to that")
+
             channel = self.bot.get_channel(int(set['LogChannel']))
             if set['LogChannel'] is None or not channel:
                 overwrite = {
@@ -481,11 +492,25 @@ class Set(commands.Cog):
         set['Display'] = arg
 
         if arg is True:
+
+            if not set['category'] is None:
+                cat = set["category"]
+                try:
+                    chan = discord.utils.get(ctx.guild.categories, id=int(cat))
+                    for channel in chan.channels:
+                        await channel.delete()
+                    await chan.delete()
+                except discord.NotFound:
+                    pass
+                except discord.Forbidden:
+                    return await ctx.send("I need more permissions to be able to to that")
+
             overwrite = {
                 ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
             }
 
             category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
+
             set['category'] = str(category.id)
             await Settings().set_server_settings(server, set)
 

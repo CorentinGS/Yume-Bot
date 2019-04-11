@@ -1,35 +1,37 @@
 # Yume Bot
 
--   An useful bot for discord
+- An useful bot for discord
 
 ## Table of Contents
 
-1.  [About the Project](#about-the-project)
-2.  [Project Status](#project-status)
-3.  [Release Process](#release-process)
-    1.  [Versioning](#versioning)
-4.  [How to Get Help](#how-to-get-help)
-5.  [Further Reading](#further-reading)
-6.  [Contributing](#contributing)
-7.  [License](#license)
-8.  [Authors](#authors)
-9.  [Acknowledgements](#acknowledgements)
+- [Yume Bot](#yume-bot)
+  - [Table of Contents](#table-of-contents)
+  - [About the Project](#about-the-project)
+  - [Project Status](#project-status)
+  - [Release Process](#release-process)
+  - [Versioning](#versioning)
+  - [How to Get Help](#how-to-get-help)
+  - [Contributing](#contributing)
+  - [Further Reading](#further-reading)
+  - [License](#license)
+  - [Authors](#authors)
+  - [Acknowledgments](#acknowledgments)
 
-# About the Project
+## About the Project
 
--   We provide an useful discord bot
--   We want to improve the discord community
+- We provide an useful discord bot
+- We want to improve the discord community
 
 **[Back to top](#table-of-contents)**
 
-# Project Status
+## Project Status
 
 The project is still in the process of being developed! We are only at the beginning so don't hesitate to help us.
 We are looking for python developers and community managers.
 
 **[Back to top](#table-of-contents)**
 
-# Release Process
+## Release Process
 
 We regularly update the bot regularly!
 
@@ -37,26 +39,26 @@ We regularly update the bot regularly!
 
 This project uses [Semantic Versioning](http://semver.org/). For a list of available versions, see the [repository tag list](https://github.com/yumenetwork/Yume-bot/tags).
 
-# How to Get Help
+## How to Get Help
 
--   [Email](mailto:contact@yumenetwork.fr)
--   [Discord](https://invite.gg/yumenetwork​)
-
-# Contributing
+- [Email](mailto:contact@yumenetwork.fr)
+- [Discord](https://invite.gg/yumenetwork​)
+  
+## Contributing
 
 We encourage public contributions! Please review [CONTRIBUTING.md](https://github.com/yumenetwork/Yume-Bot/blob/master/.github/CONTRIBUTING.md) for details on our code of conduct and development process.
 
 **[Back to top](#table-of-contents)**
 
-# Further Reading
+## Further Reading
 
--   [Site](https://www.yumenetwork.fr/)
--   [Code](https://github.com/yumenetwork/Yume-Bot)
--   [Support](https://invite.gg/yumenetwork)
+- [Site](https://www.yumenetwork.fr/)
+- [Code](https://github.com/yumenetwork/Yume-Bot)
+- [Support](https://invite.gg/yumenetwork)
 
 **[Back to top](#table-of-contents)**
 
-# License
+## License
 
 Copyright (c) 2017 Embedded Artistry LLC
 
@@ -64,11 +66,10 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 
 **[Back to top](#table-of-contents)**
 
-# Authors
+## Authors
 
--   **[Yume](https://github.com/yumenetwork)** - _Initial work_
--   **[LemonAdd](https://github.com/LemonAdd)** - _Web development_
--   **[Zenrac](https://github.com/Zenrac)** - _Contributor_
+- **[Yume](https://github.com/yumenetwork)** - _Initial work_
+- **[LemonAdd](https://github.com/LemonAdd)** - _Web development_
 
 You can check the Dev team [here](https://www.yumenetwork.fr/credits.html)
 
@@ -76,7 +77,7 @@ See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/cont
 
 **[Back to top](#table-of-contents)**
 
-# Acknowledgments
+## Acknowledgments
 
 Provide proper credits, shoutouts, and honorable mentions here. Also provide links to relevant repositories, blog posts, or contributors worth mentioning.
 

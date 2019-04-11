@@ -10,9 +10,10 @@ ballresponse = [
 
 
 speak = [
-    'Yume is your god! Bow down', 'Submit to Yume', 'Penguin > all',
+    'YumeBot is your god! Bow down', 'Submit to YumeBot', 'Penguin > all',
     'Long live Linux', 'I bought a Tux at the supermarket yesterday',
-    'Gentoo is for the bearded men', 'I threw the apple out the window'
+    'Gentoo is for the bearded men', 'I threw the apple out the window',
+    "Hey ! I am YumeBot, Humans cyborg relations..."
 
 ]
 
@@ -27,11 +28,9 @@ poney = [
 ]
 
 tip = [
-    "Check our website : https://www.yumenetwork.fr", "Create your own profile using : --profile", "Share the bot to your friends",
-    "Don't forget to vote : https://discordbots.org/bot/456504213262827524", "Check the source here : https://anon.to/VNzGBX",
-    "You can add the bot on any server : https://anon.to/Vuhg1r", "If you have any questions : --feedback", "Use Linux !",
+    "Check our website : https://www.yumenetwork.fr", "Share the bot to your friends", "If you have any questions : --feedback", "Use Linux !",
     "You should ask the Crystal Ball: --8ball [question]", "You want to know who made me ? Check here : https://www.yumenetwork.fr",
-    "Remember the Fifth of November...", "Let threw the apple out the windows...", 'Long live Linux'
+    "Remember the Fifth of November...", "Let threw the apple out the windows..."
 ]
 
 greet = [

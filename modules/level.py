@@ -26,11 +26,15 @@ class Level(commands.Cog):
         if str(user.id) not in set:
 
             d = {"level": 0, "xp": 0, "reach": 20}
-            set[str(ctx.message.author.id)] = d
+            set[str(user.id)] = d
             await Settings().set_user_settings(str(ctx.message.guild.id), set)
 
-        dic = set[str(ctx.message.author.id)]
-        await ctx.send("{} is level {} | {} / {}".format(user.name, dic['level'], dic["xp"], dic['reach']))
+        dic = set[str(user.id)]
+        em = discord.Embed()
+        em.set_author(name=user.name, icon_url=user.avatar_url)
+        em.add_field(name="**Level**", value=dic["level"])
+        em.add_field(name="**Progress**", value="{} / {}".format(dic['xp'], dic['reach']))
+        await ctx.send(embed=em)
 
     @commands.group()
     @commands.guild_only()
@@ -67,12 +71,12 @@ class Level(commands.Cog):
         if dic['level'] == 0:
             dic['reach'] = 20
 
-        gain = randint(2, 6)
+        gain = randint(2, 7)
 
         dic['xp'] += gain
 
         if dic['xp'] >= dic['reach']:
-            dic['reach'] = dic['reach'] * 1.5
+            dic['reach'] = dic['reach'] * 2
             dic['xp'] = 0
             dic['level'] += 1
 
@@ -84,7 +88,7 @@ class Level(commands.Cog):
                     await user.add_roles(role)
 
 
-            await message.channel.send("{} is level {}.".format(user.name, dic['level']))
+            await message.channel.send("{} is now level {}.".format(user.name, dic['level']))
 
         await bot.process_commands(message)
 
