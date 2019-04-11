@@ -24,6 +24,21 @@ class Games(commands.Cog):
     @werewolf.command()
     async def setup(self, ctx):
         set = await Settings().get_games_settings(str(ctx.message.guild.id))
+
+        if not set['category'] is None:
+            cat = set['category']
+            try:
+                chan = discord.utils.get(ctx.guild.categories, id=int(cat))
+                for channel in chan.channels:
+                    await channel.delete()
+                await chan.delete()
+            except discord.Forbidden:
+                return await ctx.send("I need more permissions to be able to to that")
+            except discord.NotFound:
+                pass 
+
+
+
         category = await ctx.guild.create_category_channel("Werewolf")
         set['category'] = str(category.id)
         hub = await ctx.guild.create_voice_channel("Game Hub", user_limit=20, category=category)
