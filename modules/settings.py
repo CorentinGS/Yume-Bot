@@ -52,6 +52,33 @@ class Set(commands.Cog):
         glob = await Settings().get_glob_settings()
         reactions = ['✅', '🚫']
         await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
+
+        if not 'Greet' in set:
+            set['Greet'] = False
+        if not 'bl' in set:
+            set['bl'] = False
+        if not 'logging' in set:
+            set['logging'] = False
+        if not 'GreetChannel' in set:
+            set['GreetChannel'] = None
+        if not 'LogChannel' in set:
+            set['LogChannel'] = None
+        if not 'automod' in set:
+            set['automod'] = False
+        if not 'Mute' in set:
+            set['Mute'] = []
+        if not 'Display' in set:
+            set['Display'] = False
+        if not 'category' in set:
+            set['category'] = None
+        if not 'Admins' in set:
+            set['Admins'] = []
+        if not 'Mods' in set:
+            set['Mods'] = []
+
+        await Settings().set_server_settings(str(guild.id), set)
+
+
         msg = await ctx.send("Do you want to activate the logging  ?")
         for reaction in reactions:
             await msg.add_reaction(reaction)
@@ -73,16 +100,10 @@ class Set(commands.Cog):
 
         else:
             if reaction.emoji == '✅':
-                set['logging'] = True
-                overwrite = {
-                    ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
-                    ctx.guild.me: discord.PermissionOverwrite(
-                        send_messages=True)
-                }
-                log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
-                set['LogChannel'] = str(log.id)
+                await ctx.invoke(self.logging, True)
+
             elif reaction.emoji == '🚫':
-                set['logging'] = False
+                await ctx.invoke(self.logging, False)
 
         await ctx.send("Ok ! ", delete_after=3)
         msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
@@ -404,33 +425,27 @@ class Set(commands.Cog):
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def logging(self, ctx, arg: str = None):
+    async def logging(self, ctx, arg: bool = True):
         server = str(ctx.guild.id)
         set = await Settings().get_server_settings(server)
-        if arg.lower().startswith('on'):
+        if arg is True:
             set['logging'] = True
 
             if not set['LogChannel'] is None:
                 channel = set['LogChannel']
-                try:
-                    chan = ctx.guild.get_channel(int(channel))
-                    await chan.delete()
-                except discord.NotFound:
-                    pass
-                except discord.Forbidden:
-                    return await ctx.send("I need more permissions to be able to to that")
 
-            channel = self.bot.get_channel(int(set['LogChannel']))
-            if set['LogChannel'] is None or not channel:
-                overwrite = {
-                    ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
-                    ctx.guild.me: discord.PermissionOverwrite(
-                        send_messages=True)
-                }
-                log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
-                set['LogChannel'] = str(log.id)
+                chan = discord.utils.get(ctx.guild.channels, id=int(channel))
+                await chan.delete()
 
-        elif arg.lower().startswith('off'):
+            overwrite = {
+                ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+                ctx.guild.me: discord.PermissionOverwrite(
+                    send_messages=True)
+            }
+            log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
+            set['LogChannel'] = str(log.id)
+
+        elif arg is False:
             set['logging'] = False
 
         await Settings().set_server_settings(server, set)
