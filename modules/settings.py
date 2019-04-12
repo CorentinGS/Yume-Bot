@@ -430,12 +430,10 @@ class Set(commands.Cog):
         set = await Settings().get_server_settings(server)
         if arg is True:
             set['logging'] = True
-
-            if not set['LogChannel'] is None:
-                channel = set['LogChannel']
-
-                chan = discord.utils.get(ctx.guild.channels, id=int(channel))
-                await chan.delete()
+            
+            if set["LogChannel"] is not None:
+                channel = self.bot.get_channel(int(set['LogChannel']))
+                await channel.delete()
 
             overwrite = {
                 ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
@@ -444,7 +442,6 @@ class Set(commands.Cog):
             }
             log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
             set['LogChannel'] = str(log.id)
-
         elif arg is False:
             set['logging'] = False
 
@@ -512,13 +509,15 @@ class Set(commands.Cog):
                 cat = set["category"]
                 try:
                     chan = discord.utils.get(ctx.guild.categories, id=int(cat))
-                    for channel in chan.channels:
-                        await channel.delete()
-                    await chan.delete()
                 except discord.NotFound:
                     pass
-                except discord.Forbidden:
-                    return await ctx.send("I need more permissions to be able to to that")
+                else:
+                    try:
+                        for channel in chan.channels:
+                            await channel.delete()
+                        await chan.delete()
+                    except discord.Forbidden:
+                        return await ctx.send("I need more permissions to be able to to that")
 
             overwrite = {
                 ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
