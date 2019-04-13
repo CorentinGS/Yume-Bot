@@ -24,7 +24,6 @@ class Set(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get)
 
-
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
@@ -36,7 +35,6 @@ class Set(commands.Cog):
             set['Setup'] = False
 
         await Settings().set_server_settings(str(guild.id), set)
-
 
         if set['Setup'] is False:
             await ctx.send("You must setup the bot before ! Use **--setting setup**")
@@ -78,7 +76,7 @@ class Set(commands.Cog):
             set['Display'] = False
             set['category'] = None
             set['Admins'] = []
-            set['Mods'] = []   
+            set['Mods'] = []
             set['Setup'] = False
 
         await Settings().set_server_settings(str(guild.id), set)
@@ -133,9 +131,9 @@ class Set(commands.Cog):
             set['Mods'] = []
 
         await Settings().set_server_settings(str(guild.id), set)
- 
+
         set['logging'] = True
-            
+
         overwrite = {
             ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
             ctx.guild.me: discord.PermissionOverwrite(
@@ -143,9 +141,8 @@ class Set(commands.Cog):
         }
         log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
         set['LogChannel'] = str(log.id)
-  
-        await Settings().set_server_settings(str(guild.id), set)
 
+        await Settings().set_server_settings(str(guild.id), set)
 
         msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
         for reaction in reactions:
@@ -200,7 +197,6 @@ class Set(commands.Cog):
                 await ctx.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
                 await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}', overwrites=overwrite, category=category)
 
-
             elif reaction.emoji == '🚫':
                 set['Display'] = False
 
@@ -209,10 +205,10 @@ class Set(commands.Cog):
 
         await ctx.send('Detecting mod and admin role...', delete_after=5)
         for role in guild.roles:
-                if role.permissions.administrator or role.permissions.manage_guild is True:
-                    set['Admins'].append(str(role.id))
-                elif role.permissions.ban_members or role.permissions.kick_members is True:
-                    set['Mods'].append(str(role.id))
+            if role.permissions.administrator or role.permissions.manage_guild is True:
+                set['Admins'].append(str(role.id))
+            elif role.permissions.ban_members or role.permissions.kick_members is True:
+                set['Mods'].append(str(role.id))
         await ctx.send('Setup is now done ! Have a good time')
 
         set['Setup'] = True
