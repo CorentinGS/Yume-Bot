@@ -3,18 +3,14 @@ import json
 import logging
 import re
 import sys
-
+import datetime
 import traceback
 
-try:
-    from discord.ext import commands
-    import discord
-    print("Discord.py is installed")
+from modules.utils.db import Settings
 
-except ImportError:
-    print("Discord.py is not installed.")
-    sys.exit(1)
 
+import discord
+from discord.ext import commands
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -23,9 +19,7 @@ with open('./config/token.json', 'r') as cjson:
     token = json.load(cjson)
 
 modules = config["modules"]
-OWNER = config["owner_id"]
-VERSION = config['version']
-TOKEN = token["token"]
+
 
 def get_prefix(bot, message):
     prefixes = ['--', "y!"]
@@ -35,62 +29,95 @@ def get_prefix(bot, message):
 
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
-async def status_task():
-    while True:
-        names = ['--help', 'Peace and Dream', 'By YumeNetwork']
-        for name in names:
-            await bot.change_presence(activity=discord.Game(name=name))
-            await asyncio.sleep(10)
+
+description = "Yume Bot ! Peace & Dream <3"
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.ERROR)
 
 
-bot = commands.Bot(command_prefix=get_prefix)
-bot.config = config
-bot.ready = False
+class YumeBot(commands.Bot):
+    def __init__(self):
+        super().__init__(command_prefix=get_prefix, description=description,
+                         pm_help=None, help_attrs=dict(hidden=True), fetch_offline_members=False)
 
-log = logging.getLogger('bot')
-logging.basicConfig(level=logging.CRITICAL, filename="error.log", filemode="a+",
-                    format="%(asctime)-15s %(levelname)-8s %(message)s")
+        self.token = token['token']
+        self.ready = False
+        self.config = config
+        self.log = log
+        self.owner = config["owner_id"]
+        self.guild = config['support']
+        self.debug = config['debug']
 
-@bot.event
-async def on_command_error(ctx, exception):
-    log.error(str(exception))
-    if re.match(r'^The check functions for command.*', str(exception)) is None:
-        await ctx.send(str(exception))
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.Forbidden):
+            await ctx.send('You cannot do this.')
+        elif isinstance(error, commands.ArgumentParsingError):
+            await ctx.send(error)
+
+    async def on_ready(self):
+        if not self.ready:
+            self.ready = True
+            print('Logged in.')
+            loaded = len(modules)
+            for module in modules:
+                try:
+                    self.load_extension('modules.' + module)
+                except Exception as e:
+                    loaded -= 1
+                    print('Failed to load module {} : {}'.format(module, e))
+                    traceback.print_exc()
+            print('{}/{} modules loaded'.format(loaded, len(modules)))
+        while True:
+            names = ['--help', 'Peace and Dream', 'By YumeNetwork']
+            for name in names:
+                await self.change_presence(activity=discord.Game(name=name))
+                await asyncio.sleep(10)
+
+    async def on_resumed(self):
+        print('resumed...')
+
+    async def close(self):
+        await super().close()
+        await self.session.close()
+
+    async def on_guild_join(self, guild):
+        await self.wait_until_ready()
+        embed = discord.Embed()
+        embed.title = 'New Guild'
+        embed.set_author(name='{0} <{0.id}>'.format(
+            guild.owner), icon_url=guild.owner.avatar_url)
+        embed.add_field(name='Server', value='{0.name} <{0.id}>'.format(guild))
+        embed.add_field(
+            name='Members', value='**{0}**'.format(len(guild.members)))
+        embed.color = discord.Color.green()
+        embed.timestamp = datetime.datetime.now()
+        server = self.get_guild(int(self.guild))
+        for chan in server.channels:
+            if chan.id == int(self.debug):
+                channel = chan
+        await channel.send(embed=embed)
+
+    async def on_guild_remove(self, guild):
+        await self.wait_until_ready()
+        embed = discord.Embed()
+        embed.title = 'Left Guild'
+        embed.set_author(name='{0} <{0.id}>'.format(
+            guild.owner), icon_url=guild.owner.avatar_url)
+        embed.add_field(name='Server', value='{0.name} <{0.id}>'.format(guild))
+        embed.add_field(
+            name='Members', value='**{0}**'.format(len(guild.members)))
+        embed.color = discord.Color.red()
+        embed.timestamp = datetime.datetime.now()
+        server = self.get_guild(int(self.guild))
+        for chan in server.channels:
+            if chan.id == int(self.debug):
+                channel = chan
+        await channel.send(embed=embed)
+
+    def run(self):
+        super().run(self.token, reconnect=True)
 
 
-
-@bot.event
-async def on_error(event, *args, **kwargs):
-   log.error(event + ' : ' + str(args) + " " + str(kwargs))
-
-print('Connecting...')
-
-@bot.event
-async def on_connect():
-    print("Connected")
-
-
-@bot.event
-async def on_ready():
-    if not bot.ready:
-        bot.ready = True
-        loaded = len(modules)
-        for module in modules:
-            try:
-                bot.load_extension('modules.' + module)
-            except Exception as e:
-                loaded -= 1
-                print('Failed to load module {} : {}'.format(module, e))
-                traceback.print_exc()
-
-
-        print('Logged in.')
-        print('Username : ' + bot.user.name)
-        print('ID : ' + str(bot.user.id))
-        print('Discord.py version : ' + str(discord.__version__))
-        print("Yume bot version : " + VERSION)
-        print('{}/{} modules loaded'.format(loaded, len(modules)))
-        print('Press CTRL+C to exit...')
-        bot.loop.create_task(status_task())
-
-bot.run(TOKEN)
+bot = YumeBot()
+bot.run()
