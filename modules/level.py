@@ -57,7 +57,6 @@ class Level(commands.Cog):
         except discord.NotFound:
             return await ctx.send("We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role")
 
-
         toto = set["levels"]
         toto[str(level)] = str(rolemention.id)
 
@@ -66,6 +65,9 @@ class Level(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         user = message.author
+
+        if user.bot is True:
+            return
 
         set = await Settings().get_user_settings(str(message.guild.id))
         toto = await Settings().get_server_settings(str(message.guild.id))
@@ -78,10 +80,8 @@ class Level(commands.Cog):
         if not "levels" in toto:
             toto["levels"] = {}
 
-
         await Settings().set_server_settings(str(message.guild.id), toto)
         await Settings().set_user_settings(str(message.guild.id), set)
-
 
         dic = set[str(user.id)]
         gain = randint(2, 7)
