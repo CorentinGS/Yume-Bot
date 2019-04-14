@@ -43,6 +43,8 @@ class Moderation(commands.Cog):
     @commands.command()
     @checks.is_mod()
     async def strike(self, ctx, user: discord.Member, *, reason=None):
+        if reason:
+			reason = reason.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
         perm = await Check().check(ctx, user)
         if perm is False:
             return
