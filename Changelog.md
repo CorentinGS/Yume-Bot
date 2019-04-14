@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [2.4.0] - 2019-04-14
+
+### Added
+- Automatic settings on guild join
+
+### Changed
+- Main.py
+
+### Removed
+- Profiles 
+- Settings config
+
+
+### Fixed
+- Automod
+- Settings
+- Main
+
 ## [2.3.4] - 2019-04-14
 
 - New settings system
