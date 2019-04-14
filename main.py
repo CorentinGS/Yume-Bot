@@ -22,7 +22,6 @@ with open('./config/config.json', 'r') as cjson:
 with open('./config/token.json', 'r') as cjson:
     token = json.load(cjson)
 
-#PREFIX = config["prefix"]
 modules = config["modules"]
 OWNER = config["owner_id"]
 VERSION = config['version']
