@@ -228,6 +228,58 @@ class Set(commands.Cog):
 
         await Settings().set_server_settings(str(guild.id), set)
 
+    @setting.command(hidden=True)
+    @checks.is_owner()
+    async def update(self, ctx):
+        for guild in self.bot.guilds:
+            set = await Settings().get_server_settings(str(guild.id))
+            if not "Setup" in set:
+                set["Setup"] is False
+                await Settings().set_server_settings(str(guild.id), set)
+
+            if set['Setup'] is False:
+                set['Greet'] = False
+                set['bl'] = False
+                set['logging'] = False
+                set['GreetChannel'] = None
+                set['LogChannel'] = None
+                set['automod'] = False
+                set['Mute'] = []
+                set['Display'] = False
+                set['category'] = None
+                set['Admins'] = []
+                set['Mods'] = []
+                set['Setup'] = False
+                set['levels'] = {}
+
+            await Settings().set_server_settings(str(guild.id), set)
+
+  
+
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        set = await Settings().get_server_settings(str(guild.id))
+        if not "Setup" in set:
+            set["Setup"] is False
+            await Settings().set_server_settings(str(guild.id), set)
+
+        if set['Setup'] is False:
+            set['Greet'] = False
+            set['bl'] = False
+            set['logging'] = False
+            set['GreetChannel'] = None
+            set['LogChannel'] = None
+            set['automod'] = False
+            set['Mute'] = []
+            set['Display'] = False
+            set['category'] = None
+            set['Admins'] = []
+            set['Mods'] = []
+            set['Setup'] = False
+            set['levels'] = {}
+
+        await Settings().set_server_settings(str(guild.id), set)      
+
 
 def setup(bot):
     bot.add_cog(Set(bot))
