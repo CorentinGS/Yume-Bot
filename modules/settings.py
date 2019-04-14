@@ -255,7 +255,7 @@ class Set(commands.Cog):
     async def on_guild_join(self, guild):
         set = await Settings().get_server_settings(str(guild.id))
         if not "Setup" in set:
-            set["Setup"] is False
+            set["Setup"] = False
             set['Greet'] = False
             set['bl'] = False
             set['logging'] = False
