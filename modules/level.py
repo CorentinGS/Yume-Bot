@@ -75,7 +75,6 @@ class Level(commands.Cog):
         if not str(user.id) in set:
             d = {"level": 0, "xp": 0, "reach": 20}
             set[str(user.id)] = d
-            print(set[str(user.id)])
 
         if not "levels" in toto:
             toto["levels"] = {}
