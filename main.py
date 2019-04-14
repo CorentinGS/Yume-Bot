@@ -6,8 +6,6 @@ import sys
 import datetime
 import traceback
 
-from modules.utils.db import Settings
-
 
 import discord
 from discord.ext import commands
@@ -50,9 +48,7 @@ class YumeBot(commands.Bot):
         self.debug = config['debug']
 
     async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.Forbidden):
-            await ctx.send('You cannot do this.')
-        elif isinstance(error, commands.ArgumentParsingError):
+        if isinstance(error, commands.ArgumentParsingError):
             await ctx.send(error)
 
     async def on_ready(self):

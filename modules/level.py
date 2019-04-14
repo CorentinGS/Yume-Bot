@@ -54,13 +54,17 @@ class Level(commands.Cog):
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
         try:
             rolemention = discord.utils.get(ctx.guild.roles, name=role)
+            print(rolemention.id)
         except discord.NotFound:
             return await ctx.send("We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role")
 
         toto = set["levels"]
         toto[str(level)] = str(rolemention.id)
+        set["levels"] = toto
+        print(set["levels"])
 
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
+        await ctx.send("Level setup")
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -76,10 +80,6 @@ class Level(commands.Cog):
             d = {"level": 0, "xp": 0, "reach": 20}
             set[str(user.id)] = d
 
-        if not "levels" in toto:
-            toto["levels"] = {}
-
-        await Settings().set_server_settings(str(message.guild.id), toto)
         await Settings().set_user_settings(str(message.guild.id), set)
 
         dic = set[str(user.id)]
