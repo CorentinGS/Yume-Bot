@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [2.4.0] - 2019-04-14
+---
+
+## [2.4.1] - 2019-04-15
+- Rest update
+  
+## [2.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.4.0) - 2019-04-14
 
 ### Added
 - Automatic settings on guild join
@@ -22,11 +27,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - Settings
 - Main
 
+---
+
 ## [2.3.4] - 2019-04-14
 
 - New settings system
   
-## [2.3.3] - 2019-04-11
+## [2.3.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.3.3) - 2019-04-11
 
 - Fix rank command
 - Add embed to rank command
@@ -43,8 +50,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - A lot xD
 
----
-
 ## [2.3.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2019-08-03
 
 ### Added
@@ -55,13 +60,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - Update cogs !
 
+---
+
 ## [2.2.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2019-19-01
 
 ### Added
 
 - Setup
-
----
 
 ## [2.2.2](https://github.com/yumepantai/Yume-Bot/releases/tag/2.2.1) - 2019-19-01
 
@@ -85,6 +90,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - some bugs
 
+---
+
 ## [2.1.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.1.3) - 2019-06-01
 
 ### Added
@@ -96,8 +103,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - Unmute
 - Embed system
-
----
 
 ## [2.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-29
 
@@ -126,8 +131,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - Role mute
 
----
-
 ## [2.0.4](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-23
 
 ### Added
@@ -135,7 +138,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - Global Level system
 - Level on Profile
 
----
 
 ## [2.0.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-22
 
@@ -144,8 +146,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - List all Tags (tags command)
 - Add role to all members
 - Remove role to all members
-
----
 
 ## [2.0.2](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-19
 
@@ -159,15 +159,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - Rewrite mention & annonce into moderation
 - Fix old unused variables
 
----
-
 ## [2.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-18
 
 ### Added
 
 - Easier channel setup for guild settings
 
----
 
 ## [2.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.0.0) - 2018-12-16
 
@@ -203,7 +200,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - Get settings
 
----
 
 ## [1.4.7](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.7) - 2018-11-30
 
@@ -218,11 +214,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 - A lot of bug
 
-##### Notes
-
-I've spent a lot of time on this version... If you've any issues with the bot, please contact me or open an issue !
-
----
 
 ## [1.4.6](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.6) - 2018-11-24
 
@@ -230,11 +221,6 @@ I've spent a lot of time on this version... If you've any issues with the bot, p
 
 - Settings for AutoModeration
 
-##### Notes
-
-This version is still in beta...
-
----
 
 ## [1.4.5](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.5) - 2018-11-19
 
@@ -245,8 +231,6 @@ This version is still in beta...
 ### Fixed
 
 - Some errors
-
----
 
 ## [1.4.4](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.4) - 2018-11-18
 
@@ -263,15 +247,11 @@ This version is still in beta...
 
 - Format embed for profile
 
----
-
 ## [1.4.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.3) - 2018-11-17
 
 ### Added
 
 - User profile
-
----
 
 ## [1.4.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.2) - 2018-11-09
 
@@ -280,8 +260,6 @@ This version is still in beta...
 - Setting system
 - New mute method
 - Auto config guild
-
----
 
 ## [1.4.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.1) - 2018-11-03
 
@@ -302,8 +280,6 @@ This version is still in beta...
 - Remove Debug command
 - check
 
----
-
 ## [1.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.4.0) - 2018-10-31
 
 ### Added
@@ -319,10 +295,6 @@ This version is still in beta...
 ### Fixed
 
 - Some errors
-
-### Informations
-
-The bot is now public !
 
 ---
 
@@ -343,8 +315,6 @@ The bot is now public !
 
 - Lib command in about command
 
----
-
 ## [1.3.4](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.4) - 2018-10-25
 
 ### Added
@@ -362,8 +332,6 @@ The bot is now public !
 - Credit is now About
 - New help
 
----
-
 ## [1.3.3](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.3) - 2018-10-23
 
 ### Added
@@ -375,15 +343,12 @@ The bot is now public !
 
 - Autodelete messages
 
----
 
 ## [1.3.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.2) - 2018-10-14
 
 ### Added
 
 - AFK commands
-
----
 
 ## [1.3.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.1) - 2018-10-14
 
@@ -400,8 +365,6 @@ The bot is now public !
 ### Added
 
 - db.py
-
----
 
 ## [1.3.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.3.0) - 2018-10-13
 
@@ -435,7 +398,6 @@ The bot is now public !
 
 - Help commands
 
----
 
 ## [1.1.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.2) - 2018-10-09
 
@@ -443,15 +405,11 @@ The bot is now public !
 
 - Speak commands
 
----
-
 ## [1.1.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.1) - 2018-10-06
 
 ### Added
 
 - Meteo
-
----
 
 ## [1.1.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.1.0) - 2018-10-06
 
@@ -476,8 +434,6 @@ The bot is now public !
 
 - Beautify all
 
----
-
 ## [1.0.2](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.2) - 2018-10-03
 
 ### Added
@@ -490,15 +446,11 @@ The bot is now public !
 
 - is_owner check
 
----
-
 ## [1.0.1](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.1) - 2018-10-01
 
 ### Patched
 
 - Major feedback error
-
----
 
 ## [Stable - 1.0.0](https://github.com/yumepantai/Yume-Bot/releases/tag/1.0.0) - 2018-10-01
 
@@ -557,7 +509,6 @@ The bot is now public !
 - Some new features
 - Bug patching
 
----
 
 ## [0.0.8](https://github.com/yumepantai/Yume-Bot/releases/tag/0.0.8) - 2018-09-09
 
