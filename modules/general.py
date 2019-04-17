@@ -26,15 +26,11 @@ class General(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-
         await ctx.send("Pong !!")
 
     @commands.command()
     async def pong(self, ctx):
-
         await ctx.send("Ping !!")
-
-
 
     @commands.command(aliases=['gmto', 'gweather'])
     async def gmeteo(self, ctx, city: str = "Paris"):
@@ -124,6 +120,16 @@ class General(commands.Cog):
         for msg in messages:
             if msg.id == id:
                 await ctx.send('Url :{}'.format(msg.jump_url))
+
+    @commands.group()
+    async def room(self, ctx):
+        return
+
+    @room.command()
+    async def create(self, ctx, *users : discord.Members):
+        return
+
+    #    TODO: Commands for room create
 
 
 def setup(bot):
