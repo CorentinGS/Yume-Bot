@@ -12,7 +12,6 @@ from modules.utils.format import Embeds
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
-CHANGELOG = config['changelog']
 SUGGESTION = config['suggestion']
 FEEDBACK = config["feedback"]
 GUILD = config['support']
