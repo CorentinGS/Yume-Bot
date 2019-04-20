@@ -98,8 +98,10 @@ class Level(commands.Cog):
                     role = discord.utils.get(
                         message.guild.roles, id=int(lvl[key]))
                     await user.add_roles(role)
-
-            await message.channel.send("{} is now level {}.".format(user.name, dic['level']), delete_after=3)
+            try:
+                await message.channel.send("{} is now level {}.".format(user.name, dic['level']), delete_after=3)
+            except discord.Forbidden:
+                pass
 
         set[str(user.id)] = dic
         await Settings().set_user_settings(str(message.guild.id), set)
