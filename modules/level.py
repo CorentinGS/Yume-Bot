@@ -33,7 +33,8 @@ class Level(commands.Cog):
         em = discord.Embed()
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.add_field(name="**Level**", value=dic["level"])
-        em.add_field(name="**Progress**", value="{} / {}".format(dic['xp'], dic['reach']))
+        em.add_field(name="**Progress**",
+                     value="{} / {}".format(dic['xp'], dic['reach']))
         await ctx.send(embed=em)
 
     @commands.group()
@@ -46,31 +47,42 @@ class Level(commands.Cog):
 
     @level.command()
     @commands.has_permissions(administrator=True)
-    async def set(self, ctx, level: int, role: str):
-        rolemention = discord.utils.get(ctx.guild.roles, name=role)
+    async def config(self, ctx, level: int, role: str):
         set = await Settings().get_server_settings(str(ctx.message.guild.id))
+        if not "levels" in set:
+            set["levels"] = {}
+        await Settings().set_server_settings(str(ctx.message.guild.id), set)
+        try:
+            rolemention = discord.utils.get(ctx.guild.roles, name=role)
+            print(rolemention.id)
+        except discord.NotFound:
+            return await ctx.send("We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role")
+
         toto = set["levels"]
         toto[str(level)] = str(rolemention.id)
+        set["levels"] = toto
+        print(set["levels"])
 
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
+        await ctx.send("Level setup")
 
     @commands.Cog.listener()
     async def on_message(self, message):
         user = message.author
 
+        if user.bot is True:
+            return
+
         set = await Settings().get_user_settings(str(message.guild.id))
         toto = await Settings().get_server_settings(str(message.guild.id))
 
+        if not str(user.id) in set:
+            d = {"level": 0, "xp": 0, "reach": 20}
+            set[str(user.id)] = d
+
+        await Settings().set_user_settings(str(message.guild.id), set)
+
         dic = set[str(user.id)]
-
-        if 'xp' not in dic:
-            dic['xp'] = 0
-        if 'level' not in dic:
-            dic['level'] = 0
-
-        if dic['level'] == 0:
-            dic['reach'] = 20
-
         gain = randint(2, 7)
 
         dic['xp'] += gain
@@ -85,13 +97,16 @@ class Level(commands.Cog):
                 if int(key) == dic['level']:
                     role = discord.utils.get(
                         message.guild.roles, id=int(lvl[key]))
-                    await user.add_roles(role)
-
-
-            await message.channel.send("{} is now level {}.".format(user.name, dic['level']))
-
-        await bot.process_commands(message)
-
+                    try:
+                        await user.add_roles(role)
+                    except discord.Forbidden:
+                        pass
+                    except discord.InvalidArgument:
+                        pass
+            try:
+                await message.channel.send("{} is now level {}.".format(user.name, dic['level']), delete_after=3)
+            except discord.Forbidden:
+                pass
 
         set[str(user.id)] = dic
         await Settings().set_user_settings(str(message.guild.id), set)
