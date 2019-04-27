@@ -23,6 +23,7 @@ class Games(commands.Cog):
 
     @werewolf.command()
     async def setup(self, ctx):
+        print("setup")
         set = await Settings().get_games_settings(str(ctx.message.guild.id))
 
         if not set['category'] is None:
