@@ -47,6 +47,8 @@ class Automod(commands.Cog):
                 await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
             else:
                 pass
+        else:
+            return
 
     @commands.Cog.listener()
     async def on_member_join(self, member):

@@ -21,26 +21,6 @@ class About(commands.Cog):
         self.config = bot.config
 
     @commands.command()
-    async def req(self, ctx):
-        url = "http://akumu:8080/people/2"
-        data = "{\n  \"firstname\": \"Toto\",\n  \"lastname\": \"Yume\",\n  \"address\": {\n    \"city\": \"Nice\",\n    \"state\": \"CA\"\n  }\n}"
-
-        async with aiohttp.ClientSession() as cs:
-            async with cs.post(url, data=data) as r:
-
-                toto = await r.text()
-                await ctx.send(toto)
-
-    @commands.command()
-    async def toto(self, ctx):
-        url = "http://akumu:8080/people/6"
-
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(url) as r:
-                toto = await r.text()
-                await ctx.send(toto)
-
-    @commands.command()
     async def about(self, ctx):
 
         await ctx.message.delete()
