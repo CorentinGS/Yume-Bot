@@ -35,9 +35,7 @@ class Games(commands.Cog):
             except discord.Forbidden:
                 return await ctx.send("I need more permissions to be able to to that")
             except discord.NotFound:
-                pass 
-
-
+                pass
 
         category = await ctx.guild.create_category_channel("Werewolf")
         set['category'] = str(category.id)
@@ -62,10 +60,8 @@ class Games(commands.Cog):
             pass
         except discord.Forbidden:
             return await ctx.send("I need more permissions to be able to to that")
- 
+
         await Settings().set_games_settings(str(ctx.message.guild.id), set)
-
-
 
     @werewolf.command()
     async def start(self, ctx):
@@ -92,7 +88,6 @@ class Games(commands.Cog):
 
         if set['play'] is True:
             return await ctx.send("A game is already started")
-
 
         await ctx.send("Loading...")
 
@@ -122,9 +117,24 @@ class Games(commands.Cog):
         set['game'] = str(game.id)
         await Settings().set_games_settings(str(ctx.message.guild.id), set)
         await ctx.send("Game is starting")
+        data = '{\n\t"ID": "1",\n\t"Players": 20,\n\t"Host": 32,\n\t"Roles": [\n\t\t1,\n\t\t2,\n\t\t3,\n\t\t4,\n\t\t5,\n\t\t6,\n\t\t7,\n\t\t8,\n\t\t9,\n\t\t10,\n\t\t11,\n\t\t12,\n\t\t13,\n\t\t14,\n\t\t15,\n\t\t16,\n\t\t17,\n\t\t18,\n\t\t19,\n\t\t20\n\t]\n}'
 
+        url = "http://akumu:8080/game/{}".format(ctx.guild.id)
 
-        
+        async with aiohttp.ClientSession() as cs:
+            async with cs.post(url, data=data) as r:
+
+                toto = await r.text()
+                await ctx.send(toto)
+
+    @commands.command()
+    async def etefd(self, ctx):
+        url = "http://akumu:8080/people/6"
+
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(url) as r:
+                toto = await r.text()
+                await ctx.send(toto)
 
 
 def setup(bot):

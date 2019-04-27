@@ -121,16 +121,5 @@ class General(commands.Cog):
             if msg.id == id:
                 await ctx.send('Url :{}'.format(msg.jump_url))
 
-    @commands.group()
-    async def room(self, ctx):
-        return
-
-    @room.command()
-    async def create(self, ctx, *users : discord.Members):
-        return
-
-    #    TODO: Commands for room create
-
-
 def setup(bot):
     bot.add_cog(General(bot))
