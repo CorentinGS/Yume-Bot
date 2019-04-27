@@ -1,4 +1,6 @@
 import json
+import aiohttp
+import requests
 
 import discord
 from discord.ext import commands
@@ -20,10 +22,16 @@ class Games(commands.Cog):
     async def werewolf(self, ctx):
         if ctx.invoked_subcommand is None:
             return
+    @werewolf.command()
+    async def init(self, ctx):
+        set = await Settings().get_games_settings(str(ctx.message.guild.id))
+        set["category"] = None
+        await Settings().set_games_settings(str(ctx.message.guild.id), set)
+
+
 
     @werewolf.command()
     async def setup(self, ctx):
-        print("setup")
         set = await Settings().get_games_settings(str(ctx.message.guild.id))
 
         if not set['category'] is None:
@@ -46,8 +54,6 @@ class Games(commands.Cog):
         set['setup'] = True
         set['play'] = False
         await Settings().set_games_settings(str(ctx.message.guild.id), set)
-
-        # TODO: Check if channels are already setup !
 
     @werewolf.command()
     async def stop(self, ctx):
@@ -118,8 +124,9 @@ class Games(commands.Cog):
         set['game'] = str(game.id)
         await Settings().set_games_settings(str(ctx.message.guild.id), set)
         await ctx.send("Game is starting")
+    
         data = '{\n\t"ID": "1",\n\t"Players": 20,\n\t"Host": 32,\n\t"Roles": [\n\t\t1,\n\t\t2,\n\t\t3,\n\t\t4,\n\t\t5,\n\t\t6,\n\t\t7,\n\t\t8,\n\t\t9,\n\t\t10,\n\t\t11,\n\t\t12,\n\t\t13,\n\t\t14,\n\t\t15,\n\t\t16,\n\t\t17,\n\t\t18,\n\t\t19,\n\t\t20\n\t]\n}'
-
+        print(data)
         url = "http://akumu:8080/game/{}".format(ctx.guild.id)
 
         async with aiohttp.ClientSession() as cs:
