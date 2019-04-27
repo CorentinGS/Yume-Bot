@@ -27,7 +27,7 @@ class About(commands.Cog):
 
         VERSION = config["version"]
         OWNER = config["owner_id"]
-        owner = await self.bot.get_user_info(OWNER)
+        owner = await self.bot.fetch_user(OWNER)
 
         total_users = len(self.bot.users)
 
@@ -45,6 +45,7 @@ class About(commands.Cog):
         server = '[Discord](https://invite.gg/yumenetwork)'
         lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
 
+        print("embed")
         embed = discord.Embed(
             title="About",
             colour=discord.Colour.dark_red()
@@ -59,7 +60,7 @@ class About(commands.Cog):
             name="Informations", value=f"__Version__ : {VERSION} \n__Github__ : {github} \n__Site__ : {site} \n__Support__ : {server} \n__Lib__ : {lib}", inline=True)
 
         embed.set_thumbnail(url=owner.avatar_url)
-
+        print('send')
         await ctx.send(embed=embed)
 
 

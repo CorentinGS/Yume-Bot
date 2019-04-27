@@ -174,7 +174,7 @@ class Utilities(commands.Cog):
     @commands.guild_only()
     async def hackwhois(self, ctx, id: int):
 
-        user = await self.bot.get_user_info(id)
+        user = await self.bot.fetch_user(id)
         await ctx.message.delete()
 
         embed = discord.Embed(
