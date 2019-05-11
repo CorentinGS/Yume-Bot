@@ -35,7 +35,8 @@ class Automod(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        set = await Settings().get_server_settings(str(message.guild.id))
+        _id = message.guild.id
+        set = await Settings().get_server_settings(str(_id))
         if message.author is message.guild.owner:
             return
         elif set['automod'] is True:
