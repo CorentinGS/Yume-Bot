@@ -61,7 +61,8 @@ class YumeBot(commands.Bot):
                     self.load_extension('modules.' + module)
                 except Exception as e:
                     loaded -= 1
-                    print('Failed to load module {} : {}'.format(module, e))
+                    print('Failed to load module {} : {}'.format(module, e))￼
+￼
                     traceback.print_exc()
             print('{}/{} modules loaded'.format(loaded, len(modules)))
         while True:
