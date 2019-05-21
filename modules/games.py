@@ -16,22 +16,25 @@ class Ww:
         rdm = random.sample(liste, len(liste))
 
         Roles = {
-            "vovo": rdm[0],
-            "soso": rdm[1],
-            "pf": rdm[2],
-            "boss": rdm[3],
-            "cupidon": rdm[4],
-            "Lg": [],
-            "Sv": []
+            str(rdm[0]): "vovo",
+            str(rdm[1]): "soso",
+            str(rdm[2]): "pf",
+            str(rdm[3]): "boss",
+            str(rdm[4]): "cupidon"
         }
+
         u = len(rdm) - 1
         toto = rdm[5:u]
         t = len(toto) / 2
         g = len(toto) - 1
         lg = toto[0:int(t)]
         sv = toto[int(t):int(g)]
-        Roles["Lg"].append(lg)
-        Roles["Sv"].append(sv)
+
+        for gl in lg:
+            Roles[str(gl)] = "lg"
+        for vs in sv:
+            Roles[str(vs)] = "sv"
+
         return Roles
 
 
@@ -157,12 +160,14 @@ class Games(commands.Cog):
 
         set['play'] = True
         set['game'] = str(game.id)
+        set['Roles'] = {}
         await Settings().set_games_settings(str(ctx.message.guild.id), set)
         await ctx.send("Game is starting")
 
         config = await Ww().role(players)
         await ctx.send(config)
 
+        '''
         set["Roles"] = {
             "voyante": config.get("vovo"),
             "pf": config.get("pf"),
@@ -173,44 +178,32 @@ class Games(commands.Cog):
             "sv": config.get("Sv")
         }
 
-        await Settings().set_games_settings(str(ctx.message.guild.id), set)
+        '''
 
         player = set["Roles"]
 
-        voyante = self.bot.get_user(int(player["voyante"]))
-        await voyante.send("You're the seer ! Every night you can see someone and discover his role... You win with the village")
-
-        pf = self.bot.get_user(int(player["pf"]))
-        await pf.send("You're the pf ! Every night you can see the werewolf chat... You win with the village")
-
-        witch = self.bot.get_user(int(player["sorciere"]))
-        await witch.send("You're the witch ! Every night you can save someone... You win with the village")
-
-        cupidon = self.bot.get_user(int(player["cupidon"]))
-        await cupidon.send("You're the cupidon ! you can setup a couple... You win with the village or the couple")
-
-        boss = await self.bot.get_user(int(player["boss"]))
-        await witch.send("You're the boss ! Your vote count as double... You win with the village")
-
-        for user in player["lg"]:
-            lg = self.bot.get_user(int(user))
-            await lg.send("You're a werewolf!")
-
-        for user in player["sv"]:
-            sv = self.bot.get_user(int(user))
-            await sv.send("You're a simple villager!")
-
+        for user in config:
+            player[user] = {
+                "role": config.get(user),
+                "alive": True,
+                "couple": False
+            }
+            try:
+                u = ctx.guild.get_member(int(user))
+            except discord.NotFound:
+                pass
+            else:
+                await u.send("You're the {}".format(config.get(user)))
+            
         
+        await Settings().set_games_settings(str(ctx.message.guild.id), set)
+
         # TODO: Créer des salons txt pour les roles de team (lg, sv, couple !)
         # Ajuster les permissions
         # Faire le script du jeu
-        # Faire les conditions de mort et de fin 
+        # Faire les conditions de mort et de fin
         # Définir le gagnant ^^
         lg_chan = await ctx.guild.create_text_channel("Game Channel", overwrites=lg_perm, category=category)
-
-
-        while set["play"] is True:
-                
 
 
 def setup(bot):
