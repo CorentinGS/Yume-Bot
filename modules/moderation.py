@@ -35,7 +35,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
-    @commands.guild_only()
+    @checks.is_admin()
     async def reset(self, ctx, member: discord.Member):
         await Settings().rm_strike_settings(str(ctx.guild.id), str(member.id))
 
@@ -320,7 +320,7 @@ class Moderation(commands.Cog):
             await ctx.send(f'{len(members)} users were banned')
 
     @commands.command()
-    @checks.is_mod()
+    @checks.is_admin()
     async def mention(self, ctx, role: str):
 
         await ctx.message.delete()
@@ -333,7 +333,7 @@ class Moderation(commands.Cog):
         await rolemention.edit(mentionable=False)
 
     @commands.command()
-    @checks.is_mod()
+    @checks.is_admin()
     async def annonce(self, ctx, role: str, *, content):
         await ctx.message.delete()
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
@@ -344,6 +344,8 @@ class Moderation(commands.Cog):
         await ctx.send("{} \n{}".format(rolemention.mention, content))
         await rolemention.edit(mentionable=False)
 
+
+    '''
     @commands.command()
     @checks.is_admin()
     async def addrole(self, ctx, role: str):
@@ -363,6 +365,8 @@ class Moderation(commands.Cog):
         for user in ctx.guild.members:
             await user.remove_roles(role)
             await asyncio.sleep(1)
+
+    '''
 
 
 def setup(bot):

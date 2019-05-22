@@ -140,7 +140,7 @@ class Fun(commands.Cog):
         await ctx.message.delete()
         if user is None:
             user = ctx.message.author
-        seed = user.id
+        seed = user.discriminator
         random.seed(seed)
         love = random.randint(1, 100)
 
