@@ -54,6 +54,7 @@ class Fun(commands.Cog):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
+    '''
     @commands.command(aliases=['yt'])
     async def youtube(self, ctx, *, search: str):
         await ctx.message.delete()
@@ -67,6 +68,7 @@ class Fun(commands.Cog):
             await ctx.send(output)
         except discord.Forbidden:
             return
+    '''
 
     @commands.command()
     async def hug(self, ctx, user: discord.Member = None):
@@ -83,6 +85,7 @@ class Fun(commands.Cog):
         embed.set_image(url=data['data']['images']['original']['url'])
         await ctx.send(embed=embed)
 
+    '''
     @commands.command()
     async def loving(self, ctx, user: discord.Member = None):
         await ctx.message.delete()
@@ -98,6 +101,7 @@ class Fun(commands.Cog):
         data = json.loads(response)
         embed.set_image(url=data['data']['images']['original']['url'])
         await ctx.send(embed=embed)
+    '''
 
     @commands.command()
     async def kiss(self, ctx, user: discord.Member = None):
