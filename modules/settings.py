@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 
 import discord
 from discord.ext import commands
@@ -49,7 +48,7 @@ class Set(commands.Cog):
             display = set['Display']
 
             em = await Embeds().format_get_set_embed(ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod, display)
-            msg = await ctx.send(embed=em)
+            await ctx.send(embed=em)
 
     @setting.command()
     @commands.guild_only()
@@ -58,12 +57,12 @@ class Set(commands.Cog):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
         if not "Setup" in set:
-            set["Setup"] is False
+            set["Setup"] = False
 
         await Settings().set_server_settings(str(guild.id), set)
 
         if set['Setup'] is False:
-            return await ctx.send("You must setup your server before reseting it...")
+            return await ctx.send("You must setup your server before reset it...")
 
         else:
             set['Greet'] = False
