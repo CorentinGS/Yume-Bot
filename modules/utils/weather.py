@@ -1,6 +1,6 @@
+import datetime
 import json
 import urllib.request
-import datetime
 
 with open('./config/keys.json', 'r') as cjson:
     keys = json.load(cjson)
