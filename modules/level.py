@@ -71,7 +71,7 @@ class Level(commands.Cog):
 		"""
 		user = message.author
 
-		if user.bot is True:
+		if user.bot is True or message.guild is None:
 			return
 
 		set = await Settings().get_user_settings(str(message.guild.id))

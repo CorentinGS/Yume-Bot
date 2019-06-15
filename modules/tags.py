@@ -1,5 +1,6 @@
 import json
 
+import discord
 from discord.ext import commands
 
 with open('modules/utils/tag.json', 'r') as cjson:
@@ -28,6 +29,13 @@ class Tags(commands.Cog):
 
         await ctx.send('[%s]' % ', '.join(map(str, tags)))
 
+    @commands.command()
+    async def testemote(self, ctx):
+        embed = discord.Embed()
+
+        embed.add_field(name= ":one:", value="toto")
+
+        await ctx.send(embed=embed)
 
 
 def setup(bot):

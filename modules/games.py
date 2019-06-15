@@ -11,7 +11,7 @@ from modules.utils.utils import Utils
 class Ww:
 
 	@staticmethod
-	async def role(liste):
+	async def role(liste: list):
 		rdm = random.sample(liste, len(liste))
 		lg = []
 		sv = []
@@ -212,6 +212,7 @@ class Games(commands.Cog):
 				await ctx.send("{} can't be DM, he'll not be added to the game".format(user.mention), delete_after=3)
 			else:
 				players.append(user.id)
+				await asyncio.sleep(1)
 				await user.move_to(game)
 
 		set['play'] = True
@@ -245,9 +246,6 @@ class Games(commands.Cog):
 				'couple': False,
 				'stolen': False,
 				'master': False,
-				'lg_votes': 0,
-				'votes': 0
-
 			}
 
 			if config.get(user) == "lg":
@@ -291,30 +289,29 @@ class Games(commands.Cog):
 
 		for user in config:
 			if config.get(user) == "voleur":
-				try:
-					voleur: discord.Member = await ctx.guild.get_member(int(user))
-				except Exception as e:
-					stolen = None
-					print(e)
+				voleur = ctx.guild.get_member(int(user))
+				print(voleur.name)
+				if voleur is not None:
+					stolen = await self.voleur_event(ctx, voleur, game)
 				else:
-					stolen = await self.voleur_event(self, voleur, game)
+					stolen = None
 
 		if stolen is not None:
-			toto = str(stolen.id)
-			player[toto]['stolen'] = True
+			player[stolen]['stolen'] = True
 
 		await game_chan.send("The thief falls asleep")
-
+		print("if")
 		if len(players) >= 9:
+			print("toto")
 			for user in config:
 				if config.get(user) == "cupidon":
 					try:
-						cupidon: discord.Member = await ctx.guild.get_member(int(user))
+						cupidon: discord.Member = ctx.guild.get_member(int(user))
 					except TypeError:
 						lover_ = None
 						lover = None
 					else:
-						lover, lover_ = await self.cupidon_event(self, cupidon, game)
+						lover, lover_ = await self.cupidon_event(cupidon, game)
 
 			if lover is not None and lover_ is not None:
 				toto = str(lover.id)
@@ -326,24 +323,72 @@ class Games(commands.Cog):
 				await lover_.send(f'Hi ! You\'re in love with {lover.name}')
 
 			await game_chan.send('The cupidon falls asleep')
-
-		end = False
-
+		print("end")
+		end: bool = False
+		print("while")
 		while end is False:
 			await game_chan.send('The wolves wake up !')
-			await lg_chan.send('You have 40s to choose someone to kill tonight !\n When your choice is done, you can '
+			await lg_chan.send('You have 30s to choose someone to kill tonight !\n When your choice is done, you can '
 			                   'confirm it by reacting to the next message')
 			set["night"] = True
 			await Settings().set_games_settings(str(ctx.message.guild.id), set)
 
-			# TODO: Faire les embed à reactions pour voter...
+			msg, dic = await self.lg_event(ctx, lg_chan, game)
+			print(dic)
+			await asyncio.sleep(30)
+			prev_count: int = 0
+			for reaction in msg.reactions:
+				if reaction.count > prev_count:
+					prev_count = reaction.count
+					emote: str = reaction.emoji.name
 
-			await asyncio.sleep(40)
+			victim = ctx.guild.get_member(int(dic.get(emote)))
+			await lg_chan.send('the victim is {}'.format(victim.name))
 			set['night'] = False
 			await Settings().set_games_settings(str(ctx.message.guild.id), set)
 
+	async def lg_event(self, ctx, lg_chan: discord.TextChannel, game: discord.VoiceChannel):
+		set = await Settings().get_games_settings(str(ctx.message.guild.id))
+		x: int = 0
+		table = {}
+		reactions = []
+		em = discord.Embed(timestamp=ctx.message.created_at)
+		em.set_author(name='Werewolf')
+		player = set["Roles"]
+		for user in game.members:
+			if player[str(user.id)]['role'] != "lg":
+				x += 1
+				emote = await self.get_emote(x)
+				em.add_field(name=f"{emote}", value=f"{user.name}", inline=True)
+				reactions.append(emote)
+				table[emote] = user.id
 
-	async def cupidon_event(self, ctx, cupidon: discord.Member, channel: discord.VoiceChannel):
+		msg = await lg_chan.send(embed=em)
+		for reac in reactions:
+			emoji = discord.utils.get(discord.Emoji, name=reac)
+			print(emoji)
+			await msg.add_reaction(emoji)
+
+		return msg, table
+
+	@staticmethod
+	async def get_emote(num: int) -> str:
+		emotes = {
+			1: "1️⃣",
+			2: "2️⃣",
+			3: "3️⃣",
+			4: "4️⃣",
+			5: "5️⃣",
+			6: "6️⃣",
+			7: "7️⃣",
+			8: "8️⃣",
+			9: "9️⃣",
+			10: "🔟"
+		}
+		emote = emotes.get(num)
+		return emote
+
+	async def cupidon_event(self, cupidon: discord.Member, channel: discord.VoiceChannel):
 		global m
 
 		def msgcheck(m):
@@ -394,28 +439,41 @@ class Games(commands.Cog):
 			return lover, lover_
 
 	async def voleur_event(self, ctx, voleur: discord.Member, channel: discord.VoiceChannel):
-
-		global m
 		await voleur.send("Hi ! You can choose someone to switch roles with when he dies\n"
-		                  "Gives his place in the voice room")
+		                  "you can choose him by reacting to the next message")
 
-		def msgcheck(m):
-			if m.author == voleur and m.channel == voleur.dm_channel:
-				return True
-			else:
-				return False
+		def check(reaction, user):
+			return user == voleur and str(reaction.emoji)
 
+		set = await Settings().get_games_settings(str(ctx.message.guild.id))
+		player = set["Roles"]
+
+		x: int = 0
+		table = {}
+		reactions = []
+		em = discord.Embed(timestamp=ctx.message.created_at)
+		print(em)
+		em.set_author(name='Werewolf')
+		for user in channel.members:
+			if user is not voleur:
+				print(user)
+				x += 1
+				emote = await self.get_emote(x)
+				em.add_field(name=f"{emote}", value=f"{user.name}", inline=True)
+				reactions.append(emote)
+				table[emote] = user.id
+
+		msg = await voleur.send(embed=em)
+		print(msg)
+		for reac in reactions:
+			emoji = discord.utils.get(discord.Emoji, name=reac)
+			await msg.add_reaction(emoji)
 		try:
-			m = await self.bot.wait_for('message', check=msgcheck, timeout=30)
-
+			r, toto = await self.bot.wait_for('reaction', check = check, timeout=15)
 		except asyncio.TimeoutError:
-			await voleur.send('👎', delete_after=3)
-		try:
-			stolen = channel.members[int(m)]
-		except TypeError:
-			stolen = None
+			stolen=None
 		else:
-			await voleur.send("Your victim is " + stolen.name)
+			stolen = table.get(r)
 
 		return stolen
 

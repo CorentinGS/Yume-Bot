@@ -52,7 +52,6 @@ We encourage public contributions! Please review [CONTRIBUTING.md](https://githu
 
 ## Further Reading
 
-- [Site](https://www.yumenetwork.fr/)
 - [Code](https://github.com/yumenetwork/Yume-Bot)
 - [Support](https://invite.gg/yumenetwork)
 
@@ -69,9 +68,6 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 ## Authors
 
 - **[Yume](https://github.com/yumenetwork)** - _Initial work_
-- **[LemonAdd](https://github.com/LemonAdd)** - _Web development_
-
-You can check the Dev team [here](https://www.yumenetwork.fr/credits.html)
 
 See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/contributors) who participated in this project.
 
