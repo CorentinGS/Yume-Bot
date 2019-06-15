@@ -154,7 +154,7 @@ class Games(commands.Cog):
 	@werewolf.command()
 	async def start(self, ctx):
 
-		global voleur
+		global stolen, lover, lover_
 		set = await Settings().get_games_settings(str(ctx.message.guild.id))
 
 		if not 'setup' in set:
@@ -201,7 +201,7 @@ class Games(commands.Cog):
 		game = await ctx.guild.create_voice_channel("Game Channel", overwrites=overwrites, user_limit=len(hub.members),
 		                                            category=category)
 
-		players = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 10]
+		players = [1, 2, 3, 4, 5, 6, 7]
 		lg = []
 
 		for user in hub.members:
@@ -239,9 +239,11 @@ class Games(commands.Cog):
 
 		for user in config:
 			player[user] = {
-				"role": config.get(user),
-				"alive": True,
-				"couple": False
+				'role': config.get(user),
+				'alive': True,
+				'couple': False,
+				'stolen': False,
+				'master': False
 			}
 
 			if config.get(user) == "lg":
@@ -283,19 +285,95 @@ class Games(commands.Cog):
 		await game_chan.send("It's night, the whole village of {} falls asleep, "
 		                     "the players close their eyes".format(ctx.guild.name))
 
-		await game_chan.send("the thief wakes up! ")
+		await game_chan.send("The thief wakes up! ")
 
 		for user in config:
-			if user == "voleur":
-				voleur = await ctx.get_member(int(user))
-
-		stolen = await self.voleur_event(self, voleur, game)
+			if config.get(user) == "voleur":
+				try:
+					voleur: discord.Member = await ctx.guild.get_member(int(user))
+				except Exception as e:
+					stolen = None
+					print(e)
+				else:
+					stolen = await self.voleur_event(self, voleur, game)
 
 		if stolen is not None:
-			toto = config.get(stolen.id)
+			toto = str(stolen.id)
 			player[toto]['stolen'] = True
 
-		await game_chan.send("The thief fall asleep")
+		await game_chan.send("The thief falls asleep")
+
+		if len(players) >= 9:
+			for user in config:
+				if config.get(user) == "cupidon":
+					try:
+						cupidon: discord.Member = await ctx.guild.get_member(int(user))
+					except TypeError:
+						lover_ = None
+						lover = None
+					else:
+						lover, lover_ = await self.cupidon_event(self, cupidon, game)
+
+			if lover is not None and lover_ is not None:
+				toto = str(lover.id)
+				player[toto]['couple'] = True
+				toto_ = str(lover.id)
+				player[toto_]['couple'] = True
+
+				await lover.send("Hi ! You're in love with {}".format(lover_.name))
+				await lover_.send("Hi ! You're in love with {}".format(lover.name))
+
+			await game_chan.send('The cupidon falls asleep')
+
+	async def cupidon_event(self, ctx, cupidon: discord.Member, channel: discord.VoiceChannel):
+		global m
+
+		def msgcheck(m):
+			if m.author == cupidon and m.channel == cupidon.dm_channel:
+				return True
+			else:
+				return False
+
+		await cupidon.send(
+			'Hi, You must choose 2 people to pair up.\n Gives the place of the first lover in the voice room')
+
+		try:
+			m = await self.bot.wait_for('message', check=msgcheck, timeout=20)
+
+		except asyncio.TimeoutError:
+			await cupidon.send('👎', delete_after=3)
+			lover = None
+			lover_ = None
+			return lover, lover_
+		try:
+			lover = channel.members[int(m)]
+		except TypeError:
+			lover = None
+			lover_ = None
+			return lover, lover_
+		else:
+			await cupidon.send('Your first lover is ' + lover.name)
+
+		await cupidon.send('Gives the place of the first lover in the voice room')
+
+		try:
+			m = await self.bot.wait_for('message', check=msgcheck, timeout=20)
+
+		except asyncio.TimeoutError:
+			await cupidon.send('👎', delete_after=3)
+			lover = None
+			lover_ = None
+			return lover, lover_
+		try:
+			lover_ = channel.members[int(m)]
+		except TypeError:
+			lover = None
+			lover_ = None
+			return lover, lover_
+		else:
+			await cupidon.send('Your second lover is ' + lover_.name)
+
+			return lover, lover_
 
 	async def voleur_event(self, ctx, voleur: discord.Member, channel: discord.VoiceChannel):
 
@@ -304,17 +382,16 @@ class Games(commands.Cog):
 		                  "Gives his place in the voice room")
 
 		def msgcheck(m):
-			if m.author == voleur:
+			if m.author == voleur and m.channel == voleur.dm_channel:
 				return True
 			else:
 				return False
 
 		try:
-			m = await self.bot.wait_for('message', check=msgcheck, timeout=60)
+			m = await self.bot.wait_for('message', check=msgcheck, timeout=30)
 
 		except asyncio.TimeoutError:
 			await voleur.send('👎', delete_after=3)
-
 		try:
 			stolen = channel.members[int(m)]
 		except TypeError:

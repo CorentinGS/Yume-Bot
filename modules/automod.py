@@ -1,18 +1,17 @@
-from datetime import datetime, timedelta
-import asyncio
+from datetime import datetime
 
 import discord
 from discord.ext import commands
 
 from modules.sanction import Sanction
 from modules.utils.db import Settings
-from modules.utils.format import Embeds, Mod
-from modules.moderation import Moderation
+from modules.utils.format import Mod
 
 
 class Checks:
 
-    async def member_check(self, member):
+    @staticmethod
+    async def member_check(member):
         guild = member.guild
         now = datetime.now()
         create = member.created_at
@@ -35,11 +34,11 @@ class Automod(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.guild is None:
+            return
         _id = message.guild.id
         set = await Settings().get_server_settings(str(_id))
-        if message.author is message.guild.owner:
-            return
-        elif set['automod'] is True:
+        if set['automod'] is True and not message.author == message.guild.owner:
             if 'discord.gg/' in message.content:
                 await message.delete()
                 await Sanction().create_strike(message.author, "Strike", message.guild, "Discord invite link")
@@ -47,32 +46,22 @@ class Automod(commands.Cog):
                 await message.delete()
                 await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
             else:
-                pass
-        else:
-            return
+                return
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
         guild = member.guild
         set = await Settings().get_server_settings(str(guild.id))
         glob = await Settings().get_glob_settings()
-        if 'Mute' in set:
-            if member.id in set['Mute']:
-                for chan in guild.text_channels:
-                    await chan.set_permissions(member, send_messages=False)
-                    await Sanction().create_strike(member.author, "Strike", member.guild, "Try to mute Bypass")
-            else:
-                pass
+        if 'Mute' in set and member.id in set['Mute']:
+            for chan in guild.text_channels:
+                await chan.set_permissions(member, send_messages=False)
+                await Sanction().create_strike(member.author, "Strike", member.guild, "Try to mute Bypass")
 
         if 'Blacklist' in glob:
-            if member.id in glob['Blacklist']:
-                if set["bl"] is True:
-                    await guild.ban(member, reason="Blacklist")
-                    # await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
-                else:
-                    pass
-            else:
-                pass
+            if member.id in glob['Blacklist'] and set["bl"] is True:
+                await guild.ban(member, reason="Blacklist")
+                # await member.send("you're in the blacklist ! If you think it's an error, ask here --> yumenetwork@protonmail.com")
         else:
             if set['logging'] is True:
                 sanctions, time = await Checks().member_check(member)
