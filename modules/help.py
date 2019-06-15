@@ -14,7 +14,6 @@ class Help(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-
     @commands.command()
     async def commands(self, ctx):
         tip = random.choice(lists.tip)

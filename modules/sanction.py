@@ -1,17 +1,13 @@
-import json
-import os
-import random
 from datetime import datetime
 
 import discord
-from discord.ext import commands
 
 from modules.utils.db import Settings
 
 
 class Sanction():
 
-    async def create_sanction(self, ctx, user, event, mod, guild, reason=None, time=None):
+    async def create_sanction(self, user, event, mod, guild, reason=None, time=None):
         a = datetime.now()
         _id = int(a.strftime('%Y%m%d%H%M%S%f'))
 
