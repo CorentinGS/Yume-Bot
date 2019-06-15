@@ -1,68 +1,66 @@
 import json
-import os
 import random
-import aiohttp
-import requests
 
 import discord
 from discord.ext import commands
 
-from modules.utils import checks, lists
+from modules.utils import lists
 
 
 class About(commands.Cog):
+	conf = {}
 
-    conf = {}
+	def __init__(self, bot):
+		self.bot = bot
+		self.config = bot.config
 
-    def __init__(self, bot):
-        self.bot = bot
-        self.config = bot.config
+	@commands.command()
+	async def about(self, ctx):
+		await ctx.message.delete()
+		tip = random.choice(lists.tip)
 
-    @commands.command()
-    async def about(self, ctx):
+		with open('./config/config.json', 'r') as cjson:
+			config = json.load(cjson)
 
-        await ctx.message.delete()
-        tip = random.choice(lists.tip)
+		version = config["version"]
+		owner_ = config["owner_id"]
+		owner = await self.bot.fetch_user(owner_)
 
-        with open('./config/config.json', 'r') as cjson:
-            config = json.load(cjson)
+		total_users = len(self.bot.users)
 
-        VERSION = config["version"]
-        OWNER = config["owner_id"]
-        owner = await self.bot.fetch_user(OWNER)
+		voice_channels = []
+		text_channels = []
+		for guild in self.bot.guilds:
+			voice_channels.extend(guild.voice_channels)
+			text_channels.extend(guild.text_channels)
 
-        total_users = len(self.bot.users)
+		text = len(text_channels)
+		voice = len(voice_channels)
 
-        voice_channels = []
-        text_channels = []
-        for guild in self.bot.guilds:
-            voice_channels.extend(guild.voice_channels)
-            text_channels.extend(guild.text_channels)
+		site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
+		server = '[Discord](https://invite.gg/yumenetwork)'
+		lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
 
-        text = len(text_channels)
-        voice = len(voice_channels)
+		print("embed")
+		embed = discord.Embed(
+			title="About",
+			colour=discord.Colour.dark_red()
+		)
+		embed.set_footer(text=f'Tip: {tip}')
+		embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
+		embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
+			owner.name, owner.discriminator, owner.id), inline=True)
+		embed.add_field(
+			name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__: {text}text & {voice}voice \n__Users__: {total_users}", inline=True)
 
-        github = '[Sources](https://github.com/yumenetwork/Yume-Bot)'
-        site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
-        server = '[Discord](https://invite.gg/yumenetwork)'
-        lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
+		embed.add_field(
+			name="Informations",
+			value=f"__Version__ : {version} \n__Site__ : {site} \n__Support__ : {server} \n__Lib__ : {lib}",
+			inline=True)
 
-        embed = discord.Embed(
-            title="About",
-            colour=discord.Colour.dark_red()
-        )
-        embed.set_footer(text=f'Tip: {tip}')
-        embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
-        embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
-            owner.name, owner.discriminator, owner.id), inline=True)
-        embed.add_field(
-            name="Stats", value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__ : {text} text & {voice} voice \n__Users__ : {total_users }", inline=True)
-        embed.add_field(
-            name="Informations", value=f"__Version__ : {VERSION} \n__Github__ : {github} \n__Site__ : {site} \n__Support__ : {server} \n__Lib__ : {lib}", inline=True)
-
-        embed.set_thumbnail(url=owner.avatar_url)
-        await ctx.send(embed=embed)
+		embed.set_thumbnail(url=owner.avatar_url)
+		await ctx.send(embed=embed)
 
 
 def setup(bot):
-    bot.add_cog(About(bot))
+	bot.add_cog(About(bot))

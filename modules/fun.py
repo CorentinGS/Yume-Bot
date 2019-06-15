@@ -2,10 +2,8 @@ import datetime
 import json
 import random
 
-import aiohttp
 import discord
 import requests
-from bs4 import BeautifulSoup
 from discord.ext import commands
 from romme import RepublicanDate
 
@@ -23,7 +21,8 @@ class Fun(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    async def randomimageapi(self, ctx, url, endpoint):
+    @staticmethod
+    async def randomimageapi(ctx, url, endpoint):
         try:
             r = await http.get(url, res_method="json", no_cache=True)
         except json.JSONDecodeError:
@@ -54,6 +53,7 @@ class Fun(commands.Cog):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
+    '''
     @commands.command(aliases=['yt'])
     async def youtube(self, ctx, *, search: str):
         await ctx.message.delete()
@@ -67,6 +67,7 @@ class Fun(commands.Cog):
             await ctx.send(output)
         except discord.Forbidden:
             return
+    '''
 
     @commands.command()
     async def hug(self, ctx, user: discord.Member = None):
@@ -75,14 +76,15 @@ class Fun(commands.Cog):
             user = ctx.message.author
         embed = discord.Embed(colour=discord.Colour.blue())
         embed.description = "Hug {}".format(user.mention)
-        GIPHY_API_KEY = keys["giphy"]
+        giphy_api_key = keys["giphy"]
         response = requests.get(
-            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=hug").text
+	        f"http://api.giphy.com/v1/gifs/random?&api_key={giphy_api_key}&tag=hug").text
 
         data = json.loads(response)
         embed.set_image(url=data['data']['images']['original']['url'])
         await ctx.send(embed=embed)
 
+    '''
     @commands.command()
     async def loving(self, ctx, user: discord.Member = None):
         await ctx.message.delete()
@@ -98,6 +100,7 @@ class Fun(commands.Cog):
         data = json.loads(response)
         embed.set_image(url=data['data']['images']['original']['url'])
         await ctx.send(embed=embed)
+    '''
 
     @commands.command()
     async def kiss(self, ctx, user: discord.Member = None):
@@ -121,10 +124,10 @@ class Fun(commands.Cog):
             arg = "anime"
         embed = discord.Embed(colour=discord.Colour.blue())
         embed.description = "{}".format(arg)
-        GIPHY_API_KEY = keys["giphy"]
+        giphy_api_key = keys["giphy"]
 
         response = requests.get(
-            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag={arg}").text
+	        f"http://api.giphy.com/v1/gifs/random?&api_key={giphy_api_key}&tag={arg}").text
 
         data = json.loads(response)
         embed.set_image(url=data['data']['images']['original']['url'])

@@ -5,8 +5,7 @@ import random
 import discord
 from discord.ext import commands
 
-from modules.utils import checks, lists
-from modules.utils.db import Settings
+from modules.utils import lists
 from modules.utils.format import Embeds
 
 with open('./config/config.json', 'r') as cjson:

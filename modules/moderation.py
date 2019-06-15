@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 
 import discord
 from discord.ext import commands
@@ -8,6 +7,7 @@ from modules.sanction import Sanction
 from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
+
 
 class Check(commands.Cog):
 
@@ -35,7 +35,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
-    @commands.guild_only()
+    @checks.is_admin()
     async def reset(self, ctx, member: discord.Member):
         await Settings().rm_strike_settings(str(ctx.guild.id), str(member.id))
 
@@ -47,13 +47,18 @@ class Moderation(commands.Cog):
             return
         await ctx.message.delete()
 
-        id = await Sanction().create_sanction(ctx, user, 'Strike', ctx.message.author, ctx.message.guild, reason)
+        id = await Sanction().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, 'strike', id)
         await ctx.send(embed=em)
 
     @commands.command(aliases=["chut", "tg"])
     @checks.is_mod()
-    async def mute(self, ctx, user: discord.Member, duration, *, reason=None):
+    async def mute(self, ctx, user: discord.Member, duration: str, *, reason: str = None):
+        """
+        :param user: The member to mute
+        :param duration: The duration of the mute
+        :param reason: the reason of the mute
+        """
         perm = await Check().check(ctx, user)
         if perm is False:
             return
@@ -84,7 +89,7 @@ class Moderation(commands.Cog):
         for chan in ctx.guild.text_channels:
             await chan.set_permissions(user, send_messages=False)
 
-        id = await Sanction().create_sanction(ctx, user, 'Mute', ctx.message.author, guild, reason, time)
+        id = await Sanction().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
         em = await Embeds().format_mod_embed(ctx, user, 'mute', id, duration)
 
         if set['logging'] is True:
@@ -95,8 +100,6 @@ class Moderation(commands.Cog):
                 except discord.Forbidden:
                     await ctx.send(embed=em)
 
-            else:
-                pass
         else:
             await ctx.send(embed=em)
 
@@ -132,8 +135,6 @@ class Moderation(commands.Cog):
                     await channel.send(embed=em)
                 except discord.Forbidden:
                     await ctx.send(embed=em)
-            else:
-                pass
         else:
             await ctx.send(embed=em)
 
@@ -149,7 +150,7 @@ class Moderation(commands.Cog):
         await ctx.message.delete()
 
         await ctx.guild.kick(user)
-        id = await Sanction().create_sanction(ctx, user, 'Kick', ctx.message.author, ctx.message.guild, reason)
+        id = await Sanction().create_sanction(user, 'Kick', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, 'kick', id)
 
         if setting['logging'] is True:
@@ -159,8 +160,6 @@ class Moderation(commands.Cog):
                     await channel.send(embed=em)
                 except discord.Forbidden:
                     await ctx.send(embed=em)
-            else:
-                pass
         else:
             await ctx.send(embed=em)
 
@@ -174,7 +173,7 @@ class Moderation(commands.Cog):
 
         banned = await self.bot.get_user_info(id)
 
-        _id = await Sanction().create_sanction(ctx, banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
+        _id = await Sanction().create_sanction(banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, banned, 'hackban', _id)
 
         server = str(ctx.guild.id)
@@ -187,8 +186,6 @@ class Moderation(commands.Cog):
                     await channel.send(embed=em)
                 except discord.Forbidden:
                     await ctx.send(embed=em)
-            else:
-                pass
         else:
             await ctx.send(embed=em)
 
@@ -215,8 +212,6 @@ class Moderation(commands.Cog):
                     await channel.send(embed=em)
                 except discord.Forbidden:
                     await ctx.send(embed=em)
-            else:
-                pass
         else:
             await ctx.send(embed=em)
 
@@ -230,7 +225,7 @@ class Moderation(commands.Cog):
 
         await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
-        id = await Sanction().create_sanction(ctx, user, 'Ban', ctx.message.author, ctx.message.guild, reason)
+        id = await Sanction().create_sanction(user, 'Ban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, 'ban', id)
 
         server = str(ctx.guild.id)
@@ -243,8 +238,7 @@ class Moderation(commands.Cog):
                     await channel.send(embed=em)
                 except discord.Forbidden:
                     await ctx.send(embed=em)
-            else:
-                pass
+
         else:
             await ctx.send(embed=em)
 
@@ -314,13 +308,12 @@ class Moderation(commands.Cog):
             if 'LogChannel' in setting:
                 channel = self.bot.get_channel(int(setting['LogChannel']))
                 await channel.send(f'{len(members)} users were banned')
-            else:
-                pass
+
         else:
             await ctx.send(f'{len(members)} users were banned')
 
     @commands.command()
-    @checks.is_mod()
+    @checks.is_admin()
     async def mention(self, ctx, role: str):
 
         await ctx.message.delete()
@@ -333,7 +326,7 @@ class Moderation(commands.Cog):
         await rolemention.edit(mentionable=False)
 
     @commands.command()
-    @checks.is_mod()
+    @checks.is_admin()
     async def annonce(self, ctx, role: str, *, content):
         await ctx.message.delete()
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
@@ -344,6 +337,8 @@ class Moderation(commands.Cog):
         await ctx.send("{} \n{}".format(rolemention.mention, content))
         await rolemention.edit(mentionable=False)
 
+
+    '''
     @commands.command()
     @checks.is_admin()
     async def addrole(self, ctx, role: str):
@@ -363,6 +358,8 @@ class Moderation(commands.Cog):
         for user in ctx.guild.members:
             await user.remove_roles(role)
             await asyncio.sleep(1)
+
+    '''
 
 
 def setup(bot):

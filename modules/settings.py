@@ -85,9 +85,11 @@ class Set(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def setup(self, ctx):
+
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
-        glob = await Settings().get_glob_settings()
+
+        # glob = await Settings().get_glob_settings()
 
         def check(reaction, user):
             return user == ctx.message.author and str(reaction.emoji)

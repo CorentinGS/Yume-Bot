@@ -1,12 +1,9 @@
-import discord
-from discord.ext import commands
-import datetime
-import asyncio
 import random
 
-from modules.utils.db import Settings
+import discord
 
 from modules.utils import lists
+
 
 class Mod():
 
@@ -61,8 +58,7 @@ class Embeds():
             em.add_field(name="Content",
                          value=f"{message.content}", inline=False)
             em.set_footer(text=tip)
-        else:
-            pass
+
         return em
 
     async def format_set_embed(self, ctx, guild, command, vip):
