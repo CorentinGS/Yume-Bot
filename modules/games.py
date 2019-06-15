@@ -116,6 +116,7 @@ class Games(commands.Cog):
 
 		set['setup'] = True
 		set['play'] = False
+		set['night'] = False
 		await Settings().set_games_settings(str(ctx.message.guild.id), set)
 
 	@werewolf.command()
@@ -243,7 +244,10 @@ class Games(commands.Cog):
 				'alive': True,
 				'couple': False,
 				'stolen': False,
-				'master': False
+				'master': False,
+				'lg_votes': 0,
+				'votes': 0
+
 			}
 
 			if config.get(user) == "lg":
@@ -275,8 +279,6 @@ class Games(commands.Cog):
 		set['Lg_chan'] = str(lg_chan.id)
 
 		await Settings().set_games_settings(str(ctx.message.guild.id), set)
-
-		# end = False
 
 		# Start Game
 
@@ -320,10 +322,26 @@ class Games(commands.Cog):
 				toto_ = str(lover.id)
 				player[toto_]['couple'] = True
 
-				await lover.send("Hi ! You're in love with {}".format(lover_.name))
-				await lover_.send("Hi ! You're in love with {}".format(lover.name))
+				await lover.send(f'Hi ! You\'re in love with {lover_.name}')
+				await lover_.send(f'Hi ! You\'re in love with {lover.name}')
 
 			await game_chan.send('The cupidon falls asleep')
+
+		end = False
+
+		while end is False:
+			await game_chan.send('The wolves wake up !')
+			await lg_chan.send('You have 40s to choose someone to kill tonight !\n When your choice is done, you can '
+			                   'confirm it by reacting to the next message')
+			set["night"] = True
+			await Settings().set_games_settings(str(ctx.message.guild.id), set)
+
+			# TODO: Faire les embed à reactions pour voter...
+
+			await asyncio.sleep(40)
+			set['night'] = False
+			await Settings().set_games_settings(str(ctx.message.guild.id), set)
+
 
 	async def cupidon_event(self, ctx, cupidon: discord.Member, channel: discord.VoiceChannel):
 		global m

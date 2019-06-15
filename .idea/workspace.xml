@@ -2,22 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73fd1655-27c9-456d-b231-1abd3fca9cf5" name="Default Changelist" comment="Merge branch 'master' into lg&#10;&#10;# Conflicts:&#10;#&#9;modules/about.py&#10;#&#9;modules/automod.py">
-      <change afterPath="$PROJECT_DIR$/modules/utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/about.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/about.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/automod.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/automod.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/event.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/fun.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/fun.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/general.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/general.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/gestion.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/gestion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/help.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/level.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/level.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/moderation.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/moderation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/sanction.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/sanction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/utils/format.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/utils/format.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/utils/http.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/utils/http.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/utils/weather.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/utils/weather.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c73041e934b278567d6f1ffd28152a121a061ee7" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c73041e934b278567d6f1ffd28152a121a061ee7" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/games.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/games.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,24 +13,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/automod.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="81" column="55" lean-forward="true" selection-start-line="81" selection-start-column="55" selection-end-line="81" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/modules/about.py">
+        <entry file="file://$PROJECT_DIR$/modules/games.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="507">
+              <caret line="118" column="28" selection-start-line="118" selection-start-column="28" selection-end-line="118" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -73,7 +48,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/modules/utils/db.py" />
-        <option value="$PROJECT_DIR$/modules/games.py" />
         <option value="$PROJECT_DIR$/api/rest.py" />
         <option value="$PROJECT_DIR$/modules/blacklist.py" />
         <option value="$PROJECT_DIR$/modules/fun.py" />
@@ -96,6 +70,7 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/modules/about.py" />
         <option value="$PROJECT_DIR$/modules/automod.py" />
+        <option value="$PROJECT_DIR$/modules/games.py" />
       </list>
     </option>
   </component>
@@ -144,6 +119,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
@@ -213,12 +189,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10512273" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1072572" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="DB Browser" order="3" />
-      <window_info anchor="bottom" id="Inspection Results" weight="0.24673913" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -227,12 +203,13 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49973643" weight="0.32826087" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49973643" weight="0.32826087" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49973643" visible="true" weight="0.2152174" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5002636" side_tool="true" weight="0.3281768" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49973643" weight="0.21413043" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5002636" side_tool="true" weight="0.32717392" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973643" weight="0.32826087" />
       <window_info anchor="bottom" id="SonarLint" order="11" weight="0.24565217" />
       <window_info anchor="bottom" id="DB Execution Console" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32934782" />
+      <window_info anchor="bottom" id="Inspection Results" order="14" weight="0.24673913" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -332,9 +309,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-608" />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/games.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/fun.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -525,18 +499,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/automod.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="81" column="55" lean-forward="true" selection-start-line="81" selection-start-column="55" selection-end-line="81" selection-end-column="55" />
+        <state relative-caret-position="1776">
+          <caret line="81" column="55" selection-start-line="81" selection-start-column="55" selection-end-line="81" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/about.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
+        <state relative-caret-position="1032">
           <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/games.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="118" column="28" selection-start-line="118" selection-start-column="28" selection-end-line="118" selection-end-column="28" />
         </state>
       </provider>
     </entry>
