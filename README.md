@@ -15,7 +15,6 @@
   - [Further Reading](#further-reading)
   - [License](#license)
   - [Authors](#authors)
-  - [Acknowledgments](#acknowledgments)
 
 ## About the Project
 
@@ -73,10 +72,3 @@ See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/cont
 
 **[Back to top](#table-of-contents)**
 
-## Acknowledgments
-
-Provide proper credits, shoutouts, and honorable mentions here. Also provide links to relevant repositories, blog posts, or contributors worth mentioning.
-
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contributed in this project. If you used external code, link to the original source.
-
-**[Back to top](#table-of-contents)**
