@@ -29,8 +29,7 @@ class Level(commands.Cog):
 		em = discord.Embed()
 		em.set_author(name=user.name, icon_url=user.avatar_url)
 		em.add_field(name="**Level**", value=dic["level"])
-		em.add_field(name="**Progress**",
-		             value="{} / {}".format(dic['xp'], dic['reach']))
+		em.add_field(name="**Progress**", value="{} / {}".format(dic['xp'], dic['reach']))
 		await ctx.send(embed=em)
 
 	@commands.group()

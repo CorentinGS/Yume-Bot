@@ -11,7 +11,8 @@ from modules.utils.format import Embeds
 
 class Check(commands.Cog):
 
-    async def check(self, ctx, user: discord.Member):
+    @staticmethod
+    async def check(ctx, user: discord.Member):
         if ctx.message.author.top_role > user.top_role:
             return True
         else:
