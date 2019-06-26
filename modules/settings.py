@@ -61,6 +61,7 @@ class Set(commands.Cog):
 
         await Settings().set_server_settings(str(guild.id), set)
 
+<<<<<<< HEAD
         set['Greet'] = False
         set['bl'] = False
         set['logging'] = False
@@ -73,6 +74,24 @@ class Set(commands.Cog):
         set['Admins'] = []
         set['Mods'] = []
         set['Setup'] = False
+=======
+        if set['Setup'] is False:
+            return await ctx.send("You must setup your server before reset it...")
+
+        else:
+            set['Greet'] = False
+            set['bl'] = False
+            set['logging'] = False
+            set['GreetChannel'] = None
+            set['LogChannel'] = None
+            set['automod'] = False
+            set['Mute'] = []
+            set['Display'] = False
+            set['category'] = None
+            set['Admins'] = []
+            set['Mods'] = []
+            set['Setup'] = False
+>>>>>>> lg
 
         await Settings().set_server_settings(str(guild.id), set)
         await ctx.invoke(self.setup)

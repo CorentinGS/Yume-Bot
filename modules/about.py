@@ -23,8 +23,8 @@ class About(commands.Cog):
 			config = json.load(cjson)
 
 		version = config["version"]
-		owner = config["owner_id"]
-		owner = await self.bot.fetch_user(owner)
+		owner_ = config["owner_id"]
+		owner = await self.bot.fetch_user(owner_)
 
 		total_users = len(self.bot.users)
 
@@ -59,7 +59,6 @@ class About(commands.Cog):
 			inline=True)
 
 		embed.set_thumbnail(url=owner.avatar_url)
-		print('send')
 		await ctx.send(embed=embed)
 
 

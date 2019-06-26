@@ -123,6 +123,5 @@ class General(commands.Cog):
             if msg.id == id:
                 await ctx.send('Url :{}'.format(msg.jump_url))
 
-
 def setup(bot):
     bot.add_cog(General(bot))

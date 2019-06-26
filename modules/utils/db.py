@@ -13,6 +13,8 @@ class Settings():
         self.keys = self.db.keys
         self.sanction = self.db.sanction
         self.user = self.db.user
+        self.games = self.db.games
+
 
     async def get_glob_settings(self):
         doc = await self.glob.find_one({"_id": 0})
@@ -27,7 +29,14 @@ class Settings():
     async def get_server_settings(self, id):
         doc = await self.servers.find_one({"_id": id})
         return doc or {}
-    
+
+    async def set_games_settings(self, id, settings):
+        return await self.games.replace_one({"_id": id}, settings, True)
+
+    async def get_games_settings(self, id):
+        doc = await self.games.find_one({"_id": id})
+        return doc or {}
+
     async def get_user_settings(self, id):
         doc = await self.user.find_one({"_id": id})
         return doc or {}

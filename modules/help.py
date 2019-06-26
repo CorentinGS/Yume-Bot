@@ -15,7 +15,7 @@ class Help(commands.Cog):
         self.config = bot.config
 
     @commands.command()
-    async def commands(self, ctx):
+    async def commands_test(self, ctx):
         tip = random.choice(lists.tip)
         await ctx.message.delete()
 

@@ -25,6 +25,7 @@ class Checks:
 
 
 class Automod(commands.Cog):
+
 	conf = {}
 
 	def __init__(self, bot):
@@ -33,6 +34,8 @@ class Automod(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
+		if message.guild is None:
+			return
 		set = await Settings().get_server_settings(str(message.guild.id))
 		if message.author is message.guild.owner:
 			return
@@ -79,7 +82,6 @@ class Automod(commands.Cog):
 						pass
 				else:
 					await member.channel.send(embed=em)
-
 
 def setup(bot):
 	bot.add_cog(Automod(bot))

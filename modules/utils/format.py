@@ -7,7 +7,8 @@ from modules.utils import lists
 
 class Mod():
 
-    async def check_embed(self, member, guild, sanctions, time):
+    @staticmethod
+    async def check_embed(member, guild, sanctions, time):
 
         em = discord.Embed(
             title="{}".format(member.name),
@@ -24,7 +25,8 @@ class Mod():
 
 class Embeds():
 
-    async def format_mod_embed(self, ctx, user, command, sanction=None, duration=None):
+    @staticmethod
+    async def format_mod_embed(ctx, user, command, sanction=None, duration=None):
 
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name=f"{command}", icon_url=user.avatar_url)
@@ -45,6 +47,7 @@ class Embeds():
 
         return em
 
+    @staticmethod
     async def format_feedback_embed(self, ctx, auth, guild, success, message):
         tip = random.choice(lists.tip)
 
@@ -61,7 +64,8 @@ class Embeds():
 
         return em
 
-    async def format_set_embed(self, ctx, guild, command, vip):
+    @staticmethod
+    async def format_set_embed(ctx, guild, command, vip):
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)
@@ -113,7 +117,8 @@ class Embeds():
 
         return em
 
-    async def format_get_set_embed(self, ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod, stats):
+    @staticmethod
+    async def format_get_set_embed(ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod, stats):
         tip = random.choice(lists.tip)
 
         em = discord.Embed(timestamp=ctx.message.created_at)
@@ -130,6 +135,7 @@ class Embeds():
 
         return em
 
+    @staticmethod
     async def format_profile_embed(self, ctx, user, command, vip):
         tip = random.choice(lists.tip)
 
@@ -155,6 +161,7 @@ class Embeds():
 
         return em
 
+    @staticmethod
     async def format_desc_profile_embed(self, ctx, user, content):
         tip = random.choice(lists.tip)
 
@@ -169,6 +176,7 @@ class Embeds():
 
         return em
 
+    @staticmethod
     async def format_get_profile_embed(self, ctx, user, vip, gender, status, lover, desc, xp, reach, level):
         tip = random.choice(lists.tip)
 
@@ -210,6 +218,7 @@ class Embeds():
 
         # TODO: Simplifier le système d'emote
 
+    @staticmethod
     async def format_love_embed(self, ctx, auth, command):
         tip = random.choice(lists.tip)
 
