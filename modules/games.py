@@ -1,31 +1,21 @@
-<<<<<<< Updated upstream
-=======
 import asyncio
-import random
-from typing import List, Any, Union
 
 import discord
->>>>>>> Stashed changes
 from discord.ext import commands
-import json
 
 from modules.utils.db import Settings
-<<<<<<< Updated upstream
-from modules.utils.format import Embeds
-
+from modules.utils.utils import Utils, Ww, Script
 
 
 class Games(commands.Cog):
-    conf = {}
+	conf = {}
 
-    def __init__(self, bot):
-        self.bot = bot
-        self.config = bot.config
+	def __init__(self, bot):
+		self.bot = bot
+		self.config = bot.config
 
 # TODO: Ajouter des jeux automatiques !
 # TODO: Trouver des partenaires de jeux
-=======
-from modules.utils.utils import Utils, Ww, Script
 
 
 class Games(commands.Cog):
@@ -223,7 +213,6 @@ class Games(commands.Cog):
 
 			return lover, lover_
 
->>>>>>> Stashed changes
 
 def setup(bot):
-    bot.add_cog(Games(bot))
+	bot.add_cog(Games(bot))
