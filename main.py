@@ -4,6 +4,7 @@ import json
 import logging
 import traceback
 
+import aiohttp
 import discord
 from discord.ext import commands
 
@@ -44,11 +45,19 @@ class YumeBot(commands.Bot):
         self.guild = config['support']
         self.debug = config['debug']
 
+        self.session = aiohttp.ClientSession(loop=self.loop)
+
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.ArgumentParsingError):
             await ctx.send(error)
 
+        elif isinstance(error, commands.CheckFailure):
+            await ctx.send("you don't have the permissions to use that command.")
+        # raise error
+
     async def on_ready(self):
+        if not hasattr(self, 'uptime'):
+            self.uptime = datetime.datetime.utcnow()
         if not self.ready:
             self.ready = True
             print('Logged in.')
@@ -67,8 +76,19 @@ class YumeBot(commands.Bot):
                 await self.change_presence(activity=discord.Game(name=name))
                 await asyncio.sleep(10)
 
-    async def on_resumed(self):
-        print('resumed...')
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.NoPrivateMessage):
+            await ctx.author.send('This command cannot be used in private messages.')
+        elif isinstance(error, commands.DisabledCommand):
+            await ctx.author.send('Sorry. This command is disabled and cannot be used.')
+        elif isinstance(error, commands.CommandInvokeError):
+            original = error.original
+            if not isinstance(original, discord.HTTPException):
+                print(f'In {ctx.command.qualified_name}:', file=sys.stderr)
+                traceback.print_tb(original.__traceback__)
+                print(f'{original.__class__.__name__}: {original}', file=sys.stderr)
+        elif isinstance(error, commands.ArgumentParsingError):
+            await ctx.send(error)
 
     async def close(self):
         await super().close()

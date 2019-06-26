@@ -3,7 +3,6 @@ import json
 import random
 
 import discord
-import requests
 from discord.ext import commands
 from romme import RepublicanDate
 
@@ -32,6 +31,10 @@ class Fun(commands.Cog):
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
     async def eightball(self, ctx, *, question: str = None):
+        """
+
+        :param question: The question to be answered
+        """
         await ctx.message.delete()
 
         if question is None:
@@ -46,92 +49,6 @@ class Fun(commands.Cog):
     async def cat(self, ctx):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
-
-    @commands.command(aliases=['Doggy'])
-    @commands.guild_only()
-    async def dog(self, ctx):
-        await ctx.message.delete()
-        await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
-
-    '''
-    @commands.command(aliases=['yt'])
-    async def youtube(self, ctx, *, search: str):
-        await ctx.message.delete()
-        search = search.replace(' ', '+').lower()
-        response = requests.get(
-            f"https://www.youtube.com/results?search_query={search}").text
-        result = BeautifulSoup(response, "lxml")
-        dir_address = f"{result.find_all(attrs={'class': 'yt-uix-tile-link'})[0].get('href')}"
-        output = f"**Top Result:**\nhttps://www.youtube.com{dir_address}"
-        try:
-            await ctx.send(output)
-        except discord.Forbidden:
-            return
-    '''
-
-    @commands.command()
-    async def hug(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
-        if user is None:
-            user = ctx.message.author
-        embed = discord.Embed(colour=discord.Colour.blue())
-        embed.description = "Hug {}".format(user.mention)
-        giphy_api_key = keys["giphy"]
-        response = requests.get(
-	        f"http://api.giphy.com/v1/gifs/random?&api_key={giphy_api_key}&tag=hug").text
-
-        data = json.loads(response)
-        embed.set_image(url=data['data']['images']['original']['url'])
-        await ctx.send(embed=embed)
-
-    '''
-    @commands.command()
-    async def loving(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
-        if user is None:
-            user = ctx.message.author
-        embed = discord.Embed(colour=discord.Colour.blue())
-        embed.description = "Loving {}".format(user.mention)
-        GIPHY_API_KEY = keys["giphy"]
-
-        response = requests.get(
-            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=love").text
-
-        data = json.loads(response)
-        embed.set_image(url=data['data']['images']['original']['url'])
-        await ctx.send(embed=embed)
-    '''
-
-    @commands.command()
-    async def kiss(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
-        if user is None:
-            user = ctx.message.author
-        embed = discord.Embed(colour=discord.Colour.blue())
-        embed.description = "Kiss {}".format(user.mention)
-        GIPHY_API_KEY = keys["giphy"]
-        response = requests.get(
-            f"http://api.giphy.com/v1/gifs/random?&api_key={GIPHY_API_KEY}&tag=kiss").text
-
-        data = json.loads(response)
-        embed.set_image(url=data['data']['images']['original']['url'])
-        await ctx.send(embed=embed)
-
-    @commands.command()
-    async def gif(self, ctx, arg: str = None):
-        await ctx.message.delete()
-        if arg is None:
-            arg = "anime"
-        embed = discord.Embed(colour=discord.Colour.blue())
-        embed.description = "{}".format(arg)
-        giphy_api_key = keys["giphy"]
-
-        response = requests.get(
-	        f"http://api.giphy.com/v1/gifs/random?&api_key={giphy_api_key}&tag={arg}").text
-
-        data = json.loads(response)
-        embed.set_image(url=data['data']['images']['original']['url'])
-        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.guild_only()
@@ -173,12 +90,6 @@ class Fun(commands.Cog):
     async def king(self, ctx):
         await ctx.message.delete()
         answer = random.choice(lists.king)
-        await ctx.send(f'{answer}')
-
-    @commands.command(aliases=['poney', 'poneybleu', 'poneyrouge', 'poneyblanc', "poneyviolet", 'petitponey'])
-    async def poneybleuetrougeetblancetviolet(self, ctx):
-        await ctx.message.delete()
-        answer = random.choice(lists.poney)
         await ctx.send(f'{answer}')
 
 

@@ -140,6 +140,18 @@ class Owner(commands.Cog):
 
         await ctx.author.send(embed=em)
 
+    @commands.command(hidden=True)
+    @checks.is_owner()
+    async def check_setup(self, ctx):
+        for guild in self.bot.guilds:
+            set = await Settings().get_server_settings(str(guild.id))
+            if set["Setup"] is False:
+                await guild.owner.send(f"Hey ! the YumeBot has received many improvements recently. "
+                                       f"We have noticed that your discord: {guild.name} is not configured "
+                                       f"for the new version which can lead to errors... "
+                                       f"Please execute in a lounge of your discord {guild.name} "
+                                       f"the following command: --setting reset")
+
     @commands.group(hidden=True)
     @checks.is_owner()
     async def vip(self, ctx):

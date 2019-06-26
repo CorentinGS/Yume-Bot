@@ -1,5 +1,6 @@
 import pymongo
 
+
 class Settings():
 
     def __init__(self):
@@ -11,7 +12,7 @@ class Settings():
         self.servers = self.db.servers
         self.keys = self.db.keys
 
-
+    @property
     def get_glob_settings(self):
         doc = self.glob.find_one({"_id": 0})
         return doc or {}

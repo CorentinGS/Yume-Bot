@@ -112,6 +112,10 @@ class General(commands.Cog):
 
     @commands.command()
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
+        """
+        :param id: The message id
+        :param channel: The message's channel
+        """
         if channel is None:
             channel = ctx.message.channel
         messages = await channel.history(limit=200).flatten()

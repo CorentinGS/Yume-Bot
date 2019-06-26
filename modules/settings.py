@@ -57,26 +57,22 @@ class Set(commands.Cog):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
         if not "Setup" in set:
-            set["Setup"] is False
+            set["Setup"] = False
 
         await Settings().set_server_settings(str(guild.id), set)
 
-        if set['Setup'] is False:
-            return await ctx.send("You must setup your server before reseting it...")
-
-        else:
-            set['Greet'] = False
-            set['bl'] = False
-            set['logging'] = False
-            set['GreetChannel'] = None
-            set['LogChannel'] = None
-            set['automod'] = False
-            set['Mute'] = []
-            set['Display'] = False
-            set['category'] = None
-            set['Admins'] = []
-            set['Mods'] = []
-            set['Setup'] = False
+        set['Greet'] = False
+        set['bl'] = False
+        set['logging'] = False
+        set['GreetChannel'] = None
+        set['LogChannel'] = None
+        set['automod'] = False
+        set['Mute'] = []
+        set['Display'] = False
+        set['category'] = None
+        set['Admins'] = []
+        set['Mods'] = []
+        set['Setup'] = False
 
         await Settings().set_server_settings(str(guild.id), set)
         await ctx.invoke(self.setup)
@@ -271,7 +267,17 @@ class Set(commands.Cog):
             set['Setup'] = False
             set['levels'] = {}
 
-        await Settings().set_server_settings(str(guild.id), set)      
+        await Settings().set_server_settings(str(guild.id), set)
+
+        print(f"New guild : {guild.name} | {guild.id}.")
+
+        for role in guild.roles:
+            if role.permissions.administrator or role.permissions.manage_guild is True:
+                set['Admins'].append(str(role.id))
+            elif role.permissions.ban_members or role.permissions.kick_members is True:
+                set['Mods'].append(str(role.id))
+
+        await Settings().set_server_settings(str(guild.id), set)
 
 
 def setup(bot):

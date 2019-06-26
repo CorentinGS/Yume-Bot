@@ -28,7 +28,10 @@ class Tags(commands.Cog):
 
         await ctx.send('[%s]' % ', '.join(map(str, tags)))
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 def setup(bot):
     bot.add_cog(Tags(bot))
