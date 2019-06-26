@@ -110,4 +110,3 @@ venv.bak/
 /config/token.json
 /config/keys.json
 /.vscode
-/.idea/
