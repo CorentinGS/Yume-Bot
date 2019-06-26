@@ -1,11 +1,8 @@
 import asyncio
+import datetime
 import json
 import logging
-import re
-import sys
-import datetime
 import traceback
-
 
 import discord
 from discord.ext import commands
@@ -51,6 +48,10 @@ class YumeBot(commands.Bot):
         if isinstance(error, commands.ArgumentParsingError):
             await ctx.send(error)
 
+        elif isinstance(error, commands.CheckFailure):
+            await ctx.send("you don't have the permissions to use that command.")
+        # raise error
+
     async def on_ready(self):
         if not self.ready:
             self.ready = True
@@ -69,9 +70,6 @@ class YumeBot(commands.Bot):
             for name in names:
                 await self.change_presence(activity=discord.Game(name=name))
                 await asyncio.sleep(10)
-
-    async def on_resumed(self):
-        print('resumed...')
 
     async def close(self):
         await super().close()
