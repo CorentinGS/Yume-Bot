@@ -1,9 +1,7 @@
-from flask import Flask, jsonify
-from flask_restful import Api, Resource, reqparse
-from flask_httpauth import HTTPBasicAuth
-
-
 from db import Settings
+from flask import Flask
+from flask_httpauth import HTTPBasicAuth
+from flask_restful import Api, Resource, reqparse
 
 app = Flask(__name__)
 api = Api(app)
@@ -23,27 +21,24 @@ def get_password(username):
 def unauthorized():
     return 'Not authorized', 404
 
+
 class Global(Resource):
     @auth.login_required
-    
-
     def get(self, id):
-            set = Settings().get_glob_settings()
-            return set, 200
+        set = Settings().get_glob_settings
+        return set, 200
 
-    def put(self, id):
+    @staticmethod
+    def put(id):
         parser = reqparse.RequestParser()
         parser.add_argument('VIP')
-
-
         args = parser.parse_args()
-
-        set = Settings().get_glob_settings()
+        set = Settings().get_glob_settings
         set["VIP"] = args['VIP']
-
         Settings().set_glob_settings(set)
 
         return set, 201
+
 
 class Guild(Resource):
     @auth.login_required
@@ -55,7 +50,8 @@ class Guild(Resource):
             set = Settings().get_server_settings(str(id))
             return set, 200
 
-    def put(self, id):
+    @staticmethod
+    def put(id):
         parser = reqparse.RequestParser()
         parser.add_argument('Greet')
         parser.add_argument('bl')
@@ -66,9 +62,6 @@ class Guild(Resource):
         parser.add_argument('Setup')
         parser.add_argument('Mods')
         parser.add_argument('Admins')
-
-
-
 
         args = parser.parse_args()
 
@@ -85,6 +78,7 @@ class Guild(Resource):
         Settings().set_server_settings(str(id), set)
 
         return set, 201
+
 
 api.add_resource(Guild, "/guild/<string:id>")
 api.add_resource(Global, "/global")

@@ -15,7 +15,6 @@
   - [Further Reading](#further-reading)
   - [License](#license)
   - [Authors](#authors)
-  - [Acknowledgments](#acknowledgments)
 
 ## About the Project
 
@@ -52,7 +51,6 @@ We encourage public contributions! Please review [CONTRIBUTING.md](https://githu
 
 ## Further Reading
 
-- [Site](https://www.yumenetwork.fr/)
 - [Code](https://github.com/yumenetwork/Yume-Bot)
 - [Support](https://invite.gg/yumenetwork)
 
@@ -69,18 +67,8 @@ This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) fi
 ## Authors
 
 - **[Yume](https://github.com/yumenetwork)** - _Initial work_
-- **[LemonAdd](https://github.com/LemonAdd)** - _Web development_
-
-You can check the Dev team [here](https://www.yumenetwork.fr/credits.html)
 
 See also the list of [contributors](https://github.com/yumenetwork/Yume-bot/contributors) who participated in this project.
 
 **[Back to top](#table-of-contents)**
 
-## Acknowledgments
-
-Provide proper credits, shoutouts, and honorable mentions here. Also provide links to relevant repositories, blog posts, or contributors worth mentioning.
-
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contributed in this project. If you used external code, link to the original source.
-
-**[Back to top](#table-of-contents)**

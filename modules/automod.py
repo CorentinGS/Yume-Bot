@@ -10,7 +10,8 @@ from modules.utils.format import Mod
 
 class Checks:
 
-	async def member_check(self, member):
+	@staticmethod
+	async def member_check(member):
 		guild = member.guild
 		now = datetime.now()
 		create = member.created_at
