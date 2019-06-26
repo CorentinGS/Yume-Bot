@@ -2,6 +2,7 @@ import asyncio
 import datetime
 import json
 import logging
+import sys
 import traceback
 
 import aiohttp
@@ -46,19 +47,6 @@ class YumeBot(commands.Bot):
         self.debug = config['debug']
 
         self.session = aiohttp.ClientSession(loop=self.loop)
-
-    async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.ArgumentParsingError):
-            await ctx.send(error)
-        elif isinstance(error, commands.CommandNotFound):
-            await ctx.send('This is not a command')
-        elif isinstance(error, commands.CheckFailure):
-            await ctx.send("you don't have the permissions to use that command.")
-        # raise error
-
-        elif isinstance(error, commands.CheckFailure):
-            await ctx.send("you don't have the permissions to use that command.")
-        # raise error
 
     async def on_ready(self):
         if not hasattr(self, 'uptime'):
