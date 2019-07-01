@@ -77,10 +77,10 @@ class Embeds():
 
         em.add_field(name="Greet", value=greet)
 
-        em.add_field(name="Greet Channel", value=greetchan.name)
+        em.add_field(name="Greet Channel", value=greetchan.mention)
         em.add_field(name="Blacklist", value=blacklist)
         em.add_field(name="Logging", value=logging)
-        em.add_field(name="Log Channel", value=logchan.name)
+        em.add_field(name="Log Channel", value=logchan.mention)
         em.add_field(name='Automod', value=automod)
         em.add_field(name='Stats', value=stats)
         em.add_field(name='Vip', value=vip)
