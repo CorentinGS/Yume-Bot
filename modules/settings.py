@@ -27,7 +27,7 @@ class Set(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def get(self, ctx):
-        await ctx.message.delete
+        await ctx.message.delete()
         vip = False
 
         set = await Settings().get_server_settings(str(ctx.guild.id))
