@@ -45,6 +45,7 @@ class YumeBot(commands.Bot):
         self.owner = config["owner_id"]
         self.guild = config['support']
         self.debug = config['debug']
+        self.remove_command("help")
 
         self.session = aiohttp.ClientSession(loop=self.loop)
 

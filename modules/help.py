@@ -15,7 +15,7 @@ class Help(commands.Cog):
         self.config = bot.config
 
     @commands.command()
-    async def commands_test(self, ctx):
+    async def help(self, ctx):
         tip = random.choice(lists.tip)
         await ctx.message.delete()
 
@@ -26,12 +26,11 @@ class Help(commands.Cog):
         embed.set_footer(text=f'Tip: {tip}')
 
         embed.add_field(
-            name="**Commands**", value="[Click here for a full commands list](https://www.yumenetwork.fr)\n", inline=False)
+            name="**Commands**", value="[Click here for a full commands list](https://yumenetwork.gitbook.io/yumebot/)\n", inline=False)
         embed.add_field(
             name="**Invite**", value="[Click Here](https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot) to invite the bot", inline=False)
         embed.add_field(
-            name="**Support**", value="Join [YumeBot Support](https://invite.gg/yumenetwork) if you want to get help.\n \n"
-            "You can also submit your ideas [here](https://github.com/yumenetwork/Yume-Bot/issues/new/choose)", inline=False)
+            name="**Support**", value="Join [YumeBot Support](https://invite.gg/yumenetwork) if you want to get help.", inline=False)
 
         await ctx.send(embed=embed)
 

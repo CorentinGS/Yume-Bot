@@ -27,13 +27,19 @@ class Set(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def get(self, ctx):
-        guild = ctx.message.guild
-        set = await Settings().get_server_settings(str(guild.id))
+        await ctx.message.delete
+        vip = False
+
+        set = await Settings().get_server_settings(str(ctx.guild.id))
+        glob = await Settings().get_glob_settings()
+
+        if ctx.guild.owner in glob['VIP']:
+            vip = True
 
         if not 'Setup' in set:
             set['Setup'] = False
 
-        await Settings().set_server_settings(str(guild.id), set)
+        await Settings().set_server_settings(str(ctx.guild.id), set)
 
         if set['Setup'] is False:
             await ctx.send("You must setup the bot before ! Use **--setting setup**")
@@ -47,19 +53,18 @@ class Set(commands.Cog):
             automod = set['automod']
             display = set['Display']
 
-            em = await Embeds().format_get_set_embed(ctx, guild, greet, greetchannel, blacklist, logging, logchannel, automod, display)
+            em = await Embeds().format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, automod, display, vip)
             await ctx.send(embed=em)
 
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def reset(self, ctx):
-        guild = ctx.message.guild
-        set = await Settings().get_server_settings(str(guild.id))
+        set = await Settings().get_server_settings(str(ctx.guild.id))
         if not "Setup" in set:
             set["Setup"] = False
 
-        await Settings().set_server_settings(str(guild.id), set)
+        await Settings().set_server_settings(str(ctx.guild.id), set)
 
         set['Greet'] = False
         set['bl'] = False
@@ -74,7 +79,7 @@ class Set(commands.Cog):
         set['Mods'] = []
         set['Setup'] = False
 
-        await Settings().set_server_settings(str(guild.id), set)
+        await Settings().set_server_settings(str(ctx.guild.id), set)
         await ctx.invoke(self.setup)
 
     @setting.command()
