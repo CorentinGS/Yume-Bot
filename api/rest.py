@@ -2,8 +2,7 @@
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
 from flask_restful import Api, Resource, reqparse
-
-import api.db as db
+from db import Settings as db
 
 app = Flask(__name__)
 api = Api(app)
@@ -11,7 +10,7 @@ auth = HTTPBasicAuth()
 
 @auth.get_password
 def get_password(username):
-	set = db.Settings().get_key_settings(str(username))
+	set = db().get_key_settings(str(username))
 	if not set:
 		return None
 	else:
@@ -27,7 +26,7 @@ class Global(Resource):
 
 	@auth.login_required
 	def get(self, id):
-		set = db().get_glob_settings
+		set = db().get_glob_settings()
 		return set, 200
 
 	@staticmethod
