@@ -1,17 +1,5 @@
 version: '3'
 services:
-  akumu:
-    image: yumenetwork/akumu-bot:latest
-    restart: always
-    ports: 
-      - 8081:8080
-
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "5"
-
   mongo:
     image: mongo:4.0.6
     restart: always
