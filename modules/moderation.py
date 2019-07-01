@@ -16,7 +16,7 @@ class Check(commands.Cog):
         if ctx.message.author.top_role > user.top_role:
             return True
         else:
-            await ctx.send("Permission error")
+            await ctx.send("You can't do that because you don't have enough permissions...")
             return False
 
 
@@ -50,16 +50,26 @@ class Moderation(commands.Cog):
 
         id = await Sanction().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, 'strike', id)
-        await ctx.send(embed=em)
+        if set['logging'] is True:
+            if 'LogChannel' in set:
+                channel = self.bot.get_channel(int(set['LogChannel']))
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await ctx.send(embed=em)
+        else:
+            await ctx.send(embed=em)
 
     @commands.command(aliases=["chut", "tg"])
     @checks.is_mod()
     async def mute(self, ctx, user: discord.Member, duration: str, *, reason: str = None):
+
         """
         :param user: The member to mute
         :param duration: The duration of the mute
         :param reason: the reason of the mute
         """
+
         perm = await Check().check(ctx, user)
         if perm is False:
             return
