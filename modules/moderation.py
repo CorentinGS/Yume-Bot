@@ -49,7 +49,7 @@ class Moderation(commands.Cog):
         await ctx.message.delete()
 
         id = await Sanction().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
-        em = await Embeds().format_mod_embed(ctx, user, 'strike', id)
+        em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'strike', id)
         if set['logging'] is True:
             if 'LogChannel' in set:
                 channel = self.bot.get_channel(int(set['LogChannel']))
@@ -101,7 +101,7 @@ class Moderation(commands.Cog):
             await chan.set_permissions(user, send_messages=False)
 
         id = await Sanction().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
-        em = await Embeds().format_mod_embed(ctx, user, 'mute', id, duration)
+        em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'mute', id, duration)
 
         if set['logging'] is True:
             if 'LogChannel' in set:
@@ -119,15 +119,20 @@ class Moderation(commands.Cog):
         set = await Settings().get_server_settings(str(guild.id))
 
         if user.id in set['Mute']:
-            await ctx.invoke(self.unmute, user)
+            await ctx.invoke(self.unmute, user, True)
         else:
             return
 
     @commands.command()
     @checks.is_mod()
-    async def unmute(self, ctx, user: discord.Member):
+    async def unmute(self, ctx, user: discord.Member, auto: bool = False):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
+
+        if auto == False:
+            mod = ctx.message.author
+        else:
+            mod = "auto"
 
         for chan in ctx.guild.text_channels:
             await chan.set_permissions(user, overwrite=None)
@@ -138,7 +143,7 @@ class Moderation(commands.Cog):
             set['Mute'].remove(user.id)
         await Settings().set_server_settings(str(guild.id), set)
 
-        em = await Embeds().format_mod_embed(ctx, user, 'unmute')
+        em = await Embeds().format_mod_embed(ctx, user, mod, None, 'unmute')
         if set['logging'] is True:
             if 'LogChannel' in set:
                 channel = self.bot.get_channel(int(set['LogChannel']))
@@ -162,7 +167,7 @@ class Moderation(commands.Cog):
 
         await ctx.guild.kick(user)
         id = await Sanction().create_sanction(user, 'Kick', ctx.message.author, ctx.message.guild, reason)
-        em = await Embeds().format_mod_embed(ctx, user, 'kick', id)
+        em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'kick', id)
 
         if setting['logging'] is True:
             if 'LogChannel' in setting:
@@ -185,7 +190,7 @@ class Moderation(commands.Cog):
         banned = await self.bot.get_user_info(id)
 
         _id = await Sanction().create_sanction(banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
-        em = await Embeds().format_mod_embed(ctx, banned, 'hackban', _id)
+        em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, reason, 'hackban', _id)
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
@@ -211,8 +216,7 @@ class Moderation(commands.Cog):
         await ctx.guild.unban(user)
         await Settings().rm_strike_settings(str(ctx.guild.id), str(id))
 
-
-        em = await Embeds().format_mod_embed(ctx, banned, 'unban')
+        em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, None, 'unban')
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)
 
@@ -237,7 +241,7 @@ class Moderation(commands.Cog):
         await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
         id = await Sanction().create_sanction(user, 'Ban', ctx.message.author, ctx.message.guild, reason)
-        em = await Embeds().format_mod_embed(ctx, user, 'ban', id)
+        em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'ban', id)
 
         server = str(ctx.guild.id)
         setting = await Settings().get_server_settings(server)

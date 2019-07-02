@@ -26,24 +26,22 @@ class Mod():
 class Embeds():
 
     @staticmethod
-    async def format_mod_embed(ctx, user, command, sanction=None, duration=None):
+    async def format_mod_embed(ctx, user, mod, reason, command, sanction=None, duration=None):
 
         em = discord.Embed(timestamp=ctx.message.created_at)
-        em.set_author(name=f"{command}", icon_url=user.avatar_url)
-        if sanction is not None:    
+        em.set_author(name=f"{command}")
+        if sanction is not None:
             em.set_footer(text=f'Sanction ID: {sanction}')
-        if command == 'ban' or command == 'hackban':
-            em.description = f'**{user}** was just {command}ned...'
-        elif command == 'mute':
-            em.description = f'**{user}** was just muted for {duration}...'
-        elif command == 'unmute':
-            em.description = f'**{user}** was just unmuted...'
-        elif command == 'kick':
-            em.description = f'**{user}** was just kicked...'
-        elif command == 'unban':
-            em.description = f'**{user}** was just unbanned...'
-        elif command == 'strike':
-            em.description = f'**{user}** was just {command}d...'
+
+        msg =  f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
+            f"**Moderator** : {mod.name}#{mod.discriminator}\n"
+        if reason is not None:
+            str1 = f"**Reason** : {reason}\n"
+            msg = " ".join((msg, str1))
+        if duration is not None:
+            str2 = f"**Duration**: {duration}"
+            msg = " ".join((msg, str2))
+        em.description = msg
 
         return em
 

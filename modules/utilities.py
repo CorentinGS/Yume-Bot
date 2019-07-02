@@ -143,7 +143,6 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def whois(self, ctx, user: discord.Member):
-
         await ctx.message.delete()
 
         embed = discord.Embed(
