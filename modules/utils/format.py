@@ -86,3 +86,36 @@ class Embeds():
         em.add_field(name='Vip', value=vip)
 
         return em
+
+    @staticmethod
+    async def format_commands_embed(ctx, icon):
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        em.set_author(name='Yume Bot', url="https://yumenetwork.gitbook.io/yumebot/", icon_url=icon)
+        em.description = "**» Does anyone need any help?**\nYou can use **--h <category>** to view commands for that category."
+        em.add_field(name="**Categories**", value="**--h general** | General Commands\n"
+                                                  "**--h fun** | Fun Commands\n"
+                                                  "**--h utils** | Utils Commands\n"
+                                                  "**--h mods** | Mods Commands\n"
+                                                  "**--h admin** | Admin Commands\n"
+                                                  "**--h level** | Level Commands\n"
+                                                  "**--h settings** | Settings Commands\n"
+                                                  "**--h about** | About Commands")
+
+        em.add_field(name="Links", value="[Documentation](https://yumenetwork.gitbook.io/yumebot/) | [Support]("
+                                         "https://invite.gg/yumenetwork) | [Sources]("
+                                         "https://github.com/yumenetwork/Yume-Bot) | "
+                                         "[Invite]"
+                                         "(https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot)",
+                     inline=False)
+
+        return em
+
+    @staticmethod
+    async def format_cat_embed(ctx, icon, category, liste):
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        em.set_author(name='Yume Bot', url="https://yumenetwork.gitbook.io/yumebot/", icon_url=icon)
+        em.description = f"**Category : {category}**\nYou can get more info about a command [here](https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
+        em.add_field(name="**:pushpin: Commands**", value= f"{liste}")
+
+        return em
+

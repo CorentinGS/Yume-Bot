@@ -1,9 +1,6 @@
-import random
-
-import discord
 from discord.ext import commands
 
-from modules.utils import lists
+from modules.utils.format import Embeds
 
 
 class Help(commands.Cog):
@@ -14,24 +11,52 @@ class Help(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    @commands.command()
+    @commands.group(aliases=["c", "commands", "h"])
     async def help(self, ctx):
-        tip = random.choice(lists.tip)
-        await ctx.message.delete()
+        embed = await Embeds().format_commands_embed(ctx, self.bot.user.avatar_url)
 
-        embed = discord.Embed(
-            set_author='Help',
-            color=discord.Colour.magenta()
-        )
-        embed.set_footer(text=f'Tip: {tip}')
+        await ctx.send(embed=embed)
 
-        embed.add_field(
-            name="**Commands**", value="[Click here for a full commands list](https://yumenetwork.gitbook.io/yumebot/)\n", inline=False)
-        embed.add_field(
-            name="**Invite**", value="[Click Here](https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot) to invite the bot", inline=False)
-        embed.add_field(
-            name="**Support**", value="Join [YumeBot Support](https://invite.gg/yumenetwork) if you want to get help.", inline=False)
+    @help.command()
+    async def general(self, ctx):
+        liste= "`ping`, `jump`, `debug`, `weather`, `gweather`, `afk`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "General", liste)
+        await ctx.send(embed=embed)
 
+    @help.command()
+    async def utils(self, ctx):
+        liste= "`info`, `members`, `owner`, `date`, `whois`, `hackwhois`, `avatar`, `icon`, `roleinfo`, `invite`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Utils", liste)
+        await ctx.send(embed=embed)
+
+    @help.command()
+    async def about(self, ctx):
+        liste= "`about`, `help`, `suggestion`, `feedback`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "About", liste)
+        await ctx.send(embed=embed)
+
+    @help.command()
+    async def mods(self, ctx):
+        liste = "`mute`, `unmute`, `ban`, `hackban`, `unban`, `kick`, `purge`, `sanction`, `strike`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Mods", liste)
+        await ctx.send(embed=embed)
+
+    @help.command()
+    async def admin(self, ctx):
+        liste= "`mention`, `annonce`, `massban`, `reset`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Admin", liste)
+        await ctx.send(embed=embed)
+
+    @help.command()
+    async def level(self, ctx):
+        liste= "`rank`, `level config`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Level", liste)
+        await ctx.send(embed=embed)
+
+    @help.command()
+    async def settings(self, ctx):
+        liste= "`settings get`, `settings reset`, `settings setup`, `settings role mod`, `settings role admin`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Settings", liste)
         await ctx.send(embed=embed)
 
 
