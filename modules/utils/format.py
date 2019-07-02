@@ -40,11 +40,11 @@ class Embeds():
             color = discord.Colour.gold()
 
         em = discord.Embed(color=color, timestamp=ctx.message.created_at)
-        em.set_author(name=f"{command}")
+        em.set_author(name=f"{command.title()}")
         if sanction is not None:
             em.set_footer(text=f'Sanction ID: {sanction}')
 
-        msg =  f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
+        msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
             f"**Moderator** : {mod.name}#{mod.discriminator}\n"
         if reason is not None:
             str1 = f"**Reason** : {reason}\n"
