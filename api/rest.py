@@ -8,6 +8,7 @@ app = Flask(__name__)
 api = Api(app)
 auth = HTTPBasicAuth()
 
+
 @auth.get_password
 def get_password(username):
 	set = db().get_key_settings(str(username))

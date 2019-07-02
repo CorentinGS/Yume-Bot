@@ -12,21 +12,11 @@ DEV = config['dev']
 
 
 def is_owner_check(ctx):
-    _id = ctx.message.author.id
-    return _id == owner
+    return ctx.message.author.id == owner
 
 
 def is_owner():
     return commands.check(is_owner_check)
-
-
-def is_dm_check(ctx):
-    if ctx.guild is None:
-        return True
-
-
-def is_dm():
-    return commands.check(is_dm_check)
 
 
 async def is_mod_check(ctx):
@@ -59,5 +49,17 @@ async def is_admin_check(ctx):
 
 def is_admin():
     return commands.check(is_admin_check)
+
+
+async def is_vip_check(ctx):
+    glob = await Settings().get_glob_settings()
+    if ctx.message.guild.id in glob["VIP"] or ctx.message.guild.owner.id in glob["VIP"]:
+        return True
+    else:
+        return False
+
+
+def is_vip():
+    return commands.check(is_vip_check)
 
 # TODO: Rewrite all check and add dev is_check

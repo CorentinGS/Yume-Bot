@@ -160,30 +160,27 @@ class Owner(commands.Cog):
 
     @vip.command(hidden=True)
     async def add(self, ctx, id: int):
-        user = await self.bot.get_user_info(id)
         await ctx.message.delete()
 
         setting = await Settings().get_glob_settings()
         if 'VIP' not in setting:
             setting['VIP'] = []
 
-        if user.id in setting['VIP']:
-            return await ctx.send("This user is already VIP")
-        setting['VIP'].append(user.id)
+        if id in setting['VIP']:
+            return await ctx.send("This user / guild is already VIP")
+        setting['VIP'].append(id)
         await Settings().set_glob_settings(setting)
-        await ctx.send(f"{user} is now VIP")
+        await ctx.send(f"{id} is now VIP")
 
     @vip.command(hidden=True)
     async def remove(self, ctx, id: int):
-        user = await self.bot.get_user_info(id)
         await ctx.message.delete()
         setting = await Settings().get_glob_settings()
 
-        if user.id in setting['VIP']:
-            setting['VIP'].remove(user.id)
+        if id in setting['VIP']:
+            setting['VIP'].remove(id)
             await Settings().set_glob_settings(setting)
-            await ctx.send(f"{user} has been remove from VIP")
-
+            await ctx.send(f"{id} has been remove from VIP")
         else:
             return await ctx.send('User is not VIP')
 
