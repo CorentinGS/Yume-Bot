@@ -19,7 +19,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def general(self, ctx):
-        liste= "`ping`, `jump`, `debug`, `weather`, `gweather`, `afk`"
+        liste= "`jump`, `debug`, `weather`, `gweather`, `afk`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "General", liste)
         await ctx.send(embed=embed)
 
