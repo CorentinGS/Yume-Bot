@@ -41,7 +41,6 @@ class About(commands.Cog):
 		server = '[Discord](https://invite.gg/yumenetwork)'
 		lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
 
-		print("embed")
 		embed = discord.Embed(
 			title="About",
 			colour=discord.Colour.dark_red()

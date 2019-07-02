@@ -28,7 +28,18 @@ class Embeds():
     @staticmethod
     async def format_mod_embed(ctx, user, mod, reason, command, sanction=None, duration=None):
 
-        em = discord.Embed(timestamp=ctx.message.created_at)
+        if command == "ban" or command == "hackban":
+            color = discord.Colour.red()
+        if command == "unban" or "unmute":
+            color = discord.Colour.green()
+        if command == "kick":
+            color = discord.Colour.blue()
+        if command == "mute":
+            color = discord.Colour.orange()
+        if command == "strike":
+            color = discord.Colour.gold()
+
+        em = discord.Embed(color=color, timestamp=ctx.message.created_at)
         em.set_author(name=f"{command}")
         if sanction is not None:
             em.set_footer(text=f'Sanction ID: {sanction}')

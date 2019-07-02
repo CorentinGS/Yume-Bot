@@ -47,7 +47,7 @@ class Moderation(commands.Cog):
         if perm is False:
             return
         await ctx.message.delete()
-
+        set = await Settings().get_server_settings(str(ctx.guild.id))
         id = await Sanction().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'strike', id)
         if set['logging'] is True:
