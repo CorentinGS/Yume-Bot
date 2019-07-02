@@ -86,12 +86,6 @@ class Fun(commands.Cog):
         except discord.HTTPException:
             pass
 
-    @commands.command(aliases=["god", 'yume'])
-    async def king(self, ctx):
-        await ctx.message.delete()
-        answer = random.choice(lists.king)
-        await ctx.send(f'{answer}')
-
 
 def setup(bot):
     bot.add_cog(Fun(bot))

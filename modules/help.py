@@ -59,6 +59,12 @@ class Help(commands.Cog):
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Settings", liste)
         await ctx.send(embed=embed)
 
+    @help.command()
+    async def fun(self, ctx):
+        liste = "`rd`, `8ball`, `cat`, `lovepower`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Fun", liste)
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Help(bot))
