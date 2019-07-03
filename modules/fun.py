@@ -50,7 +50,6 @@ class Fun(commands.Cog):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
 
-    #taux d'amour
     @commands.command()
     @commands.guild_only()
     async def lovepower(self, ctx, user: discord.Member = None):
@@ -74,7 +73,6 @@ class Fun(commands.Cog):
 
         await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji))
     
-    #calendrier republicain
     @commands.command()
     @commands.guild_only()
     async def rd(self, ctx):
@@ -88,23 +86,25 @@ class Fun(commands.Cog):
         except discord.HTTPException:
             pass
     
-    #marrier quelqu'un
     @commands.command()
     @commands.guild_only()
     async def marry(self, ctx, user: discord.Member =  None):
-        await ctx.message.delete()
-        def msgcheck(m):
-            if user is None:
-                await ctx.send("Hey you can't get married alone... retry")
-            
-            else
-                user1 = ctx.message.author #met dans user le nom de celui qui a écrit
 
-                await ctx.send("Hey {}, {} wants to marry you.\n Do you agree ?".format(user.name,user1.name))
-                await bot.add_react(":thumbsup:595600101263671306")
-                await bot.add_react(":middle_finger:595671504423747615")
-                
-        m = await self.bot.wait_for('message', timeout=120, check=msgcheck)
+        def check(reaction, toto):
+            return toto == user and str(reaction.emoji)
+
+        reactions = ["👍", "🖕"]
+
+        await ctx.message.delete()
+        if user is None:
+            await ctx.send("Hey you can't get married alone... retry")
+            
+        else:
+            msg = await ctx.send("Hey {}, {} wants to marry you.\n Do you agree ?".format(user.name, ctx.message.author.name))
+            for reac in reactions:
+             await msg.add_reaction(reac)
+
+        reaction, toto = await self.bot.wait_for('reaction_add', timeout=120, check=check)
 
 
 def setup(bot):
