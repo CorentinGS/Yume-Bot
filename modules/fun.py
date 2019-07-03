@@ -8,9 +8,6 @@ from romme import RepublicanDate
 
 from modules.utils import http, lists
 
-with open('./config/keys.json', 'r') as cjson:
-    keys = json.load(cjson)
-
 
 class Fun(commands.Cog):
 
