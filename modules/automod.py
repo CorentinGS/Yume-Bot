@@ -83,5 +83,6 @@ class Automod(commands.Cog):
 				else:
 					await member.channel.send(embed=em)
 
+
 def setup(bot):
 	bot.add_cog(Automod(bot))

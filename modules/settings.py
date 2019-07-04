@@ -6,6 +6,7 @@ from discord.ext import commands
 from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
+from modules.utils.setup import Setup
 
 
 class Set(commands.Cog):
@@ -33,7 +34,7 @@ class Set(commands.Cog):
         set = await Settings().get_server_settings(str(ctx.guild.id))
         glob = await Settings().get_glob_settings()
 
-        if ctx.guild.owner in glob['VIP']:
+        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP']:
             vip = True
 
         if not 'Setup' in set:
@@ -60,26 +61,7 @@ class Set(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def reset(self, ctx):
-        set = await Settings().get_server_settings(str(ctx.guild.id))
-        if not "Setup" in set:
-            set["Setup"] = False
-
-        await Settings().set_server_settings(str(ctx.guild.id), set)
-
-        set['Greet'] = False
-        set['bl'] = False
-        set['logging'] = False
-        set['GreetChannel'] = None
-        set['LogChannel'] = None
-        set['automod'] = False
-        set['Mute'] = []
-        set['Display'] = False
-        set['category'] = None
-        set['Admins'] = []
-        set['Mods'] = []
-        set['Setup'] = False
-
-        await Settings().set_server_settings(str(ctx.guild.id), set)
+        await Setup().new_guild(ctx.message.guild.id)
         await ctx.invoke(self.setup)
 
     @setting.command()
@@ -93,46 +75,22 @@ class Set(commands.Cog):
         # glob = await Settings().get_glob_settings()
 
         def check(reaction, user):
-            return user == ctx.message.author and str(reaction.emoji)
+            return (user == ctx.message.author) and str(reaction.emoji)
 
         def msgcheck(m):
-            if m.author == ctx.message.author:
-                return True
-            else:
-                return False
+            return m.author == ctx.message.author
 
         if not "Setup" in set:
             set['Setup'] = False
 
         if set['Setup'] is True:
-            return await ctx.send("The setup has already been done. If you want to restore it you should use : **--setting reset**")
+            return await ctx.send("The setup has already been done. "
+                                  "If you want to restore it you should use : **--setting reset**")
+
         reactions = ['✅', '🚫']
         await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
 
-        if not 'Greet' in set:
-            set['Greet'] = False
-        if not 'bl' in set:
-            set['bl'] = False
-        if not 'logging' in set:
-            set['logging'] = False
-        if not 'GreetChannel' in set:
-            set['GreetChannel'] = None
-        if not 'LogChannel' in set:
-            set['LogChannel'] = None
-        if not 'automod' in set:
-            set['automod'] = False
-        if not 'Mute' in set:
-            set['Mute'] = []
-        if not 'Display' in set:
-            set['Display'] = False
-        if not 'category' in set:
-            set['category'] = None
-        if not 'Admins' in set:
-            set['Admins'] = []
-        if not 'Mods' in set:
-            set['Mods'] = []
-
-        await Settings().set_server_settings(str(guild.id), set)
+        await Setup().new_guild(guild.id)
 
         set['logging'] = True
 
@@ -141,6 +99,7 @@ class Set(commands.Cog):
             ctx.guild.me: discord.PermissionOverwrite(
                 send_messages=True)
         }
+
         log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
         set['LogChannel'] = str(log.id)
 
@@ -236,45 +195,12 @@ class Set(commands.Cog):
         for guild in self.bot.guilds:
             set = await Settings().get_server_settings(str(guild.id))
             if not "Setup" in set:
-                set["Setup"] = False
-                set['Greet'] = False
-                set['bl'] = False
-                set['logging'] = False
-                set['GreetChannel'] = None
-                set['LogChannel'] = None
-                set['automod'] = False
-                set['Mute'] = []
-                set['Display'] = False
-                set['category'] = None
-                set['Admins'] = []
-                set['Mods'] = []
-                set['Setup'] = False
-                set['levels'] = {}
-
-            await Settings().set_server_settings(str(guild.id), set)
+                await Setup().new_guild(guild.id)
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         set = await Settings().get_server_settings(str(guild.id))
-        if not "Setup" in set:
-            set["Setup"] = False
-            set['Greet'] = False
-            set['bl'] = False
-            set['logging'] = False
-            set['GreetChannel'] = None
-            set['LogChannel'] = None
-            set['automod'] = False
-            set['Mute'] = []
-            set['Display'] = False
-            set['category'] = None
-            set['Admins'] = []
-            set['Mods'] = []
-            set['Setup'] = False
-            set['levels'] = {}
-
-        await Settings().set_server_settings(str(guild.id), set)
-
-        print(f"New guild : {guild.name} | {guild.id}.")
+        await Setup().new_guild(guild.id)
 
         for role in guild.roles:
             if role.permissions.administrator or role.permissions.manage_guild is True:
@@ -283,6 +209,8 @@ class Set(commands.Cog):
                 set['Mods'].append(str(role.id))
 
         await Settings().set_server_settings(str(guild.id), set)
+
+        await guild.owner.send(f"Hi ! To use the bot you should use this command in any channel of your guild {guild.name} :\n**--setting setup**")
 
 
 def setup(bot):

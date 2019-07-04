@@ -82,7 +82,7 @@ class Fun(commands.Cog):
 
         except discord.HTTPException:
             pass
-    
+
     @commands.command()
     @commands.guild_only()
     async def marry(self, ctx, user: discord.Member =  None):
