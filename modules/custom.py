@@ -30,6 +30,8 @@ class Custom(commands.Cog):
 	async def on_reaction_add(self, reaction, user):
 
 		set = await Settings().get_custom_settings(str(reaction.message.guild.id))
+		if 'game_viewer' not in set:
+			return
 		if not set["game_viewer"] is True or not reaction.message.id == set["message_id"]:
 			return
 
