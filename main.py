@@ -7,7 +7,7 @@ import traceback
 
 import aiohttp
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -29,8 +29,16 @@ def get_prefix(bot, message):
 
 description = "Yume Bot ! Peace & Dream <3"
 
+'''
 log = logging.getLogger(__name__)
 log.setLevel(logging.ERROR)
+'''
+
+logger = logging.getLogger("discord")
+logger.setLevel(logging.ERROR)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
 
 
 class YumeBot(commands.Bot):
@@ -41,13 +49,12 @@ class YumeBot(commands.Bot):
         self.token = token['token']
         self.ready = False
         self.config = config
-        self.log = log
         self.owner = config["owner_id"]
         self.guild = config['support']
         self.debug = config['debug']
         self.remove_command("help")
 
-        self.session = aiohttp.ClientSession(loop=self.loop)
+        # self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def on_ready(self):
         if not hasattr(self, 'uptime'):
@@ -64,11 +71,6 @@ class YumeBot(commands.Bot):
                     print('Failed to load module {} : {}'.format(module, e))
                     traceback.print_exc()
             print('{}/{} modules loaded'.format(loaded, len(modules)))
-        while True:
-            names = ['--help', 'Peace and Dream', 'By YumeNetwork']
-            for name in names:
-                await self.change_presence(activity=discord.Game(name=name))
-                await asyncio.sleep(10)
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.NoPrivateMessage):

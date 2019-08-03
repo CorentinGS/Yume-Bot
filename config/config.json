@@ -2,7 +2,7 @@
   "owner_id": "282233191916634113",
   "dev": ["282233191916634113"],
   "version": "2.3.5",
-  "modules": ["about", "blacklist", "fun", "general", "help", "moderation", "owner", "utilities", "tags", "event", "settings", "cutstom", "gestion", "level", "automod", "reactions"],
+  "modules": ["about", "blacklist", "fun", "general", "help", "moderation", "owner", "utilities", "tags", "event", "settings", "custom", "gestion", "level", "automod", "tasks", "reactions"],
   "support": "488765635439099914",
   "feedback": "568737197386104863",
   "suggestion": "568737195612176389",

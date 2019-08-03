@@ -22,6 +22,8 @@ services:
       dockerfile: Dockerfile_bot
     links:
         - mongo
+    volumes:
+        - .:/usr/src/app
     logging:
       driver: "json-file"
       options:
@@ -42,4 +44,3 @@ services:
       options:
         max-size: "200k"
         max-file: "3"
-
