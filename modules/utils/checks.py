@@ -53,7 +53,7 @@ def is_admin():
 
 async def is_vip_check(ctx):
     glob = await Settings().get_glob_settings()
-    if ctx.message.guild.id in glob["VIP"] or ctx.message.guild.owner.id in glob["VIP"]:
+    if ctx.message.guild.id in glob["VIP"] or ctx.message.author.id in glob["VIP"]:
         return True
     else:
         return False
@@ -61,5 +61,3 @@ async def is_vip_check(ctx):
 
 def is_vip():
     return commands.check(is_vip_check)
-
-# TODO: Rewrite all check and add dev is_check

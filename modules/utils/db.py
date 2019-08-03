@@ -15,6 +15,7 @@ class Settings():
         self.user = self.db.user
         self.games = self.db.games
         self.reaction = self.db.reaction
+        self.custom = self.db.custom
 
     async def get_glob_settings(self):
         doc = await self.glob.find_one({"_id": 0})
@@ -36,6 +37,13 @@ class Settings():
 
     async def set_reaction_settings(self, id, settings):
         return await self.reaction.replace_one({"_id": id}, settings, True)
+
+    async def set_custom_settings(self, id, settings):
+        return await self.custom.replace_one({"_id": id}, settings, True)
+
+    async def get_custom_settings(self, id):
+        doc = await self.custom.find_one({"_id": id})
+        return doc or {}
 
     async def set_games_settings(self, id, settings):
         return await self.games.replace_one({"_id": id}, settings, True)

@@ -39,7 +39,13 @@ class Event(commands.Cog):
 			category = discord.utils.get(
 				member.guild.categories, id=int(server['category']))
 			for channel in category.channels:
-				await channel.delete()
+				try:
+					await channel.delete()
+				except discord.Forbidden:
+					return
+				except discord.HTTPException:
+					return
+
 
 			overwrite = {
 				member.guild.default_role: discord.PermissionOverwrite(connect=False),
@@ -69,7 +75,12 @@ class Event(commands.Cog):
 			category = discord.utils.get(
 				member.guild.categories, id=int(server['category']))
 			for channel in category.channels:
-				await channel.delete()
+				try:
+					await channel.delete()
+				except discord.Forbidden:
+					return
+				except discord.HTTPException:
+					return
 
 			overwrite = {
 				member.guild.default_role: discord.PermissionOverwrite(connect=False),

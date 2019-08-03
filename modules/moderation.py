@@ -187,7 +187,7 @@ class Moderation(commands.Cog):
         user = discord.Object(id=id)
         await ctx.guild.ban(user)
 
-        banned = await self.bot.get_user_info(id)
+        banned = await self.bot.fetch_user(id)
 
         _id = await Sanction().create_sanction(banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, reason, 'hackban', _id)
@@ -211,7 +211,7 @@ class Moderation(commands.Cog):
 
         await ctx.message.delete()
         user = discord.Object(id=id)
-        banned = await self.bot.get_user_info(id)
+        banned = await self.bot.fetch_user(id)
 
         await ctx.guild.unban(user)
         await Settings().rm_strike_settings(str(ctx.guild.id), str(id))

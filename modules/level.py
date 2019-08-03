@@ -1,3 +1,4 @@
+import collections
 from random import randint
 
 import discord
@@ -21,7 +22,7 @@ class Level(commands.Cog):
 		set = await Settings().get_user_settings(str(ctx.message.guild.id))
 
 		if str(user.id) not in set:
-			d = {"level": 0, "xp": 0, "reach": 20}
+			d = {"level": 0, "xp": 0, "reach": 20, "total": 0}
 			set[str(user.id)] = d
 			await Settings().set_user_settings(str(ctx.message.guild.id), set)
 
@@ -30,6 +31,41 @@ class Level(commands.Cog):
 		em.set_author(name=user.name, icon_url=user.avatar_url)
 		em.add_field(name="**Level**", value=dic["level"])
 		em.add_field(name="**Progress**", value="{} / {}".format(dic['xp'], dic['reach']))
+		await ctx.send(embed=em)
+
+	@commands.command()
+	async def leaderboard(self, ctx):
+		set = await Settings().get_user_settings(str(ctx.message.guild.id))
+		ranks = {}
+		x = 0
+		em = discord.Embed(
+			description="ScoreBoard",
+			color=discord.Colour.magenta()
+		)
+
+		for user in set.keys():
+			if user == '_id':
+				continue
+			toto = set[str(user)]
+			ranks[user] = toto["total"]
+
+		sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
+		sorted_dict = collections.OrderedDict(sorted_x)
+		print(sorted_dict)
+
+		for user in sorted_dict.keys():
+			member = discord.utils.get(ctx.guild.members, id = int(user))
+			if member is None:
+				del sorted_dict[user]
+			else:
+				x += 1
+				level = set[str(user)]['level']
+				total = set[str(user)]['total']
+				em.add_field(name=f"{x} - {member.name}", value=f"Level : {level} \nTotal xp : {total}", inline=False)
+
+				if x == 10:
+					break
+
 		await ctx.send(embed=em)
 
 	@commands.group()
@@ -77,7 +113,7 @@ class Level(commands.Cog):
 		toto = await Settings().get_server_settings(str(message.guild.id))
 
 		if not str(user.id) in set:
-			d = {"level": 0, "xp": 0, "reach": 20}
+			d = {"level": 0, "xp": 0, "reach": 20, "total":0}
 			set[str(user.id)] = d
 
 		await Settings().set_user_settings(str(message.guild.id), set)
@@ -86,9 +122,10 @@ class Level(commands.Cog):
 		gain = randint(2, 7)
 
 		dic['xp'] += gain
+		dic['total'] += dic['xp']
 
 		if dic['xp'] >= dic['reach']:
-			dic['reach'] = dic['reach'] * 2
+			dic['reach'] = round(dic['reach'] * 1.5)
 			dic['xp'] = 0
 			dic['level'] += 1
 
