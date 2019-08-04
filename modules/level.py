@@ -53,7 +53,6 @@ class Level(commands.Cog):
             ranks[user] = toto["total"]
 
         sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
-        print(sorted_x)
         sorted_dict = collections.OrderedDict(sorted_x).copy()
         for user in sorted_dict.keys():
             member = discord.utils.get(ctx.guild.members, id=int(user))
