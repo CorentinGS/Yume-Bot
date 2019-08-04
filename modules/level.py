@@ -51,9 +51,8 @@ class Level(commands.Cog):
             ranks[user] = toto["total"]
 
         sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
-        sorted_dict = collections.OrderedDict(sorted_x)
+        sorted_dict = collections.OrderedDict(sorted_x).copy()
         print(sorted_dict)
-
         for user in sorted_dict.keys():
             member = discord.utils.get(ctx.guild.members, id=int(user))
             if member is None:
@@ -159,6 +158,9 @@ class Level(commands.Cog):
 		# TODO: Eviter la duplication du msg de lvl up
         set[str(user.id)] = dic
         await Settings().set_user_settings(str(message.guild.id), set)
+
+
+# TODO: Ajouter des commandes pour voir les roles et un leaderboard
 
 
 def setup(bot):
