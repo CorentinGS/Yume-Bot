@@ -64,11 +64,7 @@ class YumeBot(commands.Bot):
                     print('Failed to load module {} : {}'.format(module, e))
                     traceback.print_exc()
             print('{}/{} modules loaded'.format(loaded, len(modules)))
-        while True:
-            names = ['--help', 'Peace and Dream', 'By YumeNetwork']
-            for name in names:
-                await self.change_presence(activity=discord.Game(name=name))
-                await asyncio.sleep(10)
+            await self.change_presence(activity=discord.Game(name="--help"))
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.NoPrivateMessage):
