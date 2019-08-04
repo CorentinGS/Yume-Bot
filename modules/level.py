@@ -53,12 +53,13 @@ class Level(commands.Cog):
             ranks[user] = toto["total"]
 
         sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
+        print(sorted_x)
         sorted_dict = collections.OrderedDict(sorted_x).copy()
-        await asyncio.sleep(15)
         for user in sorted_dict.keys():
             member = discord.utils.get(ctx.guild.members, id=int(user))
             if member is None:
-                del sorted_dict[user]
+                # del sorted_dict[user]
+                continue
             else:
                 x += 1
                 level = set[str(user)]['level']
