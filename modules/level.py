@@ -132,14 +132,20 @@ class Level(commands.Cog):
 			lvl = toto["levels"]
 			for key in lvl:
 				if int(key) == dic['level']:
-					role = discord.utils.get(
-						message.guild.roles, id=int(lvl[key]))
+					try:
+						role = discord.utils.get(
+							message.guild.roles, id=int(lvl[key]))
+					except discord.NotFound:
+						break
+					else:
+						continue
+						
 					try:
 						await user.add_roles(role)
 					except discord.Forbidden:
-						pass
+						break
 					except discord.InvalidArgument:
-						pass
+						break
 			try:
 				await message.channel.send("{} is now level {}.".format(user.name, dic['level']), delete_after=3)
 			except discord.Forbidden:
