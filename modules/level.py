@@ -1,5 +1,7 @@
 import collections
 from random import randint
+import asyncio
+
 
 import discord
 from discord.ext import commands
@@ -52,6 +54,7 @@ class Level(commands.Cog):
 
         sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
         sorted_dict = collections.OrderedDict(sorted_x).copy()
+        await asyncio.sleep(15)
         for user in sorted_dict.keys():
             member = discord.utils.get(ctx.guild.members, id=int(user))
             if member is None:
@@ -98,8 +101,8 @@ class Level(commands.Cog):
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
         await ctx.send("Level setup")
 
-		# TODO: Améliorer le message de setup
-		# TODO: Ajouter la possibilité de mentioner le role.
+        # TODO: Améliorer le message de setup
+        # TODO: Ajouter la possibilité de mentioner le role.
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -154,7 +157,7 @@ class Level(commands.Cog):
             except discord.Forbidden:
                 pass
 
-		# TODO: Eviter la duplication du msg de lvl up
+                # TODO: Eviter la duplication du msg de lvl up
         set[str(user.id)] = dic
         await Settings().set_user_settings(str(message.guild.id), set)
 
