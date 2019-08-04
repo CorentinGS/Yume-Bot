@@ -52,7 +52,6 @@ class Level(commands.Cog):
 
         sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
         sorted_dict = collections.OrderedDict(sorted_x).copy()
-        print(sorted_dict)
         for user in sorted_dict.keys():
             member = discord.utils.get(ctx.guild.members, id=int(user))
             if member is None:
