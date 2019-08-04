@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 
 ## [2.4.1] - 2019-04-15
 - Rest update
-  
+
+
 ## [2.4.0](https://github.com/yumepantai/Yume-Bot/releases/tag/2.4.0) - 2019-04-14
 
 ### Added
@@ -18,7 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 - Main.py
 
 ### Removed
-- Profiles 
+- Profiles
 - Settings config
 
 
@@ -32,14 +33,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and this 
 ## [2.3.4] - 2019-04-14
 
 - New settings system
-  
+
 ## [2.3.3](https://github.com/yumepantai/Yume-Bot/releases/tag/2.3.3) - 2019-04-11
 
 - Fix rank command
 - Add embed to rank command
 
 ## [2.3.2] - 2019-04-10
-  
+
 ### Fixed
 
 - Duplicate channels on stats & logging is now fixed
