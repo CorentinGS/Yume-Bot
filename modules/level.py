@@ -90,31 +90,17 @@ class Level(commands.Cog):
             print(rolemention.id)
         except discord.NotFound:
             return await ctx.send(
-<<<<<<< HEAD
-                "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role")
-=======
                 "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
         except discord.InvalidArgument:
             return await ctx.send("We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
->>>>>>> master
 
         toto = set["levels"]
         toto[str(level)] = str(rolemention.id)
         set["levels"] = toto
-<<<<<<< HEAD
-        print(set["levels"])
-=======
->>>>>>> master
 
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
         await ctx.send("Level setup")
 
-<<<<<<< HEAD
-=======
-        # TODO: Améliorer le message de setup
-        # TODO: Ajouter la possibilité de mentioner le role.
-
->>>>>>> master
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         """
@@ -146,20 +132,6 @@ class Level(commands.Cog):
             dic['xp'] = 0
             dic['level'] += 1
 
-<<<<<<< HEAD
-            if "levels" in toto:
-                lvl = toto["levels"]
-                for key in lvl:
-                    if int(key) == dic['level']:
-                        role = discord.utils.get(
-                            message.guild.roles, id=int(lvl[key]))
-                        try:
-                            await user.add_roles(role)
-                        except discord.Forbidden:
-                            pass
-                        except discord.InvalidArgument:
-                            pass
-=======
             lvl = toto["levels"]
             for key in lvl:
                 if int(key) == dic['level']:
@@ -177,23 +149,17 @@ class Level(commands.Cog):
                         break
                     except discord.InvalidArgument:
                         break
->>>>>>> master
             try:
                 await message.channel.send("{} is now level {}.".format(user.name, dic['level']), delete_after=3)
             except discord.Forbidden:
                 pass
 
-<<<<<<< HEAD
-        set[str(user.id)] = dic
-        await Settings().set_user_settings(str(message.guild.id), set)
-=======
                 # TODO: Eviter la duplication du msg de lvl up
         set[str(user.id)] = dic
         await Settings().set_user_settings(str(message.guild.id), set)
 
 
 # TODO: Ajouter des commandes pour voir les roles et un leaderboard
->>>>>>> master
 
 
 def setup(bot):
