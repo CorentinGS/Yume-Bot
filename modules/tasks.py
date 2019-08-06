@@ -1,7 +1,6 @@
-import asyncio
+from itertools import cycle
 
 import discord
-from itertools import cycle
 from discord.ext import commands, tasks
 
 
@@ -11,7 +10,8 @@ class Tasks(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-        self.chng_pr.start()
+
+    # self.chng_pr.start()
 
     @tasks.loop(seconds=30.0)
     async def chng_pr(self):

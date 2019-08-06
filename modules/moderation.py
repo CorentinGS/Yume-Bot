@@ -1,10 +1,10 @@
 import asyncio
 
 import discord
-from discord.ext import commands
 
 from modules.sanction import Sanction
 from modules.utils import checks
+from modules.utils.converter import *
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
@@ -42,7 +42,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_mod()
-    async def strike(self, ctx, user: discord.Member, *, reason=None):
+    async def strike(self, ctx, user: discord.Member, *, reason: ModReason = None):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
@@ -62,7 +62,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=["chut", "tg"])
     @checks.is_mod()
-    async def mute(self, ctx, user: discord.Member, duration: str, *, reason: str = None):
+    async def mute(self, ctx, user: discord.Member, duration: str, *, reason: ModReason = None):
 
         """
         :param user: The member to mute
@@ -156,7 +156,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=['out'])
     @checks.is_mod()
-    async def kick(self, ctx, user: discord.Member, *, reason: str = None):
+    async def kick(self, ctx, user: discord.Member, *, reason: ModReason = None):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
@@ -181,7 +181,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=['preventban', 'preban', 'idban'])
     @checks.is_admin()
-    async def hackban(self, ctx, id: int, *, reason: str = None):
+    async def hackban(self, ctx, id: MemberID, *, reason: ModReason = None):
 
         await ctx.message.delete()
         user = discord.Object(id=id)
@@ -207,7 +207,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_admin()
-    async def unban(self, ctx, id: int):
+    async def unban(self, ctx, id: MemberID):
 
         await ctx.message.delete()
         user = discord.Object(id=id)
@@ -232,7 +232,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=['ciao'])
     @checks.is_mod()
-    async def ban(self, ctx, user: discord.Member, *, reason: str = None):
+    async def ban(self, ctx, user: discord.Member, *, reason: ModReason = None):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
@@ -263,8 +263,10 @@ class Moderation(commands.Cog):
 
         await ctx.message.delete()
 
+        if amount > 100:
+            return await ctx.send("You can't purge more than 100messages.")
         try:
-            return await ctx.channel.purge(limit=amount + 1)
+            await ctx.channel.purge(limit=amount + 1)
 
         except discord.HTTPException:
             pass
@@ -306,7 +308,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_admin()
-    async def massban(self, ctx, *members: int):
+    async def massban(self, ctx, *members: MemberID):
         await ctx.message.delete()
 
         try:

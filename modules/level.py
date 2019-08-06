@@ -1,7 +1,5 @@
 import collections
 from random import randint
-import asyncio
-
 
 import discord
 from discord.ext import commands
@@ -82,12 +80,12 @@ class Level(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def config(self, ctx, level: int, role: str):
         set = await Settings().get_server_settings(str(ctx.message.guild.id))
+
         if not "levels" in set:
             set["levels"] = {}
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
         try:
             rolemention = discord.utils.get(ctx.guild.roles, name=role)
-            print(rolemention.id)
         except discord.NotFound:
             return await ctx.send(
                 "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
@@ -140,9 +138,6 @@ class Level(commands.Cog):
                             message.guild.roles, id=int(lvl[key]))
                     except discord.NotFound:
                         break
-                    else:
-                        continue
-
                     try:
                         await user.add_roles(role)
                     except discord.Forbidden:
@@ -159,7 +154,7 @@ class Level(commands.Cog):
         await Settings().set_user_settings(str(message.guild.id), set)
 
 
-# TODO: Ajouter des commandes pour voir les roles et un leaderboard
+# TODO: Ajouter des commandes pour voir les roles
 
 
 def setup(bot):

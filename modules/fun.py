@@ -25,6 +25,8 @@ class Fun(commands.Cog):
             return await ctx.send("Couldn't find anything from the API")
         await ctx.send(r[endpoint])
 
+
+
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
     async def eightball(self, ctx, *, question: str = None):
@@ -46,6 +48,12 @@ class Fun(commands.Cog):
     async def cat(self, ctx):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
+
+
+    @commands.command()
+    async def dog(self, ctx):
+        await ctx.message.delete()
+        await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
 
     @commands.command()
     @commands.guild_only()
@@ -69,7 +77,7 @@ class Fun(commands.Cog):
             emoji = "🖤"
 
         await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji))
-    
+
     @commands.command()
     @commands.guild_only()
     async def rd(self, ctx):
@@ -85,6 +93,29 @@ class Fun(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    async def urban(self, ctx, *, search:str):
+        async with ctx.channel.typing():
+            url = await http.get(f'https://api.urbandictionary.com/v0/define?term={search}', res_method="json")
+
+            if url is None:
+                return await ctx.send("The API is broken...")
+
+            if not len(url['list']):
+                return await ctx.send("Couldn't find it...")
+
+            result = sorted(url['list'], reverse=True, key=lambda g: int(g["thumbs_up"]))[0]
+
+            definition = result['definition']
+            if len(definition) >= 500:
+                definition = definition[:500]
+                definition = definition.rsplit(' ', 1)[0]
+                definition += '...'
+
+            await ctx.send(f"📚 Definitions for **{result['word']}**```fix\n{definition}```")
+
+    '''
+    @commands.command()
+    @commands.guild_only()
     async def marry(self, ctx, user: discord.Member =  None):
 
         def check(reaction, toto):
@@ -95,14 +126,14 @@ class Fun(commands.Cog):
         await ctx.message.delete()
         if user is None:
             await ctx.send("Hey you can't get married alone... retry")
-            
+
         else:
             msg = await ctx.send("Hey {}, {} wants to marry you.\n Do you agree ?".format(user.name, ctx.message.author.name))
             for reac in reactions:
              await msg.add_reaction(reac)
 
         reaction, toto = await self.bot.wait_for('reaction_add', timeout=120, check=check)
-
+        '''
 
 def setup(bot):
     bot.add_cog(Fun(bot))

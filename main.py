@@ -1,13 +1,11 @@
-import asyncio
 import datetime
 import json
 import logging
 import sys
 import traceback
 
-import aiohttp
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -34,8 +32,8 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.ERROR)
 '''
 
-logger = logging.getLogger("discord")
-logger.setLevel(logging.ERROR)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
@@ -43,7 +41,7 @@ logger.addHandler(handler)
 
 class YumeBot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix=get_prefix, description=description,
+        super().__init__(command_prefix=get_prefix, description=description, activity=discord.Game(name="Commands: --help"),
                          pm_help=None, help_attrs=dict(hidden=True), fetch_offline_members=False)
 
         self.token = token['token']
