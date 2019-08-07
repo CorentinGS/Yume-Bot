@@ -113,6 +113,7 @@ class Fun(commands.Cog):
 
             await ctx.send(f"📚 Definitions for **{result['word']}**```fix\n{definition}```")
 
+
     '''
     @commands.command()
     @commands.guild_only()
