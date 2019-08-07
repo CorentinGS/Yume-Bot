@@ -25,7 +25,6 @@ class Custom(commands.Cog):
 		set["viewers"] = {}
 		await Settings().set_custom_settings(str(ctx.guild.id), set)
 
-
 	@commands.Cog.listener()
 	async def on_reaction_add(self, reaction, user):
 

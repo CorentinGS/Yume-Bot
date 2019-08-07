@@ -5,9 +5,10 @@ import discord
 from modules.utils.db import Settings
 
 
-class Sanction():
+class Sanction:
 
-    async def create_sanction(self, user, event, mod, guild, reason=None, time=None):
+    @staticmethod
+    async def create_sanction(user, event, mod, guild, reason=None, time=None):
         a = datetime.now()
         _id = int(a.strftime('%Y%m%d%H%M%S%f'))
 
@@ -47,9 +48,11 @@ class Sanction():
 
         await Settings().set_sanction_settings(str(_id), set)
 
+
         return _id
 
-    async def find_sanction(self, ctx, id):
+    @staticmethod
+    async def find_sanction(ctx, id):
         set = await Settings().get_sanction_settings(str(id))
         event = set["event"]
         em = discord.Embed()

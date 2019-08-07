@@ -22,10 +22,10 @@ def is_owner():
 async def is_mod_check(ctx):
     set = await Settings().get_server_settings(str(ctx.guild.id))
     auth = ctx.message.author
-    if auth == ctx.message.guild.owner:
-        return True 
     if ctx.guild is None:
         return
+    if auth == ctx.message.guild.owner:
+        return True
     for role in auth.roles:
         if str(role.id) in set['Mods']:
             return True
@@ -38,10 +38,10 @@ def is_mod():
 async def is_admin_check(ctx):
     set = await Settings().get_server_settings(str(ctx.guild.id))
     auth = ctx.message.author
-    if auth == ctx.message.guild.owner:
-        return True 
     if ctx.guild is None:
         return False
+    if auth == ctx.message.guild.owner:
+        return True
     for role in auth.roles:
         if str(role.id) in set['Admins']:
             return True

@@ -5,7 +5,7 @@ import discord
 from modules.utils import lists
 
 
-class Mod():
+class Mod:
 
     @staticmethod
     async def check_embed(member, guild, sanctions, time):
@@ -23,7 +23,7 @@ class Mod():
         return em
 
 
-class Embeds():
+class Embeds:
 
     @staticmethod
     async def format_mod_embed(ctx, user, mod, reason, command, sanction=None, duration=None):
@@ -127,4 +127,3 @@ class Embeds():
         em.add_field(name="**:pushpin: Commands**", value= f"{liste}")
 
         return em
-
