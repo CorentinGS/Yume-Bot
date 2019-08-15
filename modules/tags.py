@@ -22,12 +22,20 @@ class Tags(commands.Cog):
         else:
             await ctx.send("Unknown tag")
 
-    @commands.command()
+    @commands.group()
     async def tags(self, ctx):
-        await ctx.message.delete()
+        if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.get)
 
+    @tags.command()
+    async def get(self, ctx):
+        await ctx.message.delete()
         await ctx.send('[%s]' % ', '.join(map(str, tags)))
 
+    @tags.command()
+    async def suggest(self, ctx, name:str, *, value:str):
+        return
+    #todo: Ajouter la possibilité de suggestion de tags dans le salon suggestion + Mettre dans un seul groupe les commandes.
 
 def setup(bot):
     bot.add_cog(Tags(bot))

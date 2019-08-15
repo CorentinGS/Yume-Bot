@@ -75,6 +75,8 @@ class YumeBot(commands.Bot):
             await ctx.author.send('This command cannot be used in private messages.')
         elif isinstance(error, commands.DisabledCommand):
             await ctx.author.send('Sorry. This command is disabled and cannot be used.')
+        if isinstance(error, commands.BotMissingPermissions):
+            return await ctx.send("I don't have the required permissions to perform this command. Please give me administrator permissions")
         elif isinstance(error, commands.CommandInvokeError):
             original = error.original
             if not isinstance(original, discord.HTTPException):

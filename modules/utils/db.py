@@ -45,13 +45,6 @@ class Settings():
         doc = await self.custom.find_one({"_id": id})
         return doc or {}
 
-    async def set_games_settings(self, id, settings):
-        return await self.games.replace_one({"_id": id}, settings, True)
-
-    async def get_games_settings(self, id):
-        doc = await self.games.find_one({"_id": id})
-        return doc or {}
-
     async def get_user_settings(self, id):
         doc = await self.user.find_one({"_id": id})
         return doc or {}

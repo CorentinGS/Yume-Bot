@@ -200,13 +200,14 @@ class Set(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         set = await Settings().get_server_settings(str(guild.id))
-        await Setup().new_guild(guild.id)
+        ready = await Setup().new_guild(guild.id)
 
-        for role in guild.roles:
-            if role.permissions.administrator or role.permissions.manage_guild is True:
-                set['Admins'].append(str(role.id))
-            elif role.permissions.ban_members or role.permissions.kick_members is True:
-                set['Mods'].append(str(role.id))
+        if ready:
+            for role in guild.roles:
+                if role.permissions.administrator or role.permissions.manage_guild is True:
+                    set['Admins'].append(str(role.id))
+                elif role.permissions.ban_members or role.permissions.kick_members is True:
+                    set['Mods'].append(str(role.id))
 
         await Settings().set_server_settings(str(guild.id), set)
 

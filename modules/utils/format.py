@@ -76,20 +76,28 @@ class Embeds:
     @staticmethod
     async def format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, automod, stats, vip):
         tip = random.choice(lists.tip)
-        greetchan = discord.utils.get(ctx.guild.text_channels, id=int(greetchannel))
-
-        logchan = discord.utils.get(ctx.guild.text_channels, id=int(logchannel))
-
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Settings')
         em.set_footer(text=f'Tip: {tip}')
 
         em.add_field(name="Greet", value=greet)
 
-        em.add_field(name="Greet Channel", value=greetchan.mention)
-        em.add_field(name="Blacklist", value=blacklist)
+        try:
+            greetchan = discord.utils.get(ctx.guild.text_channels, id=int(greetchannel))
+            em.add_field(name="Greet Channel", value=greetchan.mention)
+        except discord.NotFound:
+            em.add_field(name="Greet Channel", value="None")
+
         em.add_field(name="Logging", value=logging)
-        em.add_field(name="Log Channel", value=logchan.mention)
+
+        try:
+            logchan = discord.utils.get(ctx.guild.text_channels, id=int(logchannel))
+            em.add_field(name="Log Channel", value=logchan.mention)
+
+        except discord.NotFound:
+            em.add_field(name="Log Channel", value="None")
+
+        em.add_field(name="Blacklist", value=blacklist)
         em.add_field(name='Automod', value=automod)
         em.add_field(name='Stats', value=stats)
         em.add_field(name='Vip', value=vip)

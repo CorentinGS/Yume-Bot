@@ -11,7 +11,7 @@ from modules.utils.format import Mod
 class Checks:
 
     @staticmethod
-    async def member_check(member):
+    async def member_check(member: discord.Member):
         guild = member.guild
         now = datetime.now()
         create = member.created_at
@@ -30,13 +30,14 @@ class Automod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-
+        
     @commands.Cog.listener()
     async def on_message(self, message):
         set = await Settings().get_server_settings(str(message.guild.id))
         if (
                 not message.guild
                 or message.author.bot
+                or "automod" not in set
         ):
             return
 
@@ -65,8 +66,10 @@ class Automod(commands.Cog):
                 await chan.set_permissions(member, send_messages=False)
                 await Sanction().create_strike(member.author, "Strike", member.guild, "Try to mute Bypass")
 
+        # Check if the user is in the blacklist
         if 'Blacklist' in glob:
             if member.id in glob['Blacklist'] and set["bl"] is True:
+                # Ban the member
                 await guild.ban(member, reason="Blacklist")
             await member.send("you're in the blacklist ! If you think it's an error, ask here --> "
                               "yume.network@protonmail.com")
@@ -78,9 +81,7 @@ class Automod(commands.Cog):
                 try:
                     await channel.send(embed=em)
                 except discord.Forbidden:
-                    pass
-            else:
-                await member.channel.send(embed=em)
+                    return
 
 
 def setup(bot):

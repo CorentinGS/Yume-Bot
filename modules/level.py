@@ -117,6 +117,9 @@ class Level(commands.Cog):
             d = {"level": 0, "xp": 0, "reach": 20, "total": 0}
             set[str(user.id)] = d
 
+        if "levels" not in toto:
+            toto["levels"] = {}
+
         await Settings().set_user_settings(str(message.guild.id), set)
 
         dic = set[str(user.id)]

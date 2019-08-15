@@ -23,4 +23,6 @@ class Setup:
 
 		await Settings().set_server_settings(str(guild_id), set)
 
+		return True
+
 

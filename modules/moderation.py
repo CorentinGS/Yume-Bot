@@ -1,4 +1,5 @@
 import asyncio
+from typing import Union
 
 import discord
 
@@ -122,6 +123,12 @@ class Moderation(commands.Cog):
             await ctx.invoke(self.unmute, user, True)
         else:
             return
+
+    @mute.error
+    async def mute_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            return await ctx.send(f'Missing an argument.\n`{error}`')
+
 
     @commands.command()
     @checks.is_mod()
@@ -354,29 +361,71 @@ class Moderation(commands.Cog):
         await ctx.send("{} \n{}".format(rolemention.mention, content))
         await rolemention.edit(mentionable=False)
 
+    # source:   https://github.com/nmbook/FalcomBot-cogs/blob/master/topic/topic.py
 
-    '''
+    @commands.group()
+    @commands.guild_only()
+    async def topic(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.get)
+
+    @topic.command()
+    async def get(self, ctx, channel: discord.TextChannel = None):
+        await ctx.message.delete()
+
+        if channel is None:
+            channel = ctx.channel
+
+        if channel.guild != ctx.guild:
+            return
+
+        if not channel.topic:
+            return await ctx.send(f'No topic is set for {channel.mention}')
+
+        title = "#{}".format(str(channel))
+        url = "https://discordapp.com/channels/{}/{}/" \
+            .format(channel.guild.id, channel.id)
+        description = channel.topic.replace("](", "]\\(")
+        embed = discord.Embed(
+            title=title,
+            url=url,
+            description=description)
+        embed.set_footer(text=channel.guild)
+
+        await ctx.send(embed=embed)
+
+    @topic.command()
+    @checks.is_admin()
+    async def set(self, ctx, channel: discord.TextChannel = None, *, topic: str):
+        await ctx.message.delete()
+
+        if channel is None:
+            channel = ctx.channel
+
+        if channel.guild != ctx.guild:
+            return
+
+        reason = f"Topic edit by request of {ctx.author} ({ctx.author.id})"
+        try:
+            await channel.edit(topic=topic, reason=reason)
+        except (discord.Forbidden, discord.HTTPException):
+            return await ctx.send("I don't have permission to edit this topic!")
+
+
     @commands.command()
     @checks.is_admin()
-    async def addrole(self, ctx, role: str):
+    async def addrole(self, ctx, role: Union[str, discord.Role]):
         await ctx.message.delete()
-        role = discord.utils.get(ctx.guild.roles, name=role)
+
+        if not role is discord.Role:
+            try:
+                role = discord.utils.get(ctx.guild.roles, name=role)
+            except discord.NotFound:
+                return await ctx.send("I can't find that role")
 
         for user in ctx.guild.members:
             await user.add_roles(role)
             await asyncio.sleep(1)
-
-    @commands.command()
-    @checks.is_admin()
-    async def removerole(self, ctx, role: str):
-        await ctx.message.delete()
-        role = discord.utils.get(ctx.guild.roles, name=role)
-
-        for user in ctx.guild.members:
-            await user.remove_roles(role)
-            await asyncio.sleep(1)
-
-    '''
 
 
 def setup(bot):
