@@ -1,10 +1,8 @@
 import json
-import random
 
 import discord
 from discord.ext import commands
 
-from modules.utils import lists
 from modules.utils.db import Settings
 from modules.utils.weather import data_fetch, data_return, url_meteo
 
@@ -32,8 +30,6 @@ class General(commands.Cog):
 
     @commands.command(aliases=['gmto', 'gweather'])
     async def gmeteo(self, ctx, city: str = "Paris"):
-        tip = random.choice(lists.tip)
-
         await ctx.message.delete()
 
         result = url_meteo(city)
@@ -41,7 +37,6 @@ class General(commands.Cog):
         data = data_return(fetch)
 
         condition = f"{data['main']}, {data['description']}"
-
 
         embed = discord.Embed(
             title="Meteo",
@@ -72,7 +67,6 @@ class General(commands.Cog):
 
     @commands.command(aliases=["mto", "weather"])
     async def meteo(self, ctx, city: str = "Paris"):
-
         await ctx.message.delete()
 
         result = url_meteo(city)
@@ -100,7 +94,6 @@ class General(commands.Cog):
     @commands.command(aliases=["away", "idle"])
     async def afk(self, ctx):
         await ctx.message.delete()
-
         user = ctx.message.author
 
         setting = await Settings().get_glob_settings()
@@ -113,10 +106,6 @@ class General(commands.Cog):
 
     @commands.command()
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
-        """
-        :param id: The message id
-        :param channel: The message's channel
-        """
         if channel is None:
             channel = ctx.message.channel
         messages = await channel.history(limit=200).flatten()

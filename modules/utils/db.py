@@ -13,7 +13,6 @@ class Settings():
         self.keys = self.db.keys
         self.sanction = self.db.sanction
         self.user = self.db.user
-        self.games = self.db.games
         self.reaction = self.db.reaction
         self.custom = self.db.custom
 

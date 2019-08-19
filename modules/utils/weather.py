@@ -1,5 +1,6 @@
 import datetime
 import json
+import urllib.error
 import urllib.request
 
 with open('./config/keys.json', 'r') as cjson:
@@ -24,7 +25,10 @@ def url_meteo(city):
 
 
 def data_fetch(full_url):
-    url = urllib.request.urlopen(full_url)
+    try:
+        url = urllib.request.urlopen(full_url)
+    except urllib.error.HTTPError:
+        return
     output = url.read().decode('utf-8')
     raw_api_dict = json.loads(output)
     url.close()

@@ -114,27 +114,5 @@ class Fun(commands.Cog):
             await ctx.send(f"📚 Definitions for **{result['word']}**```fix\n{definition}```")
 
 
-    '''
-    @commands.command()
-    @commands.guild_only()
-    async def marry(self, ctx, user: discord.Member =  None):
-
-        def check(reaction, toto):
-            return toto == user and str(reaction.emoji)
-
-        reactions = ["👍", "🖕"]
-
-        await ctx.message.delete()
-        if user is None:
-            await ctx.send("Hey you can't get married alone... retry")
-
-        else:
-            msg = await ctx.send("Hey {}, {} wants to marry you.\n Do you agree ?".format(user.name, ctx.message.author.name))
-            for reac in reactions:
-             await msg.add_reaction(reac)
-
-        reaction, toto = await self.bot.wait_for('reaction_add', timeout=120, check=check)
-        '''
-
 def setup(bot):
     bot.add_cog(Fun(bot))
