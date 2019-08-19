@@ -33,12 +33,15 @@ class Automod(commands.Cog):
         
     @commands.Cog.listener()
     async def on_message(self, message):
-        set = await Settings().get_server_settings(str(message.guild.id))
         if (
                 not message.guild
                 or message.author.bot
-                or "automod" not in set
         ):
+            return
+
+        set = await Settings().get_server_settings(str(message.guild.id))
+
+        if "automod" not in set:
             return
 
         if set["automod"] is True:
@@ -71,8 +74,12 @@ class Automod(commands.Cog):
             if member.id in glob['Blacklist'] and set["bl"] is True:
                 # Ban the member
                 await guild.ban(member, reason="Blacklist")
-            await member.send("you're in the blacklist ! If you think it's an error, ask here --> "
+            try:
+                await member.send("you're in the blacklist ! If you think it's an error, ask here --> "
                               "yume.network@protonmail.com")
+            except discord.Forbidden:
+                return
+
         if set['logging'] is True:
             sanctions, time = await Checks().member_check(member)
             em = await Mod().check_embed(member, guild, sanctions, time)
