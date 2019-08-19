@@ -40,12 +40,13 @@ def data_return(raw_api_dict):
         temp_min=raw_api_dict.get('main').get('temp_min'),
         humidity=raw_api_dict.get('main').get('humidity'),
         pressure=raw_api_dict.get('main').get('pressure'),
-        sky=raw_api_dict['weather'][0]['main'],
+        main=raw_api_dict['weather'][0]['main'],
         description=raw_api_dict['weather'][0]['description'],
+        icon=raw_api_dict['weather'][0]['icon'],
         sunrise=time_converter(raw_api_dict.get('sys').get('sunrise')),
         sunset=time_converter(raw_api_dict.get('sys').get('sunset')),
         wind=raw_api_dict.get('wind').get('speed'),
-        wind_dir=raw_api_dict.get('wind').get('code'),
+        wind_dir=raw_api_dict.get('wind').get('deg'),
         cloudiness=raw_api_dict.get('clouds').get('all')
     )
 

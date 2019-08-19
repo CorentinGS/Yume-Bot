@@ -40,36 +40,38 @@ class General(commands.Cog):
         fetch = data_fetch(result)
         data = data_return(fetch)
 
+        condition = f"{data['main']}, {data['description']}"
+
+
         embed = discord.Embed(
             title="Meteo",
             color=discord.Colour.dark_red()
         )
-        embed.set_footer(text=f'Tip: {tip}')
+        embed.set_footer(text="Powered by https://openweathermap.org")
 
-        embed.add_field(name='City', value=data['city'], inline=True)
-        embed.add_field(name='Country', value=data['country'], inline=True)
-        embed.add_field(name='Temperature max', value="{}°C".format(
-            data['temp_max']), inline=True)
+        embed.add_field(name='🌍 **Location**', value=f"{data['city']}, {data['country']}")
+        embed.add_field(name="\N{CLOUD} **Condition**", value=condition)
+
+        embed.add_field(name="\N{THERMOMETER} **Temperature**", value=data['temp'])
         embed.add_field(name='Temperature min', value='{}°C'.format(
-            data['temp_min']), inline=True)
-        embed.add_field(name='Humidity', value="{}%".format(
-            data['humidity']), inline=True)
+            data['temp_min']))
+        embed.add_field(name='Temperature max', value='{}°C'.format(
+            data['temp_max']))
+        embed.add_field(name='\N{FACE WITH COLD SWEAT} **Humidity**', value="{}%".format(
+            data['humidity']))
         embed.add_field(name='Pressure', value="{}hPa".format(
-            data['pressure']), inline=True)
-        embed.add_field(name='Conditions', value=data['sky'], inline=False)
-        embed.add_field(name='Sunrise', value=data['sunrise'], inline=True)
-        embed.add_field(name='Sunset', value=data['sunset'], inline=True)
+            data['pressure']))
+        embed.add_field(name='\N{SUNRISE OVER MOUNTAINS} **Sunrise (UTC)**', value=data['sunrise'])
+        embed.add_field(name='\N{SUNSET OVER BUILDINGS} **Sunset (UTC)**', value=data['sunset'])
         embed.add_field(
-            name='Wind', value="{}m/s".format(data['wind']), inline=True)
+            name='\N{DASH SYMBOL} **Wind Speed**', value="{}m/s".format(data['wind']))
         embed.add_field(name='Cloudiness', value="{}%".format(
-            data['cloudiness']), inline=True)
+            data['cloudiness']))
 
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["mto", "weather"])
     async def meteo(self, ctx, city: str = "Paris"):
-
-        tip = random.choice(lists.tip)
 
         await ctx.message.delete()
 
@@ -77,23 +79,22 @@ class General(commands.Cog):
         fetch = data_fetch(result)
         data = data_return(fetch)
 
+        condition = f"{data['main']}, {data['description']}"
+
         embed = discord.Embed(
             title="Meteo",
             color=discord.Colour.dark_red()
         )
-        embed.set_footer(text=f'Tip: {tip}')
 
-        embed.add_field(name='City', value=data['city'], inline=True)
-        embed.add_field(name='Country', value=data['country'], inline=True)
-        embed.add_field(name='Temperature', value="{}°C".format(
-            data['temp']), inline=True)
-        embed.add_field(name='Conditions', value="{}".format(
-            data['description']), inline=False)
+        embed.set_footer(text="Powered by https://openweathermap.org")
+
+        embed.add_field(name='🌍 **Location**', value=f"{data['city']}, {data['country']}")
+        embed.add_field(name="\N{CLOUD} **Condition**", value=condition)
+        embed.add_field(name='\N{FACE WITH COLD SWEAT} **Humidity**', value="{}%".format(
+            data['humidity']))
+        embed.add_field(name="\N{THERMOMETER} **Temperature**", value=data['temp'])
         embed.add_field(
-            name='Wind', value="{}m/s".format(data['wind']), inline=True)
-        embed.add_field(name='Cloudiness', value="{}%".format(
-            data['cloudiness']), inline=True)
-
+            name='\N{DASH SYMBOL} **Wind Speed**', value="{}m/s".format(data['wind']))
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["away", "idle"])
