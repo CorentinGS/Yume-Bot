@@ -44,8 +44,12 @@ class Embeds:
         if sanction is not None:
             em.set_footer(text=f'Sanction ID: {sanction}')
 
-        msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
-            f"**Moderator** : {mod.name}#{mod.discriminator}\n"
+        if mod is discord.User:
+            msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
+                f"**Moderator** : {mod.name}#{mod.discriminator}\n"
+        else:
+            msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
+                f"**Moderator** : Auto\n"
         if reason is not None:
             str1 = f"**Reason** : {reason}\n"
             msg = " ".join((msg, str1))

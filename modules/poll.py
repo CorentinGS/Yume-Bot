@@ -3,6 +3,7 @@ source: https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/poll.py
 '''
 import asyncio
 
+import discord
 from discord.ext import commands
 
 
@@ -75,7 +76,7 @@ class Polls(commands.Cog):
 
 		try:
 			await ctx.message.delete()
-		except:
+		except discord.Forbidden:
 			pass
 
 		body = "\n".join(f"{key}: {c}" for key, c in choices)

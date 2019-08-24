@@ -88,7 +88,6 @@ class YumeBot(commands.Bot):
 
     async def close(self):
         await super().close()
-        await self.session.close()
 
     async def on_guild_join(self, guild):
         await self.wait_until_ready()

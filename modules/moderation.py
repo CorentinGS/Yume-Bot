@@ -129,14 +129,13 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             return await ctx.send(f'Missing an argument.\n`{error}`')
 
-
     @commands.command()
     @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member, auto: bool = False):
         guild = ctx.message.guild
         set = await Settings().get_server_settings(str(guild.id))
 
-        if auto == False:
+        if not auto:
             mod = ctx.message.author
         else:
             mod = "auto"
