@@ -17,7 +17,7 @@ modules = config["modules"]
 
 
 def get_prefix(bot, message):
-    prefixes = ['--', "y!", "yume", "yum"]
+    prefixes = ['--', "y!", "yume", "yum", 'yume ', "yum ", "yume!"]
 
     if not message.guild:
         return '?'
