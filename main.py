@@ -44,6 +44,7 @@ class YumeBot(commands.Bot):
         super().__init__(command_prefix=get_prefix, description=description, activity=discord.Game(name="Commands: --help"),
                          pm_help=None, help_attrs=dict(hidden=True), fetch_offline_members=False)
 
+        self.uptime = datetime.datetime.utcnow()
         self.token = token['token']
         self.ready = False
         self.config = config
@@ -55,8 +56,6 @@ class YumeBot(commands.Bot):
         # self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def on_ready(self):
-        if not hasattr(self, 'uptime'):
-            self.uptime = datetime.datetime.utcnow()
         if not self.ready:
             self.ready = True
             print('Logged in.')

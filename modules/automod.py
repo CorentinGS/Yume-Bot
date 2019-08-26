@@ -69,6 +69,7 @@ class Automod(commands.Cog):
                 await chan.set_permissions(member, send_messages=False)
                 await Sanction().create_strike(member.author, "Strike", member.guild, "Try to mute Bypass")
 
+        '''
         # Check if the user is in the blacklist
         if 'Blacklist' in glob:
             if member.id in glob['Blacklist'] and set["bl"] is True:
@@ -79,6 +80,7 @@ class Automod(commands.Cog):
                               "yume.network@protonmail.com")
             except discord.Forbidden:
                 return
+        '''
 
         if set['logging'] is True:
             sanctions, time = await Checks().member_check(member)
