@@ -49,7 +49,6 @@ class Sanction:
 
         await Settings().set_sanction_settings(str(_id), set)
 
-
         return _id
 
     @staticmethod

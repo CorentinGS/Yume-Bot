@@ -229,7 +229,6 @@ class Moderation(commands.Cog):
         banned = await self.bot.fetch_user(id)
 
         await ctx.guild.unban(user)
-        await Settings().rm_strike_settings(str(ctx.guild.id), str(id))
 
         em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, None, 'unban')
         server = str(ctx.guild.id)

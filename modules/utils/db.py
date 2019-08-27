@@ -72,4 +72,4 @@ class Settings():
         return doc or {}
 
     async def rm_strike_settings(self, guild, user):
-        return await self.sanction.delete_many({"guild_id" : guild, "user_id": user, "event": "Strike"})
+        return await self.sanction.delete_many({"guild_id" : guild, "user_id": user})
