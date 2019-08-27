@@ -152,7 +152,6 @@ class Level(commands.Cog):
             except discord.Forbidden:
                 pass
 
-                # TODO: Eviter la duplication du msg de lvl up
         set[str(user.id)] = dic
         await Settings().set_user_settings(str(message.guild.id), set)
 
