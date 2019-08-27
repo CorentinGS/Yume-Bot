@@ -26,6 +26,17 @@ class Mod:
 class Embeds:
 
     @staticmethod
+    async def format_automod_embed(user, reason, sanction_id, message):
+        em = discord.Embed(color=discord.Colour.gold(), timestamp=message.created_at)
+        em.set_author(name="Automod")
+        em.set_footer(text=f'Sanction ID: {sanction_id}')
+        msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
+            f"**Reason** : {reason}\n"
+        em.description = msg
+        return em
+
+
+    @staticmethod
     async def format_mod_embed(ctx, user, mod, reason, command, sanction=None, duration=None):
 
         if command == "ban" or command == "hackban":
@@ -44,7 +55,7 @@ class Embeds:
         if sanction is not None:
             em.set_footer(text=f'Sanction ID: {sanction}')
 
-        if mod is discord.User:
+        if mod is discord.Member or discord.User:
             msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
                 f"**Moderator** : {mod.name}#{mod.discriminator}\n"
         else:

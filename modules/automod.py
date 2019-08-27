@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from modules.sanction import Sanction
 from modules.utils.db import Settings
+from modules.utils.format import Embeds
 from modules.utils.format import Mod
 
 
@@ -30,7 +31,67 @@ class Automod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-        
+        self.mention_limit = 6
+
+    async def check_mention_spam(self, message):
+        guild = message.guild
+        author = message.author
+        mentions = set(message.mentions)
+
+        settings = await Settings().get_server_settings(str(guild.id))
+
+        if len(mentions) >= self.mention_limit:
+            try:
+                await message.delete()
+            except discord.HTTPException:
+                return False
+
+            id = await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
+
+            em = await Embeds().format_automod_embed(author, "Mention spam", id, message)
+            if settings['logging'] is True:
+                if 'LogChannel' in settings:
+                    channel = self.bot.get_channel(int(settings['LogChannel']))
+                    try:
+                        await channel.send(embed=em)
+                    except discord.Forbidden:
+                        await message.channel.send(embed=em)
+            else:
+                await message.channel.send(embed=em)
+
+            return True
+        else:
+            return False
+
+    async def check_invite(self, message):
+        guild = message.guild
+        author = message.author
+
+        settings = await Settings().get_server_settings(str(guild.id))
+
+        if "discord.gg/" in message.content:
+            try:
+                await message.delete()
+            except discord.HTTPException:
+                return False
+
+            id = await Sanction().create_strike(message.author, "Strike", message.guild, "Discord Invite Link")
+
+            em = await Embeds().format_automod_embed(author, "Discord Invite Link", id, message)
+            if settings['logging'] is True:
+                if 'LogChannel' in settings:
+                    channel = self.bot.get_channel(int(settings['LogChannel']))
+                    try:
+                        await channel.send(embed=em)
+                    except discord.Forbidden:
+                        await message.channel.send(embed=em)
+            else:
+                await message.channel.send(embed=em)
+
+            return True
+        else:
+            return False
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if (
@@ -39,18 +100,17 @@ class Automod(commands.Cog):
         ):
             return
 
+        print("message")
+
         set = await Settings().get_server_settings(str(message.guild.id))
 
         if "automod" not in set:
             return
 
         if set["automod"] is True:
-            if "discord.gg/" in message.content:
-                await message.delete()
-                await Sanction().create_strike(message.author, "Strike", message.guild, "Discord invite link")
-            if len(message.mentions) > 5:
-                await message.delete()
-                await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
+            deleted = await self.check_mention_spam(message)
+            if not deleted:
+                await self.check_invite(message)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
