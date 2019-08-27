@@ -89,7 +89,7 @@ class Sanction:
 
         today = datetime.now()
 
-        msg = "Sanction\n"
+        msg = "__Sanction__\n\n"
 
         for sanction in strike:
             sanc = await Settings().get_sanction_settings(sanction)
