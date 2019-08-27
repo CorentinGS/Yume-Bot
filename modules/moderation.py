@@ -1,4 +1,5 @@
 import asyncio
+import typing
 from typing import Union
 
 import discord
@@ -31,10 +32,18 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def sanction(self, ctx, id):
+    async def sanction(self, ctx, sanction: typing.Union[discord.Member, discord.User, int]):
         await ctx.message.delete()
-        em = await Sanction().find_sanction(ctx, id)
-        await ctx.send(embed=em)
+        if sanction is int:
+            print("int")
+            em = await Sanction().find_sanction_id(ctx, sanction)
+            await ctx.send(embed=em)
+        if sanction is discord.Member or discord.User:
+            print('sanction member')
+            em = await Sanction().find_sanction_member(ctx, sanction, ctx.guild)
+            await ctx.send(embed=em)
+        else:
+            return print('ERROR')
 
     @commands.command()
     @checks.is_admin()

@@ -17,7 +17,7 @@ class Checks:
         now = datetime.now()
         create = member.created_at
 
-        strike = await Settings().get_strike_settings(str(guild.id), str(member.id))
+        strike = await Settings().get_sanction_settings_user(str(member.id), str(guild.id))
 
         sanctions = len(strike)
         time = (now - create).days
@@ -99,8 +99,6 @@ class Automod(commands.Cog):
                 or message.author.bot
         ):
             return
-
-        print("message")
 
         set = await Settings().get_server_settings(str(message.guild.id))
 

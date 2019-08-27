@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import dateutil.relativedelta
 import discord
 
 from modules.utils.db import Settings
@@ -52,12 +53,11 @@ class Sanction:
         return _id
 
     @staticmethod
-    async def find_sanction(ctx, id):
+    async def find_sanction_id(ctx, id):
         set = await Settings().get_sanction_settings(str(id))
         event = set["event"]
         em = discord.Embed()
-        em.set_author(name="Sanction report",
-                      icon_url=ctx.message.author.avatar_url)
+        em.set_author(name="Sanction report")
 
         if "event" not in set:
 
@@ -77,5 +77,33 @@ class Sanction:
             if set['time'] is not None:
                 em.add_field(name="Time", value=set['time'])
             em.add_field(name="Date", value=set['date'])
+
+        return em
+
+    @staticmethod
+    async def find_sanction_member(ctx, member: discord.Member, guild: discord.Guild):
+        print("find sanction")
+        strike = await Settings().get_sanction_settings_user(str(member.id), str(guild.id))
+        em = discord.Embed()
+        em.set_author(name=f"Sanction report | {member.name}",
+                      icon_url=member.avatar_url)
+
+        today = datetime.now()
+
+        msg = "Sanction\n"
+
+        for sanction in strike:
+            sanc = await Settings().get_sanction_settings(sanction)
+            date = datetime.strptime(sanc['date'], '%Y-%m-%d %H:%M:%S.%f')
+
+            rd = dateutil.relativedelta.relativedelta(date, today)
+            str1 = "**" + sanc['event'] + " |** " + (str(abs(rd.years)) + " years " if rd.years != 0 else "") \
+                   + (str(abs(rd.months)) + " months " if rd.months != 0 else "") \
+                   + (str(abs(rd.days)) + " days " if rd.days != 0 else "") \
+                   + (str(abs(rd.hours)) + " hours " if rd.hours != 0 else "") \
+                   + (str(abs(rd.minutes)) + " minutes " if rd.minutes != 0 else "") + "ago\n"
+            msg = " ".join((msg, str1))
+
+        em.description = msg
 
         return em
