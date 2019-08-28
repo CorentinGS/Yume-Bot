@@ -61,7 +61,7 @@ class Level(commands.Cog):
                 x += 1
                 level = set[str(user)]['level']
                 total = set[str(user)]['total']
-                em.add_field(name=f"{x} - {member.name}", value=f"Level : {level} \nTotal xp : {total}", inline=False)
+                em.add_field(name=f"**{x} - {member.name}**", value=f"Level : {level} \nTotal xp : {total}", inline=False)
 
                 if x == 10:
                     break
