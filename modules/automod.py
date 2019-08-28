@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import discord
 from discord.ext import commands
@@ -92,6 +92,43 @@ class Automod(commands.Cog):
         else:
             return False
 
+    async def raid_check(self, message):
+
+        mode = "soft"
+        m_max = 3
+
+        guild = message.guild
+        author = message.author
+
+        settings = await Settings().get_server_settings(str(guild.id))
+
+        if not message.author.joined_at > datetime.utcnow() + timedelta(minutes=-360):
+            mode = "strict"
+
+        m_count = 0
+        async for m in message.channel.history(after=(datetime.utcnow() + timedelta(seconds=-10))):
+            if m.author == author:
+                m_count += 1
+            if m_count > m_max:
+                await message.delete()
+                await message.channel.send(f"No spamming, {message.author.mention}", delete_after=5)
+                id = await Sanction().create_strike(message.author, "Strike", message.guild, "Spamming")
+
+                # TODO: Si mode strict, mute l'user...
+
+                return True
+            else:
+                return False
+
+    '''
+    async def auto_sanction(self, message):
+
+        sanctions = await Settings().get_sanction_settings_user(str(author.id), str(guild.id))
+        count = len(sanctions)
+
+        # TODO: Automatiser les sanctions selon les comportements
+    '''
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if (
@@ -106,6 +143,7 @@ class Automod(commands.Cog):
             return
 
         if set["automod"] is True:
+
             deleted = await self.check_mention_spam(message)
             if not deleted:
                 await self.check_invite(message)
