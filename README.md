@@ -36,7 +36,7 @@ from the community and try to best meet the needs
 
 ## Architecture
 
-[Diagram](https://i.imgur.com/1uQhNCK.png)
+![Diagram](https://i.imgur.com/1uQhNCK.png)
 
 
 ## How to Get Help
