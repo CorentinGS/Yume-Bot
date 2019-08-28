@@ -32,7 +32,7 @@ We are looking for python developers and community managers.
 
 ## Release Process
 
-We regularly update the bot regularly!
+We regularly update the bot !
 
 ## Versioning
 
