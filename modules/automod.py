@@ -123,7 +123,7 @@ class Automod(commands.Cog):
     '''
     async def auto_sanction(self, message):
 
-        sanctions = await Settings().get_sanction_settings_user(str(author.id), str(guild.id))
+        sanctions = await Settings().get_sanction_settings_user(str(aukthor.id), str(guild.id))
         count = len(sanctions)
 
         # TODO: Automatiser les sanctions selon les comportements
