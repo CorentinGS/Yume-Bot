@@ -61,7 +61,7 @@ class Level(commands.Cog):
                 x += 1
                 level = set[str(user)]['level']
                 total = set[str(user)]['total']
-                em.add_field(name=f"{x} - {member.name}", value=f"Level : {level} \nTotal xp : {total}", inline=False)
+                em.add_field(name=f"**{x} - {member.name}**", value=f"Level : {level} \nTotal xp : {total}", inline=False)
 
                 if x == 10:
                     break
@@ -123,13 +123,13 @@ class Level(commands.Cog):
         await Settings().set_user_settings(str(message.guild.id), set)
 
         dic = set[str(user.id)]
-        gain = randint(2, 7)
+        gain = randint(2, 5)
 
         dic['xp'] += gain
         dic['total'] += dic['xp']
 
         if dic['xp'] >= dic['reach']:
-            dic['reach'] = round(dic['reach'] * 1.5)
+            dic['reach'] = round(dic['reach'] * 1.6)
             dic['xp'] = 0
             dic['level'] += 1
 

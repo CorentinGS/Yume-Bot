@@ -8,8 +8,7 @@
   - [Table of Contents](#table-of-contents)
   - [About the Project](#about-the-project)
   - [Project Status](#project-status)
-  - [Release Process](#release-process)
-  - [Versioning](#versioning)
+  - [Architecture](#architecture)
   - [How to Get Help](#how-to-get-help)
   - [Contributing](#contributing)
   - [Further Reading](#further-reading)
@@ -18,29 +17,37 @@
 
 ## About the Project
 
-- We provide an useful discord bot
-- We want to improve the discord community
+The **YumeBot** is a discord bot that aims to contribute to the development
+of communities. It is simple but effective! We offer many features such
+as: moderation, fun, administration, leveling, utilities...
+
+It is an active project, our developers are listening to the feedback
+from the community and try to best meet the needs
 
 **[Back to top](#table-of-contents)**
 
 ## Project Status
 
-The project is still in the process of being developed! We are only at the beginning so don't hesitate to help us.
-We are looking for python developers and community managers.
+>The project is still in the process of being developed! We are only at
+>the beginning so don't hesitate to help us. **We are looking for python
+>developers and community managers**.
 
 **[Back to top](#table-of-contents)**
 
+<<<<<<< HEAD
 ## Release Process
 
 We regularly update the bot !
+=======
+## Architecture
+>>>>>>> master
 
-## Versioning
+![Diagram](https://i.imgur.com/1uQhNCK.png)
 
-This project uses [Semantic Versioning](http://semver.org/). For a list of available versions, see the [repository tag list](https://github.com/yumenetwork/Yume-bot/tags).
 
 ## How to Get Help
 
-- [Email](mailto:contact@yumenetwork.fr)
+- [Email](mailto:yume.network@protonmail.com)
 - [Discord](https://invite.gg/yumenetwork​)
   
 ## Contributing
