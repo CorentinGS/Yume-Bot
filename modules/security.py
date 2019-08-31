@@ -15,7 +15,8 @@ class Security(commands.Cog):
 	async def security(self, ctx):
 		return
 
-	# Faire les commandes de sécurité...
+
+# TODO: Faire les commandes de sécurité...
 
 
 def setup(bot):

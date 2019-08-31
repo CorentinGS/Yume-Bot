@@ -6,7 +6,7 @@ from discord.ext import commands
 from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils.setup import Setup
+from modules.utils.setup import GuildY
 
 
 class Set(commands.Cog):
@@ -16,6 +16,10 @@ class Set(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+    @commands.command()
+    async def toto(self, ctx):
+        cat = GuildY(ctx.message.guild)
 
     @commands.group()
     @commands.guild_only()
@@ -29,39 +33,24 @@ class Set(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def get(self, ctx):
         await ctx.message.delete()
-        vip = False
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
 
-        set = await Settings().get_server_settings(str(ctx.guild.id))
-        glob = await Settings().get_glob_settings()
-
-        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP']:
-            vip = True
-
-        if not 'Setup' in set:
-            set['Setup'] = False
-
-        await Settings().set_server_settings(str(ctx.guild.id), set)
-
-        if set['Setup'] is False:
-            await ctx.send("You must setup the bot before ! Use **--setting setup**")
+        if not guild.setup:
+            await ctx.send("You must setup the bot before ! ")
+            await ctx.invoke(self.setup)
 
         else:
-            greet = set['Greet']
-            blacklist = set['bl']
-            logging = set['logging']
-            greetchannel = set['GreetChannel']
-            logchannel = set['LogChannel']
-            automod = set['automod']
-            display = set['Display']
-
-            em = await Embeds().format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, automod, display, vip)
+            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_channel, guild.bl, guild.logging,
+                                                     guild.log_channel, guild.automod, guild.members_count, guild.vip)
             await ctx.send(embed=em)
 
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def reset(self, ctx):
-        await Setup().new_guild(ctx.message.guild.id)
+        guild = GuildY(ctx.message.guild)
+        await guild.store()
         await ctx.invoke(self.setup)
 
     @setting.command()
@@ -69,31 +58,36 @@ class Set(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def setup(self, ctx):
 
-        guild = ctx.message.guild
-        set = await Settings().get_server_settings(str(guild.id))
+        # Get guild param
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
 
-        # glob = await Settings().get_glob_settings()
-
+        # Create check
         def check(reaction, user):
             return (user == ctx.message.author) and str(reaction.emoji)
 
         def msgcheck(m):
             return m.author == ctx.message.author
 
-        if not "Setup" in set:
-            set['Setup'] = False
-
-        if set['Setup'] is True:
+        # Check if already setup
+        if guild.setup:
             return await ctx.send("The setup has already been done. "
                                   "If you want to restore it you should use : **--setting reset**")
 
-        reactions = ['✅', '🚫']
+        reactions = ['✅', '🚫']  # Store reactions
+
         await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
 
-        await Setup().new_guild(guild.id)
+        # VIP
 
-        set['logging'] = True
+        glob = await Settings().get_glob_settings()
 
+        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP']:
+            guild.vip = True
+            await guild.store()
+
+        # Create logging Channel
+        guild.logging = True
         overwrite = {
             ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
             ctx.guild.me: discord.PermissionOverwrite(
@@ -101,54 +95,56 @@ class Set(commands.Cog):
         }
 
         log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
-        set['LogChannel'] = str(log.id)
+        guild.log_channel = str(log.id)
 
-        await Settings().set_server_settings(str(guild.id), set)
-
+        # Welcome / Leave
         msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
         for reaction in reactions:
             await msg.add_reaction(reaction)
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
-
         except asyncio.TimeoutError:
             await ctx.send('👎', delete_after=3)
-
         else:
             if reaction.emoji == '✅':
-                set['Greet'] = True
                 await msg.delete()
-                if set['GreetChannel'] is None:
-                    msg = await ctx.send('Please name a Channel !')
+                msg = await ctx.send('Please mention a Channel !\nEx: `#general`')
+                try:
                     m = await self.bot.wait_for('message', timeout=120, check=msgcheck)
+                except asyncio.TimeoutError:
+                    return await ctx.send('👎', delete_after=3)
+                try:
                     text_channel = m.channel_mentions[0]
-                    await msg.delete()
-                    set['GreetChannel'] = str(text_channel.id)
-            elif reaction.emoji == '🚫':
-                set['Greet'] = False
+                except IndexError:
+                    text_channel = ctx.message.channel
 
+                await msg.delete()
+                guild.greet = True
+                guild.greet_channel = str(text_channel.id)
+            elif reaction.emoji == '🚫':
+                guild.greet = False
+
+        await guild.store()
+
+        # Member stats channels
         msg = await ctx.send("Do you want to activate the member stats channels ?")
         for reaction in reactions:
             await msg.add_reaction(reaction)
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
-
         except asyncio.TimeoutError:
             await ctx.send('👎')
-
         else:
             if reaction.emoji == '✅':
-                set['Display'] = True
+                guild.members_count = True
                 overwrite = {
                     ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
                 }
 
                 category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
-
-                set['category'] = str(category.id)
-                await Settings().set_server_settings(str(guild.id), set)
+                guild.count_category = str(category.id)
 
                 await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite, category=category)
                 bots = []
@@ -159,59 +155,77 @@ class Set(commands.Cog):
                 await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}', overwrites=overwrite, category=category)
 
             elif reaction.emoji == '🚫':
-                set['Display'] = False
+                guild.members_count = False
 
+        guild.bl = True
+        await guild.store()
         await msg.delete()
-        set['bl'] = True
 
+        # Mods & Admins role
         await ctx.send('Detecting mod and admin role...', delete_after=5)
-        for role in guild.roles:
+        for role in ctx.guild.roles:
             if role.permissions.administrator or role.permissions.manage_guild is True:
-                set['Admins'].append(str(role.id))
+                guild.admins.append(str(role.id))
             elif role.permissions.ban_members or role.permissions.kick_members is True:
-                set['Mods'].append(str(role.id))
+                guild.mods.append(str(role.id))
         await ctx.send('Setup is now done ! Have a good time')
 
-        set['Setup'] = True
-        await Settings().set_server_settings(str(guild.id), set)
+        guild.setup = True
+        await guild.store()
 
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def role(self, ctx, value, role: discord.Role = None):
-        guild = ctx.message.guild
-        set = await Settings().get_server_settings(str(guild.id))
-
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
         if value.lower() == 'mod':
-            set['Mods'].append(str(role.id))
+            guild.mods.append(str(role.id))
         elif value.lower() == 'admin':
-            set['Admins'].append(str(role.id))
+            guild.admins.append(str(role.id))
+        else:
+            return
 
-        await Settings().set_server_settings(str(guild.id), set)
+        await guild.store()
+        await ctx.send("Updating...", delete_after=3)
 
     @setting.command(hidden=True)
     @checks.is_owner()
     async def update(self, ctx):
         for guild in self.bot.guilds:
-            set = await Settings().get_server_settings(str(guild.id))
-            if not "Setup" in set:
-                await Setup().new_guild(guild.id)
+            guildy = GuildY(guild)
+            await guildy.store()
+            try:
+                await guild.owner.send("Hey ! I'm __YumeBot__.\n"
+                                       "We've made some **big updates** recently !\n"
+                                       "In order to be able to benefit from the latest updates, "
+                                       f"we ask you to place your to make the command `--setting` in any lounge of your guild **{guild.name}**"
+                                       "Thank you for your understanding.\n\n"
+                                       "If you need help, do not hesitate to contact us on our discord: **https://discord.gg/3BKgvpp**\n"
+                                       "__The YumeNetwork__")
+            except discord.HTTPException:
+                return
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        set = await Settings().get_server_settings(str(guild.id))
-        ready = await Setup().new_guild(guild.id)
+        guildy = GuildY(guild)
 
-        if ready:
-            for role in guild.roles:
-                if role.permissions.administrator or role.permissions.manage_guild is True:
-                    set['Admins'].append(str(role.id))
-                elif role.permissions.ban_members or role.permissions.kick_members is True:
-                    set['Mods'].append(str(role.id))
+        for role in guild.roles:
+            if role.permissions.administrator or role.permissions.manage_guild is True:
+                guildy.admins.append(str(role.id))
+            elif role.permissions.ban_members or role.permissions.kick_members is True:
+                guildy.mods.append(str(role.id))
 
-        await Settings().set_server_settings(str(guild.id), set)
-
-        await guild.owner.send(f"Hi ! To use the bot you should use this command in any channel of your guild {guild.name} :\n**--setting setup**")
+        await guildy.store()
+        try:
+            await guild.owner.send(f"Thank you for adding the YumeBot to your guild!\n"
+                                   f"In order to configure the YumeBot and to be able to use it fully"
+                                   f" we ask you to make the command `--setting` in any lounge of your guild **{guild.name}**"
+                                   "Thank you for your understanding.\n\n"
+                                   f"If you need help, do not hesitate to contact us on our discord: **https://discord.gg/3BKgvpp**\n"
+                                   f"__The YumeNetwork__")
+        except discord.HTTPException:
+            return
 
 
 def setup(bot):
