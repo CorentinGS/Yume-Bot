@@ -212,7 +212,7 @@ class Owner(commands.Cog):
                                    f"Owner:{guild.owner}\n\n"
                                          f"Should we leave ?")
                 for reac in reactions:
-                    msg.add_reaction(reac)
+                    await msg.add_reaction(reac)
                 try:
                     reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
                 except asyncio.TimeoutError:
