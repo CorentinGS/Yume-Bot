@@ -217,10 +217,10 @@ class Owner(commands.Cog):
                     reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
                 except asyncio.TimeoutError:
                     await ctx.send('👎', delete_after=3)
-                else:
-                    if reaction == "✅":
-                        await guild.leave()
-                        print(f"{guild.name} has been left...")
+
+                if reaction == "✅":
+                    await guild.leave()
+                    print(f"{guild.name} has been left...")
 
 
 def setup(bot):
