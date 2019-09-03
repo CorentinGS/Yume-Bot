@@ -220,6 +220,7 @@ class Owner(commands.Cog):
                 else:
                     if reaction == "✅":
                         await guild.leave()
+                        print(f"{guild.name} has been left...")
 
 
 def setup(bot):
