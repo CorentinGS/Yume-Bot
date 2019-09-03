@@ -205,7 +205,7 @@ class Owner(commands.Cog):
             for user in guild.members:
                 if user.bot:
                     bots.append(user)
-            if len(bots) * 100 / guild.members >= 80:
+            if len(bots) * 100 / len(guild.members) >= 80:
                 msg = await channel.send(f"Suspicious guild found | {guild.name} - {guild.id}!\n"
                                    f"Users: {len(guild.members)}\n"
                                    f"Bots: {len(bots)}\n"
@@ -220,17 +220,6 @@ class Owner(commands.Cog):
                 else:
                     if reaction == "✅":
                         await guild.leave()
-
-
-
-
-
-
-
-
-
-
-
 
 
 def setup(bot):
