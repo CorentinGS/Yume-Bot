@@ -1,7 +1,7 @@
 {
   "owner_id": "282233191916634113",
   "dev": ["282233191916634113"],
-  "version": "2.4.3",
+  "version": "2.4.7",
   "modules": [
     "about",
     "blacklist",

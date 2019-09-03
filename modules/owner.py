@@ -1,3 +1,5 @@
+import asyncio
+import json
 import random
 import secrets
 import sys
@@ -7,6 +9,9 @@ from discord.ext import commands
 
 from modules.utils import checks, lists
 from modules.utils.db import Settings
+
+with open('./config/config.json', 'r') as cjson:
+    config = json.load(cjson)
 
 
 class Owner(commands.Cog):
@@ -183,6 +188,49 @@ class Owner(commands.Cog):
             await ctx.send(f"{id} has been remove from VIP")
         else:
             return await ctx.send('User is not VIP')
+
+    @commands.command()
+    @checks.is_owner()
+    async def botfarms(self, ctx):
+        def check(reaction, user):
+            return (user == ctx.message.author) and str(reaction.emoji)
+        reactions = ['✅', '🚫']  # Store reactions
+
+        debug = config["debug"]
+        yumenet = self.bot.get_guild(int(config["support"]))
+        channel = yumenet.get_channel(int(debug))
+
+        for guild in self.bot.guilds:
+            bots = []
+            for user in guild.members:
+                if user.bot:
+                    bots.append(user)
+            if len(bots) * 100 / guild.members >= 80:
+                msg = await channel.send(f"Suspicious guild found | {guild.name} - {guild.id}!\n"
+                                   f"Users: {len(guild.members)}\n"
+                                   f"Bots: {len(bots)}\n"
+                                   f"Owner:{guild.owner}\n\n"
+                                         f"Should we leave ?")
+                for reac in reactions:
+                    msg.add_reaction(reac)
+                try:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
+                except asyncio.TimeoutError:
+                    await ctx.send('👎', delete_after=3)
+                else:
+                    if reaction == "✅":
+                        await guild.leave()
+
+
+
+
+
+
+
+
+
+
+
 
 
 def setup(bot):
