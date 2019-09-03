@@ -12,7 +12,7 @@ class Security(commands.Cog):
 
 	@commands.group()
 	@checks.is_admin()
-	async def security(self, ctx):
+	async def gateway(self, ctx):
 		return
 
 

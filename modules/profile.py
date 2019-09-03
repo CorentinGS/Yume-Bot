@@ -8,7 +8,8 @@ class Profile:
 		self.name = [user.name]
 		self.id = user.id
 
-	# Profile
+		# Profile
+		self.gender: str = "Unknown"
 
 
 class Profiles(commands.Cog):
