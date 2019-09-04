@@ -1,4 +1,3 @@
-import asyncio
 import json
 import random
 import secrets
@@ -206,6 +205,8 @@ class Owner(commands.Cog):
                 if user.bot:
                     bots.append(user)
             if len(bots) * 100 / len(guild.members) >= 80:
+                await guild.leave()
+                '''
                 msg = await channel.send(f"Suspicious guild found | {guild.name} - {guild.id}!\n"
                                    f"Users: {len(guild.members)}\n"
                                    f"Bots: {len(bots)}\n"
@@ -214,13 +215,16 @@ class Owner(commands.Cog):
                 for reac in reactions:
                     await msg.add_reaction(reac)
                 try:
-                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=240)
+                    reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
                 except asyncio.TimeoutError:
                     await ctx.send('👎', delete_after=3)
-
-                if reaction == "✅":
-                    await guild.leave()
-                    print(f"{guild.name} has been left...")
+                else:
+                    if reaction == "✅":
+                        await guild.leave()
+                        print(f"{guild.name} has been left...")
+                    elif reaction == '🚫':
+                        pass
+                    '''
 
 
 def setup(bot):
