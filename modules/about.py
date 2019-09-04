@@ -46,7 +46,7 @@ class About(commands.Cog):
 			colour=discord.Colour.dark_red()
 		)
 		embed.set_footer(text=f'Tip: {tip}')
-		embed.url = 'https://yumenetwork.gitbook.io/yumebot/'
+		embed.url = 'https://yumenetwork.net'
 		embed.add_field(name="Author", value="__Name__ : {}#{}\n __ID__: {}".format(
 			owner.name, owner.discriminator, owner.id), inline=True)
 		embed.add_field(

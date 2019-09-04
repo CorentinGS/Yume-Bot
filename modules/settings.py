@@ -84,6 +84,7 @@ class Set(commands.Cog):
 
         if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP']:
             guild.vip = True
+            guild.automod = True
             await guild.store()
 
         # Create logging Channel
