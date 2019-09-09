@@ -81,7 +81,6 @@ class Sanction:
 
     @staticmethod
     async def find_sanction_member(ctx, member: discord.Member, guild: discord.Guild):
-        print("find sanction")
         strike = await Settings().get_sanction_settings_user(str(member.id), str(guild.id))
         em = discord.Embed()
         em.set_author(name=f"Sanction report | {member.name}",

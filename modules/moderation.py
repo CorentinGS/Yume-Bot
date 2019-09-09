@@ -35,15 +35,13 @@ class Moderation(commands.Cog):
     async def sanction(self, ctx, sanction: typing.Union[discord.Member, discord.User, int]):
         await ctx.message.delete()
         if sanction is int:
-            print("int")
             em = await Sanction().find_sanction_id(ctx, sanction)
             await ctx.send(embed=em)
         if sanction is discord.Member or discord.User:
-            print('sanction member')
             em = await Sanction().find_sanction_member(ctx, sanction, ctx.guild)
             await ctx.send(embed=em)
         else:
-            return print('ERROR')
+            return
 
     @commands.command()
     @checks.is_admin()

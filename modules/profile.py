@@ -10,6 +10,14 @@ class Profile:
 
 		# Profile
 		self.gender: str = "Unknown"
+		self.age: int = 0
+		self.desc: str = 'None'
+
+		# Reputation
+		self.rep: int = 0
+
+		# Settings
+		self.vip: bool = False
 
 
 class Profiles(commands.Cog):
