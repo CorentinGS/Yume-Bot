@@ -43,7 +43,6 @@ class YumeBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=get_prefix, description=description, activity=discord.Game(name="Commands: --help"),
                          pm_help=None, help_attrs=dict(hidden=True), fetch_offline_members=False)
-
         self.uptime = datetime.datetime.utcnow()
         self.token = token['token']
         self.ready = False
@@ -52,8 +51,6 @@ class YumeBot(commands.Bot):
         self.guild = config['support']
         self.debug = config['debug']
         self.remove_command("help")
-
-        # self.session = aiohttp.ClientSession(loop=self.loop)
 
     async def on_ready(self):
         if not self.ready:
