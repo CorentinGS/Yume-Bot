@@ -7,3 +7,4 @@ discord==0.0.2
 Flask==1.0.2
 wikipedia==1.4.0
 python-dateutil
+dblpy
