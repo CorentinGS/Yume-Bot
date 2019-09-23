@@ -107,6 +107,27 @@ class Fun(commands.Cog):
             await ctx.send(str(response.text) + "\n" + str(response_year.text))
 
     @commands.command()
+    async def trump(self, ctx, tag: str = None):
+        await ctx.message.delete()
+        async with ctx.channel.typing():
+            if not tag:
+                response = requests.get("https://api.tronalddump.io/random/quote")
+            else:
+                response = requests.get(
+                    f"https://api.tronalddump.io/tag/{urllib.parse.quote_plus(tag.lower().strip())}")
+            r = response.json()
+            await ctx.send(r["value"])
+
+    @commands.command(aliases=["chuck", "norris", "cn"])
+    @commands.guild_only()
+    async def chucknorris(self, ctx):
+        await ctx.message.delete()
+        async with ctx.channel.typing():
+            r = requests.get("https://api.chucknorris.io/jokes/random")
+            r = r.json()
+            await ctx.send(r["value"])
+
+    @commands.command()
     @commands.guild_only()
     async def today(self, ctx):
         today = datetime.datetime.now()
