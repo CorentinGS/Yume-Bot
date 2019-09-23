@@ -3,6 +3,7 @@ import json
 import random
 
 import discord
+import requests
 from discord.ext import commands
 from romme import RepublicanDate
 
@@ -10,7 +11,6 @@ from modules.utils import http, lists
 
 
 class Fun(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -24,8 +24,6 @@ class Fun(commands.Cog):
         except json.JSONDecodeError:
             return await ctx.send("Couldn't find anything from the API")
         await ctx.send(r[endpoint])
-
-
 
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
@@ -48,7 +46,6 @@ class Fun(commands.Cog):
     async def cat(self, ctx):
         await ctx.message.delete()
         await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
-
 
     @commands.command()
     async def dog(self, ctx):
@@ -93,7 +90,32 @@ class Fun(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def urban(self, ctx, *, search:str):
+    async def choose(self, ctx, *, answers: str):
+        toto = random.choice(answers.split())
+        await ctx.send(toto)
+
+    @commands.command()
+    @commands.guild_only()
+    async def number(self, ctx, number: int = None):
+        if not number:
+            number = random.randrange(1, 200)
+        async with ctx.channel.typing():
+            response = requests.get(f'http://numbersapi.com/{number}')
+            response_year = requests.get(f'http://numbersapi.com/{number}/year')
+
+            await ctx.send(str(response.text) + "\n" + str(response_year.text))
+
+    @commands.command()
+    @commands.guild_only()
+    async def today(self, ctx):
+        today = datetime.datetime.now()
+        async with ctx.channel.typing():
+            response = requests.get(f'http://numbersapi.com/{today.month}/{today.day}/date')
+            await ctx.send(response.text)
+
+    @commands.command()
+    @commands.guild_only()
+    async def urban(self, ctx, *, search: str):
         async with ctx.channel.typing():
             url = await http.get(f'https://api.urbandictionary.com/v0/define?term={search}', res_method="json")
 
