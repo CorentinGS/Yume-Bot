@@ -1,6 +1,7 @@
 import datetime
 import json
 import random
+import urllib.parse
 
 import discord
 import requests
@@ -98,7 +99,7 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def number(self, ctx, number: int = None):
         if not number:
-            number = random.randrange(1, 200)
+            number = random.randrange(1, 1789)
         async with ctx.channel.typing():
             response = requests.get(f'http://numbersapi.com/{number}')
             response_year = requests.get(f'http://numbersapi.com/{number}/year')
@@ -112,6 +113,35 @@ class Fun(commands.Cog):
         async with ctx.channel.typing():
             response = requests.get(f'http://numbersapi.com/{today.month}/{today.day}/date')
             await ctx.send(response.text)
+
+    @commands.command(aliases=["l2g"])
+    @commands.guild_only()
+    async def lmgtfy(self, ctx, *, msg: str = None):
+        if not msg:
+            url = "https://lmgtfy.com/?q=The+answer+to+life&p=1"
+        else:
+            url = f"http://lmgtfy.com/?q={urllib.parse.quote_plus(msg.lower().strip())}"
+        await ctx.send(url)
+        await ctx.message.delete()
+
+    @commands.command(aliases=["love"])
+    @commands.guild_only()
+    async def love_calc(self, ctx, user: discord.Member, user_: discord.Member):
+        random.seed(int(str(user.id) + str(user_.id)))
+        if user == user_:
+            love = 100.00
+        else:
+            love = random.randint(1, 10000) / 100
+        if love < 50:
+            emoji = "💔"
+        elif love > 50:
+            emoji = '💖'
+        elif love > 70:
+            emoji = "💞"
+        elif love > 99:
+            emoji = "🖤"
+
+        await ctx.send(f"{user.name} + {user_.name} = {emoji} | {love}% of love")
 
     @commands.command()
     @commands.guild_only()
