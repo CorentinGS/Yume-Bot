@@ -10,7 +10,6 @@ tip = random.choice(lists.tip)
 
 
 class Utilities(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -39,11 +38,9 @@ class Utilities(commands.Cog):
 
         embed.add_field(name="Name", value=server.name, inline=True)
         embed.add_field(name="ID", value=server.id, inline=True)
-        embed.add_field(name="Roles", value=len(server.roles), inline=True)
-        embed.add_field(name="Members", value=len(
-            server.members), inline=True)
-        embed.add_field(name="Channels", value=len(
-            server.channels), inline=True)
+        embed.add_field(name="Roles", value=str(len(server.roles)), inline=True)
+        embed.add_field(name="Members", value=str(len(server.members)), inline=True)
+        embed.add_field(name="Channels", value=str(len(server.channels)), inline=True)
         embed.add_field(name="Security",
                         value=server.verification_level, inline=True)
         embed.add_field(name="Region", value=server.region, inline=True)
@@ -59,18 +56,37 @@ class Utilities(commands.Cog):
         except discord.HTTPException:
             pass
 
-    @commands.command()
+    @commands.command(aliases=['ri'])
     @commands.guild_only()
     async def roleinfo(self, ctx, *, role: discord.Role):
         color = role.colour
 
         embed = discord.Embed(colour=color)
 
-        embed.set_author(name=role.name)
-        embed.add_field(name="Users", value=len(role.members))
+        embed.add_field(name="Users", value=str(len(role.members)))
         embed.add_field(name="Hoist", value=role.hoist)
         embed.add_field(name="Position", value=role.position)
-        embed.set_footer(text=f'Role ID: {role.id}')
+        embed.add_field(name='Role ID', value=f'{role.id}')
+
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=["ci"])
+    @commands.guild_only()
+    async def channelinfo(self, ctx, channel: discord.TextChannel= None):
+        if not channel:
+            channel = ctx.channel
+
+        embed = discord.Embed(colour=discord.Colour.gold())
+
+        embed.add_field(name="Channel Name", value=channel.name)
+        embed.add_field(name="ID", value=channel.id)
+        embed.add_field(name="Type", value=channel.type)
+        embed.add_field(name="Created", value=channel.created_at)
+        embed.add_field(name="Topic", value=channel.topic)
+        embed.add_field(name='Nswf', value=channel.is_nsfw())
+
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=embed)
 
@@ -87,8 +103,7 @@ class Utilities(commands.Cog):
             color=discord.Colour.dark_gold()
         )
 
-        embed.add_field(name="Members", value=len(
-            server.members), inline=True)
+        embed.add_field(name="Members", value=str(len(server.members)), inline=True)
         embed.set_thumbnail(url=server.icon_url)
 
         try:
@@ -122,7 +137,7 @@ class Utilities(commands.Cog):
     @commands.guild_only()
     async def date(self, ctx, member: discord.Member):
         now = datetime.now()
-        create =  member.created_at
+        create = member.created_at
         time = (now - create).days
         await ctx.send(f'**{member.name}** has created his account **{time}** days ago')
 

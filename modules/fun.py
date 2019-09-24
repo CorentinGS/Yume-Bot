@@ -104,7 +104,7 @@ class Fun(commands.Cog):
             response = requests.get(f'http://numbersapi.com/{number}')
             response_year = requests.get(f'http://numbersapi.com/{number}/year')
 
-            await ctx.send(str(response.text) + "\n" + str(response_year.text))
+            await ctx.send("**Number fact** :\n" + str(response.text) + "\n**Year fact** :\n" + str(response_year.text))
 
     @commands.command()
     async def trump(self, ctx, tag: str = None):
@@ -116,7 +116,7 @@ class Fun(commands.Cog):
                 response = requests.get(
                     f"https://api.tronalddump.io/tag/{urllib.parse.quote_plus(tag.lower().strip())}")
             r = response.json()
-            await ctx.send(r["value"])
+            await ctx.send(f"Geek Joke :\n**{r['value']}**")
 
     @commands.command(aliases=["chuck", "norris", "cn"])
     @commands.guild_only()
@@ -126,6 +126,13 @@ class Fun(commands.Cog):
             r = requests.get("https://api.chucknorris.io/jokes/random")
             r = r.json()
             await ctx.send(r["value"])
+
+    @commands.command(aliases=["dev_joke", "programmer_joke", "geekjoke"])
+    @commands.guild_only()
+    async def geek_joke(self, ctx):
+        r = requests.get('https://geek-jokes.sameerkumar.website/api')
+        await ctx.send(f"Geek Joke :\n**{r.text}**")
+
 
     @commands.command()
     @commands.guild_only()
