@@ -133,6 +133,11 @@ class Fun(commands.Cog):
         r = requests.get('https://geek-jokes.sameerkumar.website/api')
         await ctx.send(f"Geek Joke :\n**{r.text}**")
 
+    @commands.command()
+    @commands.guild_only()
+    async def cookie(self, ctx, user: discord.Member):
+        await ctx.send(
+            f"**{user.display_name}**, you've been given a cookie by **{ctx.author.display_name}**. :cookie:")
 
     @commands.command()
     @commands.guild_only()
@@ -141,6 +146,11 @@ class Fun(commands.Cog):
         async with ctx.channel.typing():
             response = requests.get(f'http://numbersapi.com/{today.month}/{today.day}/date')
             await ctx.send(response.text)
+
+    @commands.command(aliases=["ice-cream"])
+    @commands.guild_only()
+    async def ice(self, ctx, user: discord.Member):
+        await ctx.send(f"{user.mention}, here is your ice: :ice_cream:!")
 
     @commands.command(aliases=["l2g"])
     @commands.guild_only()

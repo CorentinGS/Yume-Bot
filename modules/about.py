@@ -51,7 +51,8 @@ class About(commands.Cog):
             owner.name, owner.discriminator, owner.id), inline=True)
         embed.add_field(
             name="Stats",
-            value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__: {text}text & {voice}voice \n__Users__: {total_users}",
+            value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__: {text}text & {voice}voice "
+                  f"\n__Users__: {total_users}",
             inline=True)
 
         embed.add_field(

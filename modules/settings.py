@@ -17,10 +17,6 @@ class Set(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    @commands.command()
-    async def toto(self, ctx):
-        cat = GuildY(ctx.message.guild)
-
     @commands.group()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)

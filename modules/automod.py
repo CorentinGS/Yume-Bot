@@ -92,7 +92,8 @@ class Automod(commands.Cog):
         else:
             return False
 
-    async def raid_check(self, message):
+    @staticmethod
+    async def raid_check():
 
         mode = "soft"
         m_max = 3

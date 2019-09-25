@@ -41,7 +41,8 @@ logger.addHandler(handler)
 
 class YumeBot(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix=get_prefix, description=description, activity=discord.Game(name="Commands: --help"),
+        super().__init__(command_prefix=get_prefix, description=description,
+                         activity=discord.Game(name="Commands: --help"),
                          pm_help=None, help_attrs=dict(hidden=True), fetch_offline_members=False)
         self.uptime = datetime.datetime.utcnow()
         self.token = token['token']
@@ -72,7 +73,8 @@ class YumeBot(commands.Bot):
         elif isinstance(error, commands.DisabledCommand):
             await ctx.author.send('Sorry. This command is disabled and cannot be used.')
         if isinstance(error, commands.BotMissingPermissions):
-            return await ctx.send("I don't have the required permissions to perform this command. Please give me administrator permissions")
+            return await ctx.send("I don't have the required permissions to perform this command."
+                                  " Please give me administrator permissions")
         elif isinstance(error, commands.CommandInvokeError):
             original = error.original
             if not isinstance(original, discord.HTTPException):
@@ -87,14 +89,13 @@ class YumeBot(commands.Bot):
 
     async def on_guild_join(self, guild):
         await self.wait_until_ready()
-        embed = discord.Embed()
+        embed = discord.Embed(colour=discord.Color.green())
         embed.title = 'New Guild'
         embed.set_author(name='{0} <{0.id}>'.format(
             guild.owner), icon_url=guild.owner.avatar_url)
         embed.add_field(name='Server', value='{0.name} <{0.id}>'.format(guild))
         embed.add_field(
             name='Members', value='**{0}**'.format(len(guild.members)))
-        embed.color = discord.Color.green()
         embed.timestamp = datetime.datetime.now()
         server = self.get_guild(int(self.guild))
         for chan in server.channels:
@@ -104,14 +105,13 @@ class YumeBot(commands.Bot):
 
     async def on_guild_remove(self, guild):
         await self.wait_until_ready()
-        embed = discord.Embed()
+        embed = discord.Embed(colour=discord.Color.red())
         embed.title = 'Left Guild'
         embed.set_author(name='{0} <{0.id}>'.format(
             guild.owner), icon_url=guild.owner.avatar_url)
         embed.add_field(name='Server', value='{0.name} <{0.id}>'.format(guild))
         embed.add_field(
             name='Members', value='**{0}**'.format(len(guild.members)))
-        embed.color = discord.Color.red()
         embed.timestamp = datetime.datetime.now()
         server = self.get_guild(int(self.guild))
         for chan in server.channels:

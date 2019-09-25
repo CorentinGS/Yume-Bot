@@ -1,7 +1,7 @@
 import motor.motor_asyncio
 
 
-class Settings():
+class Settings:
 
     def __init__(self):
         self.client = motor.motor_asyncio.AsyncIOMotorClient('mongo', 27017)
@@ -50,7 +50,7 @@ class Settings():
 
     async def set_user_settings(self, id, settings):
         return await self.user.replace_one({"_id": id}, settings, True)
-    
+
     async def get_key_settings(self, name):
         doc = await self.keys.find_one({"_id": name})
         return doc or {}
@@ -72,4 +72,4 @@ class Settings():
         return doc or {}
 
     async def rm_strike_settings(self, guild, user):
-        return await self.sanction.delete_many({"guild_id" : guild, "user_id": user})
+        return await self.sanction.delete_many({"guild_id": guild, "user_id": user})

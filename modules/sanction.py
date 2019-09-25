@@ -30,7 +30,8 @@ class Sanction:
 
         return _id
 
-    async def create_strike(self, user, event, guild, reason=None):
+    @staticmethod
+    async def create_strike(user, event, guild, reason=None):
         a = datetime.now()
         _id = int(a.strftime('%Y%m%d%H%M%S%f'))
 

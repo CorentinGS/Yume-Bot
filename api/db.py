@@ -1,7 +1,7 @@
 import pymongo
 
 
-class Settings():
+class Settings:
 
     def __init__(self):
         self.client = pymongo.MongoClient('mongo', 27017)
@@ -28,5 +28,5 @@ class Settings():
         return doc or {}
 
     def get_key_settings(self, name):
-        doc = self.keys.find_one({"_id" : name})
+        doc = self.keys.find_one({"_id": name})
         return doc or {}

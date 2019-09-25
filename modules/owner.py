@@ -14,7 +14,6 @@ with open('./config/config.json', 'r') as cjson:
 
 
 class Owner(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -114,7 +113,7 @@ class Owner(commands.Cog):
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def exit(self, ctx):
+    async def exit(self):
         sys.exit(1)
 
     @commands.command(hidden=True)
@@ -123,7 +122,6 @@ class Owner(commands.Cog):
         key = secrets.token_urlsafe(20)
         set = await Settings().get_key_settings(str(name))
         set['key'] = key
-        set = await Settings().set_key_settings(str(name), set)
         await ctx.author.send('The key is : **{}**'.format(str(key)))
 
     @commands.command(hidden=True)
@@ -137,16 +135,19 @@ class Owner(commands.Cog):
                 invite = await chan.create_invite()
             except discord.Forbidden:
                 em.add_field(
-                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
+                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                           f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
             else:
                 em.add_field(
-                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}", inline=False)
+                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                           f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
+                    inline=False)
 
         await ctx.author.send(embed=em)
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def check_setup(self, ctx):
+    async def check_setup(self):
         for guild in self.bot.guilds:
             set = await Settings().get_server_settings(str(guild.id))
             if set["Setup"] is False:
@@ -200,6 +201,13 @@ class Owner(commands.Cog):
                 await guild.leave()
 
         await ctx.send("Guild purge is done !")
+
+    @commands.command()
+    @checks.is_owner()
+    async def activity(self, ctx, *, content):
+        await ctx.message.delete()
+        await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(f"{content}"))
+        await ctx.author.send(f"New presence : {content}")
 
 
 def setup(bot):

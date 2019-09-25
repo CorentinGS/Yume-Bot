@@ -61,7 +61,8 @@ class Level(commands.Cog):
                 x += 1
                 level = set[str(user)]['level']
                 total = set[str(user)]['total']
-                em.add_field(name=f"**{x} - {member.name}**", value=f"Level : {level} \nTotal xp : {total}", inline=False)
+                em.add_field(name=f"**{x} - {member.name}**", value=f"Level : {level} \nTotal xp : {total}",
+                             inline=False)
 
                 if x == 10:
                     break
@@ -90,7 +91,8 @@ class Level(commands.Cog):
             return await ctx.send(
                 "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
         except discord.InvalidArgument:
-            return await ctx.send("We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
+            return await ctx.send(
+                "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
 
         toto = set["levels"]
         toto[str(level)] = str(rolemention.id)

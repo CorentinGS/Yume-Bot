@@ -1,7 +1,5 @@
 .git
 .gitignore
-.error.log
 .github
-.README.md
 data
 /.idea/

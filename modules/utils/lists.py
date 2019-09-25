@@ -28,8 +28,10 @@ poney = [
 ]
 
 tip = [
-    "Check our website : https://www.yumenetwork.net", "Share the bot to your friends", "If you have any questions : --feedback", "Use Linux !",
-    "You should ask the Crystal Ball: --8ball [question]", "You want to know who made me ? Check here : https://www.yumenetwork.net",
+    "Check our website : https://www.yumenetwork.net", "Share the bot to your friends",
+    "If you have any questions : --feedback", "Use Linux !",
+    "You should ask the Crystal Ball: --8ball [question]",
+    "You want to know who made me ? Check here : https://www.yumenetwork.net",
     "Remember the Fifth of November...", "Let threw the apple out the windows..."
 ]
 
@@ -39,5 +41,6 @@ greet = [
 ]
 
 leave = [
-    "See you soon", "Thank you for participating in the server", "See you next time", 'Goodbye', "Have a good continuation", "Take care of yourself"
+    "See you soon", "Thank you for participating in the server", "See you next time",
+    'Goodbye', "Have a good continuation", "Take care of yourself"
 ]

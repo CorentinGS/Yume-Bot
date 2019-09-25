@@ -23,7 +23,6 @@ class Check(commands.Cog):
 
 
 class Moderation(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -100,7 +99,8 @@ class Moderation(commands.Cog):
             set['Mute'] = []
 
         if user.id in set['Mute']:
-            return await ctx.send('This user is already muted, use {}unmute to umute him.'.format(self.bot.config['prefix']))
+            return await ctx.send('This user is already muted, '
+                                  'use {}unmute to umute him.'.format(self.bot.config['prefix']))
 
         set['Mute'].append(user.id)
         await Settings().set_server_settings(str(guild.id), set)
@@ -415,7 +415,6 @@ class Moderation(commands.Cog):
             await channel.edit(topic=topic, reason=reason)
         except (discord.Forbidden, discord.HTTPException):
             return await ctx.send("I don't have permission to edit this topic!")
-
 
     @commands.command()
     @checks.is_admin()

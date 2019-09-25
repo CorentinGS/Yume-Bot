@@ -74,7 +74,6 @@ class Gestion(commands.Cog):
 
         except asyncio.TimeoutError:
             await ctx.send('👎')
-            success = False
             return
 
         else:

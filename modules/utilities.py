@@ -1,12 +1,7 @@
-import random
 from datetime import datetime
 
 import discord
 from discord.ext import commands
-
-from modules.utils import lists
-
-tip = random.choice(lists.tip)
 
 
 class Utilities(commands.Cog):
@@ -34,7 +29,9 @@ class Utilities(commands.Cog):
             description="I found this...",
             color=discord.Colour.dark_gold()
         )
-        embed.set_footer(text=f'Tip: {tip}')
+
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
 
         embed.add_field(name="Name", value=server.name, inline=True)
         embed.add_field(name="ID", value=server.id, inline=True)
@@ -52,7 +49,6 @@ class Utilities(commands.Cog):
 
         try:
             await ctx.send(embed=embed)
-
         except discord.HTTPException:
             pass
 
@@ -67,12 +63,15 @@ class Utilities(commands.Cog):
         embed.add_field(name="Hoist", value=role.hoist)
         embed.add_field(name="Position", value=role.position)
         embed.add_field(name='Role ID', value=f'{role.id}')
+        embed.add_field(name="Created", value=role.created_at)
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["ci"])
     @commands.guild_only()
-    async def channelinfo(self, ctx, channel: discord.TextChannel= None):
+    async def channelinfo(self, ctx, channel: discord.TextChannel = None):
         if not channel:
             channel = ctx.channel
 
@@ -94,18 +93,28 @@ class Utilities(commands.Cog):
     @commands.guild_only()
     async def members(self, ctx):
         await ctx.message.delete()
-
+        onlines = 0
+        bots = 0
         server = ctx.message.guild
+        for member in server.members:
+            if member.bot is True:
+                bots += 1
+            elif member.status != discord.Status.offline:
+                onlines += 1
 
         embed = discord.Embed(
             title="{}".format(ctx.message.guild.name),
-            description="I found this...",
             color=discord.Colour.dark_gold()
         )
 
-        embed.add_field(name="Members", value=str(len(server.members)), inline=True)
-        embed.set_thumbnail(url=server.icon_url)
+        embed.add_field(name="Members", value=str(len(server.members)))
+        embed.add_field(name="Onlines", value=str(onlines))
+        embed.add_field(name="Humans", value=str(len(server.members) - bots))
+        embed.add_field(name="Bots", value=str(bots))
 
+        embed.set_thumbnail(url=server.icon_url)
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
         try:
             return await ctx.send(embed=embed)
 
@@ -125,7 +134,9 @@ class Utilities(commands.Cog):
         )
 
         embed.add_field(name="Owner", value=server.owner.mention, inline=True)
-        embed.set_thumbnail(url=server.icon_url)
+        embed.set_thumbnail(url=server.owner.avatar_url)
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
 
         try:
             await ctx.send(embed=embed)
@@ -155,29 +166,28 @@ class Utilities(commands.Cog):
     async def icon(self, ctx):
         await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
-    @commands.command()
+    @commands.command(aliases=["userinfo", "ui"])
     @commands.guild_only()
     async def whois(self, ctx, user: discord.Member):
         await ctx.message.delete()
 
         embed = discord.Embed(
             title="{}".format(user.name),
-            description="I found this...",
             color=discord.Colour.magenta()
         )
-
-        embed.add_field(name="Name", value="{}#{}".format(
-            user.name, user.discriminator), inline=True)
-        embed.add_field(name="ID", value=user.id, inline=True)
-        embed.add_field(name="Status", value=user.status, inline=True)
-        embed.add_field(name="Hightest role", value=user.top_role, inline=True)
-        embed.add_field(name="Joined", value=user.joined_at.strftime(
-            '%A - %B - %e - %g at %H:%M'), inline=True)
-        embed.add_field(name="Nick", value=user.nick, inline=True)
+        embed.add_field(name="Nick", value=user.nick)
+        embed.add_field(name="ID", value=user.id)
+        embed.add_field(name="Status", value=user.status)
+        embed.add_field(name="Hightest role", value=user.top_role)
+        embed.add_field(name="Game Activity", value=user.activity)
         embed.add_field(name="Created", value=user.created_at.strftime(
-            '%A - %B - %e - %g at %H:%M'), inline=True)
-        embed.add_field(name="Mention", value=user.mention, inline=True)
+            '%A - %B - %e - %g at %H:%M'))
+        embed.add_field(name="Joined", value=user.joined_at.strftime(
+            '%A - %B - %e - %g at %H:%M'))
+
         embed.set_thumbnail(url=user.avatar_url)
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
 
         try:
             await ctx.send(embed=embed)
@@ -194,20 +204,20 @@ class Utilities(commands.Cog):
 
         embed = discord.Embed(
             title="{}".format(user.name),
-            description="I found this...",
             color=discord.Colour.magenta()
         )
 
-        embed.add_field(name="Name", value="{}#{}".format(
-            user.name, user.discriminator), inline=True)
-        embed.add_field(name="ID", value=user.id, inline=True)
+        embed.add_field(name="Nick", value=user.nick)
+        embed.add_field(name="ID", value=user.id)
+        embed.add_field(name="Status", value=user.status)
+        embed.add_field(name="Game Activity", value=user.activity)
         embed.add_field(name="Created", value=user.created_at.strftime(
-            '%A - %B - %e - %g at %H:%M'), inline=True)
+            '%A - %B - %e - %g at %H:%M'))
         embed.set_thumbnail(url=user.avatar_url)
-
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
         try:
             await ctx.send(embed=embed)
-
         except discord.HTTPException:
             pass
 

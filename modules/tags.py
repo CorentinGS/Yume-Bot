@@ -33,10 +33,11 @@ class Tags(commands.Cog):
         await ctx.send('[%s]' % ', '.join(map(str, tags)))
 
     @tags.command()
-    async def suggest(self, ctx, name:str, *, value:str):
+    async def suggest(self, ctx, name: str, *, value: str):
         return
     # todo: Ajouter la possibilité de suggestion de tags dans le salon suggestion + Mettre dans un seul groupe les
     #  commandes.
+
 
 def setup(bot):
     bot.add_cog(Tags(bot))

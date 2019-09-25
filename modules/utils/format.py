@@ -9,7 +9,6 @@ class Mod:
 
     @staticmethod
     async def check_embed(member, guild, sanctions, time):
-
         em = discord.Embed(
             title="{}".format(member.name),
             description="A new user has joined",
@@ -17,8 +16,8 @@ class Mod:
         )
         em.set_author(name=f"{guild.name}")
         em.set_thumbnail(url=member.avatar_url)
-        em.add_field(name="User", value = f"Name : {member.mention} \nID : {member.id}")
-        em.add_field(name ="Informations", value = f"Sanctions : {sanctions} \nAge : {time}days")
+        em.add_field(name="User", value=f"Name : {member.mention} \nID : {member.id}")
+        em.add_field(name="Informations", value=f"Sanctions : {sanctions} \nAge : {time}days")
 
         return em
 
@@ -31,10 +30,9 @@ class Embeds:
         em.set_author(name="Automod")
         em.set_footer(text=f'Sanction ID: {sanction_id}')
         msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
-            f"**Reason** : {reason}\n"
+              f"**Reason** : {reason}\n"
         em.description = msg
         return em
-
 
     @staticmethod
     async def format_mod_embed(ctx, user, mod, reason, command, sanction=None, duration=None):
@@ -57,10 +55,10 @@ class Embeds:
 
         if mod is discord.Member or discord.User:
             msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
-                f"**Moderator** : {mod.name}#{mod.discriminator}\n"
+                  f"**Moderator** : {mod.name}#{mod.discriminator}\n"
         else:
             msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
-                f"**Moderator** : Auto\n"
+                  f"**Moderator** : Auto\n"
         if reason is not None:
             str1 = f"**Reason** : {reason}\n"
             msg = " ".join((msg, str1))
@@ -123,7 +121,8 @@ class Embeds:
     async def format_commands_embed(ctx, icon):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Yume Bot', url="https://yumenetwork.gitbook.io/yumebot/", icon_url=icon)
-        em.description = "**» Does anyone need any help?**\nYou can use **--h <category>** to view commands for that category."
+        em.description = "**» Does anyone need any help?**\n" \
+                         "You can use **--h <category>** to view commands for that category."
         em.add_field(name="**Categories**", value="**--h general** | General Commands\n"
                                                   "**--h fun** | Fun Commands\n"
                                                   "**--h utils** | Utils Commands\n"
@@ -146,7 +145,9 @@ class Embeds:
     async def format_cat_embed(ctx, icon, category, liste):
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Yume Bot', url="https://yumenetwork.gitbook.io/yumebot/", icon_url=icon)
-        em.description = f"**Category : {category}**\nYou can get more info about a command [here](https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
-        em.add_field(name="**:pushpin: Commands**", value= f"{liste}")
+        em.description = f"**Category : {category}**" \
+                         f"\nYou can get more info about a command [here]" \
+                         f"(https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
+        em.add_field(name="**:pushpin: Commands**", value=f"{liste}")
 
         return em
