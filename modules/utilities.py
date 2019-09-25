@@ -168,8 +168,12 @@ class Utilities(commands.Cog):
 
     @commands.command(aliases=["userinfo", "ui"])
     @commands.guild_only()
-    async def whois(self, ctx, user: discord.Member):
+    async def whois(self, ctx, user: discord.Member = None):
         await ctx.message.delete()
+        if not user:
+            user = ctx.author
+
+        joins = sorted(ctx.guild.members, key=lambda o: o.joined_at)
 
         embed = discord.Embed(
             title="{}".format(user.name),
@@ -179,7 +183,8 @@ class Utilities(commands.Cog):
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="Status", value=user.status)
         embed.add_field(name="Hightest role", value=user.top_role)
-        embed.add_field(name="Game Activity", value=user.activity)
+        embed.add_field(name="Game Activity", value=user.activity.name)
+        embed.add_field(name= "Join position", value=str(joins.index(user)))
         embed.add_field(name="Created", value=user.created_at.strftime(
             '%A - %B - %e - %g at %H:%M'))
         embed.add_field(name="Joined", value=user.joined_at.strftime(
@@ -210,7 +215,7 @@ class Utilities(commands.Cog):
         embed.add_field(name="Nick", value=user.nick)
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="Status", value=user.status)
-        embed.add_field(name="Game Activity", value=user.activity)
+        embed.add_field(name="Game Activity", value=user.activity.name)
         embed.add_field(name="Created", value=user.created_at.strftime(
             '%A - %B - %e - %g at %H:%M'))
         embed.set_thumbnail(url=user.avatar_url)

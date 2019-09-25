@@ -203,6 +203,21 @@ class Set(commands.Cog):
             except discord.HTTPException:
                 return
 
+    @commands.command()
+    @checks.is_owner()
+    async def setting_debug(self, ctx):
+        guildy = GuildY(ctx.guild)
+
+        for role in ctx.guild.roles:
+            if role.permissions.administrator or role.permissions.manage_guild is True:
+                guildy.admins.append(str(role.id))
+            elif role.permissions.ban_members or role.permissions.kick_members is True:
+                guildy.mods.append(str(role.id))
+
+        await guildy.store()
+
+        await ctx.send("Done")
+
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         guildy = GuildY(guild)

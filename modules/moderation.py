@@ -29,8 +29,8 @@ class Moderation(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    @commands.command()
-    @commands.guild_only()
+    @commands.command(aliases=["sanctions", "modlog", "modlogs"])
+    @checks.is_mod()
     async def sanction(self, ctx, sanction: typing.Union[discord.Member, discord.User, int]):
         await ctx.message.delete()
         if sanction is int:
@@ -41,6 +41,15 @@ class Moderation(commands.Cog):
             await ctx.send(embed=em)
         else:
             return
+
+    @commands.command()
+    @checks.is_admin()
+    async def slowmode(self, ctx, *, value: int = None):
+        if not value or value == 0:
+            await ctx.channel.edit(slowmode_delay=0)
+        else:
+            await ctx.channel.edit(slowmode_delay=value)
+        await ctx.send("Channel slowmode has been changed !")
 
     @commands.command()
     @checks.is_admin()
