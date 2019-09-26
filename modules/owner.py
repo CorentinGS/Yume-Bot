@@ -215,7 +215,7 @@ class Owner(commands.Cog):
     async def penguin(self, ctx):
         await ctx.message.delete()
         owner_ = config["owner_id"]
-        owner = await self.bot.fetch_user(owner_)
+        owner = await ctx.guild.get_member(owner_)
 
         try:
             role = await ctx.guild.create_role(name="Manchot <3", colour=discord.Colour.blurple())
