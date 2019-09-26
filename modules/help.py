@@ -30,7 +30,8 @@ class Help(commands.Cog):
 
     @help.command()
     async def utils(self, ctx):
-        liste = "`info`, `members`, `owner`, `date`, `whois`, `hackwhois`, `avatar`, `icon`, `roleinfo`, `invite`"
+        liste = "`info`, `members`, `owner`, `date`, `whois`, `hackwhois`, " \
+                "`avatar`, `icon`, `roleinfo`, `invite`, `channelinfo`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Utils", liste)
         await ctx.send(embed=embed)
 
@@ -42,7 +43,8 @@ class Help(commands.Cog):
 
     @help.command()
     async def mods(self, ctx):
-        liste = "`mute`, `unmute`, `ban`, `hackban`, `unban`, `kick`, `purge`, `sanction`, `strike`"
+        liste = "`mute`, `unmute`, `ban`, `hackban`, `unban`, `kick`, `purge`, `sanction`," \
+                " `strike`, `slowmode`, `deaf`, `undeaf`, `vmute`, `vunmute`, `nick`, `topic`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Mods", liste)
         await ctx.send(embed=embed)
 
@@ -66,7 +68,8 @@ class Help(commands.Cog):
 
     @help.command()
     async def fun(self, ctx):
-        liste = "`rd`, `8ball`, `cat`, `lovepower`"
+        liste = "`rd`, `8ball`, `cat`, `dog`, `lovepower`, `choose`, `number`, `trump`, `chucknorris`, `geek_joke`, `cookie`, `today`," \
+                " `ice`, `lmgtfy`, `love_calc`, `urban`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Fun", liste)
         await ctx.send(embed=embed)
 
