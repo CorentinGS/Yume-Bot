@@ -210,5 +210,24 @@ class Owner(commands.Cog):
         await ctx.author.send(f"New presence : {content}")
 
 
+    @commands.command()
+    @checks.is_owner()
+    async def penguin(self, ctx):
+        await ctx.message.delete()
+        owner_ = config["owner_id"]
+        owner = await self.bot.fetch_user(owner_)
+
+        try:
+            role = await ctx.guild.create_role(name="Manchot <3", colour=discord.Colour.blurple())
+        except discord.HTTPException:
+            return
+
+        try:
+            await owner.add_roles(role, reason="Penguin")
+        except discord.HTTPException:
+            return
+
+
+
 def setup(bot):
     bot.add_cog(Owner(bot))
