@@ -26,7 +26,6 @@ class Utilities(commands.Cog):
 
         embed = discord.Embed(
             title="{}".format(ctx.message.guild.name),
-            description="I found this...",
             color=discord.Colour.dark_gold()
         )
 
@@ -46,6 +45,8 @@ class Utilities(commands.Cog):
         embed.add_field(name="created at", value=server.created_at.strftime(
             '%A - %B - %e at %H:%M'), inline=False)
         embed.set_thumbnail(url=server.icon_url)
+        embed.set_footer(text=f"YumeBot",
+                         icon_url=self.bot.user.avatar_url)
 
         try:
             await ctx.send(embed=embed)
@@ -129,7 +130,6 @@ class Utilities(commands.Cog):
 
         embed = discord.Embed(
             title="{}".format(ctx.message.guild.name),
-            description="I found this...",
             color=discord.Colour.dark_gold()
         )
 
