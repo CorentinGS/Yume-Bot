@@ -214,7 +214,7 @@ class Owner(commands.Cog):
     @checks.is_owner()
     async def penguin(self, ctx):
         await ctx.message.delete()
-        owner_ = config["owner_id"]
+        owner_ = int(config["owner_id"])
         owner = ctx.guild.get_member(owner_)
 
         try:
@@ -223,7 +223,7 @@ class Owner(commands.Cog):
             return
 
         try:
-            await owner.add_roles(role, reason="Penguin")
+            await owner.add_roles(role)
         except discord.HTTPException:
             return
 
