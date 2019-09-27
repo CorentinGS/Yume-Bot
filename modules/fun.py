@@ -164,7 +164,7 @@ class Fun(commands.Cog):
 
     @commands.command(aliases=["love"])
     @commands.guild_only()
-    async def love_calc(self, ctx, user: discord.Member, user_: discord.Member):
+    async def love_calc(self, ctx, user: discord.Member, user_: discord.Member = None):
         random.seed(int(str(user.id) + str(user_.id)))
         if not user_:
             user_ = ctx.author
