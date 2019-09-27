@@ -166,6 +166,8 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def love_calc(self, ctx, user: discord.Member, user_: discord.Member):
         random.seed(int(str(user.id) + str(user_.id)))
+        if not user_:
+            user_ = ctx.author
         if user == user_:
             love = 100.00
         else:
