@@ -183,7 +183,8 @@ class Utilities(commands.Cog):
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="Status", value=user.status)
         embed.add_field(name="Hightest role", value=user.top_role)
-        embed.add_field(name="Game Activity", value=user.activity.name)
+        if user.activity:
+            embed.add_field(name="Game Activity", value=user.activity.name)
         embed.add_field(name= "Join position", value=str(joins.index(user)))
         embed.add_field(name="Created", value=user.created_at.strftime(
             '%A - %B - %e - %g at %H:%M'))
@@ -215,7 +216,8 @@ class Utilities(commands.Cog):
         embed.add_field(name="Nick", value=user.nick)
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="Status", value=user.status)
-        embed.add_field(name="Game Activity", value=user.activity.name)
+        if user.activity:
+            embed.add_field(name="Game Activity", value=user.activity.name)
         embed.add_field(name="Created", value=user.created_at.strftime(
             '%A - %B - %e - %g at %H:%M'))
         embed.set_thumbnail(url=user.avatar_url)
