@@ -18,9 +18,9 @@ class GuildY:
         self.vip: bool = False
 
         # Channels
-        self.log_channel: str = ""
-        self.greet_channel: str = ""
-        self.count_category: str = ""
+        self.log_channel: str = "0"
+        self.greet_channel: str = "0"
+        self.count_category: str = "0"
 
         # Guild
         self.name = guild.name
@@ -69,7 +69,7 @@ class GuildY:
 
         # Status
         self.setup = set['Setup']
-        # self.vip = set["Vip"]
+        self.vip = set["Vip"]
 
         # Channels
         self.log_channel = set['LogChannel']

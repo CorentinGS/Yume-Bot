@@ -1,9 +1,8 @@
 motor==2.0.0
 discord.py
 romme==0.1.0
-discord==0.0.2
+discord
 beautifulsoup4==4.6.3
-discord==0.0.2
 Flask==1.0.2
 wikipedia==1.4.0
 python-dateutil

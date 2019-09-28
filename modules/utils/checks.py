@@ -46,6 +46,17 @@ async def is_admin_check(ctx):
         if str(role.id) in set['Admins']:
             return True
 
+async def is_immune(message):
+    set = await Settings().get_server_settings(str(message.guild.id))
+    auth = message.author
+    if message.guild is None:
+        return False
+    if auth == message.guild.owner:
+        return True
+    for role in auth.roles:
+        if str(role.id) in set['Admins']:
+            return True
+
 
 def is_admin():
     return commands.check(is_admin_check)

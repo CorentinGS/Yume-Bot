@@ -18,6 +18,10 @@ class Security(commands.Cog):
 
 # TODO: Faire les commandes de sécurité...
 
+    @commands.command()
+    @checks.is_admin()
+    async def lock(self, ctx):
+        return
 
 def setup(bot):
     bot.add_cog(Security(bot))

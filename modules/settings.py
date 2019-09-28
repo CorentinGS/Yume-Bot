@@ -10,7 +10,6 @@ from modules.utils.setup import GuildY
 
 
 class Set(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -143,13 +142,15 @@ class Set(commands.Cog):
                 category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
                 guild.count_category = str(category.id)
 
-                await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite, category=category)
+                await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite,
+                                                     category=category)
                 bots = []
                 for user in ctx.guild.members:
                     if user.bot is True:
                         bots.append(user)
                 await ctx.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
-                await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}', overwrites=overwrite, category=category)
+                await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}',
+                                                     overwrites=overwrite, category=category)
 
             elif reaction.emoji == '🚫':
                 guild.members_count = False
@@ -217,6 +218,24 @@ class Set(commands.Cog):
         await guildy.store()
 
         await ctx.send("Done")
+
+    @setting.command()
+    @commands.guild_only()
+    @checks.is_admin()
+    async def automod(self, ctx, value: bool = True):
+        guild = GuildY(ctx.guild)
+        await guild.get()
+
+        glob = await Settings().get_glob_settings()
+
+        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP'] or ctx.author.id in glob['VIP']:
+            guild.vip = True
+            guild.automod = value
+            await guild.store()
+            await ctx.send("Settings updated", delete_after=3)
+        else:
+            await ctx.send("You're not VIP. **Our automod system is VIP only.** "
+                           "If you want to become VIP, feel free to **join our support discord** and ask to become VIP.")
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):

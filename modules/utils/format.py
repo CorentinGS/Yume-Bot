@@ -95,20 +95,22 @@ class Embeds:
 
         em.add_field(name="Greet", value=greet)
 
-        try:
-            greetchan = discord.utils.get(ctx.guild.text_channels, id=int(greetchannel))
-            em.add_field(name="Greet Channel", value=greetchan.mention)
-        except discord.NotFound:
+
+        greetchan = discord.utils.get(ctx.guild.text_channels, id=int(greetchannel))
+        if not isinstance(greetchan, discord.TextChannel):
             em.add_field(name="Greet Channel", value="None")
+        else:
+            em.add_field(name="Greet Channel", value=greetchan.mention)
+
 
         em.add_field(name="Logging", value=logging)
 
-        try:
-            logchan = discord.utils.get(ctx.guild.text_channels, id=int(logchannel))
-            em.add_field(name="Log Channel", value=logchan.mention)
 
-        except discord.NotFound:
+        logchan = discord.utils.get(ctx.guild.text_channels, id=int(logchannel))
+        if not isinstance(logchan, discord.TextChannel):
             em.add_field(name="Log Channel", value="None")
+        else:
+            em.add_field(name="Log Channel", value=logchan.mention)
 
         em.add_field(name="Blacklist", value=blacklist)
         em.add_field(name='Automod', value=automod)

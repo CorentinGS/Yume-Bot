@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import discord
 from discord.ext import commands
 
+import modules.utils.checks as check
 from modules.sanction import Sanction
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
@@ -40,6 +41,9 @@ class Automod(commands.Cog):
 
         settings = await Settings().get_server_settings(str(guild.id))
 
+        if await self.immune(message):
+            return
+
         if len(mentions) >= self.mention_limit:
             try:
                 await message.delete()
@@ -63,11 +67,17 @@ class Automod(commands.Cog):
         else:
             return False
 
+    async def immune(self, message):
+        return await check.is_immune(message)
+
     async def check_invite(self, message):
         guild = message.guild
         author = message.author
 
         settings = await Settings().get_server_settings(str(guild.id))
+
+        if await self.immune(message):
+            return
 
         if "discord.gg/" in message.content:
             try:
@@ -93,18 +103,14 @@ class Automod(commands.Cog):
             return False
 
     @staticmethod
-    async def raid_check():
+    async def spam_check(message):
 
-        mode = "soft"
         m_max = 3
 
         guild = message.guild
         author = message.author
 
         settings = await Settings().get_server_settings(str(guild.id))
-
-        if not message.author.joined_at > datetime.utcnow() + timedelta(minutes=-360):
-            mode = "strict"
 
         m_count = 0
         async for m in message.channel.history(after=(datetime.utcnow() + timedelta(seconds=-10))):
@@ -120,15 +126,6 @@ class Automod(commands.Cog):
                 return True
             else:
                 return False
-
-    '''
-    async def auto_sanction(self, message):
-
-        sanctions = await Settings().get_sanction_settings_user(str(author.id), str(guild.id))
-        count = len(sanctions)
-
-        # TODO: Automatiser les sanctions selon les comportements
-    '''
 
     @commands.Cog.listener()
     async def on_message(self, message):
