@@ -38,7 +38,7 @@ class DiscordBotsOrgAPI(commands.Cog):
             if chan.id == int(self.debug):
                 channel = chan
         if isinstance(user, discord.User):
-            await channel.send(f"{user.name}#{user.disciminator} has voted")
+            await channel.send(f"{user.name}#{user.discriminator} has voted")
         else:
             await channel.send(f"{data['user']} has voted\n `{data}`")
 
