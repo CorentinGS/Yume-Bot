@@ -2,6 +2,7 @@ import asyncio
 import json
 
 import dbl
+import discord
 from discord.ext import commands, tasks
 
 with open('./config/token.json', 'r') as cjson:
@@ -36,7 +37,10 @@ class DiscordBotsOrgAPI(commands.Cog):
         for chan in server.channels:
             if chan.id == int(self.debug):
                 channel = chan
-        await channel.send(f"{user} has voted")
+        if isinstance(user, discord.User):
+            await channel.send(f"{user.name}#{user.disciminator} has voted")
+        else:
+            await channel.send(f"{data['user']} has voted\n `{data}`")
 
 
 def setup(bot):
