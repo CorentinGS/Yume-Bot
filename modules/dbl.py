@@ -19,8 +19,6 @@ class Dbl(commands.Cog):
 
         self.dblpy = dbl.DBLClient(self.bot, self.token)
 
-        self.headers = {'Authorization': self.token, 'Content-Type': 'application/json'}
-
     @tasks.loop(minutes=30.0)
     async def update_stats(self):
         try:
