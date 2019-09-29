@@ -49,7 +49,7 @@ class Dbl(commands.Cog):
         print('Up votes')
         url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
         data = requests.get(url)
-        print(data)
+        print(data.json)
 
         user = await self.bot.fetch_user(data["userid"])
         server = self.bot.get_guild(int(self.guild))
