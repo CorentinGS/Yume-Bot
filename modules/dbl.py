@@ -20,7 +20,7 @@ class DiscordBotsOrgAPI(commands.Cog):
         self.debug = config['debug']
 
         self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/webhook', webhook_auth=self.web,
-                                   webhook_port=27018)
+                                   webhook_port=27017)
 
     @tasks.loop(minutes=30.0)
     async def update_stats(self):
