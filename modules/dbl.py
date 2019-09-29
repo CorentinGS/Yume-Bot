@@ -2,6 +2,7 @@ import json
 
 import dbl
 import discord
+import requests
 from discord.ext import commands, tasks
 
 with open('./config/token.json', 'r') as cjson:
@@ -15,12 +16,10 @@ class DiscordBotsOrgAPI(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.token = token['dbl']
-        self.web = token['webhook_dbl']
         self.guild = config['support']
         self.debug = config['debug']
 
-        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='webhook', webhook_auth=self.web,
-                                   webhook_port=27017)
+        self.dblpy = dbl.DBLClient(self.bot, self.token)
 
     @tasks.loop(minutes=30.0)
     async def update_stats(self):
@@ -29,10 +28,13 @@ class DiscordBotsOrgAPI(commands.Cog):
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
-    @commands.Cog.listener()
-    async def on_dbl_vote(self, data):
+    @tasks.loop(hours=12)
+    async def dbl_vote(self):
         print('Received an upvote')
-        user = await self.bot.fetch_user(data["user"])
+        url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
+        data = requests.get(url)
+
+        user = await self.bot.fetch_user(data["userid"])
         server = self.bot.get_guild(int(self.guild))
         for chan in server.channels:
             if chan.id == int(self.debug):
@@ -42,10 +44,21 @@ class DiscordBotsOrgAPI(commands.Cog):
         else:
             await channel.send(f"{data['user']} has voted\n `{data}`")
 
-    @commands.Cog.listener()
-    async def on_dbl_test(self, data):
-        print('Received a test upvote')
+    @commands.command()
+    async def up_vote(self):
+        print('Up votes')
+        url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
+        data = requests.get(url)
 
+        user = await self.bot.fetch_user(data["userid"])
+        server = self.bot.get_guild(int(self.guild))
+        for chan in server.channels:
+            if chan.id == int(self.debug):
+                channel = chan
+        if isinstance(user, discord.User):
+            await channel.send(f"{user.name}#{user.discriminator} has voted")
+        else:
+            await channel.send(f"{data['user']} has voted\n `{data}`")
 
 def setup(bot):
     bot.add_cog(DiscordBotsOrgAPI(bot))
