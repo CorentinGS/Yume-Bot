@@ -19,7 +19,7 @@ class DiscordBotsOrgAPI(commands.Cog):
         self.guild = config['support']
         self.debug = config['debug']
 
-        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/webhook', webhook_auth=self.web,
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='webhook', webhook_auth=self.web,
                                    webhook_port=27017)
 
     @tasks.loop(minutes=30.0)
