@@ -53,7 +53,7 @@ class Embeds:
         if sanction is not None:
             em.set_footer(text=f'Sanction ID: {sanction}')
 
-        if mod is discord.Member or discord.User:
+        if isinstance(mod, (discord.Member, discord.User)):
             msg = f"**Guilty** : {user.name}#{user.discriminator}<{user.id}>\n" \
                   f"**Moderator** : {mod.name}#{mod.discriminator}\n"
         else:

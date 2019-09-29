@@ -108,8 +108,8 @@ class Moderation(commands.Cog):
             set['Mute'] = []
 
         if user.id in set['Mute']:
-            return await ctx.send('This user is already muted, '
-                                  'use {}unmute to umute him.'.format(self.bot.config['prefix']))
+            return await ctx.send('This user is already muted, you should '
+                                  'unmute him first.')
 
         set['Mute'].append(user.id)
         await Settings().set_server_settings(str(guild.id), set)
