@@ -1,4 +1,3 @@
-import asyncio
 import json
 
 import dbl
@@ -16,10 +15,12 @@ class DiscordBotsOrgAPI(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.token = token['dbl']
+        self.web = token['webhook_dbl']
         self.guild = config['support']
         self.debug = config['debug']
 
-        self.dblpy = dbl.DBLClient(self.bot, self.token)
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/webhook', webhook_auth=self.web,
+                                   webhook_port=27018)
 
     @tasks.loop(minutes=30.0)
     async def update_stats(self):
@@ -27,7 +28,6 @@ class DiscordBotsOrgAPI(commands.Cog):
             await self.dblpy.post_guild_count()
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
-        await asyncio.sleep(1800)
 
     @commands.Cog.listener()
     async def on_dbl_vote(self, data):
@@ -41,6 +41,10 @@ class DiscordBotsOrgAPI(commands.Cog):
             await channel.send(f"{user.name}#{user.discriminator} has voted")
         else:
             await channel.send(f"{data['user']} has voted\n `{data}`")
+
+    @commands.Cog.listener()
+    async def on_dbl_test(self, data):
+        print('Received a test upvote')
 
 
 def setup(bot):
