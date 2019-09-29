@@ -187,23 +187,6 @@ class Set(commands.Cog):
         await guild.store()
         await ctx.send("Updating...", delete_after=3)
 
-    @setting.command(hidden=True)
-    @checks.is_owner()
-    async def update(self, ctx):
-        for guild in self.bot.guilds:
-            guildy = GuildY(guild)
-            await guildy.store()
-            try:
-                await guild.owner.send("Hey ! I'm __YumeBot__.\n"
-                                       "We've made some **big updates** recently !\n"
-                                       "In order to be able to benefit from the latest updates, "
-                                       f"we ask you to place your to make the command `--setting` in any lounge of your guild **{guild.name}**"
-                                       "Thank you for your understanding.\n\n"
-                                       "If you need help, do not hesitate to contact us on our discord: **https://discord.gg/3BKgvpp**\n"
-                                       "__The YumeNetwork__")
-            except discord.HTTPException:
-                return
-
     @commands.command()
     @checks.is_owner()
     async def setting_debug(self, ctx):
@@ -248,6 +231,8 @@ class Set(commands.Cog):
                 guildy.mods.append(str(role.id))
 
         await guildy.store()
+        if guild.id == '264445053596991498':
+            return
         try:
             await guild.owner.send(f"Thank you for adding the YumeBot to your guild!\n"
                                    f"In order to configure the YumeBot and to be able to use it fully"

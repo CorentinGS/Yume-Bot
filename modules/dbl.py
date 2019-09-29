@@ -31,7 +31,7 @@ class Dbl(commands.Cog):
     @tasks.loop(hours=12.0)
     async def dbl_vote(self):
         print('Received an upvote')
-        url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
+        url = f"https://discordbots.org/api/bots/456504213262827524/check"
         data = requests.get(url)
 
         user = await self.bot.fetch_user(data["userid"])
@@ -47,10 +47,11 @@ class Dbl(commands.Cog):
     @commands.command()
     async def votes(self, ctx):
         print('Up votes')
-        url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
+        url = f"https://discordbots.org/api/bots/456504213262827524/check"
         data = requests.get(url)
         print(data.json)
 
+        '''
         user = await self.bot.fetch_user(data["userid"])
         server = self.bot.get_guild(int(self.guild))
         for chan in server.channels:
@@ -60,6 +61,7 @@ class Dbl(commands.Cog):
             await channel.send(f"{user.name}#{user.discriminator} has voted")
         else:
             await channel.send(f"{data['user']} has voted\n `{data}`")
-
+        
+        '''
 def setup(bot):
     bot.add_cog(Dbl(bot))

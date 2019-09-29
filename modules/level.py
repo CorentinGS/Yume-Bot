@@ -112,6 +112,9 @@ class Level(commands.Cog):
         if user.bot is True or message.guild is None:
             return
 
+        if message.guild.id == '264445053596991498':
+            return
+
         set = await Settings().get_user_settings(str(message.guild.id))
         toto = await Settings().get_server_settings(str(message.guild.id))
 
@@ -149,6 +152,7 @@ class Level(commands.Cog):
                         break
                     except discord.InvalidArgument:
                         break
+
             try:
                 await message.channel.send("{} is now level {}.".format(user.name, dic['level']), delete_after=3)
             except discord.Forbidden:
