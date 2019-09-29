@@ -1,8 +1,6 @@
 import json
 
 import dbl
-import discord
-import requests
 from discord.ext import commands, tasks
 
 with open('./config/token.json', 'r') as cjson:
@@ -21,6 +19,8 @@ class Dbl(commands.Cog):
 
         self.dblpy = dbl.DBLClient(self.bot, self.token)
 
+        self.headers = {'Authorization': self.token, 'Content-Type': 'application/json'}
+
     @tasks.loop(minutes=30.0)
     async def update_stats(self):
         try:
@@ -28,40 +28,6 @@ class Dbl(commands.Cog):
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
-    @tasks.loop(hours=12.0)
-    async def dbl_vote(self):
-        print('Received an upvote')
-        url = f"https://discordbots.org/api/bots/456504213262827524/check"
-        data = requests.get(url)
 
-        user = await self.bot.fetch_user(data["userid"])
-        server = self.bot.get_guild(int(self.guild))
-        for chan in server.channels:
-            if chan.id == int(self.debug):
-                channel = chan
-        if isinstance(user, discord.User):
-            await channel.send(f"{user.name}#{user.discriminator} has voted")
-        else:
-            await channel.send(f"{data['user']} has voted\n `{data}`")
-
-    @commands.command()
-    async def votes(self, ctx):
-        print('Up votes')
-        url = f"https://discordbots.org/api/bots/456504213262827524/check"
-        data = requests.get(url)
-        print(data.json)
-
-        '''
-        user = await self.bot.fetch_user(data["userid"])
-        server = self.bot.get_guild(int(self.guild))
-        for chan in server.channels:
-            if chan.id == int(self.debug):
-                channel = chan
-        if isinstance(user, discord.User):
-            await channel.send(f"{user.name}#{user.discriminator} has voted")
-        else:
-            await channel.send(f"{data['user']} has voted\n `{data}`")
-        
-        '''
 def setup(bot):
     bot.add_cog(Dbl(bot))
