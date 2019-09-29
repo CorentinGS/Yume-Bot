@@ -39,6 +39,7 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 
+
 class YumeBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=get_prefix, description=description,
@@ -52,6 +53,8 @@ class YumeBot(commands.Bot):
         self.guild = config['support']
         self.debug = config['debug']
         self.remove_command("help")
+
+
 
     async def on_ready(self):
         if not self.ready:

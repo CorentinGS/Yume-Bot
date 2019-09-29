@@ -137,8 +137,6 @@ class Moderation(commands.Cog):
 
         if user.id in set['Mute']:
             await ctx.invoke(self.unmute, user, True)
-        else:
-            return
 
     @mute.error
     async def mute_error(self, ctx, error):
