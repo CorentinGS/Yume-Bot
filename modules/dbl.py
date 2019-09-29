@@ -12,7 +12,7 @@ with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
 
 
-class DiscordBotsOrgAPI(commands.Cog):
+class Dbl(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.token = token['dbl']
@@ -28,7 +28,7 @@ class DiscordBotsOrgAPI(commands.Cog):
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
-    @tasks.loop(hours=12)
+    @tasks.loop(hours=12.0)
     async def dbl_vote(self):
         print('Received an upvote')
         url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
@@ -45,7 +45,7 @@ class DiscordBotsOrgAPI(commands.Cog):
             await channel.send(f"{data['user']} has voted\n `{data}`")
 
     @commands.command()
-    async def up_vote(self):
+    async def votes(self, ctx):
         print('Up votes')
         url = f"https://discordbots.org/api/bots/{self.bot.user.id}/check"
         data = requests.get(url)
@@ -61,4 +61,4 @@ class DiscordBotsOrgAPI(commands.Cog):
             await channel.send(f"{data['user']} has voted\n `{data}`")
 
 def setup(bot):
-    bot.add_cog(DiscordBotsOrgAPI(bot))
+    bot.add_cog(Dbl(bot))
