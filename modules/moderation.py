@@ -113,9 +113,12 @@ class Moderation(commands.Cog):
 
         set['Mute'].append(user.id)
         await Settings().set_server_settings(str(guild.id), set)
-
-        for chan in ctx.guild.text_channels:
-            await chan.set_permissions(user, send_messages=False)
+        role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not role:
+            role = await ctx.guild.create_role(name="Muted", permissions = discord.Permissions.none(), reason="Mute Role")
+            for chan in ctx.guild.text_channels:
+                await chan.set_permissions(role, send_messages=False)
+        await user.add_roles(role)
 
         id = await Sanction().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'mute', id, duration)
@@ -154,14 +157,19 @@ class Moderation(commands.Cog):
         else:
             mod = "auto"
 
-        for chan in ctx.guild.text_channels:
-            await chan.set_permissions(user, overwrite=None)
-
         if set['Mute']:
             if user.id not in set['Mute']:
                 return
             set['Mute'].remove(user.id)
         await Settings().set_server_settings(str(guild.id), set)
+
+        role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not role:
+            return
+        try:
+            await user.remove_roles(role)
+        except discord.HTTPException:
+            return
 
         em = await Embeds().format_mod_embed(ctx, user, mod, None, 'unmute')
         if set['logging'] is True:
