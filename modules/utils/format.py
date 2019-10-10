@@ -35,6 +35,14 @@ class Embeds:
         return em
 
     @staticmethod
+    async def format_social_embed(text, act: str, url, message):
+        em = discord.Embed(color=discord.Colour.gold(), timestamp=message.created_at)
+        em.set_author(name=f"{text}")
+        em.set_footer(text=f'{act}')
+        em.set_image(url = url)
+        return em
+
+    @staticmethod
     async def format_mod_embed(ctx, user, mod, reason, command, sanction=None, duration=None):
 
         if command == "ban" or command == "hackban":
