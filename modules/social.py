@@ -19,7 +19,8 @@ class Social(commands.Cog):
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=hug")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} hugs {user}", "hugs", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} hugs {user}", "hugs", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -29,7 +30,8 @@ class Social(commands.Cog):
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=pat")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} pats {user}", "pats", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} pats {user}", "pats", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -39,7 +41,8 @@ class Social(commands.Cog):
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=kiss")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} kisses {user}", "kiss", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} kisses {user}", "kiss", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -49,7 +52,8 @@ class Social(commands.Cog):
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=lick")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} licks {user}", "licks", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} licks {user}", "licks", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -59,7 +63,8 @@ class Social(commands.Cog):
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=slap")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} slaps {user}", "slaps", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} slaps {user}", "slaps", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -67,7 +72,8 @@ class Social(commands.Cog):
         await ctx.message.delete()
         r = requests.get("https://rra.ram.moe/i/r?type=cry")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} cry", "cry", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} cry", "cry", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -75,7 +81,8 @@ class Social(commands.Cog):
         await ctx.message.delete()
         r = requests.get("https://rra.ram.moe/i/r?type=lewd")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} is lewd", "lewd", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} is lewd", "lewd", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
     @commands.command()
@@ -85,7 +92,8 @@ class Social(commands.Cog):
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=slap")
         r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} slaps {user}", "slaps", f"https://rra.ram.moe{r['path']}", ctx.message)
+        em = await Embeds.format_social_embed(f"{ctx.author} slaps {user}", "slaps", f"https://rra.ram.moe{r['path']}",
+                                              ctx.message)
         await ctx.send(embed=em)
 
 

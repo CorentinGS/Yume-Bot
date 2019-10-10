@@ -39,7 +39,7 @@ class Embeds:
         em = discord.Embed(color=discord.Colour.gold(), timestamp=message.created_at)
         em.set_author(name=f"{text}")
         em.set_footer(text=f'{act}')
-        em.set_image(url = url)
+        em.set_image(url=url)
         return em
 
     @staticmethod
@@ -103,16 +103,13 @@ class Embeds:
 
         em.add_field(name="Greet", value=greet)
 
-
         greetchan = discord.utils.get(ctx.guild.text_channels, id=int(greetchannel))
         if not isinstance(greetchan, discord.TextChannel):
             em.add_field(name="Greet Channel", value="None")
         else:
             em.add_field(name="Greet Channel", value=greetchan.mention)
 
-
         em.add_field(name="Logging", value=logging)
-
 
         logchan = discord.utils.get(ctx.guild.text_channels, id=int(logchannel))
         if not isinstance(logchan, discord.TextChannel):
