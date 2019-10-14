@@ -59,8 +59,6 @@ We encourage public contributions! Please review [CONTRIBUTING.md](https://githu
 
 ## License
 
-Copyright (c) 2017 Embedded Artistry LLC
-
 This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
 
 **[Back to top](#table-of-contents)**
