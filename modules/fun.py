@@ -97,6 +97,14 @@ class Fun(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    async def linux(self, ctx):
+        answer = random.choice(lists.linux)
+        embed = discord.Embed(colour=discord.Colour.green())
+        embed.description = answer
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
     async def number(self, ctx, number: int = None):
         if not number:
             number = random.randrange(1, 1789)
