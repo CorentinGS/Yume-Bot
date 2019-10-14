@@ -15,7 +15,7 @@ class Check(commands.Cog):
 
     @staticmethod
     async def check(ctx, user: discord.Member):
-        if ctx.message.author.top_role > user.top_role:
+        if ctx.message.author.top_role > user.top_role or ctx.author is ctx.guild.owner:
             return True
         else:
             await ctx.send("You can't do that because you don't have enough permissions...")
@@ -43,6 +43,7 @@ class Moderation(commands.Cog):
             return
 
     @commands.command()
+    @commands.bot_has_permissions(manage_channels=True)
     @checks.is_admin()
     async def slowmode(self, ctx, *, value: int = None):
         if not value or value == 0:
@@ -77,6 +78,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=em)
 
     @commands.command(aliases=["chut", "tg"])
+    @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def mute(self, ctx, user: discord.Member, duration: str, *, reason: ModReason = None):
 
@@ -111,8 +113,6 @@ class Moderation(commands.Cog):
             return await ctx.send('This user is already muted, you should '
                                   'unmute him first.')
 
-        set['Mute'].append(user.id)
-        await Settings().set_server_settings(str(guild.id), set)
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
             role = await ctx.guild.create_role(name="Muted", permissions = discord.Permissions.none(), reason="Mute Role")
@@ -120,8 +120,13 @@ class Moderation(commands.Cog):
                 await chan.set_permissions(role, send_messages=False)
         await user.add_roles(role)
 
+        set['Mute'].append(user.id)
+        await Settings().set_server_settings(str(guild.id), set)
+
+
         id = await Sanction().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'mute', id, duration)
+
 
         if set['logging'] is True:
             if 'LogChannel' in set:
@@ -141,12 +146,8 @@ class Moderation(commands.Cog):
         if user.id in set['Mute']:
             await ctx.invoke(self.unmute, user, True)
 
-    @mute.error
-    async def mute_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(f'Missing an argument.\n`{error}`')
-
     @commands.command()
+    @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member, auto: bool = False):
         guild = ctx.message.guild
@@ -183,6 +184,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=em)
 
     @commands.command(aliases=['out'])
+    @commands.bot_has_permissions(kick_members=True)
     @checks.is_mod()
     async def kick(self, ctx, user: discord.Member, *, reason: ModReason = None):
         perm = await Check().check(ctx, user)

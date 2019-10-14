@@ -24,7 +24,7 @@ async def is_mod_check(ctx):
     auth = ctx.message.author
     if ctx.guild is None:
         return
-    if auth == ctx.message.guild.owner:
+    if auth == ctx.guild.owner:
         return True
     for role in auth.roles:
         if str(role.id) in set['Mods']:

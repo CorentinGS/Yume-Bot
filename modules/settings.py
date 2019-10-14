@@ -18,14 +18,14 @@ class Set(commands.Cog):
 
     @commands.group()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def setting(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get)
 
     @setting.command()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def get(self, ctx):
         await ctx.message.delete()
         guild = GuildY(ctx.message.guild)
@@ -42,7 +42,7 @@ class Set(commands.Cog):
 
     @setting.command()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def reset(self, ctx):
         guild = GuildY(ctx.message.guild)
         await guild.store()
@@ -50,7 +50,7 @@ class Set(commands.Cog):
 
     @setting.command()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def setup(self, ctx):
 
         # Get guild param
@@ -173,7 +173,7 @@ class Set(commands.Cog):
 
     @setting.command()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_guild=True)
     async def role(self, ctx, value, role: discord.Role = None):
         guild = GuildY(ctx.message.guild)
         await guild.get()
