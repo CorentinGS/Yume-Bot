@@ -137,7 +137,8 @@ class Embeds:
                                                   "**--h admin** | Admin Commands\n"
                                                   "**--h level** | Level Commands\n"
                                                   "**--h settings** | Settings Commands\n"
-                                                  "**--h about** | About Commands")
+                                                  "**--h about** | About Commands\n"
+                                                  "**--h social** | Social Commands")
 
         em.add_field(name="Links", value="[Documentation](https://yumenetwork.gitbook.io/yumebot/) | [Support]("
                                          "https://invite.gg/yumenetwork) | [Sources]("

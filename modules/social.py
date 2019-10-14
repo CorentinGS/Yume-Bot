@@ -85,17 +85,5 @@ class Social(commands.Cog):
                                               ctx.message)
         await ctx.send(embed=em)
 
-    @commands.command()
-    async def slap(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
-        if not user:
-            user = ctx.author
-        r = requests.get("https://rra.ram.moe/i/r?type=slap")
-        r = r.json()
-        em = await Embeds.format_social_embed(f"{ctx.author} slaps {user}", "slaps", f"https://rra.ram.moe{r['path']}",
-                                              ctx.message)
-        await ctx.send(embed=em)
-
-
 def setup(bot):
     bot.add_cog(Social(bot))

@@ -73,6 +73,11 @@ class Help(commands.Cog):
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Fun", liste)
         await ctx.send(embed=embed)
 
+    @help.command()
+    async def social(self, ctx):
+        liste = "`hug`, `pat`, `kiss`, `lewd`, `lick`, `slap`, `cry`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "social", liste)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Help(bot))
