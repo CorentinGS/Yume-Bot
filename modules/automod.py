@@ -67,7 +67,8 @@ class Automod(commands.Cog):
         else:
             return False
 
-    async def immune(self, message):
+    @staticmethod
+    async def immune(message):
         return await check.is_immune(message)
 
     async def check_invite(self, message):
