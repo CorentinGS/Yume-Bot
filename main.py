@@ -27,17 +27,8 @@ def get_prefix(bot, message):
 
 description = "Yume Bot ! Peace & Dream <3"
 
-'''
-log = logging.getLogger(__name__)
-log.setLevel(logging.ERROR)
-'''
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
-
 
 
 class YumeBot(commands.Bot):
@@ -53,8 +44,6 @@ class YumeBot(commands.Bot):
         self.guild = config['support']
         self.debug = config['debug']
         self.remove_command("help")
-
-
 
     async def on_ready(self):
         if not self.ready:
