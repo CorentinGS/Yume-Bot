@@ -19,18 +19,20 @@ class Dbl(commands.Cog):
 
         self.dblpy = dbl.DBLClient(self.bot, self.token)
 
-    @tasks.loop(minutes=30.0)
+    @tasks.loop(hours=12.0)
     async def update_stats(self):
         try:
             await self.dblpy.post_guild_count()
+            print('DBL updated')
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
     @commands.command()
     @commands.is_owner()
-    async def dblup(self):
+    async def dblup(self, ctx):
         try:
             await self.dblpy.post_guild_count()
+            print('DBL updated')
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 

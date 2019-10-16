@@ -10,6 +10,7 @@ class Settings:
 
         self.glob = self.db.glob
         self.servers = self.db.servers
+        self.user = self.db.user
         self.keys = self.db.keys
 
     @property
@@ -30,3 +31,10 @@ class Settings:
     def get_key_settings(self, name):
         doc = self.keys.find_one({"_id": name})
         return doc or {}
+
+    async def get_user_settings(self, id):
+        doc = await self.user.find_one({"_id": id})
+        return doc or {}
+
+    async def set_user_settings(self, id, settings):
+        return await self.user.replace_one({"_id": id}, settings, True)

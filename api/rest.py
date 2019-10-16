@@ -53,14 +53,21 @@ class Guild(Resource):
     @staticmethod
     def put(id):
         parser = reqparse.RequestParser()
-        parser.add_argument('Greet')
-        parser.add_argument('bl')
-        parser.add_argument('logging')
-        parser.add_argument('GreetChannel')
-        parser.add_argument('LogChannel')
-        parser.add_argument('Setup')
-        parser.add_argument('Mods')
-        parser.add_argument('Admins')
+
+        # bool
+
+        parser.add_argument('Greet') # | Message de bienvenue
+        parser.add_argument('bl') # | Activation de la Blacklsit
+        parser.add_argument('logging') # | Activation du logging
+        parser.add_argument("automod") # | Activation de l'automodération
+
+        # Integer
+        parser.add_argument('GreetChannel') # | Salon de bienvenue
+        parser.add_argument('LogChannel') # | Salon de logging
+
+        # List
+        parser.add_argument('Mods') # | Rôles de modération
+        parser.add_argument('Admins') # | Rôles d'administration
 
         args = parser.parse_args()
 
@@ -68,17 +75,32 @@ class Guild(Resource):
         set["Greet"] = args['Greet']
         set['bl'] = args['bl']
         set['logging'] = args['logging']
+        set['automod'] = args['automod']
         set['GreetChannel'] = args['GreetChannel']
         set['LogChannel'] = args['LogChannel']
-        set['Admins'] = args["Admins"]
-        set['Mods'] = args['Mods']
-        set['Setup'] = args['Setup']
+        for admin in args["Admins"]:
+            set['Admins'].append(admin)
+        for mod in args["Mods"]:
+            set['Mods'].append(mod)
         db().set_server_settings(str(id), set)
 
         return set, 201
 
 
+class Level(Resource):
+
+    @auth.login_required
+    def get(self, id):
+
+        if not db().get_server_settings(str(id)):
+            return 'Guild not found', 404
+        else:
+            set = db().get_server_settings(str(id))
+            return set, 200
+
+
 api.add_resource(Guild, "/guild/<string:id>")
 api.add_resource(Global, "/global")
+api.add_resource(Level, "/level/<string:id>")
 
 app.run(host='0.0.0.0', port=4437, debug=True)
