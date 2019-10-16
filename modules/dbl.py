@@ -26,6 +26,13 @@ class Dbl(commands.Cog):
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
+    @commands.command()
+    @commands.is_owner()
+    async def dblup(self):
+        try:
+            await self.dblpy.post_guild_count()
+        except Exception as e:
+            print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
 def setup(bot):
     bot.add_cog(Dbl(bot))

@@ -38,7 +38,7 @@ class Profiles(commands.Cog):
 
     @marriage.command()
     @commands.guild_only()
-    async def ask(self, ctx):
+    async def ask(self, ctx, user: discord.Member):
         return
 
 def setup(bot):
