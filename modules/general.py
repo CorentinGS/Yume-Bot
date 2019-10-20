@@ -2,7 +2,6 @@ import json
 
 import aiohttp
 import discord
-from aiocache import cached, SimpleMemoryCache
 from discord.ext import commands
 
 from modules.utils.db import Settings
@@ -116,7 +115,6 @@ class General(commands.Cog):
                 await ctx.send('Url :{}'.format(msg.jump_url))
 
     @commands.command()
-    @cached(ttl=3600, cache=SimpleMemoryCache)
     @commands.bot_has_permissions(embed_links=True)
     async def pokemon(self, ctx, name_or_id):
         """Show pokemon info"""

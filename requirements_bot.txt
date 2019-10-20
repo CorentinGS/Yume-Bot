@@ -7,4 +7,3 @@ Flask==1.1.1
 wikipedia==1.4.0
 python-dateutil
 dblpy
-aiocache
