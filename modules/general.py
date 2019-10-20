@@ -121,6 +121,8 @@ class General(commands.Cog):
     async def pokemon(self, ctx, name_or_id):
         """Show pokemon info"""
 
+        # Sources : https://github.com/Jintaku/Jintaku-Cogs-V3/blob/master/pokemon/pokemon.py
+
         try:
             headers = {"content-type": "application/json"}
 
