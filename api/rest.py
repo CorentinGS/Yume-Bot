@@ -54,20 +54,19 @@ class Guild(Resource):
     def put(id):
         parser = reqparse.RequestParser()
 
-        # bool
-
-        parser.add_argument('Greet') # | Message de bienvenue
-        parser.add_argument('bl') # | Activation de la Blacklsit
-        parser.add_argument('logging') # | Activation du logging
-        parser.add_argument("automod") # | Activation de l'automodération
+        # Bool
+        parser.add_argument('Greet')  # | Message de bienvenue
+        parser.add_argument('bl')  # | Activation de la Blacklsit
+        parser.add_argument('logging')  # | Activation du logging
+        parser.add_argument("automod")  # | Activation de l'automodération
 
         # Integer
-        parser.add_argument('GreetChannel') # | Salon de bienvenue
-        parser.add_argument('LogChannel') # | Salon de logging
+        parser.add_argument('GreetChannel')  # | Salon de bienvenue
+        parser.add_argument('LogChannel')  # | Salon de logging
 
         # List
-        parser.add_argument('Mods') # | Rôles de modération
-        parser.add_argument('Admins') # | Rôles d'administration
+        parser.add_argument('Mods')  # | Rôles de modération
+        parser.add_argument('Admins')  # | Rôles d'administration
 
         args = parser.parse_args()
 
