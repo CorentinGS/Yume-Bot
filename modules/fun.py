@@ -1,5 +1,4 @@
 import datetime
-import json
 import random
 import urllib.parse
 
@@ -8,7 +7,7 @@ import requests
 from discord.ext import commands
 from romme import RepublicanDate
 
-from modules.utils import http, lists
+from modules.utils import lists
 
 
 class Fun(commands.Cog):
@@ -17,14 +16,6 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-
-    @staticmethod
-    async def randomimageapi(ctx, url, endpoint):
-        try:
-            r = await http.get(url, res_method="json", no_cache=True)
-        except json.JSONDecodeError:
-            return await ctx.send("Couldn't find anything from the API")
-        await ctx.send(r[endpoint])
 
     @commands.command(aliases=['8ball'])
     @commands.guild_only()
@@ -46,12 +37,16 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def cat(self, ctx):
         await ctx.message.delete()
-        await self.randomimageapi(ctx, 'https://nekos.life/api/v2/img/meow', 'url')
+        r = requests.get('https://nekos.life/api/v2/img/meow')
+        r = r.json()
+        await ctx.send(r["url"])
 
     @commands.command()
     async def dog(self, ctx):
         await ctx.message.delete()
-        await self.randomimageapi(ctx, 'https://random.dog/woof.json', 'url')
+        r = requests.get('https://random.dog/woof.json')
+        r = r.json()
+        await ctx.send(r["url"])
 
     @commands.command()
     @commands.guild_only()
@@ -196,7 +191,8 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def urban(self, ctx, *, search: str):
         async with ctx.channel.typing():
-            url = await http.get(f'https://api.urbandictionary.com/v0/define?term={search}', res_method="json")
+            url = requests.get(f'https://api.urbandictionary.com/v0/define?term={search}')
+            url = url.json()
 
             if url is None:
                 return await ctx.send("The API is broken...")

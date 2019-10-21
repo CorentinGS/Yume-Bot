@@ -14,7 +14,6 @@ OWNER = config["owner_id"]
 
 
 class General(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -126,7 +125,8 @@ class General(commands.Cog):
 
             # Queries pokeapi for Name, ID and evolution_chain
             async with aiohttp.ClientSession() as session:
-                async with session.get("https://pokeapi.co/api/v2/pokemon-species/" + name_or_id.lower(), headers=headers) as r1:
+                async with session.get("https://pokeapi.co/api/v2/pokemon-species/" + name_or_id.lower(),
+                                       headers=headers) as r1:
                     response1 = await r1.json()
 
         except:
@@ -141,7 +141,8 @@ class General(commands.Cog):
 
             # Queries pokeapi for Height, Weight, Sprite
             async with aiohttp.ClientSession() as session:
-                async with session.get("https://pokeapi.co/api/v2/pokemon/" + name_or_id.lower(), headers=headers) as r2:
+                async with session.get("https://pokeapi.co/api/v2/pokemon/" + name_or_id.lower(),
+                                       headers=headers) as r2:
                     response2 = await r2.json()
 
             # Queries pokeapi for Evolutions
@@ -181,6 +182,7 @@ class General(commands.Cog):
             embed.add_field(name="Weight", value=weight)
             embed.set_footer(text="Powered by Pokeapi")
             await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(General(bot))
