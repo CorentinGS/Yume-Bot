@@ -8,6 +8,7 @@ from modules.sanction import Sanction
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 from modules.utils.format import Mod
+from modules.utils.setup import GuildY
 
 
 class Checks:
@@ -35,11 +36,11 @@ class Automod(commands.Cog):
         self.mention_limit = 6
 
     async def check_mention_spam(self, message):
-        guild = message.guild
         author = message.author
         mentions = set(message.mentions)
 
-        settings = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(message.guild)
+        await guildy.get()
 
         if await self.immune(message):
             return
@@ -53,13 +54,12 @@ class Automod(commands.Cog):
             id = await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
 
             em = await Embeds().format_automod_embed(author, "Mention spam", id, message)
-            if settings['logging'] is True:
-                if 'LogChannel' in settings:
-                    channel = self.bot.get_channel(int(settings['LogChannel']))
-                    try:
-                        await channel.send(embed=em)
-                    except discord.Forbidden:
-                        await message.channel.send(embed=em)
+            if guildy.logging:
+                channel = self.bot.get_channel(int(guildy.log_channel))
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await message.channel.send(embed=em)
             else:
                 await message.channel.send(embed=em)
 
@@ -72,10 +72,10 @@ class Automod(commands.Cog):
         return await check.is_immune(message)
 
     async def check_invite(self, message):
-        guild = message.guild
         author = message.author
 
-        settings = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(message.guild)
+        await guildy.get()
 
         if await self.immune(message):
             return
@@ -89,16 +89,15 @@ class Automod(commands.Cog):
             id = await Sanction().create_strike(message.author, "Strike", message.guild, "Discord Invite Link")
 
             em = await Embeds().format_automod_embed(author, "Discord Invite Link", id, message)
-            if settings['logging'] is True:
-                if 'LogChannel' in settings:
-                    channel = self.bot.get_channel(int(settings['LogChannel']))
-                    try:
-                        await channel.send(embed=em)
-                    except discord.Forbidden:
-                        await message.channel.send(embed=em)
+            if guildy.logging:
+
+                channel = self.bot.get_channel(int(guildy.log_channel))
+                try:
+                    await channel.send(embed=em)
+                except discord.Forbidden:
+                    await message.channel.send(embed=em)
             else:
                 await message.channel.send(embed=em)
-
             return True
         else:
             return False
@@ -107,20 +106,16 @@ class Automod(commands.Cog):
     async def spam_check(message):
 
         m_max = 3
-
-        guild = message.guild
         author = message.author
-
-        settings = await Settings().get_server_settings(str(guild.id))
-
         m_count = 0
+
         async for m in message.channel.history(after=(datetime.utcnow() + timedelta(seconds=-10))):
             if m.author == author:
                 m_count += 1
             if m_count > m_max:
                 await message.delete()
                 await message.channel.send(f"No spamming, {message.author.mention}", delete_after=5)
-                id = await Sanction().create_strike(message.author, "Strike", message.guild, "Spamming")
+                await Sanction().create_strike(message.author, "Strike", message.guild, "Spamming")
 
                 # TODO: Si mode strict, mute l'user...
 
@@ -136,13 +131,10 @@ class Automod(commands.Cog):
         ):
             return
 
-        set = await Settings().get_server_settings(str(message.guild.id))
+        guildy = GuildY(message.guild)
+        await guildy.get()
 
-        if "automod" not in set:
-            return
-
-        if set["automod"] is True:
-
+        if guildy.automod:
             deleted = await self.check_mention_spam(message)
             if not deleted:
                 await self.check_invite(message)
@@ -153,36 +145,39 @@ class Automod(commands.Cog):
 
         :param member: The member who joined the guild
         """
-        guild = member.guild
-        set = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(member.guild)
+        await guildy.get()
+
         glob = await Settings().get_glob_settings()
 
         # Check if the user has already been muted to avoid any sanctions bypass
-        if 'Mute' in set and member.id in set['Mute']:
+        if member.id in guildy.mute:
             # Mute him again
-            for chan in guild.text_channels:
-                await chan.set_permissions(member, send_messages=False)
-                await Sanction().create_strike(member.author, "Strike", member.guild, "Try to mute Bypass")
+            role = discord.utils.get(member.guild.roles, name="Muted")
+            if not role:
+                role = await member.guild.create_role(name="Muted", permissions=discord.Permissions.none(),
+                                                      reason="Mute Role")
+                for chan in member.guild.text_channels:
+                    await chan.set_permissions(role, send_messages=False)
+            await member.add_roles(role)
 
-        '''
         # Check if the user is in the blacklist
         if 'Blacklist' in glob:
-            if member.id in glob['Blacklist'] and set["bl"] is True:
+            if member.id in glob['Blacklist'] and guildy.bl:
                 # Ban the member
-                await guild.ban(member, reason="Blacklist")
+                await member.guild.ban(member, reason="Blacklist")
             try:
                 await member.send("you're in the blacklist ! If you think it's an error, ask here --> "
-                              "yume.network@protonmail.com")
+                                  "yume.network@protonmail.com")
             except discord.Forbidden:
                 return
-        '''
 
-        if set['logging'] is True:
+        if guildy.logging:
             sanctions, time = await Checks().member_check(member)
-            em = await Mod().check_embed(member, guild, sanctions, time)
-            if 'LogChannel' in set:
+            em = await Mod().check_embed(member, member.guild, sanctions, time)
+            if guildy.log_channel:
                 try:
-                    channel = self.bot.get_channel(int(set['LogChannel']))
+                    channel = self.bot.get_channel(int(guildy.log_channel))
                 except discord.HTTPException:
                     return
                 try:

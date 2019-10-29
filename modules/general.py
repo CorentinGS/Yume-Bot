@@ -130,8 +130,7 @@ class General(commands.Cog):
                     response1 = await r1.json()
 
         except:
-            await ctx.send("No pokemon found")
-            return
+            return await ctx.send("No pokemon found")
 
         # Handles response1
         if response1.get("detail") == "Not found.":

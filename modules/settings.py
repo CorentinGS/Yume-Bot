@@ -45,7 +45,7 @@ class Set(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def reset(self, ctx):
         guild = GuildY(ctx.message.guild)
-        await guild.store()
+        await guild.set()
         await ctx.invoke(self.setup)
 
     @setting.command()
@@ -80,7 +80,7 @@ class Set(commands.Cog):
         if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP']:
             guild.vip = True
             guild.automod = True
-            await guild.store()
+            await guild.set()
 
         # Create logging Channel
         guild.logging = True
@@ -121,7 +121,7 @@ class Set(commands.Cog):
             elif reaction.emoji == '🚫':
                 guild.greet = False
 
-        await guild.store()
+        await guild.set()
 
         # Member stats channels
         msg = await ctx.send("Do you want to activate the member stats channels ?")
@@ -156,7 +156,7 @@ class Set(commands.Cog):
                 guild.members_count = False
 
         guild.bl = True
-        await guild.store()
+        await guild.set()
         await msg.delete()
 
         # Mods & Admins role
@@ -169,7 +169,7 @@ class Set(commands.Cog):
         await ctx.send('Setup is now done ! Have a good time')
 
         guild.setup = True
-        await guild.store()
+        await guild.set()
 
     @setting.command()
     @commands.guild_only()
@@ -184,7 +184,7 @@ class Set(commands.Cog):
         else:
             return
 
-        await guild.store()
+        await guild.set()
         await ctx.send("Updating...", delete_after=3)
 
     @commands.command()
@@ -198,7 +198,7 @@ class Set(commands.Cog):
             elif role.permissions.ban_members or role.permissions.kick_members is True:
                 guildy.mods.append(str(role.id))
 
-        await guildy.store()
+        await guildy.set()
 
         await ctx.send("Done")
 
@@ -214,7 +214,7 @@ class Set(commands.Cog):
         if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP'] or ctx.author.id in glob['VIP']:
             guild.vip = True
             guild.automod = value
-            await guild.store()
+            await guild.set()
             await ctx.send("Settings updated", delete_after=3)
         else:
             await ctx.send("You're not VIP. **Our automod system is VIP only.** "
@@ -230,7 +230,7 @@ class Set(commands.Cog):
             elif role.permissions.ban_members or role.permissions.kick_members is True:
                 guildy.mods.append(str(role.id))
 
-        await guildy.store()
+        await guildy.set()
         if guild.id == '264445053596991498':
             return
         try:

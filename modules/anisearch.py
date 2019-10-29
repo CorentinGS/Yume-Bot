@@ -404,6 +404,8 @@ class AniSearch(commands.Cog):
         except TypeError:
             await ctx.send("No users were found or there was an error in the process")
 
+    # TODO: Faire plusieurs fichiers + ajouter un système de "menu" pour gérer des flèches etc (voir REDBot)
+
 
 def setup(bot):
     bot.add_cog(AniSearch(bot))

@@ -1,3 +1,6 @@
+from typing import Union
+
+import discord
 from discord.ext import commands
 
 from modules.utils import checks
@@ -20,9 +23,11 @@ class Blacklist(commands.Cog):
 
     @blacklist.command()
     @checks.is_owner()
-    async def add(self, ctx, id: int):
+    async def add(self, ctx, user: Union[int, discord.Member]):
 
-        user = await self.bot.get_user_info(id)
+        if isinstance(user, int):
+            user = await self.bot.get_user_info(user)
+
         await ctx.message.delete()
 
         setting = await Settings().get_glob_settings()
@@ -37,9 +42,10 @@ class Blacklist(commands.Cog):
 
     @blacklist.command(aliases=['remove'])
     @checks.is_owner()
-    async def rm(self, ctx, id: int):
+    async def rm(self, ctx,  user: Union[int, discord.Member]):
 
-        user = await self.bot.get_user_info(id)
+        if isinstance(user, int):
+            user = await self.bot.get_user_info(user)
         await ctx.message.delete()
 
         setting = await Settings().get_glob_settings()

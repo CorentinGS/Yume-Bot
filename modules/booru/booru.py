@@ -30,6 +30,8 @@ class Booru(commands.Cog):
         if isinstance(error, commands.NSFWChannelRequired):
             return
 
+    # TODO: Faire toutes les commandes NSFW d'images.
+
 
 def setup(bot):
     bot.add_cog(Booru(bot))

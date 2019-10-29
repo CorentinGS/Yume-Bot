@@ -9,6 +9,7 @@ from modules.utils import checks
 from modules.utils.converter import *
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
+from modules.utils.setup import GuildY
 
 
 class Check(commands.Cog):
@@ -28,6 +29,19 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+    async def log_send(self, ctx, guildy, embed):
+        if guildy.logging:
+            try:
+                channel = self.bot.get_channel(int(guildy.log_channel))
+            except discord.HTTPException:
+                return
+            try:
+                await channel.send(embed=embed)
+            except discord.Forbidden:
+                return
+        else:
+            await ctx.send(embed=embed)
 
     @commands.command(aliases=["sanctions", "modlog", "modlogs"])
     @checks.is_mod()
@@ -64,18 +78,12 @@ class Moderation(commands.Cog):
         if perm is False:
             return
         await ctx.message.delete()
-        set = await Settings().get_server_settings(str(ctx.guild.id))
+
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
         id = await Sanction().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'strike', id)
-        if set['logging'] is True:
-            if 'LogChannel' in set:
-                channel = self.bot.get_channel(int(set['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
     @commands.command(aliases=["chut", "tg"])
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
@@ -92,7 +100,8 @@ class Moderation(commands.Cog):
         if perm is False:
             return
         guild = ctx.message.guild
-        set = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
         unit = duration[-1]
         if unit == 's':
@@ -106,82 +115,59 @@ class Moderation(commands.Cog):
         else:
             return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
 
-        if not 'Mute' in set:
-            set['Mute'] = []
-
-        if user.id in set['Mute']:
+        if user.id in guildy.mute:
             return await ctx.send('This user is already muted, you should '
                                   'unmute him first.')
 
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
-            role = await ctx.guild.create_role(name="Muted", permissions = discord.Permissions.none(), reason="Mute Role")
+            role = await ctx.guild.create_role(name="Muted", permissions=discord.Permissions.none(), reason="Mute Role")
             for chan in ctx.guild.text_channels:
                 await chan.set_permissions(role, send_messages=False)
         await user.add_roles(role)
 
-        set['Mute'].append(user.id)
-        await Settings().set_server_settings(str(guild.id), set)
-
+        guildy.mute.append(user.id)
+        await guildy.set()
 
         id = await Sanction().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'mute', id, duration)
 
-
-        if set['logging'] is True:
-            if 'LogChannel' in set:
-                channel = self.bot.get_channel(int(set['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
         await asyncio.sleep(time)
 
-        set = await Settings().get_server_settings(str(guild.id))
+        await guildy.get()
 
-        if user.id in set['Mute']:
+        if user.id in guildy.mute:
             await ctx.invoke(self.unmute, user, True)
 
     @commands.command()
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member, auto: bool = False):
-        guild = ctx.message.guild
-        set = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
         if not auto:
             mod = ctx.message.author
         else:
             mod = "auto"
 
-        if set['Mute']:
-            if user.id not in set['Mute']:
-                return
-            set['Mute'].remove(user.id)
-        await Settings().set_server_settings(str(guild.id), set)
-
         role = discord.utils.get(ctx.guild.roles, name="Muted")
-        if not role:
+
+        if user.id not in guildy.mute or not role:
             return
+
+        guildy.mute.remove(user.id)
+        await guildy.set()
+
         try:
             await user.remove_roles(role)
         except discord.HTTPException:
             return
 
         em = await Embeds().format_mod_embed(ctx, user, mod, None, 'unmute')
-        if set['logging'] is True:
-            if 'LogChannel' in set:
-                channel = self.bot.get_channel(int(set['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
     @commands.command(aliases=['out'])
     @commands.bot_has_permissions(kick_members=True)
@@ -190,24 +176,16 @@ class Moderation(commands.Cog):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
-        server = str(ctx.guild.id)
-        setting = await Settings().get_server_settings(server)
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
         await ctx.message.delete()
 
         await ctx.guild.kick(user)
+
         id = await Sanction().create_sanction(user, 'Kick', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'kick', id)
-
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
     @commands.command(aliases=['preventban', 'preban', 'idban'])
     @checks.is_admin()
@@ -222,18 +200,10 @@ class Moderation(commands.Cog):
         _id = await Sanction().create_sanction(banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, reason, 'hackban', _id)
 
-        server = str(ctx.guild.id)
-        setting = await Settings().get_server_settings(server)
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
     @commands.command()
     @checks.is_admin()
@@ -241,23 +211,19 @@ class Moderation(commands.Cog):
 
         await ctx.message.delete()
         user = discord.Object(id=id)
-        banned = await self.bot.fetch_user(id)
+
+        try:
+            banned = await self.bot.fetch_user(id)
+        except discord.NotFound:
+            return await ctx.send("ID not found...")
 
         await ctx.guild.unban(user)
 
         em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, None, 'unban')
-        server = str(ctx.guild.id)
-        setting = await Settings().get_server_settings(server)
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
     @commands.command(aliases=['ciao'])
     @checks.is_mod()
@@ -272,19 +238,10 @@ class Moderation(commands.Cog):
         id = await Sanction().create_sanction(user, 'Ban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'ban', id)
 
-        server = str(ctx.guild.id)
-        setting = await Settings().get_server_settings(server)
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    await ctx.send(embed=em)
-
-        else:
-            await ctx.send(embed=em)
+        await self.log_send(ctx, guildy, em)
 
     @commands.command(aliases=['clean', 'clear'])
     @checks.is_mod()
@@ -347,14 +304,12 @@ class Moderation(commands.Cog):
         except Exception as e:
             return await ctx.send(e)
 
-        server = str(ctx.guild.id)
-        setting = await Settings().get_server_settings(server)
+        guildy = GuildY(ctx.message.guild)
+        await guildy.get()
 
-        if setting['logging'] is True:
-            if 'LogChannel' in setting:
-                channel = self.bot.get_channel(int(setting['LogChannel']))
-                await channel.send(f'{len(members)} users were banned')
-
+        if guildy.logging:
+            channel = self.bot.get_channel(int(guildy.log_channel))
+            await channel.send(f'{len(members)} users were banned')
         else:
             await ctx.send(f'{len(members)} users were banned')
 
@@ -438,7 +393,7 @@ class Moderation(commands.Cog):
     async def addrole(self, ctx, role: Union[str, discord.Role]):
         await ctx.message.delete()
 
-        if not role is discord.Role:
+        if not isinstance(role, discord.Role):
             try:
                 role = discord.utils.get(ctx.guild.roles, name=role)
             except discord.NotFound:
@@ -447,6 +402,23 @@ class Moderation(commands.Cog):
         for user in ctx.guild.members:
             await user.add_roles(role)
             await asyncio.sleep(1)
+
+    @commands.command()
+    @checks.is_admin()
+    async def fresh(self, ctx):
+        guild = GuildY(ctx.guild)
+        await guild.get()
+        if not guild.bl:
+            return
+        await ctx.message.delete()
+        glob = await Settings().get_glob_settings()
+        if 'Blacklist' in glob:
+            members = ctx.guild.members
+            for x in members:
+                if x.id in glob['Blacklist']:
+                    # Ban the member
+                    user = discord.Object(id=x.id)
+                    await ctx.guild.ban(user)
 
 
 def setup(bot):

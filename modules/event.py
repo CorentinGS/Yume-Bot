@@ -121,7 +121,7 @@ class Event(commands.Cog):
                     if user.id in glob['AFK']:
                         await message.channel.send("{}#{} is AFK".format(user.name, user.discriminator),
                                                    delete_after=10)
-                        await user.send(f"{author} has mentionned you in {message.guild} : \n`{message.content}`")
+                        # await user.send(f"{author} has mentionned you in {message.guild} : \n`{message.content}`")
 
 
 def setup(bot):

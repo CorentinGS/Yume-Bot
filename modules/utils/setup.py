@@ -31,7 +31,7 @@ class GuildY:
         self.admins = []
         self.mute = []
 
-    async def store(self):
+    async def set(self):
         set = await Settings().get_server_settings(str(self.id))
 
         # Settings
