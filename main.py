@@ -74,8 +74,14 @@ class YumeBot(commands.Bot):
                 print(f'In {ctx.command.qualified_name}:', file=sys.stderr)
                 traceback.print_tb(original.__traceback__)
                 print(f'{original.__class__.__name__}: {original}', file=sys.stderr)
+            elif isinstance(original, discord.Forbidden):
+                try:
+                    await ctx.send(f"I'm missing permissions to be able to do that.\n`{original}`")
+                except discord.Forbidden:
+                    return
         elif isinstance(error, commands.ArgumentParsingError):
             await ctx.send(error)
+
 
     async def close(self):
         await super().close()
