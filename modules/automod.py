@@ -176,14 +176,12 @@ class Automod(commands.Cog):
             sanctions, time = await Checks().member_check(member)
             em = await Mod().check_embed(member, member.guild, sanctions, time)
             if guildy.log_channel:
-                try:
-                    channel = self.bot.get_channel(int(guildy.log_channel))
-                except discord.HTTPException:
-                    return
-                try:
-                    await channel.send(embed=em)
-                except discord.Forbidden:
-                    return
+                channel = self.bot.get_channel(int(guildy.log_channel))
+                if isinstance(channel, discord.TextChannel):
+                    try:
+                        await channel.send(embed=em)
+                    except discord.Forbidden:
+                        return
 
 
 def setup(bot):
