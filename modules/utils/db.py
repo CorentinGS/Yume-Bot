@@ -65,9 +65,15 @@ class Settings:
     async def set_sanction_settings(self, id, settings):
         return await self.sanction.replace_one({"_id": id}, settings, True)
 
-    async def get_sanction_settings_user(self, user, guild):
+    async def get_sanction_settings_member(self, user, guild):
         doc = []
         async for docu in self.sanction.find({"user_id": user, "guild_id": guild}):
+            doc.append(docu['_id'])
+        return doc or {}
+
+    async def get_sanction_settings_user(self, user):
+        doc = []
+        async for docu in self.sanction.find({"user_id": user}):
             doc.append(docu['_id'])
         return doc or {}
 

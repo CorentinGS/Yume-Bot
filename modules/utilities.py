@@ -185,7 +185,7 @@ class Utilities(commands.Cog):
         embed.add_field(name="Hightest role", value=user.top_role)
         if user.activity:
             embed.add_field(name="Game Activity", value=user.activity.name)
-        embed.add_field(name= "Join position", value=str(joins.index(user)))
+        embed.add_field(name="Join position", value=str(joins.index(user)))
         embed.add_field(name="Created", value=user.created_at.strftime(
             '%A - %B - %e - %g at %H:%M'))
         embed.add_field(name="Joined", value=user.joined_at.strftime(

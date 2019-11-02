@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from modules.utils import lists
 from modules.utils.db import Settings
+from modules.utils.guildy import GuildY
 
 
 class Event(commands.Cog):
@@ -21,12 +22,12 @@ class Event(commands.Cog):
         :param member: The member who joined the guild
         """
 
-        guild = member.guild
-        server = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(member.guild)
+        await guildy.get()
 
         # glob = await Settings().get_glob_settings()
-        if 'Greet' in server and server['Greet'] is True and 'GreetChannel' in server:
-            channel = self.bot.get_channel(int(server['GreetChannel']))
+        if guildy.greet:
+            channel = self.bot.get_channel(int(guildy.greet_channel))
             greet = random.choice(lists.greet)
 
             em = discord.Embed(timestamp=member.joined_at)
@@ -35,9 +36,9 @@ class Event(commands.Cog):
             em.description = f"{greet}"
             await channel.send(embed=em)
 
-        if 'Display' in server and server['Display'] is True:
+        if guildy.members_count:
             category = discord.utils.get(
-                member.guild.categories, id=int(server['category']))
+                member.guild.categories, id=int(guildy.count_category))
             for channel in category.channels:
                 try:
                     await channel.delete()
@@ -67,12 +68,12 @@ class Event(commands.Cog):
         :param member: The member who has left
         """
 
-        guild = member.guild
-        server = await Settings().get_server_settings(str(guild.id))
+        guildy = GuildY(member.guild)
+        await guildy.get()
 
-        if 'Display' in server and server['Display'] is True:
+        if guildy.members_count:
             category = discord.utils.get(
-                member.guild.categories, id=int(server['category']))
+                member.guild.categories, id=int(guildy.count_category))
             for channel in category.channels:
                 try:
                     await channel.delete()
@@ -95,8 +96,8 @@ class Event(commands.Cog):
             await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}',
                                                     overwrites=overwrite, category=category)
 
-        if 'Greet' in server and server['Greet'] is True and 'GreetChannel' in server:
-            channel = self.bot.get_channel(int(server['GreetChannel']))
+        if guildy.greet:
+            channel = self.bot.get_channel(int(guildy.greet_channel))
             leave = random.choice(lists.leave)
 
             em = discord.Embed(timestamp=member.joined_at)

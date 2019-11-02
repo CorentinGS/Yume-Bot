@@ -19,7 +19,7 @@ class Checks:
         now = datetime.now()
         create = member.created_at
 
-        strike = await Settings().get_sanction_settings_user(str(member.id), str(guild.id))
+        strike = await Settings().get_sanction_settings_member(str(member.id), str(guild.id))
 
         sanctions = len(strike)
         time = (now - create).days

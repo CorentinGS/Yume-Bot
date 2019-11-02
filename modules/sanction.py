@@ -75,7 +75,7 @@ class Sanction:
 
     @staticmethod
     async def find_sanction_member(ctx, member: typing.Union[discord.Member, discord.User], guild: discord.Guild):
-        strikes = await Settings().get_sanction_settings_user(str(member.id), str(guild.id))
+        strikes = await Settings().get_sanction_settings_member(str(member.id), str(guild.id))
         em = discord.Embed()
         em.set_author(name=f"Sanction report | {member.name}",
                       icon_url=member.avatar_url)
