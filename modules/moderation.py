@@ -9,7 +9,7 @@ from modules.utils import checks
 from modules.utils.converter import *
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils.setup import GuildY
+from modules.utils.guildy import GuildY
 
 
 class Check(commands.Cog):
@@ -47,10 +47,10 @@ class Moderation(commands.Cog):
     @checks.is_mod()
     async def sanction(self, ctx, sanction: typing.Union[discord.Member, discord.User, int]):
         await ctx.message.delete()
-        if sanction is int:
+        if isinstance(sanction, int):
             em = await Sanction().find_sanction_id(ctx, sanction)
             await ctx.send(embed=em)
-        if sanction is discord.Member or discord.User:
+        if isinstance(sanction, discord.Member) or isinstance(sanction, discord.User):
             em = await Sanction().find_sanction_member(ctx, sanction, ctx.guild)
             await ctx.send(embed=em)
         else:

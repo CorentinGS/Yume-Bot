@@ -80,7 +80,7 @@ class Gestion(commands.Cog):
             success = True
             await ctx.send('👍')
 
-        msg.delete()
+        await msg.delete()
         em = await Embeds().format_feedback_embed(ctx, auth, guild, success, msg)
         await channel.send(embed=em)
 

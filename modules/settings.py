@@ -6,7 +6,7 @@ from discord.ext import commands
 from modules.utils import checks
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils.setup import GuildY
+from modules.utils.guildy import GuildY
 
 
 class Set(commands.Cog):

@@ -8,7 +8,7 @@ from modules.sanction import Sanction
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 from modules.utils.format import Mod
-from modules.utils.setup import GuildY
+from modules.utils.guildy import GuildY
 
 
 class Checks:
