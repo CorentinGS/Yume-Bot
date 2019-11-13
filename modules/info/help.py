@@ -5,7 +5,6 @@ from modules.utils.format import Embeds
 
 
 class Help(commands.Cog):
-
     conf = {}
 
     def __init__(self, bot):
@@ -18,27 +17,28 @@ class Help(commands.Cog):
 
     @commands.group(aliases=["c", "commands", "h"])
     async def help(self, ctx):
-        embed = await Embeds().format_commands_embed(ctx, self.bot.user.avatar_url)
+        if ctx.invoked_subcommand is None:
+            embed = await Embeds().format_commands_embed(ctx, self.bot.user.avatar_url)
 
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @help.command()
     async def general(self, ctx):
-        liste = "`jump`, `debug`, `weather`, `gweather`, `afk`"
+        liste = "`jump`, `weather`, `gweather`, `afk`, `pokemon`, `anime`, `manga`, `character`, `anilist`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "General", liste)
         await ctx.send(embed=embed)
 
     @help.command()
     async def utils(self, ctx):
         liste = "`info`, `members`, `owner`, `date`, `whois`, `hackwhois`, " \
-                "`avatar`, `icon`, `roleinfo`, `invite`, `channelinfo`"
+                "`avatar`, `icon`, `roleinfo`, `invite`, `channelinfo`, `tags`, `tag`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Utils", liste)
         await ctx.send(embed=embed)
 
     @help.command()
-    async def about(self, ctx):
+    async def info(self, ctx):
         liste = "`about`, `help`, `suggestion`, `feedback`"
-        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "About", liste)
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Info", liste)
         await ctx.send(embed=embed)
 
     @help.command()
@@ -50,25 +50,25 @@ class Help(commands.Cog):
 
     @help.command()
     async def admin(self, ctx):
-        liste = "`mention`, `annonce`, `massban`, `reset`"
+        liste = "`mention`, `annonce`, `massban`, `reset`, `addrole`, `fresh`, `poll`, `quickpoll`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Admin", liste)
         await ctx.send(embed=embed)
 
     @help.command()
     async def level(self, ctx):
-        liste = "`rank`, `level config`"
+        liste = "`rank`, `level config`, `leaderboard`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Level", liste)
         await ctx.send(embed=embed)
 
     @help.command()
-    async def settings(self, ctx):
-        liste = "`settings get`, `settings reset`, `settings setup`, `settings role mod`, `settings role admin`"
-        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Settings", liste)
+    async def guild(self, ctx):
+        liste = "`settings get`, `settings reset`, `settings setup`, `settings role mod`, `settings role admin`, `arr`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Guild", liste)
         await ctx.send(embed=embed)
 
     @help.command()
     async def fun(self, ctx):
-        liste = "`rd`, `8ball`, `cat`, `dog`, `lovepower`, `choose`, `number`, `trump`, `chucknorris`, `geek_joke`, `cookie`, `today`," \
+        liste = "`rd`, `8ball`, `cat`, `dog`, `lovepower`, `choose`, `linux`, `number`, `trump`, `chucknorris`, `geek_joke`, `cookie`, `today`," \
                 " `ice`, `lmgtfy`, `love_calc`, `urban`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Fun", liste)
         await ctx.send(embed=embed)
@@ -76,8 +76,17 @@ class Help(commands.Cog):
     @help.command()
     async def social(self, ctx):
         liste = "`hug`, `pat`, `kiss`, `lewd`, `lick`, `slap`, `cry`"
-        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "social", liste)
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Social", liste)
         await ctx.send(embed=embed)
+
+    @help.command()
+    async def game(self, ctx):
+        liste = "`truth`, `dare`, `wyr`, `nhie`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Game", liste)
+        await ctx.send(embed=embed)
+
+    # TODO: Add owner commands
+
 
 def setup(bot):
     bot.add_cog(Help(bot))

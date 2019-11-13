@@ -21,8 +21,7 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def eightball(self, ctx, *, question: str = None):
         """
-
-        :param question: The question to be answered
+        Ask to the 8Ball something
         """
         await ctx.message.delete()
 
@@ -36,6 +35,9 @@ class Fun(commands.Cog):
     @commands.command(aliases=['neko'])
     @commands.guild_only()
     async def cat(self, ctx):
+        """
+        Nekos are life
+        """
         await ctx.message.delete()
         r = requests.get('https://nekos.life/api/v2/img/meow')
         r = r.json()
@@ -43,6 +45,9 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def dog(self, ctx):
+        """
+        Doggy !!!
+        """
         await ctx.message.delete()
         r = requests.get('https://random.dog/woof.json')
         r = r.json()
@@ -51,6 +56,9 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def lovepower(self, ctx, user: discord.Member = None):
+        """
+        What's his love power
+        """
         await ctx.message.delete()
         if user is None:
             user = ctx.message.author
@@ -74,6 +82,9 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def rd(self, ctx):
+        """
+        Display the Republican Date
+        """
         await ctx.message.delete()
         today = datetime.date.today()
         rd = RepublicanDate.from_gregorian(today.year, today.month, today.day)
@@ -87,12 +98,18 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def choose(self, ctx, *, answers: str):
+        """
+        Random choice
+        """
         toto = random.choice(answers.split())
         await ctx.send(toto)
 
     @commands.command()
     @commands.guild_only()
     async def linux(self, ctx):
+        """
+        Linux joke
+        """
         answer = random.choice(lists.linux)
         embed = discord.Embed(colour=discord.Colour.green())
         embed.description = answer
@@ -101,6 +118,9 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def number(self, ctx, number: int = None):
+        """
+        Teach you sth about a number
+        """
         if not number:
             number = random.randrange(1, 1789)
         async with ctx.channel.typing():
@@ -111,6 +131,9 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def trump(self, ctx, tag: str = None):
+        """
+        Trump is a meme
+        """
         await ctx.message.delete()
         async with ctx.channel.typing():
             if not tag:
@@ -124,6 +147,9 @@ class Fun(commands.Cog):
     @commands.command(aliases=["chuck", "norris", "cn"])
     @commands.guild_only()
     async def chucknorris(self, ctx):
+        """
+        Chuck Norris is GOD
+        """
         await ctx.message.delete()
         async with ctx.channel.typing():
             r = requests.get("https://api.chucknorris.io/jokes/random")
@@ -133,18 +159,27 @@ class Fun(commands.Cog):
     @commands.command(aliases=["dev_joke", "programmer_joke", "geekjoke"])
     @commands.guild_only()
     async def geek_joke(self, ctx):
+        """
+        If you're not a geek, go on your way
+        """
         r = requests.get('https://geek-jokes.sameerkumar.website/api')
         await ctx.send(f"Geek Joke :\n**{r.text}**")
 
     @commands.command()
     @commands.guild_only()
     async def cookie(self, ctx, user: discord.Member):
+        """
+        Cookie Eater
+        """
         await ctx.send(
             f"**{user.display_name}**, you've been given a cookie by **{ctx.author.display_name}**. :cookie:")
 
     @commands.command()
     @commands.guild_only()
     async def today(self, ctx):
+        """
+        Teach you sth about today
+        """
         today = datetime.datetime.now()
         async with ctx.channel.typing():
             response = requests.get(f'http://numbersapi.com/{today.month}/{today.day}/date')
@@ -153,11 +188,17 @@ class Fun(commands.Cog):
     @commands.command(aliases=["ice-cream"])
     @commands.guild_only()
     async def ice(self, ctx, user: discord.Member):
+        """
+        Give an ice
+        """
         await ctx.send(f"{user.mention}, here is your ice: :ice_cream:!")
 
     @commands.command(aliases=["l2g"])
     @commands.guild_only()
     async def lmgtfy(self, ctx, *, msg: str = None):
+        """
+        Let me google this for you
+        """
         if not msg:
             url = "https://lmgtfy.com/?q=The+answer+to+life&p=1"
         else:
@@ -168,6 +209,9 @@ class Fun(commands.Cog):
     @commands.command(aliases=["love"])
     @commands.guild_only()
     async def love_calc(self, ctx, user: discord.Member, user_: discord.Member = None):
+        """
+        Can they date ?
+        """
         if not user_:
             user_ = ctx.message.author
         random.seed(int(str(user.id) + str(user_.id)))
@@ -190,6 +234,9 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def urban(self, ctx, *, search: str):
+        """
+        Urban dic is you new best friend
+        """
         async with ctx.channel.typing():
             url = requests.get(f'https://api.urbandictionary.com/v0/define?term={search}')
             url = url.json()

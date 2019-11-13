@@ -6,6 +6,8 @@ import asyncio
 import discord
 from discord.ext import commands
 
+from modules.utils import checks
+
 
 def to_emoji(c):
     base = 0x1f1e6
@@ -20,6 +22,7 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @checks.is_admin()
     async def poll(self, ctx, *, question: str):
 
         messages = [ctx.message]
@@ -57,6 +60,7 @@ class Polls(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @checks.is_admin()
     async def quickpoll(self, ctx, *questions_and_choices: str):
         """Makes a poll quickly.
 		The first argument is the question and the rest are the choices.

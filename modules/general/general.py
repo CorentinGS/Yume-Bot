@@ -22,14 +22,24 @@ class General(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
+        """
+        Pong !
+        """
         await ctx.send("Pong !!")
 
     @commands.command()
     async def pong(self, ctx):
+        """
+        Ping !
+        """
+
         await ctx.send("Ping !!")
 
     @commands.command(aliases=['gmto', 'gweather'])
     async def gmeteo(self, ctx, city: str = "Paris"):
+        """
+        Full Weather report
+        """
         await ctx.message.delete()
 
         result = url_meteo(city)
@@ -67,6 +77,9 @@ class General(commands.Cog):
 
     @commands.command(aliases=["mto", "weather"])
     async def meteo(self, ctx, city: str = "Paris"):
+        """
+        Simple Weather report
+        """
         await ctx.message.delete()
 
         result = url_meteo(city)
@@ -93,6 +106,9 @@ class General(commands.Cog):
 
     @commands.command(aliases=["away", "idle"])
     async def afk(self, ctx):
+        """
+        Set yourself as AFK
+        """
         await ctx.message.delete()
         user = ctx.message.author
 
@@ -106,6 +122,9 @@ class General(commands.Cog):
 
     @commands.command()
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
+        """
+        Create a direct link to a message
+        """
         if channel is None:
             channel = ctx.message.channel
         try:

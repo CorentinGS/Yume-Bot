@@ -136,15 +136,18 @@ class Embeds:
                                                   "**--h mods** | Mods Commands\n"
                                                   "**--h admin** | Admin Commands\n"
                                                   "**--h level** | Level Commands\n"
-                                                  "**--h settings** | Settings Commands\n"
-                                                  "**--h about** | About Commands\n"
-                                                  "**--h social** | Social Commands")
+                                                  "**--h guild** | Guild Commands\n"
+                                                  "**--h info** | Information Commands\n"
+                                                  "**--h social** | Social Commands\n"
+                                                  "**--h game** | Game Commands"
+                     )
 
         em.add_field(name="Links", value="[Documentation](https://yumenetwork.gitbook.io/yumebot/) | [Support]("
                                          "https://invite.gg/yumenetwork) | [Sources]("
                                          "https://github.com/yumenetwork/Yume-Bot) | "
                                          "[Invite]"
-                                         "(https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot)",
+                                         "(https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot) | "
+                                         "[Site](https://yumenetwork.net)",
                      inline=False)
 
         return em

@@ -93,6 +93,9 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def members(self, ctx):
+        """
+        How many members do u have ?
+        """
         await ctx.message.delete()
         onlines = 0
         bots = 0
@@ -147,6 +150,9 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def date(self, ctx, member: discord.Member):
+        """
+        How old is he ?
+        """
         now = datetime.now()
         create = member.created_at
         time = (now - create).days
@@ -155,7 +161,9 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def avatar(self, ctx, *, user: discord.Member = None):
-
+        """
+        Avatar stealer
+        """
         if user is None:
             user = ctx.author
 
@@ -164,11 +172,17 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def icon(self, ctx):
+        """
+        Icon stealer
+        """
         await ctx.send(f"Icon of {ctx.guild.name}\n{ctx.guild.icon_url_as(size=1024)}")
 
     @commands.command(aliases=["userinfo", "ui"])
     @commands.guild_only()
     async def whois(self, ctx, user: discord.Member = None):
+        """
+        Who is he ?
+        """
         await ctx.message.delete()
         if not user:
             user = ctx.author
@@ -204,6 +218,9 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def hackwhois(self, ctx, id: int):
+        """
+        Who is this ID
+        """
 
         user = await self.bot.fetch_user(id)
         await ctx.message.delete()
@@ -231,7 +248,9 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def invite(self, ctx):
-
+        """
+        Create an invite
+        """
         toto = await ctx.channel.create_invite(max_uses=15)
         await ctx.send(f"https://discord.gg/{toto.code}")
 

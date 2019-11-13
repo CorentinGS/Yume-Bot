@@ -13,6 +13,9 @@ class About(commands.Cog):
 
     @commands.command()
     async def about(self, ctx):
+        """
+        Gives information about the bot
+        """
         await ctx.message.delete()
 
         with open('./config/config.json', 'r') as cjson:
@@ -24,16 +27,11 @@ class About(commands.Cog):
 
         total_users = len(self.bot.users)
 
-        voice_channels = []
-        text_channels = []
+        channels: int = 0
         for guild in self.bot.guilds:
-            voice_channels.extend(guild.voice_channels)
-            text_channels.extend(guild.text_channels)
+            channels += len(guild.channels)
 
-        text = len(text_channels)
-        voice = len(voice_channels)
-
-        site = '[Documentation](https://yumenetwork.gitbook.io/yumebot/)'
+        site = '[Documentation](https://yumenetwork.net)'
         server = '[Discord](https://invite.gg/yumenetwork)'
         lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
 
@@ -51,14 +49,14 @@ class About(commands.Cog):
             owner.name, owner.discriminator, owner.id), inline=True)
         embed.add_field(
             name="Stats",
-            value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__: {text}text & {voice}voice "
+            value=f"__Guilds__ :{len(self.bot.guilds)}\n__Channels__: {channels} "
                   f"\n__Users__: {total_users}",
             inline=True)
 
         embed.add_field(
             name="Informations",
             value=f"__Version__ : {version} \n__Site__ : {site} \n__Support__ : {server} \n__Lib__ : {lib}",
-            inline=True)
+            inline=False)
 
         await ctx.send(embed=embed)
 

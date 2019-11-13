@@ -46,6 +46,9 @@ class Moderation(commands.Cog):
     @commands.command(aliases=["sanctions", "modlog", "modlogs"])
     @checks.is_mod()
     async def sanction(self, ctx, sanction: typing.Union[discord.Member, discord.User, int]):
+        """
+        Get a sanction report
+        """
         await ctx.message.delete()
         if isinstance(sanction, int):
             em = await Sanction().find_sanction_id(ctx, sanction)
@@ -60,6 +63,9 @@ class Moderation(commands.Cog):
     @commands.bot_has_permissions(manage_channels=True)
     @checks.is_admin()
     async def slowmode(self, ctx, *, value: int = None):
+        """
+        Slowmode this channel
+        """
         if not value or value == 0:
             await ctx.channel.edit(slowmode_delay=0)
         else:
@@ -69,11 +75,17 @@ class Moderation(commands.Cog):
     @commands.command()
     @checks.is_admin()
     async def reset(self, ctx, member: discord.Member):
+        """
+        Reset this user sanctions
+        """
         await Settings().rm_strike_settings(str(ctx.guild.id), str(member.id))
 
     @commands.command()
     @checks.is_mod()
     async def strike(self, ctx, user: discord.Member, *, reason: ModReason = None):
+        """
+        Strike him
+        """
         perm = await Check().check(ctx, user)
         if perm is False:
             return
@@ -391,21 +403,32 @@ class Moderation(commands.Cog):
     @commands.command()
     @checks.is_admin()
     async def addrole(self, ctx, role: Union[str, discord.Role]):
+        """
+        Add a role to everyone
+        """
         await ctx.message.delete()
-
+        # TODO: Informer sur les risques !
         if not isinstance(role, discord.Role):
             try:
                 role = discord.utils.get(ctx.guild.roles, name=role)
             except discord.NotFound:
                 return await ctx.send("I can't find that role")
-
+        count = 0
         for user in ctx.guild.members:
             await user.add_roles(role)
             await asyncio.sleep(1)
+            count += 1
+            if count == 20:
+                await asyncio.sleep(3)
+                count = 0
 
     @commands.command()
     @checks.is_admin()
     async def fresh(self, ctx):
+        """
+        Refresh blacklist
+        """
+        # TODO: Informer sur les risques !
         guild = GuildY(ctx.guild)
         await guild.get()
         if not guild.bl:
@@ -420,6 +443,8 @@ class Moderation(commands.Cog):
                     user = discord.Object(id=x.id)
                     await ctx.guild.ban(user)
 
+
+# TODO: Separer les commandes mod et admin
 
 def setup(bot):
     bot.add_cog(Moderation(bot))

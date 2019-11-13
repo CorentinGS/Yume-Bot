@@ -35,9 +35,8 @@ class Tags(commands.Cog):
     @tags.command()
     async def suggest(self, ctx, name: str, *, value: str):
         return
-    # todo: Ajouter la possibilité de suggestion de tags dans le salon suggestion + Mettre dans un seul groupe les
-    #  commandes.
 
+    # TODO: Ajouter la possibilité de suggestion de tags avec validation dans le salon suggestion
 
 def setup(bot):
     bot.add_cog(Tags(bot))

@@ -390,7 +390,7 @@ class AniSearch(commands.Cog):
 
     @commands.command()
     @commands.bot_has_permissions(embed_links=True, add_reactions=True)
-    async def user(self, ctx, *, entered_title):
+    async def anilist(self, ctx, *, entered_title):
         """Searches users using Anilist"""
 
         try:

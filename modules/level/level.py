@@ -80,6 +80,9 @@ class Level(commands.Cog):
     @level.command()
     @commands.has_permissions(administrator=True)
     async def config(self, ctx, level: int, role: str):
+        """
+        Config the auto role
+        """
         set = await Settings().get_server_settings(str(ctx.message.guild.id))
 
         if not "levels" in set:

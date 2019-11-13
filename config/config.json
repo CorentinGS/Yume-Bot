@@ -1,34 +1,34 @@
 {
   "owner_id": "282233191916634113",
-  "dev": ["282233191916634113"],
+  "dev": [
+    "282233191916634113"
+  ],
   "version": "Beta",
   "modules": [
-    "about",
-    "blacklist",
-    "fun",
-    "general",
-    "help",
-    "moderation",
-    "owner",
-    "utilities",
-    "tags",
+    "info.about",
+    "info.help",
+    "info.gestion",
+    "fun.fun",
+    "general.general",
+    "general.anisearch",
+    "moderation.moderation",
+    "moderation.poll",
+    "social.social",
+    "utility.utilities",
+    "utility.tags",
+    "level.level",
+    "guilds.settings",
+    "guilds.reactions",
+    "owner.owner",
+    "owner.blacklist",
+    "owner.dbl",
+    "games.games",
     "event",
-    "settings",
-    "gestion",
-    "level",
     "automod",
-    "poll",
-    "reactions",
-    "dbl",
-    "social",
-    "profile",
-    "anisearch",
-    "games"
+    "profile"
   ],
   "support": "488765635439099914",
   "feedback": "568737197386104863",
   "suggestion": "568737195612176389",
   "debug": "568805351181385739"
-
-
 }

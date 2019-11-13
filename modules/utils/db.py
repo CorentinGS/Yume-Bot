@@ -30,9 +30,15 @@ class Settings:
         doc = await self.servers.find_one({"_id": id})
         return doc or {}
 
+    async def del_server_settings(self, id):
+        await self.servers.remove({"_id": id})
+
     async def get_reaction_settings(self, id):
         doc = await self.reaction.find_one({"_id": id})
         return doc or {}
+
+    async def del_reaction_settings(self, id):
+        await self.reaction.remove({"_id": id})
 
     async def set_reaction_settings(self, id, settings):
         return await self.reaction.replace_one({"_id": id}, settings, True)

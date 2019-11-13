@@ -124,6 +124,10 @@ class Event(commands.Cog):
                                                    delete_after=10)
                         # await user.send(f"{author} has mentionned you in {message.guild} : \n`{message.content}`")
 
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        await Settings().del_reaction_settings(str(guild.id))
+        await Settings().del_server_settings(str(guild.id))
 
 def setup(bot):
     bot.add_cog(Event(bot))
