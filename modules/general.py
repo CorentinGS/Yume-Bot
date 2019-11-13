@@ -108,10 +108,15 @@ class General(commands.Cog):
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
         if channel is None:
             channel = ctx.message.channel
-        messages = await channel.history(limit=200).flatten()
-        for msg in messages:
-            if msg.id == id:
-                await ctx.send('Url :{}'.format(msg.jump_url))
+        try:
+            msg = await channel.fetch_message(id)
+        except discord.NotFound:
+            return await ctx.send(
+                "We can't find the message")
+        except discord.HTTPException:
+            return await ctx.send("We can't find the message.")
+
+        await ctx.send('Url :{}'.format(msg.jump_url))
 
     @commands.command()
     @commands.bot_has_permissions(embed_links=True)

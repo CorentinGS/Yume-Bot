@@ -184,5 +184,22 @@ class Automod(commands.Cog):
                         return
 
 
+    @commands.group()
+    @check.is_admin()
+    async def automod(self, ctx):
+        return
+
+    @automod.command()
+    @check.is_admin()
+    async def setup(self, ctx):
+        await ctx.send("Not ready yet ! Be patient dear ;)")
+
+    @automod.command()
+    @check.is_admin()
+    async def gate(self, ctx):
+        await ctx.send("Not ready yet ! Be patient dear ;)")
+
+    # TODO: Gateway
+
 def setup(bot):
     bot.add_cog(Automod(bot))
