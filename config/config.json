@@ -19,6 +19,7 @@
     "level.level",
     "guilds.settings",
     "guilds.reactions",
+    "guilds.color",
     "owner.owner",
     "owner.blacklist",
     "owner.dbl",

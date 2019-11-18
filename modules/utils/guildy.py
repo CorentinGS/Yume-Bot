@@ -12,6 +12,7 @@ class GuildY:
         self.greet: bool = False
         self.members_count: bool = False
         self.bl: bool = False
+        self.color: bool = False
 
         # Status
         self.setup: bool = False
@@ -30,6 +31,7 @@ class GuildY:
         self.mods = []
         self.admins = []
         self.mute = []
+        self.colors = {}
 
     async def set(self):
         set = await Settings().get_server_settings(str(self.id))
@@ -40,6 +42,8 @@ class GuildY:
         set['logging'] = self.logging
         set['automod'] = self.automod
         set['Display'] = self.members_count
+        set['Color'] = self.color
+
 
         # Channels
         set['category'] = self.count_category
@@ -54,6 +58,7 @@ class GuildY:
         # Status
         set['Setup'] = self.setup
         set['Vip'] = self.vip
+        set['Colors'] = self.colors
 
         await Settings().set_server_settings(str(self.id), set)
 
@@ -66,6 +71,8 @@ class GuildY:
         self.greet = set['Greet']
         self.members_count = set['Display']
         self.bl = set['bl']
+        self.color = set['Color']
+
 
         # Status
         self.setup = set['Setup']
@@ -80,6 +87,7 @@ class GuildY:
         self.mods = set['Mods']
         self.admins = set['Admins']
         self.mute = set['Mute']
+        self.colors = set['Colors']
 
 
 class Setup:
@@ -100,9 +108,22 @@ class Setup:
         set['Admins'] = []
         set['Mods'] = []
         set['Setup'] = False
+        set['Colors'] = {}
+        set['Color'] = False
 
         await Settings().set_server_settings(str(guild_id), set)
 
         return True
+
+    @staticmethod
+    async def refresh(guild_id: int):
+        set = await Settings().get_server_settings(str(guild_id))
+
+        if 'Colors' not in set:
+            set['Colors'] = {}
+        if 'Color' not in set:
+            set['Color'] = False
+
+        await Settings().set_server_settings(str(guild_id), set)
 
 # TODO: Déplacer les objets ici

@@ -8,6 +8,7 @@ from discord.ext import commands
 
 from modules.utils import checks, lists
 from modules.utils.db import Settings
+from modules.utils.guildy import Setup
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -147,15 +148,29 @@ class Owner(commands.Cog):
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def check_setup(self):
+    async def check_setup(self, ctx):
         for guild in self.bot.guilds:
+            if guild.id == '264445053596991498':
+                return
             set = await Settings().get_server_settings(str(guild.id))
             if set["Setup"] is False:
+                await Setup.new_guild(guild.id)
                 await guild.owner.send(f"Hey ! the YumeBot has received many improvements recently. "
                                        f"We have noticed that your discord: {guild.name} is not configured "
                                        f"for the new version which can lead to errors... "
                                        f"Please execute in a lounge of your discord {guild.name} "
                                        f"the following command: --setting reset")
+
+    @commands.command(hidden=True)
+    @checks.is_owner()
+    async def check_up(self, ctx):
+        for guild in self.bot.guilds:
+            set = await Settings().get_server_settings(str(guild.id))
+            if set["Setup"] is False:
+                await Setup.new_guild(guild.id)
+            else:
+                await Setup.refresh(guild.id)
+
 
     @commands.group(hidden=True)
     @checks.is_owner()

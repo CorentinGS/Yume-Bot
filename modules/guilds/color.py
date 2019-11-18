@@ -1,0 +1,133 @@
+import json
+
+import discord
+from discord.ext import commands
+
+from modules.utils import checks
+from modules.utils.guildy import GuildY
+
+
+class Color(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    with open('modules/guilds/colors.json', 'r') as cjson:
+        colors = json.load(cjson)
+
+    @commands.group()
+    @commands.guild_only()
+    async def color(self, ctx):
+        if not ctx.invoked_subcommand:
+            return
+
+    @color.command()
+    @commands.guild_only()
+    async def list(self, ctx):
+        await ctx.message.delete()
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
+        msg = "__Colors__\n\n"
+        str2 = "\n\nYou can also add these names : **http://www.html-color-names.com/**"
+        for color in guild.colors:
+            str1 = f"**{color}**\n"
+            msg = " ".join((msg, str1))
+        msg = " ".join((msg, str2))
+        await ctx.send(msg)
+
+    @color.command()
+    @checks.is_admin()
+    @commands.guild_only()
+    async def create(self, ctx, nom: str, hexa: str):
+        await ctx.message.delete()
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
+        if not guild.color:
+            return await ctx.send("Guild color is not activated")
+        if nom in guild.colors:
+            return await ctx.send('This name already exists. Please remove it first or use another name.')
+
+        pos = ctx.guild.me.roles[-1].position
+
+        hexa = hexa.lstrip('#')
+        r = int(hexa[0:2], 16)
+        g = int(hexa[2:4], 16)
+        b = int(hexa[4:6], 16)
+
+        color = discord.Colour.from_rgb(r, g, b)
+
+        role = await ctx.guild.create_role(name=nom, colour=color,
+                                           reason=f"Color role submitted by {ctx.author.name}|{ctx.author.id}")
+        await role.edit(position=pos)
+
+        await ctx.send("Role created", delete_after=3)
+        guild.colors[role.name] = role.id
+        await guild.set()
+
+    @color.command()
+    @commands.guild_only()
+    async def add(self, ctx, name):
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
+        if not guild.color:
+            return
+        if name in guild.colors:
+            role = discord.utils.get(ctx.guild.roles, id=guild.colors[name])
+            if not role:
+                guild.colors.pop(name, None)
+                await guild.set()
+                return await ctx.send("The role doesn't exist anymore. He has been removed...")
+
+            for x in ctx.author.roles:
+                if x.name in guild.colors:
+                    await ctx.author.remove_roles(x)
+            await ctx.author.add_roles(role)
+        elif name in self.colors:
+            pos = ctx.guild.me.roles[-1].position
+            hexa = self.colors[name]
+            hexa = hexa.lstrip('#')
+            r = int(hexa[0:2], 16)
+            g = int(hexa[2:4], 16)
+            b = int(hexa[4:6], 16)
+
+            color = discord.Colour.from_rgb(r, g, b)
+            role = await ctx.guild.create_role(name=name, colour=color,
+                                               reason=f"Color role submitted by {ctx.author.name}|{ctx.author.id}")
+            await role.edit(position=pos)
+            guild.colors[role.name] = role.id
+            await guild.set()
+
+            await ctx.send("Created : " + role.name)
+            await guild.set()
+
+
+    @color.command()
+    @checks.is_admin()
+    @commands.guild_only()
+    async def remove(self, ctx, name: str):
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
+        if name in guild.colors:
+            role = discord.utils.get(ctx.guild.roles, id=guild.colors[name])
+            guild.colors.pop(name, None)
+            if role:
+                await role.delete()
+            await guild.set()
+
+    '''
+    @color.command()
+    @checks.is_admin()
+    @commands.guild_only()
+    async def purge(self, ctx):
+        guild = GuildY(ctx.message.guild)
+        await guild.get()
+        for color in guild.colors:
+            role = discord.utils.get(ctx.guild.roles, id=guild.colors[color])
+            if role:
+                await role.delete()
+        guild.colors = {}
+        await guild.set()
+        await ctx.send("Purged", delete_after=3)
+    '''
+
+def setup(bot):
+    bot.add_cog(Color(bot))

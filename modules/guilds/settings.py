@@ -123,6 +123,25 @@ class Set(commands.Cog):
 
         await guild.set()
 
+        # Colors
+
+        msg = await ctx.send("Do you want to activate the Colors role ?")
+        for reaction in reactions:
+            await msg.add_reaction(reaction)
+
+        try:
+            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
+        except asyncio.TimeoutError:
+            await ctx.send('👎', delete_after=3)
+        else:
+            if reaction.emoji == '✅':
+                await msg.delete()
+                guild.color = True
+            elif reaction.emoji == '🚫':
+                guild.color = False
+
+        await guild.set()
+
         # Member stats channels
         msg = await ctx.send("Do you want to activate the member stats channels ?")
         for reaction in reactions:
@@ -169,6 +188,7 @@ class Set(commands.Cog):
         await ctx.send('Setup is now done ! Have a good time')
 
         guild.setup = True
+        guild.color = {}
         await guild.set()
 
     @setting.command()
@@ -218,6 +238,24 @@ class Set(commands.Cog):
             await ctx.send("Settings updated", delete_after=3)
         else:
             await ctx.send("You're not VIP. **Our automod system is VIP only.** "
+                           "If you want to become VIP, feel free to **join our support discord** and ask to become VIP.")
+
+    @setting.command()
+    @commands.guild_only()
+    @checks.is_admin()
+    async def color(self, ctx, value: bool = True):
+        guild = GuildY(ctx.guild)
+        await guild.get()
+
+        glob = await Settings().get_glob_settings()
+
+        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP'] or ctx.author.id in glob['VIP']:
+            guild.vip = True
+            guild.color = value
+            await guild.set()
+            await ctx.send("Settings updated", delete_after=3)
+        else:
+            await ctx.send("You're not VIP. **Our color system is VIP only.** "
                            "If you want to become VIP, feel free to **join our support discord** and ask to become VIP.")
 
     @commands.Cog.listener()
