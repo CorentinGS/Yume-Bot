@@ -8,3 +8,4 @@ wikipedia
 python-dateutil
 dblpy
 pyyaml
+multidict

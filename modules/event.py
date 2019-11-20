@@ -112,7 +112,7 @@ class Event(commands.Cog):
         glob = await Settings().get_glob_settings()
         if 'AFK' in glob:
             if author.id in glob['AFK']:
-                if message.content is '--afk':
+                if message.content == '--afk':
                     return
                 glob['AFK'].remove(author.id)
                 await Settings().set_glob_settings(glob)
