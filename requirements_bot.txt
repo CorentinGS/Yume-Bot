@@ -2,9 +2,9 @@ motor==2.0.0
 discord.py
 romme==0.1.0
 discord
-beautifulsoup4==4.8.1
-Flask==1.1.1
-wikipedia==1.4.0
+beautifulsoup4
+Flask
+wikipedia
 python-dateutil
 dblpy
 pyyaml
