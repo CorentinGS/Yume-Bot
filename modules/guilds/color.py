@@ -92,11 +92,11 @@ class Color(commands.Cog):
             color = discord.Colour.from_rgb(r, g, b)
             role = await ctx.guild.create_role(name=name, colour=color,
                                                reason=f"Color role submitted by {ctx.author.name}|{ctx.author.id}")
-            await role.edit(position=pos)
             guild.colors[role.name] = role.id
             await guild.set()
 
             await ctx.send("Created : " + role.name)
+            await role.edit(position=pos-1)
             await guild.set()
 
 
