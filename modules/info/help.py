@@ -19,7 +19,6 @@ class Help(commands.Cog):
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
             embed = await Embeds().format_commands_embed(ctx, self.bot.user.avatar_url)
-
             await ctx.send(embed=embed)
 
     @help.command()
