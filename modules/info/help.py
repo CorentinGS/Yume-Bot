@@ -61,7 +61,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def guild(self, ctx):
-        liste = "`setting get`, `setting reset`, `setting setup`, `setting role mod`, `setting role admin`, `arr`, `setting color`, `color create`, `color list`" \
+        liste = "`setting get`, `setting reset`, `setting setup`, `setting role mod`, `setting role admin`, `arr`, `setting color`, `color create`, `color list`, " \
                 "`color add`, `color remove`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Guild", liste)
         await ctx.send(embed=embed)
