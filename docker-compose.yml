@@ -28,8 +28,8 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "200k"
-        max-file: "5"
+        max-size: "500k"
+        max-file: "3"
 
   web:
     restart: always

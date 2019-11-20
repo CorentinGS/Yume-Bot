@@ -711,8 +711,6 @@ class Games(commands.Cog):
 
         string = random.choice(self.wyr)
 
-
-
         # Build Embed
         embed = discord.Embed()
         embed.title = "Would you rather.."
@@ -725,7 +723,6 @@ class Games(commands.Cog):
         """Never have I"""
 
         string = random.choice(self.nhie)
-
 
         # Build Embed
         embed = discord.Embed()
@@ -776,6 +773,7 @@ class Games(commands.Cog):
         embed.title = f"{author.name} dared {user.name}"
         embed.description = string.format(name=name)
         await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Games(bot))
