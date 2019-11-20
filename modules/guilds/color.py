@@ -77,10 +77,6 @@ class Color(commands.Cog):
                 await guild.set()
                 return await ctx.send("The role doesn't exist anymore. He has been removed...")
 
-            for x in ctx.author.roles:
-                if x.name in guild.colors:
-                    await ctx.author.remove_roles(x)
-            await ctx.author.add_roles(role)
         elif name in self.colors:
             pos = ctx.guild.me.roles[-1].position
             hexa = self.colors[name]
@@ -96,8 +92,12 @@ class Color(commands.Cog):
             await guild.set()
 
             await ctx.send("Created : " + role.name)
-            await role.edit(position=pos-1)
+            await role.edit(position=pos)
             await guild.set()
+        for x in ctx.author.roles:
+            if x.name in guild.colors:
+                await ctx.author.remove_roles(x)
+        await ctx.author.add_roles(role)
 
 
     @color.command()
