@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import collections
 from random import randint
 
@@ -52,6 +62,7 @@ class Level(commands.Cog):
         if user is None:
             user = ctx.message.author
 
+        ranks = {}
         set = await Settings().get_user_settings(str(ctx.message.guild.id))
 
         if str(user.id) not in set:
@@ -59,15 +70,27 @@ class Level(commands.Cog):
             set[str(user.id)] = d
             await Settings().set_user_settings(str(ctx.message.guild.id), set)
 
+        for id in set.keys():
+            if id == '_id':
+                continue
+            toto = set[str(id)]
+            ranks[id] = toto["total"]
+
+        sorted_x = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
+        sorted_dict = collections.OrderedDict(sorted_x).copy()
+        print(sorted_dict)
+        rank = list(sorted_dict.keys()).index(str(user.id))
+
         dic = set[str(user.id)]
         em = discord.Embed()
         em.set_author(name=user.name, icon_url=user.avatar_url)
+        em.add_field(name="**Rank**", value=str(rank + 1), inline=False)
         em.add_field(name="**Level**", value=dic["level"])
         em.add_field(name="**Progress**",
                      value="{} / {}".format(dic['xp'], dic['reach']))
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(aliases=["scoreboard"])
     async def leaderboard(self, ctx):
         set = await Settings().get_user_settings(str(ctx.message.guild.id))
         ranks = {}
