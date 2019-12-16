@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import json
 
 import discord
@@ -56,7 +66,6 @@ class Color(commands.Cog):
     @color.command()
     @commands.guild_only()
     async def list(self, ctx):
-        await ctx.message.delete()
         guild = GuildY(ctx.message.guild)
         await guild.get()
         msg = "__Colors__\n\n"
@@ -71,7 +80,6 @@ class Color(commands.Cog):
     @checks.is_admin()
     @commands.guild_only()
     async def create(self, ctx, nom: str, hexa: str):
-        await ctx.message.delete()
         guild = GuildY(ctx.message.guild)
         await guild.get()
         if not guild.color:

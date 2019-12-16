@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import random
 
 import discord
@@ -62,7 +72,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def hug(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
         if not user:
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=hug")
@@ -73,7 +82,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def pat(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
         if not user:
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=pat")
@@ -84,7 +92,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def kiss(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
         if not user:
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=kiss")
@@ -95,7 +102,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def lick(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
         if not user:
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=lick")
@@ -106,7 +112,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def slap(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
         if not user:
             user = ctx.author
         r = requests.get("https://rra.ram.moe/i/r?type=slap")
@@ -117,7 +122,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def feed(self, ctx, user: discord.Member = None):
-        await ctx.message.delete()
         string = random.choice(self.feed)
 
         if not user:
@@ -129,7 +133,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def cry(self, ctx):
-        await ctx.message.delete()
         r = requests.get("https://rra.ram.moe/i/r?type=cry")
         r = r.json()
         em = await Embeds.format_social_embed(f"{ctx.author} cry", "cry", f"https://rra.ram.moe{r['path']}",
@@ -138,7 +141,6 @@ class Social(commands.Cog):
 
     @commands.command()
     async def lewd(self, ctx):
-        await ctx.message.delete()
         r = requests.get("https://rra.ram.moe/i/r?type=lewd")
         r = r.json()
         em = await Embeds.format_social_embed(f"{ctx.author} is lewd", "lewd", f"https://rra.ram.moe{r['path']}",

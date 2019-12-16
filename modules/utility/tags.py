@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import json
 
 from discord.ext import commands
@@ -48,7 +58,6 @@ class Tags(commands.Cog):
 
     @commands.command()
     async def tag(self, ctx, *, name: str = None):
-        await ctx.message.delete()
 
         if name in tags:
             await ctx.send(f"{tags[str(name)]}")
@@ -62,7 +71,6 @@ class Tags(commands.Cog):
 
     @tags.command()
     async def get(self, ctx):
-        await ctx.message.delete()
         await ctx.send('[%s]' % ', '.join(map(str, tags)))
 
     @tags.command()

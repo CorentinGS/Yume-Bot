@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 from datetime import datetime
 
 import discord
@@ -47,7 +57,6 @@ class Utilities(commands.Cog):
     @commands.command(aliases=["server"])
     @commands.guild_only()
     async def info(self, ctx):
-        await ctx.message.delete()
 
         server = ctx.message.guild
 
@@ -129,7 +138,6 @@ class Utilities(commands.Cog):
         """
         How many members do u have ?
         """
-        await ctx.message.delete()
         onlines = 0
         bots = 0
         server = ctx.message.guild
@@ -161,7 +169,6 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def owner(self, ctx):
-        await ctx.message.delete()
         server = ctx.message.guild
 
         embed = discord.Embed(
@@ -216,7 +223,6 @@ class Utilities(commands.Cog):
         """
         Who is he ?
         """
-        await ctx.message.delete()
         if not user:
             user = ctx.author
 
@@ -256,7 +262,6 @@ class Utilities(commands.Cog):
         """
 
         user = await self.bot.fetch_user(id)
-        await ctx.message.delete()
 
         embed = discord.Embed(
             title="{}".format(user.name),

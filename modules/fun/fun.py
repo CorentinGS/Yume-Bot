@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import datetime
 import random
 import urllib.parse
@@ -56,8 +66,6 @@ class Fun(commands.Cog):
         """
         Ask to the 8Ball something
         """
-        await ctx.message.delete()
-
         if question is None:
             await ctx.send('Oh shit! The crystal ball fell off.... Come back later')
 
@@ -71,7 +79,6 @@ class Fun(commands.Cog):
         """
         Nekos are life
         """
-        await ctx.message.delete()
         r = requests.get('https://nekos.life/api/v2/img/meow')
         r = r.json()
         await ctx.send(r["url"])
@@ -81,7 +88,6 @@ class Fun(commands.Cog):
         """
         Doggy !!!
         """
-        await ctx.message.delete()
         r = requests.get('https://random.dog/woof.json')
         r = r.json()
         await ctx.send(r["url"])
@@ -92,7 +98,6 @@ class Fun(commands.Cog):
         """
         What's his love power
         """
-        await ctx.message.delete()
         if user is None:
             user = ctx.message.author
         seed = user.discriminator
@@ -118,7 +123,6 @@ class Fun(commands.Cog):
         """
         Display the Republican Date
         """
-        await ctx.message.delete()
         today = datetime.date.today()
         rd = RepublicanDate.from_gregorian(today.year, today.month, today.day)
 
@@ -167,7 +171,6 @@ class Fun(commands.Cog):
         """
         Trump is a meme
         """
-        await ctx.message.delete()
         async with ctx.channel.typing():
             if not tag:
                 response = requests.get("https://api.tronalddump.io/random/quote")
@@ -183,7 +186,6 @@ class Fun(commands.Cog):
         """
         Chuck Norris is GOD
         """
-        await ctx.message.delete()
         async with ctx.channel.typing():
             r = requests.get("https://api.chucknorris.io/jokes/random")
             r = r.json()
@@ -237,7 +239,6 @@ class Fun(commands.Cog):
         else:
             url = f"http://lmgtfy.com/?q={urllib.parse.quote_plus(msg.lower().strip())}"
         await ctx.send(url)
-        await ctx.message.delete()
 
     @commands.command(aliases=["love"])
     @commands.guild_only()

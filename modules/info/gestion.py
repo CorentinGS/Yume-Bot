@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import asyncio
 import json
 import random
@@ -65,8 +75,6 @@ class Gestion(commands.Cog):
                 channel = chan
         tip = random.choice(lists.tip)
 
-        await ctx.message.delete()
-
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(
             name=f"Suggestion from {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
@@ -82,8 +90,6 @@ class Gestion(commands.Cog):
 
     @commands.command()
     async def feedback(self, ctx):
-
-        await ctx.message.delete()
 
         auth = ctx.message.author
         guild = ctx.message.guild

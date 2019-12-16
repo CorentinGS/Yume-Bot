@@ -51,6 +51,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import asyncio
 import typing
 from typing import Union
@@ -102,7 +112,6 @@ class Moderation(commands.Cog):
         """
         Get a sanction report
         """
-        await ctx.message.delete()
         if isinstance(sanction, int):
             em = await Sanction().find_sanction_id(ctx, sanction)
             await ctx.send(embed=em)
@@ -142,7 +151,6 @@ class Moderation(commands.Cog):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
-        await ctx.message.delete()
 
         guildy = GuildY(ctx.message.guild)
         await guildy.get()
@@ -244,7 +252,6 @@ class Moderation(commands.Cog):
         guildy = GuildY(ctx.message.guild)
         await guildy.get()
 
-        await ctx.message.delete()
 
         await ctx.guild.kick(user)
 
@@ -256,7 +263,6 @@ class Moderation(commands.Cog):
     @checks.is_admin()
     async def hackban(self, ctx, id: MemberID, *, reason: ModReason = None):
 
-        await ctx.message.delete()
         user = discord.Object(id=id)
         await ctx.guild.ban(user)
 
@@ -274,7 +280,6 @@ class Moderation(commands.Cog):
     @checks.is_admin()
     async def unban(self, ctx, id: MemberID):
 
-        await ctx.message.delete()
         user = discord.Object(id=id)
 
         try:
@@ -296,7 +301,6 @@ class Moderation(commands.Cog):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
-        await ctx.message.delete()
 
         await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
@@ -308,64 +312,51 @@ class Moderation(commands.Cog):
 
         await self.log_send(ctx, guildy, em)
 
-    @commands.command(aliases=['clean', 'clear'])
+    @commands.command(case_insensitive=True, aliases=['clean', 'clear'])
     @checks.is_mod()
-    async def purge(self, ctx, amount: int):
-
-        await ctx.message.delete()
-
-        if amount > 100:
-            return await ctx.send("You can't purge more than 100messages.")
-        try:
-            await ctx.channel.purge(limit=amount + 1)
-
-        except discord.HTTPException:
-            pass
+    async def purge(self, ctx, amount: int, arg: str = None):
+        if not arg:
+            await ctx.channel.purge(limit=amount, bulk=True)
+        elif arg.lower() == 'text':
+            def is_text(m):
+                return not m.attachments
+            await ctx.channel.purge(limit=amount + 1, check=is_text, bulk=True)
+        elif arg.lower() == "image":
+            def is_image(m):
+                return m.attachments
+            await ctx.channel.purge(limit=amount + 1, check=is_image, bulk=True)
 
     @commands.command(aliases=['deafen'])
     @checks.is_mod()
     async def deaf(self, ctx, user: discord.Member):
-        await ctx.message.delete()
-
         await user.edit(deafen=True)
 
     @commands.command(aliases=['undeafen'])
     @checks.is_mod()
     async def undeaf(self, ctx, user: discord.Member):
-        await ctx.message.delete()
-
         await user.edit(deafen=False)
 
     @commands.command(aliases=['novoice'])
     @checks.is_mod()
     async def vmute(self, ctx, user: discord.Member):
-        await ctx.message.delete()
-
         await user.edit(mute=True)
 
     @commands.command()
     @checks.is_mod()
     async def unvmute(self, ctx, user: discord.Member):
-        await ctx.message.delete()
-
         await user.edit(mute=False)
 
     @commands.command()
     @checks.is_mod()
     async def nick(self, ctx, user: discord.Member, name: str = None):
-        await ctx.message.delete()
-
         await user.edit(nick=name)
 
     @commands.command()
     @checks.is_admin()
     async def massban(self, ctx, *members: MemberID):
-        await ctx.message.delete()
-
         try:
             for member_id in members:
                 await ctx.guild.ban(discord.Object(id=member_id), reason="{} - massban".format(ctx.message.author))
-
         except Exception as e:
             return await ctx.send(e)
 
@@ -381,8 +372,6 @@ class Moderation(commands.Cog):
     @commands.command()
     @checks.is_admin()
     async def mention(self, ctx, role: str):
-
-        await ctx.message.delete()
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
 
         if not rolemention.mentionable:
@@ -394,7 +383,6 @@ class Moderation(commands.Cog):
     @commands.command()
     @checks.is_admin()
     async def annonce(self, ctx, role: str, *, content):
-        await ctx.message.delete()
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
 
         if not rolemention.mentionable:
@@ -413,8 +401,6 @@ class Moderation(commands.Cog):
 
     @topic.command()
     async def get(self, ctx, channel: discord.TextChannel = None):
-        await ctx.message.delete()
-
         if channel is None:
             channel = ctx.channel
 
@@ -439,8 +425,6 @@ class Moderation(commands.Cog):
     @topic.command()
     @checks.is_admin()
     async def set(self, ctx, channel: discord.TextChannel = None, *, topic: str):
-        await ctx.message.delete()
-
         if channel is None:
             channel = ctx.channel
 
@@ -455,12 +439,11 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_admin()
+    @checks.is_vip()
     async def addrole(self, ctx, role: Union[str, discord.Role]):
         """
         Add a role to everyone
         """
-        await ctx.message.delete()
-        # TODO: Informer sur les risques !
         if not isinstance(role, discord.Role):
             try:
                 role = discord.utils.get(ctx.guild.roles, name=role)
@@ -481,12 +464,10 @@ class Moderation(commands.Cog):
         """
         Refresh blacklist
         """
-        # TODO: Informer sur les risques !
         guild = GuildY(ctx.guild)
         await guild.get()
         if not guild.bl:
             return
-        await ctx.message.delete()
         glob = await Settings().get_glob_settings()
         if 'Blacklist' in glob:
             members = ctx.guild.members

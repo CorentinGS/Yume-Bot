@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import json
 
 import aiohttp
@@ -73,7 +83,6 @@ class General(commands.Cog):
         """
         Full Weather report
         """
-        await ctx.message.delete()
 
         result = url_meteo(city)
         fetch = data_fetch(result)
@@ -113,7 +122,6 @@ class General(commands.Cog):
         """
         Simple Weather report
         """
-        await ctx.message.delete()
 
         result = url_meteo(city)
         fetch = data_fetch(result)
@@ -142,7 +150,6 @@ class General(commands.Cog):
         """
         Set yourself as AFK
         """
-        await ctx.message.delete()
         user = ctx.message.author
 
         setting = await Settings().get_glob_settings()

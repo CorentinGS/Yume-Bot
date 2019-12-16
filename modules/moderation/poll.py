@@ -34,6 +34,16 @@ source: https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/poll.py
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import asyncio
 
 import discord
@@ -78,8 +88,10 @@ class Polls(commands.Cog):
                 break
 
             answers.append((to_emoji(i), entry.clean_content))
-
-        await ctx.channel.delete_messages(messages)
+        try:
+            await ctx.channel.delete_messages(messages)
+        except discord.HTTPException:
+            pass
 
         answer = '\n'.join(f'{keycap}: {content}' for keycap, content in answers)
         actual_poll = await ctx.send(f'{ctx.author} asks: {question}\n\n{answer}')
