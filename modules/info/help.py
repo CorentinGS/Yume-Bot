@@ -272,7 +272,286 @@ class Help(commands.Cog):
         await self.command_help(ctx, self.bot.user, "Strike", "Strike someone", "--strike <user> [reason]",
                                 "`--strike @Apple Stealing Information`")
 
-    # TODO: Ajouter les dernières commandes de modération à la doc !
+    @help.command()
+    async def mention(self, ctx):
+        await self.command_help(ctx, self.bot.user, "mention", "Allows you to mention any role", "--mention <role name>",
+        "--mention Moderator")
+
+    @help.command()
+    async def annonce(self, ctx):
+        await self.command_help(ctx, self.bot.user, "annonce", "Create an announcement", "--annonce <role name> [message]",
+        "--annonce @Member Merry Christmas")
+
+    @help.command()
+    async def massban(self, ctx):
+        await self.command_help(ctx, self.bot.user, "massban", "HackBan multiple users", "--massban [reason] <user_ids>",
+        "--massban 187900923014676490")
+
+    @help.command()
+    async def reset(self, ctx):
+        await self.command_help(ctx, self.bot.user, "reset", "reset a users sanctions", "--reset <user/user_id>",
+        "`--rank @Sp8ce`\n`--reset 411926525751853067`")
+
+    @help.command()
+    async def addrole(self, ctx):
+        await self.command_help(ctx, self.bot.user, "addrole", "Add a role to everyone", "--addrole <role>",
+        "--addrole @Member")
+
+    @help.command()
+    async def fresh(self, ctx):
+        await self.command_help(ctx, self.bot.user, "fresh", "Refresh blacklist", "--fresh")
+
+    @help.command()
+    async def poll(self, ctx):
+        await self.command_help(ctx, self.bot.user, "poll", "Create a poll", "--poll <question>",
+        "--poll What is the game of the month?")
+
+    @help.command()
+    async def quickpoll(self, ctx):
+        await self.command_help(ctx, self.bot.user, "quickpoll", "Create a poll with a single command", "--quickpoll <question> <answer> <answer> [answers]",
+        "--quickpoll \"What do you think about Communism?\" \"Good Idea\" \"Bad idea?\"")
+
+    @help.command()
+    async def rank(self, ctx):
+        await self.command_help(ctx, self.bot.user, "Rank", "Get someones Rank", "--rank <user/user_id>",
+                                "`--rank @Erik`\n`--rank 226870774697426955`")
+
+    @help.command()
+    async def level_config(self, ctx):
+        await self.command_help(ctx, self.bot.user, "level config", "Set up automatic roles for levels", "--level config <level> <role>",
+                                "--level config 10 @No Life")
+
+    @help.command()
+    async def leaderboard(self, ctx):
+        await self.command_help(ctx, self.bot.user, "leaderboard", "Show the XP leaderboard of your server", "--leaderboard")
+
+    @help.command()
+    async def setting_get(self, ctx):
+        await self.command_help(ctx, self.bot.user, "setting get", "Show the current server settings", "--setting get")
+
+    @help.command()
+    async def setting_reset(self, ctx):
+        await self.command_help(ctx, self.bot.user, "setting reset", "Reset the server settings", "--setting reset")
+
+    @help.command()
+    async def setting_setup(self, ctx):
+        await self.command_help(ctx, self.bot.user, "setting setup", "Set up the server settings", "setting setup")
+
+    @help.command()
+    async def setting_role_mod(self, ctx):
+        await self.command_help(ctx, self.bot.user, "setting role mod", "Make a role the Moderator role", "--setting role mod <role>",
+                                "--setting role mod @Moderator")
+
+    @help.command()
+    async def setting_role_admin(self, ctx):
+        await self.command_help(ctx, self.bot.user, "setting role admin", "Make a role the Admin role", "--setting role admin <role>",
+                                "--setting role admin @Admin")
+
+    @help.command()
+    async def arr(self, ctx):
+        await self.command_help(ctx, self.bot.user, "arr", "Add a reaction role", "--arr <channel> <message_id> <role> <emoji>",
+                                "--arr #choose-role 659832029591896065 @ :regional_indicator_a: ")
+    #unfinished
+    @help.command()
+    async def setting_color(self, ctx):
+        await self.command_help(ctx, self.bot.user, "setting color", "Do something only VIP's can", "--setting color",
+                                "--setting color")
+
+    @help.command()
+    async def color_list(self, ctx):
+        await self.command_help(ctx, self.bot.user, "color list", "Show the html color names", "--color list")
+    #unfinished
+    @help.command()
+    async def color_add(self, ctx):
+        await self.command_help(ctx, self.bot.user, "color add", "Do something", "--color add <name>",
+                                "--color add ")
+    #unfinished
+    @help.command()
+    async def color_remove(self, ctx):
+        await self.command_help(ctx, self.bot.user, "color remove", "Do something", "--color remove <name>",
+                                "--color remove ")
+
+    @help.command()
+    async def color_remove(self, ctx):
+        await self.command_help(ctx, self.bot.user, "color remove", "Do something", "--color remove <name>",
+                                "--color remove ")
+
+    @help.command()
+    async def rd(self, ctx):
+        await self.command_help(ctx, self.bot.user, "rd", "Do something", "--rd <name>",
+                                "--rd ")
+
+    @help.command()
+    async def 8ball(self, ctx):
+        await self.command_help(ctx, self.bot.user, "8ball", "Do something", "--8ball <name>",
+                                "--8ball ")
+
+    @help.command()
+    async def cat(self, ctx):
+        await self.command_help(ctx, self.bot.user, "cat", "Do something", "--cat <name>",
+                                "--cat ")
+
+    @help.command()
+    async def dog(self, ctx):
+        await self.command_help(ctx, self.bot.user, "dog", "Do something", "--dog <name>",
+                                "--dog ")
+
+    @help.command()
+    async def lovepower(self, ctx):
+        await self.command_help(ctx, self.bot.user, "lovepower", "Do something", "--lovepower <name>",
+                                "--lovepower ")
+
+    @help.command()
+    async def choose(self, ctx):
+        await self.command_help(ctx, self.bot.user, "choose", "Do something", "--choose <name>",
+                                "--choose ")
+
+    @help.command()
+    async def linux(self, ctx):
+        await self.command_help(ctx, self.bot.user, "linux", "Do something", "--linux <name>",
+                                "--linux ")
+
+    @help.command()
+    async def number(self, ctx):
+        await self.command_help(ctx, self.bot.user, "number", "Do something", "--number <name>",
+                                "--number ")
+
+    @help.command()
+    async def trump(self, ctx):
+        await self.command_help(ctx, self.bot.user, "trump", "Do something", "--trump <name>",
+                                "--trump ")
+
+    @help.command()
+    async def chucknorris(self, ctx):
+        await self.command_help(ctx, self.bot.user, "chucknorris", "Do something", "--chucknorris <name>",
+                                "--chucknorris ")
+
+    @help.command()
+    async def geek_joke(self, ctx):
+        await self.command_help(ctx, self.bot.user, "geek_joke", "Do something", "--geek_joke <name>",
+                                "--geek_joke ")
+
+    @help.command()
+    async def cookie(self, ctx):
+        await self.command_help(ctx, self.bot.user, "cookie", "Do something", "--cookie <name>",
+                                "--cookie ")
+
+    @help.command()
+    async def today(self, ctx):
+        await self.command_help(ctx, self.bot.user, "today", "Do something", "--today <name>",
+                                "--today ")
+
+    @help.command()
+    async def ice(self, ctx):
+        await self.command_help(ctx, self.bot.user, "ice", "Do something", "--ice <name>",
+                                "--ice ")
+
+    @help.command()
+    async def lmgtfy(self, ctx):
+        await self.command_help(ctx, self.bot.user, "lmgtfy", "Do something", "--lmgtfy <name>",
+                                "--lmgtfy ")
+
+    @help.command()
+    async def love_calc(self, ctx):
+        await self.command_help(ctx, self.bot.user, "love_calc", "Do something", "--love_calc <name>",
+                                "--love_calc ")
+
+    @help.command()
+    async def urban(self, ctx):
+        await self.command_help(ctx, self.bot.user, "urban", "Do something", "--urban <name>",
+                                "--urban ")
+
+    @help.command()
+    async def hug(self, ctx):
+        await self.command_help(ctx, self.bot.user, "hug", "Do something", "--hug <name>",
+                                "--hug ")
+
+    @help.command()
+    async def pat(self, ctx):
+        await self.command_help(ctx, self.bot.user, "pat", "Do something", "--pat <name>",
+                                "--pat ")
+
+    @help.command()
+    async def kiss(self, ctx):
+        await self.command_help(ctx, self.bot.user, "kiss", "Do something", "--kiss <name>",
+                                "--kiss ")
+
+    @help.command()
+    async def lewd(self, ctx):
+        await self.command_help(ctx, self.bot.user, "lewd", "Do something", "--lewd <name>",
+                                "--lewd ")
+
+    @help.command()
+    async def lick(self, ctx):
+        await self.command_help(ctx, self.bot.user, "lick", "Do something", "--lick <name>",
+                                "--lick ")
+
+    @help.command()
+    async def slap(self, ctx):
+        await self.command_help(ctx, self.bot.user, "slap", "Do something", "--slap <name>",
+                                "--slap ")
+
+    @help.command()
+    async def cry(self, ctx):
+        await self.command_help(ctx, self.bot.user, "cry", "Do something", "--cry <name>",
+                                "--cry ")
+
+    @help.command()
+    async def hug(self, ctx):
+        await self.command_help(ctx, self.bot.user, "hug", "Do something", "--hug <name>",
+                                "--hug ")
+
+    @help.command()
+    async def pat(self, ctx):
+        await self.command_help(ctx, self.bot.user, "pat", "Do something", "--pat <name>",
+                                "--pat ")
+
+    @help.command()
+    async def kiss(self, ctx):
+        await self.command_help(ctx, self.bot.user, "kiss", "Do something", "--kiss <name>",
+                                "--kiss ")
+
+    @help.command()
+    async def lewd(self, ctx):
+        await self.command_help(ctx, self.bot.user, "lewd", "Do something", "--lewd <name>",
+                                "--lewd ")
+
+    @help.command()
+    async def lick(self, ctx):
+        await self.command_help(ctx, self.bot.user, "lick", "Do something", "--lick <name>",
+                                "--lick ")
+
+    @help.command()
+    async def slap(self, ctx):
+        await self.command_help(ctx, self.bot.user, "slap", "Do something", "--slap <name>",
+                                "--slap ")
+
+    @help.command()
+    async def cry(self, ctx):
+        await self.command_help(ctx, self.bot.user, "cry", "Do something", "--cry <name>",
+                                "--cry ")
+
+    @help.command()
+    async def truth(self, ctx):
+        await self.command_help(ctx, self.bot.user, "truth", "Do something", "--truth <name>",
+                                "--truth ")
+
+    @help.command()
+    async def dare(self, ctx):
+        await self.command_help(ctx, self.bot.user, "dare", "Do something", "--dare <name>",
+                                "--dare ")
+
+    @help.command()
+    async def wyr(self, ctx):
+        await self.command_help(ctx, self.bot.user, "wyr", "Do something", "--wyr <name>",
+                                "--wyr ")
+
+    @help.command()
+    async def nhie(self, ctx):
+        await self.command_help(ctx, self.bot.user, "nhie", "Do something", "--nhie <name>",
+                                "--nhie ")
+    
+    # TODO: finish the a few commands
 
     @help.command()
     async def admin(self, ctx):
@@ -288,7 +567,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def guild(self, ctx):
-        liste = "`setting get`, `setting reset`, `setting setup`, `setting role mod`, `setting role admin`, `arr`, `setting color`, `color create`, `color list`, " \
+        liste = "`setting get`, `setting reset`, `setting setup`, `setting role mod`, `setting role admin`, `arr`, `setting color`, `color list`, " \
                 "`color add`, `color remove`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Guild", liste)
         await ctx.send(embed=embed)
