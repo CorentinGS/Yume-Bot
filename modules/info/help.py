@@ -41,6 +41,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import discord
 from discord.ext import commands
 
@@ -254,12 +264,12 @@ class Help(commands.Cog):
 
     @help.command()
     async def sanctions(self, ctx):
-        await self.command_help(ctx, self.bot.user, "Retrieves the list of sanctions of an user", "--sanctions <user>",
+        await self.command_help(ctx, self.bot.user, "Sanctions", "Retrieves the list of sanctions of an user", "--sanctions <user>",
                                 "`--sanction @Totoro`")
 
     @help.command()
     async def strike(self, ctx):
-        await self.command_help(ctx, self.bot.user, "Strike someone", "--strike <user> [reason]",
+        await self.command_help(ctx, self.bot.user, "Strike", "Strike someone", "--strike <user> [reason]",
                                 "`--strike @Apple Stealing Information`")
 
     # TODO: Ajouter les dernières commandes de modération à la doc !
