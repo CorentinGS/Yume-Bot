@@ -353,184 +353,131 @@ class Help(commands.Cog):
                                 "--color remove ")
 
     @help.command()
-    async def color_remove(self, ctx):
-        await self.command_help(ctx, self.bot.user, "color remove", "Do something", "--color remove <name>",
-                                "--color remove ")
-
-    @help.command()
     async def rd(self, ctx):
-        await self.command_help(ctx, self.bot.user, "rd", "Do something", "--rd <name>",
-                                "--rd ")
+        await self.command_help(ctx, self.bot.user, "rd", "Roll a dice", "--rd")
 
-    @help.command()
-    async def 8ball(self, ctx):
-        await self.command_help(ctx, self.bot.user, "8ball", "Do something", "--8ball <name>",
-                                "--8ball ")
+    @help.command(aliases=['8ball'])
+    async def eightball(self, ctx):
+        await self.command_help(ctx, self.bot.user, "8ball", "Ask the 8ball a question", "--8ball <question>",
+                                "--8ball Do I have depression?")
 
     @help.command()
     async def cat(self, ctx):
-        await self.command_help(ctx, self.bot.user, "cat", "Do something", "--cat <name>",
-                                "--cat ")
+        await self.command_help(ctx, self.bot.user, "cat", "Show a random cat", "--cat")
 
     @help.command()
     async def dog(self, ctx):
-        await self.command_help(ctx, self.bot.user, "dog", "Do something", "--dog <name>",
-                                "--dog ")
+        await self.command_help(ctx, self.bot.user, "dog", "Show a random dog", "--dog")
 
     @help.command()
     async def lovepower(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lovepower", "Do something", "--lovepower <name>",
-                                "--lovepower ")
+        await self.command_help(ctx, self.bot.user, "lovepower", "What's your love power?", "--lovepower <user>",
+                                "--lovepower @Zekro")
 
     @help.command()
     async def choose(self, ctx):
-        await self.command_help(ctx, self.bot.user, "choose", "Do something", "--choose <name>",
-                                "--choose ")
+        await self.command_help(ctx, self.bot.user, "choose", "Let YumeBot choose!", "--choose <option> <option> [options]",
+                                "--choose Intel Amd")
 
     @help.command()
     async def linux(self, ctx):
-        await self.command_help(ctx, self.bot.user, "linux", "Do something", "--linux <name>",
-                                "--linux ")
+        await self.command_help(ctx, self.bot.user, "linux", "A random linux-related fact", "--linux")
 
     @help.command()
     async def number(self, ctx):
-        await self.command_help(ctx, self.bot.user, "number", "Do something", "--number <name>",
-                                "--number ")
+        await self.command_help(ctx, self.bot.user, "number", "Number facts", "--number [number]","--number 15")
 
     @help.command()
     async def trump(self, ctx):
-        await self.command_help(ctx, self.bot.user, "trump", "Do something", "--trump <name>",
-                                "--trump ")
+        await self.command_help(ctx, self.bot.user, "trump", "A random trump quote", "--trump")
 
     @help.command()
     async def chucknorris(self, ctx):
-        await self.command_help(ctx, self.bot.user, "chucknorris", "Do something", "--chucknorris <name>",
-                                "--chucknorris ")
+        await self.command_help(ctx, self.bot.user, "chucknorris", "A random Chuck Norris joke", "--chucknorris")
 
     @help.command()
     async def geek_joke(self, ctx):
-        await self.command_help(ctx, self.bot.user, "geek_joke", "Do something", "--geek_joke <name>",
-                                "--geek_joke ")
+        await self.command_help(ctx, self.bot.user, "geek_joke", "A random geek joke", "--geek_joke")
 
     @help.command()
     async def cookie(self, ctx):
-        await self.command_help(ctx, self.bot.user, "cookie", "Do something", "--cookie <name>",
-                                "--cookie ")
+        await self.command_help(ctx, self.bot.user, "cookie", "Give someone a cookie", "--cookie <user>",
+                                "--cookie @NoU")
 
     @help.command()
     async def today(self, ctx):
-        await self.command_help(ctx, self.bot.user, "today", "Do something", "--today <name>",
-                                "--today ")
+        await self.command_help(ctx, self.bot.user, "today", "Something that happend on this day in history", "--today")
 
     @help.command()
     async def ice(self, ctx):
-        await self.command_help(ctx, self.bot.user, "ice", "Do something", "--ice <name>",
-                                "--ice ")
+        await self.command_help(ctx, self.bot.user, "ice", "Give someone Ice Cream", "--ice <user>",
+                                "--ice @Para")
 
     @help.command()
     async def lmgtfy(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lmgtfy", "Do something", "--lmgtfy <name>",
-                                "--lmgtfy ")
+        await self.command_help(ctx, self.bot.user, "lmgtfy", "Let me google this for you", "--lmgtfy [question]",
+                                "--lmgtfy Do pigs fly?")
 
     @help.command()
     async def love_calc(self, ctx):
-        await self.command_help(ctx, self.bot.user, "love_calc", "Do something", "--love_calc <name>",
-                                "--love_calc ")
+        await self.command_help(ctx, self.bot.user, "love_calc", "Calculate the compatability of two users", "--love_calc <user> [user]",
+                                "`--love_calc @Space`\n`--love_calc @SuitJames @TaingySauce`")
 
     @help.command()
     async def urban(self, ctx):
-        await self.command_help(ctx, self.bot.user, "urban", "Do something", "--urban <name>",
-                                "--urban ")
+        await self.command_help(ctx, self.bot.user, "urban", "Search something on urban dictionary", "--urban <search>",
+                                "--urban 9gag")
 
     @help.command()
     async def hug(self, ctx):
-        await self.command_help(ctx, self.bot.user, "hug", "Do something", "--hug <name>",
-                                "--hug ")
+        await self.command_help(ctx, self.bot.user, "hug", "Hug someone", "--hug <user>",
+                                "--hug @olim")
 
     @help.command()
     async def pat(self, ctx):
-        await self.command_help(ctx, self.bot.user, "pat", "Do something", "--pat <name>",
-                                "--pat ")
+        await self.command_help(ctx, self.bot.user, "pat", "Pat someone", "--pat <user>",
+                                "--pat @Glytch")
 
     @help.command()
     async def kiss(self, ctx):
-        await self.command_help(ctx, self.bot.user, "kiss", "Do something", "--kiss <name>",
-                                "--kiss ")
+        await self.command_help(ctx, self.bot.user, "kiss", "Kiss someone", "--kiss <user>",
+                                "--kiss @Th3nks")
 
     @help.command()
     async def lewd(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lewd", "Do something", "--lewd <name>",
-                                "--lewd ")
+        await self.command_help(ctx, self.bot.user, "lewd", "You are now lewd", "--lewd")
 
     @help.command()
     async def lick(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lick", "Do something", "--lick <name>",
-                                "--lick ")
+        await self.command_help(ctx, self.bot.user, "lick", "Lick someone", "--lick <user>",
+                                "--lick @Aspekt")
 
     @help.command()
     async def slap(self, ctx):
-        await self.command_help(ctx, self.bot.user, "slap", "Do something", "--slap <name>",
-                                "--slap ")
+        await self.command_help(ctx, self.bot.user, "slap", "Slap someone", "--slap <user>",
+                                "--slap @Dex")
 
     @help.command()
     async def cry(self, ctx):
-        await self.command_help(ctx, self.bot.user, "cry", "Do something", "--cry <name>",
-                                "--cry ")
-
-    @help.command()
-    async def hug(self, ctx):
-        await self.command_help(ctx, self.bot.user, "hug", "Do something", "--hug <name>",
-                                "--hug ")
-
-    @help.command()
-    async def pat(self, ctx):
-        await self.command_help(ctx, self.bot.user, "pat", "Do something", "--pat <name>",
-                                "--pat ")
-
-    @help.command()
-    async def kiss(self, ctx):
-        await self.command_help(ctx, self.bot.user, "kiss", "Do something", "--kiss <name>",
-                                "--kiss ")
-
-    @help.command()
-    async def lewd(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lewd", "Do something", "--lewd <name>",
-                                "--lewd ")
-
-    @help.command()
-    async def lick(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lick", "Do something", "--lick <name>",
-                                "--lick ")
-
-    @help.command()
-    async def slap(self, ctx):
-        await self.command_help(ctx, self.bot.user, "slap", "Do something", "--slap <name>",
-                                "--slap ")
-
-    @help.command()
-    async def cry(self, ctx):
-        await self.command_help(ctx, self.bot.user, "cry", "Do something", "--cry <name>",
-                                "--cry ")
+        await self.command_help(ctx, self.bot.user, "cry", "cry", "--cry")
 
     @help.command()
     async def truth(self, ctx):
-        await self.command_help(ctx, self.bot.user, "truth", "Do something", "--truth <name>",
-                                "--truth ")
+        await self.command_help(ctx, self.bot.user, "truth", "Ask someone a Truth or Dare Truth question", "--truth <user>",
+                                "--truth @franzErngar")
 
     @help.command()
     async def dare(self, ctx):
-        await self.command_help(ctx, self.bot.user, "dare", "Do something", "--dare <name>",
-                                "--dare ")
+        await self.command_help(ctx, self.bot.user, "dare", "Dare someone to do something", "--dare <user>",
+                                "--dare @FoxTron")
 
     @help.command()
     async def wyr(self, ctx):
-        await self.command_help(ctx, self.bot.user, "wyr", "Do something", "--wyr <name>",
-                                "--wyr ")
+        await self.command_help(ctx, self.bot.user, "wyr", "Get a would you rather question", "--wyr")
 
     @help.command()
     async def nhie(self, ctx):
-        await self.command_help(ctx, self.bot.user, "nhie", "Do something", "--nhie <name>",
-                                "--nhie ")
+        await self.command_help(ctx, self.bot.user, "nhie", "Play never have I ever", "--nhie")
     
     # TODO: finish a few commands
 
