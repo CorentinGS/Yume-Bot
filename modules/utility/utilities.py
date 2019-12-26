@@ -41,6 +41,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 from datetime import datetime
 
 import discord
@@ -56,13 +66,12 @@ class Utilities(commands.Cog):
 
     @commands.command(aliases=["server"])
     @commands.guild_only()
-    async def info(self, ctx):
+    async def here(self, ctx):
 
-        server = ctx.message.guild
+        guild = ctx.message.guild
 
-        if server.mfa_level == 1:
+        if guild.mfa_level == 1:
             af = "True"
-
         else:
             af = "False"
 
@@ -74,26 +83,24 @@ class Utilities(commands.Cog):
         embed.set_footer(text=f"YumeBot",
                          icon_url=self.bot.user.avatar_url)
 
-        embed.add_field(name="Name", value=server.name, inline=True)
-        embed.add_field(name="ID", value=server.id, inline=True)
-        embed.add_field(name="Roles", value=str(len(server.roles)), inline=True)
-        embed.add_field(name="Members", value=str(len(server.members)), inline=True)
-        embed.add_field(name="Channels", value=str(len(server.channels)), inline=True)
+        embed.add_field(name="Name", value=guild.name, inline=True)
+        embed.add_field(name="ID", value=guild.id, inline=True)
+        embed.add_field(name="Roles", value=str(len(guild.roles)), inline=True)
+        embed.add_field(name="Members", value=str(len(guild.members)), inline=True)
+        embed.add_field(name="Channels", value=str(len(guild.channels)), inline=True)
         embed.add_field(name="Security",
-                        value=server.verification_level, inline=True)
-        embed.add_field(name="Region", value=server.region, inline=True)
-        embed.add_field(name="Owner", value=server.owner, inline=True)
+                        value=guild.verification_level, inline=True)
+        embed.add_field(name="Region", value=guild.region, inline=True)
+        embed.add_field(name="Owner", value=guild.owner, inline=True)
         embed.add_field(name="2AF", value=af, inline=False)
-        embed.add_field(name="created at", value=server.created_at.strftime(
+        embed.add_field(name="created at", value=guild.created_at.strftime(
             '%A - %B - %e at %H:%M'), inline=False)
-        embed.set_thumbnail(url=server.icon_url)
+        embed.set_thumbnail(url=guild.icon_url)
         embed.set_footer(text=f"YumeBot",
                          icon_url=self.bot.user.avatar_url)
 
-        try:
-            await ctx.send(embed=embed)
-        except discord.HTTPException:
-            pass
+        await ctx.send(embed=embed)
+
 
     @commands.command(aliases=['ri'])
     @commands.guild_only()
@@ -111,6 +118,12 @@ class Utilities(commands.Cog):
                          icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=embed)
+
+    @roleinfo.error
+    async def roleinfo_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.roleinfo)
 
     @commands.command(aliases=["ci"])
     @commands.guild_only()
@@ -131,6 +144,12 @@ class Utilities(commands.Cog):
                          icon_url=self.bot.user.avatar_url)
 
         await ctx.send(embed=embed)
+
+    @channelinfo.error
+    async def chaninfo_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.channelinfo)
 
     @commands.command()
     @commands.guild_only()
@@ -189,7 +208,7 @@ class Utilities(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def date(self, ctx, member: discord.Member):
+    async def age(self, ctx, member: discord.Member):
         """
         How old is he ?
         """
@@ -197,6 +216,12 @@ class Utilities(commands.Cog):
         create = member.created_at
         time = (now - create).days
         await ctx.send(f'**{member.name}** has created his account **{time}** days ago')
+
+    @age.error
+    async def age_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.age)
 
     @commands.command()
     @commands.guild_only()
@@ -208,6 +233,12 @@ class Utilities(commands.Cog):
             user = ctx.author
 
         await ctx.send(f"Avatar of {user.name} \n {user.avatar_url_as(size=1024)}")
+
+    @avatar.error
+    async def avatar_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.avatar)
 
     @commands.command()
     @commands.guild_only()
@@ -250,9 +281,14 @@ class Utilities(commands.Cog):
 
         try:
             await ctx.send(embed=embed)
-
         except discord.HTTPException:
             pass
+
+    @whois.error
+    async def whois_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.whois)
 
     @commands.command()
     @commands.guild_only()
@@ -282,6 +318,12 @@ class Utilities(commands.Cog):
             await ctx.send(embed=embed)
         except discord.HTTPException:
             pass
+
+    @hackwhois.error
+    async def hwhois_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.hackwhois)
 
     @commands.command()
     @commands.guild_only()

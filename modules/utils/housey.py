@@ -41,6 +41,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import discord
 
 from modules.utils.db import Settings
@@ -75,7 +85,6 @@ class GuildY:
         self.admins = []
         self.mute = []
         self.colors = {}
-        self.levels = {}
 
     async def set(self):
         set = await Settings().get_server_settings(str(self.id))
@@ -103,7 +112,6 @@ class GuildY:
         set['Setup'] = self.setup
         set['Vip'] = self.vip
         set['Colors'] = self.colors
-        set['levels'] = self.levels
 
         await Settings().set_server_settings(str(self.id), set)
 
@@ -133,7 +141,6 @@ class GuildY:
         self.admins = set['Admins']
         self.mute = set['Mute']
         self.colors = set['Colors']
-        self.levels = set['levels']
 
 
 class Setup:
@@ -156,7 +163,6 @@ class Setup:
         set['Setup'] = False
         set['Colors'] = {}
         set['Color'] = False
-        set['levels'] = {}
 
         await Settings().set_server_settings(str(guild_id), set)
 
@@ -170,8 +176,6 @@ class Setup:
             set['Colors'] = {}
         if 'Color' not in set:
             set['Color'] = False
-        if 'levels' not in set:
-            set['levels'] = {}
 
         await Settings().set_server_settings(str(guild_id), set)
 

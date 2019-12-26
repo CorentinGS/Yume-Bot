@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import random
 
 import discord
@@ -194,4 +204,17 @@ class Embeds:
                          f"(https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
         em.add_field(name="**:pushpin: Commands**", value=f"{liste}")
 
+        return em
+
+    @staticmethod
+    async def command_help(ctx, bot: discord.User, command: str, description: str, usage: str, examples: str = None,
+                           permission: str = None):
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        em.set_author(name='Yume Bot', url="https://yumenetwork.net", icon_url=bot.avatar_url)
+        em.title = f"{command}"
+        em.description = f"{description}\n\nUsage:\n`{usage}`"
+        if examples:
+            em.add_field(name="Examples", value=examples, inline=True)
+        if permission:
+            em.add_field(name="Permission", value=f"{permission}")
         return em

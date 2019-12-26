@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import motor.motor_asyncio
 
 
@@ -41,8 +51,9 @@ class Settings:
 
         self.db = self.client.bot
 
-        self.glob = self.db.glob
         self.servers = self.db.servers
+
+        self.glob = self.db.glob
         self.keys = self.db.keys
         self.sanction = self.db.sanction
         self.user = self.db.user
@@ -61,6 +72,10 @@ class Settings:
 
     async def get_server_settings(self, id):
         doc = await self.servers.find_one({"_id": id})
+        return doc or {}
+
+    async def get_all_server_settings(self):
+        doc = await self.servers.find()
         return doc or {}
 
     async def del_server_settings(self, id):

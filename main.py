@@ -31,6 +31,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import datetime
 import json
 import logging
@@ -98,13 +108,7 @@ class YumeBot(commands.Bot):
             print("{}/{} modules loaded".format(loaded, len(modules)))
 
     async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.NoPrivateMessage):
-            await ctx.author.send("This command cannot be used in private messages.")
-        elif isinstance(error, commands.DisabledCommand):
-            await ctx.author.send("Sorry. This command is disabled and cannot be used.")
-        elif isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(f"Missing an argument.\n`{error}`")
-        elif isinstance(error, commands.CheckFailure):
+        if isinstance(error, commands.CheckFailure):
             return await ctx.send(f"Missing a permission.\n`{error}`")
         elif isinstance(error, commands.CommandInvokeError):
             original = error.original
@@ -119,8 +123,7 @@ class YumeBot(commands.Bot):
                     )
                 except discord.Forbidden:
                     return
-        elif isinstance(error, commands.ArgumentParsingError):
-            await ctx.send(error)
+
 
     async def close(self):
         await super().close()

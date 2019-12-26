@@ -41,6 +41,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import json
 
 from discord.ext import commands
@@ -63,6 +73,12 @@ class Tags(commands.Cog):
             await ctx.send(f"{tags[str(name)]}")
         else:
             await ctx.send("Unknown tag")
+
+    @tag.error
+    async def tag_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.tag)
 
     @commands.group()
     async def tags(self, ctx):

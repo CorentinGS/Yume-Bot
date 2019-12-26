@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 services:
   mongo:
     image: mongo:4.0.6
@@ -16,6 +16,19 @@ services:
         max-size: "200k"
         max-file: "5"
 
+  postgre:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgre:/data/db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "5"
+
   bot:
     restart: always
     build:
@@ -23,6 +36,7 @@ services:
       dockerfile: Dockerfile_bot
     links:
         - mongo
+        - postgre
     volumes:
         - .:/usr/src/app
     logging:
