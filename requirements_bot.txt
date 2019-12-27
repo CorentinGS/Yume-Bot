@@ -1,4 +1,4 @@
-motor==2.0.0
+motor
 discord.py
 romme==0.1.0
 discord
