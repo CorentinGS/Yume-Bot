@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+# #  Copyright (c) 2019.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -32,6 +32,9 @@
 #
 #
 import random
+import urllib.parse
+import requests
+
 
 import discord
 from discord.ext import commands
@@ -46,97 +49,6 @@ class Games(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-        self.wyr = [
-            "...always be 10 minutes late or always be 20 minutes early?",
-            "...lose all of your money and valuables or all of the pictures you have ever taken?",
-            "...be able to see 10 minutes into your own future or 10 minutes into the future of anyone but yourself?",
-            "...be famous when you are alive and forgotten when you die or unknown when you are alive but famous after you die?",
-            "...go to jail for 4 years for something you didn’t do or get away with something horrible you did but always live in fear of being caught?",
-            "...accidentally be responsible for the death of a child or accidentally be responsible for the deaths of three adults?",
-            "...your shirts be always two sizes too big or one size too small?",
-            "...live in the wilderness far from civilization or live on the streets of a city as a homeless person?",
-            "...the general public think you are a horrible person but your family be very proud of you or your family think you are a horrible person but the general public be very proud of you?",
-            "...live your entire life in a virtual reality where all your wishes are granted or in the real world?",
-            "...be alone for the rest of your life or always be surrounded by annoying people?",
-            "...never use social media sites / apps again or never watch another movie or TV show?",
-            "...have an easy job working for someone else or work for yourself but work incredibly hard?",
-            "...be the first person to explore a planet or be the inventor of a drug that cures a deadly disease?",
-            "...have a horrible short term memory or a horrible long term memory?",
-            "...be completely invisible for one day or be able to fly for one day?",
-            "...be locked in a room that is constantly dark for a week or a room that is constantly bright for a week?",
-            "...be poor but help people or become incredibly rich by hurting people?",
-            "...live without the internet or live without AC and heating?",
-            "...have a horrible job, but be able to retire comfortably in 10 years or have your dream job, but have to work until the day you die?",
-            "...find your true love or a suitcase with five million dollars inside?",
-            "...be able to teleport anywhere or be able to read minds?",
-            "...die in 20 years with no regrets or die in 50 years with many regrets?",
-            "...be feared by all or loved by all?",
-            "...be transported permanently 500 years into the future or 500 years into the past?",
-            "...never be able to use a touchscreen or never be able to use a keyboard and mouse?",
-            "...be able to control fire or water?",
-            "...have everything you eat be too salty or not salty enough no matter how much salt you add?",
-            "...have hands that kept growing as you got older or feet that kept growing as you got older?",
-            "...be unable to use search engines or unable to use social media?",
-            "...give up bathing for a month or give up the internet for a month?",
-            "...donate your body to science or donate your organs to people who need them?",
-            "...go back to age 5 with everything you know now or know now everything your future self will learn?",
-            "...relive the same day for 365 days or lose a year of your life?",
-            "...have a golden voice or a silver tongue?",
-            "...be able to control animals (but not humans) with your mind or control electronics with your mind?",
-            "...sell all of your possessions or sell one of your organs?",
-            "...lose all of your memories from birth to now or lose your ability to make new long term memories?",
-            "...be infamous in history books or be forgotten after your death?",
-            "...never have to work again or never have to sleep again (you won’t feel tired or suffer negative health effects)?",
-            "...be beautiful / handsome but stupid or intelligent but ugly?",
-            "...get one free round trip international plane ticket every year or be able to fly domestic anytime for free?",
-            "...be balding but fit or overweight with a full head of hair?",
-            "...be able to be free from junk mail or free from email spam for the rest of your life?",
-            "...be fluent in all languages and never be able to travel or be able to travel anywhere for a year but never be able to learn a word of a different language?",
-            "...have an unlimited international first class ticket or never have to pay for food at restaurants?",
-            "...see what was behind every closed door or be able to guess the combination of every safe on the first try?",
-            "...live in virtual reality where you are all powerful or live in the real world and be able to go anywhere but not be able to interact with anyone or anything?",
-            "...never be able to eat meat or never be able to eat vegetables?",
-            "...give up watching TV / movies for a year or give up playing games for a year?",
-            "...always be able to see 5 minutes into the future or always be able to see 100 years into the future?",
-            "...super sensitive taste or super sensitive hearing?",
-            "...be a practicing doctor or a medical researcher?",
-            "...be married to a 10 with a bad personality or a 6 with an amazing personality?",
-            "...never be able to drink sodas like coke again or only be able to drink sodas and nothing else?",
-            "...be a reverse centaur or a reverse mermaid/merman?",
-            "...have constantly dry eyes or a constant runny nose?",
-            "...be a famous director or a famous actor?",
-            "...not be able to open any closed doors (locked or unlocked) or not be able to close any open doors?",
-            "...give up all drinks except for water or give up eating anything that was cooked in an oven?",
-            "...have to read aloud every word you read or sing everything you say out loud?",
-            "...have whatever you are thinking appear above your head for everyone to see or have absolutely everything you do live streamed for anyone to see?",
-            "...be put in a maximum security federal prison with the hardest of the hardened criminals for one year or be put in a relatively relaxed prison where wall street types are held for ten years?",
-            "...have a clown only you can see that follows you everywhere and just stands silently in a corner watching you without doing or saying anything or have a real life stalker who dresses like the Easter bunny that everyone can see?",
-            "...kill one innocent person or five people who committed minor crimes?",
-            "...have a completely automated home or a self-driving car?",
-            "...work very hard at a rewarding job or hardly have to work at a job that isn’t rewarding?",
-            "...be held in high regard by your parents or your friends?",
-            "...be an amazing painter or a brilliant mathematician?",
-            "...be reincarnated as a fly or just cease to exist after you die?",
-            "...be able to go to any theme park in the world for free for the rest of your life or eat for free at any drive through restaurant for the rest of your life?",
-            "...be only able to watch the few movies with a rotten tomatoes score of 95-100% or only be able to watch the majority of movies with a rotten tomatoes score of 94% and lower?",
-            "...never lose your phone again or never lose your keys again?",
-            "...have one real get out of jail free card or a key that opens any door?",
-            "...have a criminal justice system that actually works and is fair or an administrative government that is free of corruption?",
-            "...have real political power but be relatively poor or be ridiculously rich and have no political power?",
-            "...have the power to gently nudge anyone’s decisions or have complete puppet master control of five people?",
-            "...have everyone laugh at your jokes but not find anyone else’s jokes funny or have no one laugh at your jokes but you still find other people’s jokes funny?",
-            "...be the absolute best at something that no one takes seriously or be well above average but not anywhere near the best at something well respected?",
-            "...lose the ability to read or lose the ability to speak?",
-            "...live under a sky with no stars at night or live under a sky with no clouds during the day?",
-            "...humans go to the moon again or go to mars?",
-            "...never get angry or never be envious?",
-            "...have free Wi-Fi wherever you go or be able to drink unlimited free coffee at any coffee shop?",
-            "...be compelled to high five everyone you meet or be compelled to give wedgies to anyone in a green shirt?",
-            "...live in a house with see-through walls in a city or in the same see-though house but in the middle of a forest far from civilization?",
-            "...take amazing selfies but all of your other pictures are horrible or take breathtaking photographs of anything but yourself?",
-            "...use a push lawn mower with a bar that is far too high or far too low?",
-            "...be able to dodge anything no matter how fast it’s moving or be able ask any three questions and have them answered accurately?",
-        ]
         self.nhie = [
             "...watched the Ghostbusters remake.",
             "...wanted to be one of the Kardashians.",
@@ -741,13 +653,12 @@ class Games(commands.Cog):
     @commands.bot_has_permissions(embed_links=True)
     async def wouldyourather(self, ctx):
         """Would you rather?"""
-
-        string = random.choice(self.wyr)
+        string = requests.post('https://either.io/questions/get',data={'ids': random.randint(1, 4000)}).json()
 
         # Build Embed
         embed = discord.Embed()
         embed.title = "Would you rather.."
-        embed.description = string
+        embed.description = string["questions"][0]["option_1"]+" or "+string["questions"][0]["option_2"]
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["nhie"])
