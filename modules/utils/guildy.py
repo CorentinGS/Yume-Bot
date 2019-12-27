@@ -88,7 +88,6 @@ class GuildY:
         set['Display'] = self.members_count
         set['Color'] = self.color
 
-
         # Channels
         set['category'] = self.count_category
         set['GreetChannel'] = self.greet_channel
@@ -117,7 +116,6 @@ class GuildY:
         self.members_count = set['Display']
         self.bl = set['bl']
         self.color = set['Color']
-
 
         # Status
         self.setup = set['Setup']

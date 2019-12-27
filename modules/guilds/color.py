@@ -66,16 +66,10 @@ class Color(commands.Cog):
     @color.command()
     @commands.guild_only()
     async def list(self, ctx):
-        guild = GuildY(ctx.message.guild)
-        await guild.get()
-        msg = "__Colors__\n\n"
-        str2 = "\n\nYou can also add these names : **http://www.html-color-names.com/**"
-        for color in guild.colors:
-            str1 = f"**{color}**\n"
-            msg = " ".join((msg, str1))
-        msg = " ".join((msg, str2))
-        await ctx.send(msg)
 
+        await ctx.send("**http://www.html-color-names.com/**")
+
+    '''
     @color.command()
     @checks.is_admin()
     @commands.guild_only()
@@ -103,6 +97,7 @@ class Color(commands.Cog):
         await ctx.send("Role created", delete_after=3)
         guild.colors[role.name] = role.id
         await guild.set()
+    '''
 
     @color.command()
     @commands.guild_only()
@@ -140,7 +135,6 @@ class Color(commands.Cog):
                 await ctx.author.remove_roles(x)
         await ctx.author.add_roles(role)
 
-
     @color.command()
     @checks.is_admin()
     @commands.guild_only()
@@ -169,6 +163,7 @@ class Color(commands.Cog):
         await guild.set()
         await ctx.send("Purged", delete_after=3)
     '''
+
 
 def setup(bot):
     bot.add_cog(Color(bot))
