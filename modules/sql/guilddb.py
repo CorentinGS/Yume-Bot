@@ -71,6 +71,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import psycopg2
 from psycopg2 import extras
 
@@ -180,5 +190,44 @@ class GuildDB:
 
     @staticmethod
     def delete(guild: Guild):
-        cur.execute("DELETE FROM public.user WHERE user_id = {};".format(guild.guild_id))
+        cur.execute("DELETE FROM public.user WHERE guild_id = {};".format(guild.guild_id))
+        con.commit()
+
+    """
+    Update methods
+    """
+
+    @staticmethod
+    def update_user(guild: Guild):
+        cur.execute(
+            "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', stats_category = '{}', stats_channels = '{}', vip = '{}'  WHERE  guild_id = {}".format(
+                guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.log_chan, guild.logging, guild.setup,
+                guild.stats_category, guild.stats_channels, guild.vip, guild.guild_id))
+
+    """
+    Set methods
+    """
+
+    @staticmethod
+    def set_vip(guild: Guild):
+        cur.execute("UPDATE public.guild SET vip = TRUE WHERE  guild_id = {}".format(guild.guild_id))
+        con.commit()
+
+    @staticmethod
+    def set_blacklist(guild: Guild):
+        cur.execute("UPDATE public.guild SET blacklist = TRUE WHERE  guild_id = {}".format(guild.guild_id))
+        con.commit()
+
+    """
+    Unset methods
+    """
+
+    @staticmethod
+    def unset_vip(guild: Guild):
+        cur.execute("UPDATE public.guild SET vip = FALSE WHERE  guild_id = {}".format(guild.guild_id))
+        con.commit()
+
+    @staticmethod
+    def unset_blacklist(guild: Guild):
+        cur.execute("UPDATE public.guild SET vip = FALSE WHERE  guild_id = {}".format(guild.guild_id))
         con.commit()
