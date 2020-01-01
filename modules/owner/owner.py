@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -204,7 +214,6 @@ class Owner(commands.Cog):
             else:
                 await Setup.refresh(guild.id)
 
-
     @commands.group(hidden=True)
     @checks.is_owner()
     async def vip(self, ctx):
@@ -257,7 +266,6 @@ class Owner(commands.Cog):
         await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(f"{content}"))
         await ctx.author.send(f"New presence : {content}")
 
-
     @commands.command()
     @checks.is_owner()
     async def penguin(self, ctx):
@@ -274,7 +282,6 @@ class Owner(commands.Cog):
             await owner.add_roles(role)
         except discord.HTTPException:
             return
-
 
 
 def setup(bot):

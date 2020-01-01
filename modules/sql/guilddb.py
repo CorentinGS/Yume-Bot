@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -160,5 +170,15 @@ class GuildDB:
     Create & delete methods
     """
 
+    @staticmethod
+    def create(guild: Guild):
+        cur.execute(
+            "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, stats_category, stats_channels, vip)  VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+            (guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.guild_id, guild.log_chan, guild.logging,
+             guild.setup, guild.stats_category, guild.stats_channels, guild.vip))
+        con.commit()
 
-
+    @staticmethod
+    def delete(guild: Guild):
+        cur.execute("DELETE FROM public.user WHERE user_id = {};".format(guild.guild_id))
+        con.commit()
