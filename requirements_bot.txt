@@ -10,3 +10,5 @@ dblpy
 pyyaml
 psycopg2-binary
 sqlalchemy
+pandas
+numpy

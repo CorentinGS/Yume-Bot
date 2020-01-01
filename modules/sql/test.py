@@ -41,15 +41,25 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 
 from modules.sql.guild import Guild
+from modules.sql.rankingsdb import RankingsDB
 from modules.sql.user import User
 from modules.sql.userdb import UserDB
 
-titi: User = User(282233191916634113, True, False, "Hello world")
+titi: User = User(436894605712293888, True, False, "Hello world")
 if UserDB.user_exists(titi):
     UserDB.delete(titi)
-
 UserDB.create(titi)
 
 roles = [661873465556598784, 631811831559880724, 661880943791046680]
@@ -65,7 +75,16 @@ if afk:
 tux: Guild = Guild(631811291568144384)
 
 tux.display()
+if not RankingsDB.ranking_exists(titi, tux):
+    RankingsDB.create_ranking(titi, tux)
+else:
+    print("EXISTS")
 
+rankings = RankingsDB.get_user(titi, tux)
+rankings['xp'] += 15
+RankingsDB.update_user(titi, tux, rankings)
+
+print(RankingsDB.get_rank(titi, tux))
 '''
 Get Admin roles 
 

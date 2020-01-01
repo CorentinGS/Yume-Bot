@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -79,7 +89,7 @@ class YumeBot(commands.Bot):
         super().__init__(
             command_prefix=get_prefix,
             description=description,
-            activity=discord.Game(name="Commands: --help"),
+            activity=discord.Game(name="Loading..."),
             pm_help=None,
             help_attrs=dict(hidden=True),
             fetch_offline_members=False,
@@ -123,7 +133,6 @@ class YumeBot(commands.Bot):
                     )
                 except discord.Forbidden:
                     return
-
 
     async def close(self):
         await super().close()

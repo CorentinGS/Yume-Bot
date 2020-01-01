@@ -51,8 +51,21 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
+from datetime import datetime
+
 import psycopg2
 from psycopg2 import extras
+from pytz import timezone
 
 from modules.sql.guild import Guild
 from modules.sql.user import User
@@ -179,6 +192,8 @@ class UserDB:
     def update_user(user: User):
         cur.execute("UPDATE public.user SET description = '{}', crew = '{}', vip = '{}' WHERE  user_id = {}".format(
             str(user.description), user.crew, user.vip, user.user_id))
+        con.commit()
+
 
     """
     Set methods
@@ -221,9 +236,20 @@ class UserDB:
         return False, None
 
     @staticmethod
-    def is_muted(guid: Guild, user: User) -> bool:
+    def set_afk(user: User, reason):
+        cur.execute("INSERT INTO public.afk ( reason, time, user_id) VALUES ( {}, {}, {});".format(reason, datetime.now(
+            timezone('UTC')), user.user_id))
+        con.commit()
+
+    @staticmethod
+    def unset_afk(user: User):
+        cur.execute("DELETE FROM public.afk WHERE user_id = {};)".format(user.user_id))
+        con.commit()
+
+    @staticmethod
+    def is_muted(guild: Guild, user: User) -> bool:
         cur.execute(
-            "SELECT * FROM public.muted WHERE guild_id = {} AND user_id = {}".format(guid.guild_id, user.user_id))
+            "SELECT * FROM public.muted WHERE guild_id = {} AND user_id = {}".format(guild.guild_id, user.user_id))
         rows = cur.fetchone()
         if rows:
             return True
