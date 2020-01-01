@@ -41,6 +41,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import psycopg2
 from psycopg2 import extras
 
@@ -49,7 +59,6 @@ from modules.sql.user import User
 
 try:
     con = psycopg2.connect("host=localhost dbname=yumebot user=postgres")
-    #cur = con.cursor()
     cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
 except psycopg2.DatabaseError as e:
     print('Error %s' % e)
@@ -204,8 +213,18 @@ class UserDB:
     """
 
     @staticmethod
-    def is_admin(user: User, guild: Guild):
-        cur.execute("SELECT admin FROM public.admin WHERE guild_id = {} AND user_id = {}".format(guild.guild_id, user.user_id))
+    def is_afk(user: User) -> (bool, dict):
+        cur.execute("SELECT * FROM public.afk WHERE user_id = {};".format(user.user_id))
         rows = cur.fetchone()
         if rows:
-            return rows['admin']
+            return True, rows
+        return False, None
+
+    @staticmethod
+    def is_muted(guid: Guild, user: User) -> bool:
+        cur.execute(
+            "SELECT * FROM public.muted WHERE guild_id = {} AND user_id = {}".format(guid.guild_id, user.user_id))
+        rows = cur.fetchone()
+        if rows:
+            return True
+        return False

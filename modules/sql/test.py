@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -31,6 +31,17 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
+
 from modules.sql.guild import Guild
 from modules.sql.user import User
 from modules.sql.userdb import UserDB
@@ -41,9 +52,24 @@ if UserDB.user_exists(titi):
 
 UserDB.create(titi)
 
-print(UserDB.is_vip(titi))
+roles = [661873465556598784, 631811831559880724, 661880943791046680]
+'''
+Is AFK
+
+afk, row = UserDB.is_afk(titi)
+print(row[2])
+if afk:
+    print("This user is afk for the reason : {} for {} minutes".format(row[1], (datetime.now(timezone('UTC')) - row[2]).total_seconds() // 60.0))
+'''
 
 tux: Guild = Guild(631811291568144384)
+
 tux.display()
 
-print(UserDB.is_admin(titi, tux))
+'''
+Get Admin roles 
+
+toto = GuildDB.get_admin_roles(tux)
+print(toto)
+print(list(set(toto).intersection(roles)))
+'''

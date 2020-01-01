@@ -81,6 +81,18 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
+import numpy as np
+import pandas as pandas
 import psycopg2
 from psycopg2 import extras
 
@@ -224,10 +236,52 @@ class GuildDB:
 
     @staticmethod
     def unset_vip(guild: Guild):
-        cur.execute("UPDATE public.guild SET vip = FALSE WHERE  guild_id = {}".format(guild.guild_id))
+        cur.execute("UPDATE public.guild SET vip = FALSE WHERE guild_id = {}".format(guild.guild_id))
         con.commit()
 
     @staticmethod
     def unset_blacklist(guild: Guild):
-        cur.execute("UPDATE public.guild SET vip = FALSE WHERE  guild_id = {}".format(guild.guild_id))
+        cur.execute("UPDATE public.guild SET blacklist = FALSE WHERE guild_id = {}".format(guild.guild_id))
         con.commit()
+
+    """
+    Others methods
+    """
+
+
+
+    @staticmethod
+    def is_admin(role_id: int, guild: Guild) -> bool:
+        cur.execute(
+            "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        rows = cur.fetchone()
+        if rows:
+            return rows['admin']
+        return False
+
+    @staticmethod
+    def is_mod(role_id: int, guild: Guild) -> bool:
+        cur.execute(
+            "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        rows = cur.fetchone()
+        if rows['admin'] is False:
+            return True
+        return False
+
+    @staticmethod
+    def get_admin_roles(guild: Guild) -> list:
+        cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = true".format(guild.guild_id))
+        rows = cur.fetchall()
+        if rows:
+            df = pandas.DataFrame(np.array(rows))
+            return df[0].values.tolist()
+        return []
+
+    @staticmethod
+    def get_mod_roles(guild: Guild) -> list:
+        cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = false".format(guild.guild_id))
+        rows = cur.fetchall()
+        if rows:
+            df = pandas.DataFrame(np.array(rows))
+            return df[0].values.tolist()
+        return []
