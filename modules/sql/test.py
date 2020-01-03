@@ -51,13 +51,24 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 
 from modules.sql.guild import Guild
 from modules.sql.rankingsdb import RankingsDB
+from modules.sql.sanctionsdb import SanctionsDB
 from modules.sql.user import User
 from modules.sql.userdb import UserDB
 
-titi: User = User(436894605712293888, True, False, "Hello world")
+titi: User = User(443882750559387668, True, False, "Hello world")
 if UserDB.user_exists(titi):
     UserDB.delete(titi)
 UserDB.create(titi)
@@ -73,6 +84,7 @@ if afk:
 '''
 
 tux: Guild = Guild(631811291568144384)
+
 
 tux.display()
 if not RankingsDB.ranking_exists(titi, tux):
@@ -92,3 +104,9 @@ toto = GuildDB.get_admin_roles(tux)
 print(toto)
 print(list(set(toto).intersection(roles)))
 '''
+
+patate = SanctionsDB.get_sanctions_from_user(titi)
+for sanction in patate:
+    print(sanction.sanction_id)
+
+print(RankingsDB.get_scoreboard(tux))
