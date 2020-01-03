@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -135,6 +145,7 @@ class Color(commands.Cog):
                 await ctx.author.remove_roles(x)
         await ctx.author.add_roles(role)
 
+
     @color.command()
     @checks.is_admin()
     @commands.guild_only()
@@ -147,22 +158,6 @@ class Color(commands.Cog):
             if role:
                 await role.delete()
             await guild.set()
-
-    '''
-    @color.command()
-    @checks.is_admin()
-    @commands.guild_only()
-    async def purge(self, ctx):
-        guild = GuildY(ctx.message.guild)
-        await guild.get()
-        for color in guild.colors:
-            role = discord.utils.get(ctx.guild.roles, id=guild.colors[color])
-            if role:
-                await role.delete()
-        guild.colors = {}
-        await guild.set()
-        await ctx.send("Purged", delete_after=3)
-    '''
 
 
 def setup(bot):

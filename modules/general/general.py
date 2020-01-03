@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -127,11 +137,6 @@ class General(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @gmeteo.error
-    async def mto_error(self, ctx, error):
-        if isinstance(error, commands.UserInputError):
-            help = self.bot.get_cog('Help')
-            await ctx.invoke(help.meteo)
 
     @commands.command(aliases=["mto", "weather"])
     async def meteo(self, ctx, city: str):
@@ -160,12 +165,6 @@ class General(commands.Cog):
         embed.add_field(
             name='\N{DASH SYMBOL} **Wind Speed**', value="{}m/s".format(data['wind']))
         await ctx.send(embed=embed)
-
-    @meteo.error
-    async def mto_error(self, ctx, error):
-        if isinstance(error, commands.UserInputError):
-            help = self.bot.get_cog('Help')
-            await ctx.invoke(help.meteo)
 
 
     @commands.command(aliases=["away", "idle"])
@@ -200,11 +199,6 @@ class General(commands.Cog):
 
         await ctx.send('Url :{}'.format(msg.jump_url))
 
-    @jump.error
-    async def jump_error(self, ctx, error):
-        if isinstance(error, commands.UserInputError):
-            help = self.bot.get_cog('Help')
-            await ctx.invoke(help.jump)
 
     @commands.command()
     @commands.bot_has_permissions(embed_links=True)
@@ -275,11 +269,7 @@ class General(commands.Cog):
             embed.set_footer(text="Powered by Pokeapi")
             await ctx.send(embed=embed)
 
-    @pokemon.error
-    async def pokemon_error(self, ctx, error):
-        if isinstance(error, commands.UserInputError):
-            help = self.bot.get_cog('Help')
-            await ctx.invoke(help.pokemon)
+
 
 
 def setup(bot):

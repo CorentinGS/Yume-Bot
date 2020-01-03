@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -89,6 +99,8 @@ class Level(commands.Cog):
         em.add_field(name="**Progress**",
                      value="{} / {}".format(dic['xp'], dic['reach']))
         await ctx.send(embed=em)
+
+
 
     @commands.command(aliases=["scoreboard"])
     async def leaderboard(self, ctx):
@@ -159,6 +171,8 @@ class Level(commands.Cog):
 
         await Settings().set_server_settings(str(ctx.message.guild.id), set)
         await ctx.send("Level setup")
+
+        # Create a discord converter to handle both name / mention / ID
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
