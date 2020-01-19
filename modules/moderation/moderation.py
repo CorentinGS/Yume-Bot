@@ -81,13 +81,23 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import asyncio
 import typing
 from typing import Union
 
 import discord
-
 from modules.sanction import Sanction
+
 from modules.utils import checks
 from modules.utils.converter import *
 from modules.utils.db import Settings
@@ -128,15 +138,15 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=["sanctions", "modlog", "modlogs"])
     @checks.is_mod()
-    async def sanction(self, ctx, sanction: typing.Union[discord.Member, discord.User, int]):
+    async def sanction(self, ctx, user: typing.Union[discord.Member, discord.User, int]):
         """
         Get a sanction report
         """
-        if isinstance(sanction, int):
-            em = await Sanction().find_sanction_id(ctx, sanction)
+        if isinstance(user, int):
+            em = await Sanction().find_sanction_id(ctx, user)
             await ctx.send(embed=em)
-        if isinstance(sanction, discord.Member) or isinstance(sanction, discord.User):
-            em = await Sanction().find_sanction_member(ctx, sanction, ctx.guild)
+        if isinstance(user, discord.Member) or isinstance(user, discord.User):
+            em = await Sanction().find_sanction_member(ctx, user, ctx.guild)
             await ctx.send(embed=em)
         else:
             return

@@ -31,6 +31,20 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+import typing
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
+from datetime import datetime
+
+import discord
 import psycopg2
 from psycopg2 import extras
 
@@ -46,7 +60,6 @@ except psycopg2.DatabaseError as e:
 
 
 class SanctionsDB:
-
     @staticmethod
     def sanction_from_row(rows) -> Sanction:
         return Sanction(rows['sanction_id'], rows['event'], rows['guild_id'], rows['moderator_id'], rows['reason'],
@@ -135,3 +148,70 @@ class SanctionsDB:
     def delete(sanction: Sanction):
         cur.execute("DELETE FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
         con.commit()
+
+class SanctionMethod:
+
+    @staticmethod
+    async def create_sanction(user, event, mod, guild, reason=None, time=None):
+        id = int(datetime.now().strftime('%Y%m%d%H%M%S%f'))
+
+        sanction = Sanction(id)
+
+        sanction.user_id = user.id
+        sanction.event = event
+        sanction.moderator_id = mod.id
+        sanction.guild_id = guild.id
+        sanction.reason = reason
+        sanction.time = time
+
+        SanctionsDB.create_sanction(sanction)
+        return sanction.sanction_id
+
+    @staticmethod
+    async def create_strike(user, event, guild, reason=None):
+        id = int(datetime.now().strftime('%Y%m%d%H%M%S%f'))
+
+        sanction = Sanction(id)
+
+        sanction.user_id = user.id
+        sanction.event = f"AutoMod | {event}"
+        sanction.moderator_id = 456504213262827524
+        sanction.guild_id = guild.id
+        sanction.reason = reason
+        sanction.time = None
+
+        SanctionsDB.create_sanction(sanction)
+        return sanction.sanction_id
+
+    @staticmethod
+    async def find_sanction_id(ctx, id):
+        sanction = SanctionsDB.get_one(id)
+        return sanction
+
+    @staticmethod
+    async def find_sanction_member(ctx, member: typing.Union[discord.Member, discord.User], guild: discord.Guild):
+        strikes = await Settings().get_sanction_settings_member(str(member.id), str(guild.id))
+        em = discord.Embed()
+        em.set_author(name=f"Sanction report | {member.name}",
+                      icon_url=member.avatar_url)
+
+        today = datetime.now()
+
+        msg = "__Sanctions__\n\n"
+
+        for sanction in strikes:
+            sanc = await Settings().get_sanction_settings(sanction)
+            date = datetime.strptime(str(sanc['date']), '%Y-%m-%d %H:%M:%S.%f')
+
+            rd = dateutil.relativedelta.relativedelta(date, today)
+            str1 = "**" + sanc['event'] + " |** " + (str(abs(rd.years)) + " years " if rd.years != 0 else "") \
+                   + (str(abs(rd.months)) + " months " if rd.months != 0 else "") \
+                   + (str(abs(rd.days)) + " days " if rd.days != 0 else "") \
+                   + (str(abs(rd.hours)) + " hours " if rd.hours != 0 and rd.months == 0 else "") \
+                   + (str(abs(rd.minutes)) + " minutes " if rd.minutes != 0 and rd.days == 0 else "") \
+                   + (str(abs(rd.seconds)) + " seconds " if rd.minutes == 0 else "") + "ago\n"
+            msg = " ".join((msg, str1))
+
+        em.description = msg
+
+        return em

@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,6 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 #
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -204,6 +214,23 @@ class Embeds:
                          f"(https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
         em.add_field(name="**:pushpin: Commands**", value=f"{liste}")
 
+        return em
+
+    @staticmethod
+    async def format_sanction_embed(sanction: Sanction):
+        em = discord.Embed()
+        em.set_author(name="Sanction report")
+
+        em.set_footer(text=f"ID : {sanction.sanction_id}")
+        em.description = f"Type: {sanction.event}"
+        em.add_field(name="User", value=sanction.user)
+        em.add_field(name="User Id", value=sanction.user_id)
+        em.add_field(name="Moderator", value=sanction.mod)
+        em.add_field(name="Moderator_id", value=sanction.mod_id)
+
+        em.add_field(name="Reason", value=sanction.reason)
+        em.add_field(name="Time", value=sanction.time)
+        em.add_field(name="Date", value=sanction.date)
         return em
 
     @staticmethod
