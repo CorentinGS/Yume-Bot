@@ -32,16 +32,6 @@
 #
 #
 import typing
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 from datetime import datetime
 
 import discord
@@ -53,7 +43,7 @@ from modules.sql.sanctions import Sanction
 from modules.sql.user import User
 
 try:
-    con = psycopg2.connect("host=localhost dbname=yumebot user=postgres")
+    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres")
     cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
 except psycopg2.DatabaseError as e:
     print('Error %s' % e)
@@ -190,28 +180,7 @@ class SanctionMethod:
 
     @staticmethod
     async def find_sanction_member(ctx, member: typing.Union[discord.Member, discord.User], guild: discord.Guild):
-        strikes = await Settings().get_sanction_settings_member(str(member.id), str(guild.id))
-        em = discord.Embed()
-        em.set_author(name=f"Sanction report | {member.name}",
-                      icon_url=member.avatar_url)
+        sanction = SanctionsDB.get_sanctions_from_guild_user(guild, member)
+        return sanction
 
-        today = datetime.now()
 
-        msg = "__Sanctions__\n\n"
-
-        for sanction in strikes:
-            sanc = await Settings().get_sanction_settings(sanction)
-            date = datetime.strptime(str(sanc['date']), '%Y-%m-%d %H:%M:%S.%f')
-
-            rd = dateutil.relativedelta.relativedelta(date, today)
-            str1 = "**" + sanc['event'] + " |** " + (str(abs(rd.years)) + " years " if rd.years != 0 else "") \
-                   + (str(abs(rd.months)) + " months " if rd.months != 0 else "") \
-                   + (str(abs(rd.days)) + " days " if rd.days != 0 else "") \
-                   + (str(abs(rd.hours)) + " hours " if rd.hours != 0 and rd.months == 0 else "") \
-                   + (str(abs(rd.minutes)) + " minutes " if rd.minutes != 0 and rd.days == 0 else "") \
-                   + (str(abs(rd.seconds)) + " seconds " if rd.minutes == 0 else "") + "ago\n"
-            msg = " ".join((msg, str1))
-
-        em.description = msg
-
-        return em

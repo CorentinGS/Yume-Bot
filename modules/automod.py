@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -31,13 +31,23 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 from datetime import datetime, timedelta
 
 import discord
 from discord.ext import commands
 
 import modules.utils.checks as check
-from modules.sanction import Sanction
+from modules.sql.sanctionsdb import SanctionMethod
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
 from modules.utils.format import Mod
@@ -84,7 +94,7 @@ class Automod(commands.Cog):
             except discord.HTTPException:
                 return False
 
-            id = await Sanction().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
+            id = await SanctionMethod().create_strike(message.author, "Strike", message.guild, "Mentions Spam")
 
             em = await Embeds().format_automod_embed(author, "Mention spam", id, message)
             if guildy.logging:
@@ -119,7 +129,7 @@ class Automod(commands.Cog):
             except discord.HTTPException:
                 return False
 
-            id = await Sanction().create_strike(message.author, "Strike", message.guild, "Discord Invite Link")
+            id = await SanctionMethod().create_strike(message.author, "Strike", message.guild, "Discord Invite Link")
 
             em = await Embeds().format_automod_embed(author, "Discord Invite Link", id, message)
             if guildy.logging:
@@ -148,7 +158,7 @@ class Automod(commands.Cog):
             if m_count > m_max:
                 await message.delete()
                 await message.channel.send(f"No spamming, {message.author.mention}", delete_after=5)
-                await Sanction().create_strike(message.author, "Strike", message.guild, "Spamming")
+                await SanctionMethod().create_strike(message.author, "Strike", message.guild, "Spamming")
 
                 # TODO: Si mode strict, mute l'user...
 

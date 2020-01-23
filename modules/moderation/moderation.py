@@ -31,78 +31,20 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import asyncio
 import typing
 from typing import Union
 
 import discord
-from modules.sanction import Sanction
 
+from modules.sql.guilddb import GuildDB
+from modules.sql.mutedb import MuteDB
+from modules.sql.sanctionsdb import SanctionMethod
+from modules.sql.userdb import UserDB
 from modules.utils import checks
 from modules.utils.converter import *
 from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils.guildy import GuildY
 
 
 class Check(commands.Cog):
@@ -123,10 +65,11 @@ class Moderation(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    async def log_send(self, ctx, guildy, embed):
-        if guildy.logging:
+    async def log_send(self, ctx, guild_id, embed):
+        guildY = GuildDB.get_one(guild_id)
+        if guildY.logging:
             try:
-                channel = self.bot.get_channel(int(guildy.log_channel))
+                channel = self.bot.get_channel(int(guildY.log_chan))
             except discord.HTTPException:
                 return
             try:
@@ -143,14 +86,15 @@ class Moderation(commands.Cog):
         Get a sanction report
         """
         if isinstance(user, int):
-            em = await Sanction().find_sanction_id(ctx, user)
+            sanction = await SanctionMethod().find_sanction_id(ctx, user)
+            em = Embeds.format_sanction_embed(sanction)
             await ctx.send(embed=em)
         if isinstance(user, discord.Member) or isinstance(user, discord.User):
-            em = await Sanction().find_sanction_member(ctx, user, ctx.guild)
+            sanctions = await SanctionMethod().find_sanction_member(ctx, user, ctx.guild)
+            em = Embeds.user_list_sanction_embed(sanctions)
             await ctx.send(embed=em)
         else:
             return
-
 
     @commands.command()
     @commands.bot_has_permissions(manage_channels=True)
@@ -183,11 +127,9 @@ class Moderation(commands.Cog):
         if perm is False:
             return
 
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
-        id = await Sanction().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
+        id = await SanctionMethod().create_sanction(user, 'Strike', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'strike', id)
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=["chut", "tg"])
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
@@ -195,6 +137,7 @@ class Moderation(commands.Cog):
     async def mute(self, ctx, user: discord.Member, duration: str, *, reason: ModReason = None):
 
         """
+        :param ctx: Command context
         :param user: The member to mute
         :param duration: The duration of the mute
         :param reason: the reason of the mute
@@ -203,9 +146,10 @@ class Moderation(commands.Cog):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
+
         guild = ctx.message.guild
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
+        guildY = GuildDB.get_one(guild.id)
+        userY = UserDB.get_one(user.id)
 
         unit = duration[-1]
         if unit == 's':
@@ -219,7 +163,7 @@ class Moderation(commands.Cog):
         else:
             return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
 
-        if user.id in guildy.mute:
+        if MuteDB.is_muted(userY, guildY):
             return await ctx.send('This user is already muted, you should '
                                   'unmute him first.')
 
@@ -230,28 +174,22 @@ class Moderation(commands.Cog):
                 await chan.set_permissions(role, send_messages=False)
         await user.add_roles(role)
 
-        guildy.mute.append(user.id)
-        await guildy.set()
+        MuteDB.set_mute(userY, guildY)
 
-        id = await Sanction().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
+        id = await SanctionMethod().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'mute', id, duration)
 
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
         await asyncio.sleep(time)
 
-        await guildy.get()
-
-        if user.id in guildy.mute:
+        if MuteDB.is_muted(userY, guildY):
             await ctx.invoke(self.unmute, user, True)
-
 
     @commands.command()
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member, auto: bool = False):
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
 
         if not auto:
             mod = ctx.message.author
@@ -259,12 +197,14 @@ class Moderation(commands.Cog):
             mod = "auto"
 
         role = discord.utils.get(ctx.guild.roles, name="Muted")
+        guild = ctx.message.guild
+        guildY = GuildDB.get_one(guild.id)
+        userY = UserDB.get_one(user.id)
 
-        if user.id not in guildy.mute or not role:
+        if not MuteDB.is_muted(userY, guildY) or not role:
             return
 
-        guildy.mute.remove(user.id)
-        await guildy.set()
+        MuteDB.unset_mute(userY, guildY)
 
         try:
             await user.remove_roles(role)
@@ -272,7 +212,7 @@ class Moderation(commands.Cog):
             return
 
         em = await Embeds().format_mod_embed(ctx, user, mod, None, 'unmute')
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=['out'])
     @commands.bot_has_permissions(kick_members=True)
@@ -281,15 +221,12 @@ class Moderation(commands.Cog):
         perm = await Check().check(ctx, user)
         if perm is False:
             return
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
-
 
         await ctx.guild.kick(user)
 
-        id = await Sanction().create_sanction(user, 'Kick', ctx.message.author, ctx.message.guild, reason)
+        id = await SanctionMethod().create_sanction(user, 'Kick', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'kick', id)
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=['preventban', 'preban', 'idban'])
     @checks.is_admin()
@@ -300,13 +237,10 @@ class Moderation(commands.Cog):
 
         banned = await self.bot.fetch_user(id)
 
-        _id = await Sanction().create_sanction(banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
+        _id = await SanctionMethod().create_sanction(banned, 'Hackban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, reason, 'hackban', _id)
 
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
-
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command()
     @checks.is_admin()
@@ -322,10 +256,8 @@ class Moderation(commands.Cog):
         await ctx.guild.unban(user)
 
         em = await Embeds().format_mod_embed(ctx, banned, ctx.message.author, None, 'unban')
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
 
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=['ciao'])
     @checks.is_mod()
@@ -336,13 +268,10 @@ class Moderation(commands.Cog):
 
         await ctx.guild.ban(user, reason=reason, delete_message_days=7)
 
-        id = await Sanction().create_sanction(user, 'Ban', ctx.message.author, ctx.message.guild, reason)
+        id = await SanctionMethod().create_sanction(user, 'Ban', ctx.message.author, ctx.message.guild, reason)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'ban', id)
 
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
-
-        await self.log_send(ctx, guildy, em)
+        await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(case_insensitive=True, aliases=['clean', 'clear'])
     @checks.is_mod()
@@ -352,10 +281,12 @@ class Moderation(commands.Cog):
         elif arg.lower() == 'text':
             def is_text(m):
                 return not m.attachments
+
             await ctx.channel.purge(limit=amount + 1, check=is_text, bulk=True)
         elif arg.lower() == "image":
             def is_image(m):
                 return m.attachments
+
             await ctx.channel.purge(limit=amount + 1, check=is_image, bulk=True)
 
     @commands.command(aliases=['deafen'])
@@ -392,11 +323,11 @@ class Moderation(commands.Cog):
         except Exception as e:
             return await ctx.send(e)
 
-        guildy = GuildY(ctx.message.guild)
-        await guildy.get()
+        guild = ctx.message.guild
+        guildY = GuildDB.get_one(guild.id)
 
-        if guildy.logging:
-            channel = self.bot.get_channel(int(guildy.log_channel))
+        if guildY.logging:
+            channel = self.bot.get_channel(int(guildY.log_chan))
             await channel.send(f'{len(members)} users were banned')
         else:
             await ctx.send(f'{len(members)} users were banned')
@@ -489,25 +420,6 @@ class Moderation(commands.Cog):
             if count == 20:
                 await asyncio.sleep(3)
                 count = 0
-
-    @commands.command()
-    @checks.is_admin()
-    async def fresh(self, ctx):
-        """
-        Refresh blacklist
-        """
-        guild = GuildY(ctx.guild)
-        await guild.get()
-        if not guild.bl:
-            return
-        glob = await Settings().get_glob_settings()
-        if 'Blacklist' in glob:
-            members = ctx.guild.members
-            for x in members:
-                if x.id in glob['Blacklist']:
-                    # Ban the member
-                    user = discord.Object(id=x.id)
-                    await ctx.guild.ban(user)
 
 
 # TODO: Separer les commandes mod et admin

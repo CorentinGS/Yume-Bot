@@ -51,6 +51,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import datetime
 import json
 import re
@@ -187,7 +197,8 @@ class AniSearch(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    def format_name(self, first_name, last_name):  # Combines first_name and last_name and/or shows either of the two
+    @staticmethod
+    def format_name(first_name, last_name):  # Combines first_name and last_name and/or shows either of the two
         if first_name and last_name:
             return first_name + " " + last_name
         elif first_name:
@@ -197,14 +208,16 @@ class AniSearch(commands.Cog):
         else:
             return "No name"
 
-    def clean_html(self, description):  # Removes html tags
+    @staticmethod
+    def clean_html(description):  # Removes html tags
         if not description:
             return ""
         cleanr = re.compile("<.*?>")
         cleantext = re.sub(cleanr, "", description)
         return cleantext
 
-    def clean_spoilers(self, description):  # Removes spoilers using the html tag given by AniList
+    @staticmethod
+    def clean_spoilers(description):  # Removes spoilers using the html tag given by AniList
         if not description:
             return ""
         cleanr = re.compile("/<span[^>]*>.*</span>/g")
@@ -220,7 +233,8 @@ class AniSearch(commands.Cog):
         else:
             return description
 
-    def list_maximum(self, items):  # Limits to 5 strings than adds "+X more"
+    @staticmethod
+    def list_maximum(items):  # Limits to 5 strings than adds "+X more"
         if len(items) > 5:
             return items[:5] + ["+ " + str(len(items) - 5) + " more"]
         else:

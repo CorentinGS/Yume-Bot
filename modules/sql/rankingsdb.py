@@ -41,6 +41,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import numpy as np
 import pandas
 import psycopg2
@@ -50,7 +60,7 @@ from modules.sql.guild import Guild
 from modules.sql.user import User
 
 try:
-    con = psycopg2.connect("host=localhost dbname=yumebot user=postgres")
+    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres")
     cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
 except psycopg2.DatabaseError as e:
     print('Error %s' % e)
@@ -75,7 +85,7 @@ class RankingsDB:
         if rows:
             rankings = RankingsDB.rows_to_dict(rows)
             return rankings
-        return "Error : User not found"
+        return {}
 
     @staticmethod
     def get_user(user: User, guild: Guild) -> dict:
@@ -86,7 +96,7 @@ class RankingsDB:
             rankings = RankingsDB.rows_to_dict(rows)
             return rankings
 
-        return "Error : User not found"
+        return {}
 
     @staticmethod
     def ranking_exists(user: User, guild: Guild) -> bool:
@@ -110,7 +120,7 @@ class RankingsDB:
     @staticmethod
     def reset_user(user: User, guild: Guild):
         cur.execute(
-            "UPDATE public.rankings SET level = 0 reach = 20, total = 0, xp = 0 WHERE guild_id = {} AND user_id = {};".format(
+            "UPDATE public.rankings SET level = 0, reach = 20, total = 0, xp = 0 WHERE guild_id = {} AND user_id = {};".format(
                 guild.guild_id, user.user_id))
         con.commit()
 

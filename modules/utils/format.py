@@ -31,30 +31,11 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import random
 
 import discord
 
+from modules.sql.sanctions import Sanction
 from modules.utils import lists
 
 
@@ -231,6 +212,34 @@ class Embeds:
         em.add_field(name="Reason", value=sanction.reason)
         em.add_field(name="Time", value=sanction.time)
         em.add_field(name="Date", value=sanction.date)
+        return em
+
+    @staticmethod
+    async def user_list_sanction_embed(sanctions: Sanction):
+        member = await self.bot.fetch_user(sanctions.user_id)
+
+        em = discord.Embed()
+        em.set_author(name=f"Sanction report | {member.name}",
+                      icon_url=member.avatar_url)
+
+        today = datetime.now()
+
+        msg = "__Sanctions__\n\n"
+
+        for sanction in sanctions:
+            date = datetime.strptime(str(sanction.event_date), '%Y-%m-%d %H:%M:%S.%f')
+
+            rd = dateutil.relativedelta.relativedelta(date, today)
+            str1 = "**" + sanction.event + " |** " + (str(abs(rd.years)) + " years " if rd.years != 0 else "") \
+                   + (str(abs(rd.months)) + " months " if rd.months != 0 else "") \
+                   + (str(abs(rd.days)) + " days " if rd.days != 0 else "") \
+                   + (str(abs(rd.hours)) + " hours " if rd.hours != 0 and rd.months == 0 else "") \
+                   + (str(abs(rd.minutes)) + " minutes " if rd.minutes != 0 and rd.days == 0 else "") \
+                   + (str(abs(rd.seconds)) + " seconds " if rd.minutes == 0 else "") + "ago\n"
+            msg = " ".join((msg, str1))
+
+        em.description = msg
+
         return em
 
     @staticmethod

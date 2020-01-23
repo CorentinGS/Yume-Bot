@@ -61,6 +61,16 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
 import json
 
 import aiohttp
@@ -137,7 +147,6 @@ class General(commands.Cog):
 
         await ctx.send(embed=embed)
 
-
     @commands.command(aliases=["mto", "weather"])
     async def meteo(self, ctx, city: str):
         """
@@ -165,7 +174,6 @@ class General(commands.Cog):
         embed.add_field(
             name='\N{DASH SYMBOL} **Wind Speed**', value="{}m/s".format(data['wind']))
         await ctx.send(embed=embed)
-
 
     @commands.command(aliases=["away", "idle"])
     async def afk(self, ctx):
@@ -198,7 +206,6 @@ class General(commands.Cog):
             return await ctx.send("We can't find the message.")
 
         await ctx.send('Url :{}'.format(msg.jump_url))
-
 
     @commands.command()
     @commands.bot_has_permissions(embed_links=True)
@@ -268,8 +275,6 @@ class General(commands.Cog):
             embed.add_field(name="Weight", value=weight)
             embed.set_footer(text="Powered by Pokeapi")
             await ctx.send(embed=embed)
-
-
 
 
 def setup(bot):
