@@ -21,21 +21,14 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import random
+from datetime import datetime
 
+import dateutil
 import discord
 
 from modules.sql.sanctions import Sanction
+from modules.sql.sanctionsdb import SanctionsDB
 from modules.utils import lists
 
 
@@ -129,7 +122,8 @@ class Embeds:
         return em
 
     @staticmethod
-    async def format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, automod, stats, vip):
+    async def format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, vip, color,
+                                   stats_channels):
         tip = random.choice(lists.tip)
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Settings')
@@ -152,9 +146,9 @@ class Embeds:
             em.add_field(name="Log Channel", value=logchan.mention)
 
         em.add_field(name="Blacklist", value=blacklist)
-        em.add_field(name='Automod', value=automod)
-        em.add_field(name='Stats', value=stats)
         em.add_field(name='Vip', value=vip)
+        em.add_field(name='Color', value=color)
+        em.add_field(name='Stats Channel', value=stats_channels)
 
         return em
 
@@ -198,25 +192,26 @@ class Embeds:
         return em
 
     @staticmethod
-    async def format_sanction_embed(sanction: Sanction):
+    async def format_sanction_embed(bot, sanction: Sanction):
+        user = await bot.fetch_user(sanction.user_id)
+        mod = await bot.fetch_user(sanction.moderator_id)
         em = discord.Embed()
         em.set_author(name="Sanction report")
 
         em.set_footer(text=f"ID : {sanction.sanction_id}")
         em.description = f"Type: {sanction.event}"
-        em.add_field(name="User", value=sanction.user)
+        em.add_field(name="User", value=user.name)
         em.add_field(name="User Id", value=sanction.user_id)
-        em.add_field(name="Moderator", value=sanction.mod)
-        em.add_field(name="Moderator_id", value=sanction.mod_id)
+        em.add_field(name="Moderator", value=mod.name)
+        em.add_field(name="Moderator_id", value=sanction.moderator_id)
 
         em.add_field(name="Reason", value=sanction.reason)
         em.add_field(name="Time", value=sanction.time)
-        em.add_field(name="Date", value=sanction.date)
+        em.add_field(name="Date", value=sanction.event_date)
         return em
 
     @staticmethod
-    async def user_list_sanction_embed(sanctions: Sanction):
-        member = await self.bot.fetch_user(sanctions.user_id)
+    async def user_list_sanction_embed(sanctions, member):
 
         em = discord.Embed()
         em.set_author(name=f"Sanction report | {member.name}",
@@ -227,6 +222,8 @@ class Embeds:
         msg = "__Sanctions__\n\n"
 
         for sanction in sanctions:
+            sanction = SanctionsDB.get_sanction(sanction)
+
             date = datetime.strptime(str(sanction.event_date), '%Y-%m-%d %H:%M:%S.%f')
 
             rd = dateutil.relativedelta.relativedelta(date, today)

@@ -21,16 +21,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import typing
 from datetime import datetime
 
@@ -67,51 +57,48 @@ class SanctionsDB:
     """
 
     @staticmethod
-    def get_one(sanction_id: int):
-        cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(sanction_id))
-        rows = cur.fetchone()
-        if rows:
-            return SanctionsDB.sanction_from_row(rows)
-        return "Error : Sanction not found"
-
-    @staticmethod
-    def get_sanction(sanction: Sanction):
-        cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
+    def get_one(sanction_id: int) -> Sanction:
+        cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction_id)))
         rows = cur.fetchone()
         if rows:
             return SanctionsDB.sanction_from_row(rows)
 
-        return "Error : Sanction not found"
+    @staticmethod
+    def get_sanction(sanction: Sanction) -> Sanction:
+        cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction.sanction_id)))
+        rows = cur.fetchone()
+        if rows:
+            return SanctionsDB.sanction_from_row(rows)
 
     @staticmethod
-    def get_all():
+    def get_all() -> list:
         cur.execute("SELECT * FROM public.sanctions;")
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
-        return "Error : Sanction not found"
+        return []
 
     @staticmethod
-    def get_sanctions_from_user(user: User):
+    def get_sanctions_from_user(user: User) -> list:
         cur.execute("SELECT * FROM public.sanctions WHERE user_id = {};".format(user.user_id))
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
 
-        return "Error : Sanction not found"
+        return []
 
     @staticmethod
-    def get_sanctions_from_guild_user(guild: Guild, user: User):
+    def get_sanctions_from_guild_user(guild: discord.Guild, user: discord.Member) -> list:
         cur.execute(
-            "SELECT * FROM public.sanctions WHERE user_id = {} AND guild_id = {};".format(user.user_id, guild.guild_id))
+            "SELECT * FROM public.sanctions WHERE user_id = {} AND guild_id = {};".format(user.id, guild.id))
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
 
-        return "Error : Sanction not found"
+        return []
 
     @staticmethod
-    def get_sanctions_from_guild_mod(guild: Guild, moderator: User):
+    def get_sanctions_from_guild_mod(guild: Guild, moderator: User) -> list:
         cur.execute(
             "SELECT * FROM public.sanctions WHERE moderator_id = {} AND guild_id = {};".format(moderator.user_id,
                                                                                                guild.guild_id))
@@ -119,7 +106,7 @@ class SanctionsDB:
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
 
-        return "Error : Sanction not found"
+        return []
 
     """
     Create & delete methods
@@ -129,8 +116,8 @@ class SanctionsDB:
     def create_sanction(sanction: Sanction):
         cur.execute(
             "INSERT INTO public.sanctions ( event, event_date, guild_id, moderator_id, reason, sanction_id, time, user_id) \
-            VALUES ( {}, {}, {}, {}, {}, {}, {}, {} );".format(
-                sanction.event, sanction.event_date, sanction.guild_id, sanction.moderator_id, sanction.reason,
+            VALUES ( %s, %s, %s, %s, %s, %s, %s, %s );", (
+                sanction.event, str(sanction.event_date), sanction.guild_id, sanction.moderator_id, sanction.reason,
                 sanction.sanction_id, sanction.time, sanction.user_id))
         con.commit()
 
@@ -138,6 +125,7 @@ class SanctionsDB:
     def delete(sanction: Sanction):
         cur.execute("DELETE FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
         con.commit()
+
 
 class SanctionMethod:
 
@@ -182,5 +170,3 @@ class SanctionMethod:
     async def find_sanction_member(ctx, member: typing.Union[discord.Member, discord.User], guild: discord.Guild):
         sanction = SanctionsDB.get_sanctions_from_guild_user(guild, member)
         return sanction
-
-

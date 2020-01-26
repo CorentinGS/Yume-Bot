@@ -21,16 +21,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import psycopg2
 from psycopg2 import extras
 
@@ -51,7 +41,7 @@ class MuteDB:
 
     @staticmethod
     def get_one(user_id: int, guild_id: int):
-        cur.execute("SELECT * FROM public.muted WHERE user_id = {} and guild_id = {};".format(user_id, guild_id))
+        cur.execute("SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user_id, guild_id))
         rows = cur.fetchone()
         if rows:
             return rows
@@ -60,7 +50,7 @@ class MuteDB:
     @staticmethod
     def get_user(user: User, guild: Guild):
         cur.execute(
-            "SELECT * FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
+            "SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user.user_id, guild.guild_id))
         rows = cur.fetchone()
         if rows:
             return rows
@@ -90,7 +80,6 @@ class MuteDB:
             "INSERT INTO public.muted ( guild_id, user_id) VALUES ( {}, {} );".format(guild.guild_id, user.user_id)
         )
         con.commit()
-
 
     @staticmethod
     def unset_mute(user: User, guild: Guild):

@@ -21,21 +21,9 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-from datetime import datetime
 
 import psycopg2
 from psycopg2 import extras
-from pytz import timezone
 
 from modules.sql.guild import Guild
 from modules.sql.user import User
@@ -65,7 +53,7 @@ class UserDB:
     """
 
     @staticmethod
-    def get_one(user_id: int):
+    def get_one(user_id: int) -> User:
         cur.execute("SELECT * FROM public.user WHERE user_id = {};".format(user_id))
         rows = cur.fetchone()
         if rows:
@@ -76,21 +64,22 @@ class UserDB:
             return u
 
     @staticmethod
-    def get_user(user: User):
+    def get_user(user: User) -> User:
         cur.execute("SELECT * FROM public.user WHERE user_id = {};".format(user.user_id))
         rows = cur.fetchone()
         if rows:
             return UserDB.user_from_row(rows)
-
-        return "Error : User not found"
+        else:
+            UserDB.create(user)
+            return user
 
     @staticmethod
-    def get_all():
+    def get_all() -> list:
         cur.execute("SELECT * FROM public.user;")
         rows = cur.fetchall()
         if rows:
             return UserDB.users_from_row(rows)
-        return "Error: No user"
+        return []
 
     @staticmethod
     def get_crews():
@@ -167,7 +156,6 @@ class UserDB:
             str(user.description), user.crew, user.vip, user.user_id))
         con.commit()
 
-
     """
     Set methods
     """
@@ -199,25 +187,6 @@ class UserDB:
     """
     Others Methods
     """
-
-    @staticmethod
-    def is_afk(user: User) -> (bool, dict):
-        cur.execute("SELECT * FROM public.afk WHERE user_id = {};".format(user.user_id))
-        rows = cur.fetchone()
-        if rows:
-            return True, rows
-        return False, None
-
-    @staticmethod
-    def set_afk(user: User, reason):
-        cur.execute("INSERT INTO public.afk ( reason, time, user_id) VALUES ( {}, {}, {});".format(reason, datetime.now(
-            timezone('UTC')), user.user_id))
-        con.commit()
-
-    @staticmethod
-    def unset_afk(user: User):
-        cur.execute("DELETE FROM public.afk WHERE user_id = {};)".format(user.user_id))
-        con.commit()
 
     @staticmethod
     def is_muted(guild: Guild, user: User) -> bool:

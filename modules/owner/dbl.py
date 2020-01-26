@@ -49,11 +49,13 @@ class Dbl(commands.Cog):
         self.token = token['dbl']
         self.guild = config['support']
         self.debug = config['debug']
-
+        self.update_stats()
         self.dblpy = dbl.DBLClient(self.bot, self.token)
 
     @tasks.loop(hours=12.0)
     async def update_stats(self):
+        if not self.bot.id == 456504213262827524:
+            return
         try:
             await self.dblpy.post_guild_count()
             print('DBL updated')

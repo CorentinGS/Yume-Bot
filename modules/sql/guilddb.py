@@ -21,96 +21,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import numpy as np
 import pandas as pandas
 import psycopg2
@@ -140,29 +50,33 @@ class GuildDB:
         return guilds
 
     @staticmethod
-    def get_one(guild_id: int):
+    def get_one(guild_id: int) -> Guild:
         cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild_id))
         rows = cur.fetchone()
         if rows:
             return GuildDB.guild_from_row(rows)
-        return "Error : Guild not found"
+        else:
+            g = Guild(guild_id)
+            GuildDB.create(g)
+            return g
 
     @staticmethod
-    def get_guild(guild: Guild):
+    def get_guild(guild: Guild) -> Guild:
         cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
         rows = cur.fetchone()
         if rows:
             return GuildDB.guild_from_row(rows)
-
-        return "Error : Guild not found"
+        else:
+            GuildDB.create(guild)
+            return guild
 
     @staticmethod
-    def get_all():
+    def get_all() -> list:
         cur.execute("SELECT * FROM public.guild;")
         rows = cur.fetchall()
         if rows:
             return GuildDB.guilds_from_row(rows)
-        return "Error: No Guild"
+        return []
 
     """
     Checks methods
@@ -222,7 +136,7 @@ class GuildDB:
 
     @staticmethod
     def delete(guild: Guild):
-        cur.execute("DELETE FROM public.user WHERE guild_id = {};".format(guild.guild_id))
+        cur.execute("DELETE FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
         con.commit()
 
     """
@@ -230,12 +144,13 @@ class GuildDB:
     """
 
     @staticmethod
-    def update_user(guild: Guild):
+    def update_guild(guild: Guild):
         cur.execute(
             "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', stats_category = '{}', stats_channels = '{}', vip = '{}'  WHERE  guild_id = {}".format(
                 guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.log_chan, guild.logging, guild.setup,
                 guild.stats_category, guild.stats_channels, guild.vip, guild.guild_id))
 
+        con.commit()
     """
     Set methods
     """
@@ -276,6 +191,34 @@ class GuildDB:
         if rows:
             return rows['admin']
         return False
+
+    @staticmethod
+    def exists_in_admin(role_id, guild: Guild) -> bool:
+        cur.execute(
+            "SELECT count(*) FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        rows = cur.fetchone()
+        if rows[0] > 0:
+            return True
+        return False
+
+    @staticmethod
+    def remove_admin(role_id, guild: Guild):
+        cur.execute("DELETE FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        con.commit()
+
+    @staticmethod
+    def set_admin(role_id: int, guild_id: int):
+        cur.execute(
+            "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
+                                                                                           True))
+        con.commit()
+
+    @staticmethod
+    def set_mod(role_id: int, guild_id: int):
+        cur.execute(
+            "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
+                                                                                           False))
+        con.commit()
 
     @staticmethod
     def is_mod(role_id: int, guild: Guild) -> bool:
