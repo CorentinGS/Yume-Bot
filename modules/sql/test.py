@@ -20,63 +20,64 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+import asyncio
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-from modules.sql.guild import Guild
-from modules.sql.rankingsdb import RankingsDB
-from modules.sql.sanctionsdb import SanctionsDB
+import asyncpg
+
 from modules.sql.user import User
-from modules.sql.userdb import UserDB
-
-titi: User = User(443882750559387668, True, False, "Hello world")
-if UserDB.user_exists(titi):
-    UserDB.delete(titi)
-UserDB.create(titi)
-
-roles = [661873465556598784, 631811831559880724, 661880943791046680]
-'''
-Is AFK
-
-afk, row = UserDB.is_afk(titi)
-print(row[2])
-if afk:
-    print("This user is afk for the reason : {} for {} minutes".format(row[1], (datetime.now(timezone('UTC')) - row[2]).total_seconds() // 60.0))
-'''
-
-tux: Guild = Guild(631811291568144384)
 
 
-tux.display()
-if not RankingsDB.ranking_exists(titi, tux):
-    RankingsDB.create_ranking(titi, tux)
-else:
-    print("EXISTS")
+class TestDB:
 
-rankings = RankingsDB.get_user(titi, tux)
-rankings['xp'] += 15
-RankingsDB.update_user(titi, tux, rankings)
+    @staticmethod
+    def user_from_row(rows):
+        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'])
 
-print(RankingsDB.get_rank(titi, tux))
-'''
-Get Admin roles 
+    @staticmethod
+    def users_from_row(rows):
+        users = []
+        for row in rows:
+            users.append(TestDB.user_from_row(row))
+        return users
 
-toto = GuildDB.get_admin_roles(tux)
-print(toto)
-print(list(set(toto).intersection(roles)))
-'''
+    """
+    Get methods
+    """
 
-patate = SanctionsDB.get_sanctions_from_user(titi)
-for sanction in patate:
-    print(sanction.sanction_id)
+    @staticmethod
+    async def get_one(db, user_id: int) -> User:
+        rows = await db.fetchrow("SELECT * FROM public.user WHERE user_id = {};".format(user_id))
+        if rows:
+            return TestDB.user_from_row(rows)
 
-print(RankingsDB.get_scoreboard(tux))
+    @staticmethod
+    async def get_all(db: asyncpg.pool.Pool) -> list:
+        rows = await db.fetch("SELECT * FROM public.user;")
+        if rows:
+            return TestDB.users_from_row(rows)
 
+    @staticmethod
+    async def update_user(db: asyncpg.pool.Pool, user: User):
+        connection = await db.acquire()
+        async with connection.transaction():
+            await db.execute(
+                "UPDATE public.user SET description = '{}', crew = '{}', vip = '{}' WHERE  user_id = {}".format(
+                    str(user.description), user.crew, user.vip, user.user_id))
+        await db.release(connection)
+
+
+async def run():
+    db = await asyncpg.create_pool(user="postgres", host="localhost", port="5432", database="yumebot")
+
+    x = await TestDB.get_one(db, 282233191916634113)
+    x.display()
+    y = await TestDB.get_all(db)
+    print(y)
+    x.description = "Toto"
+    await TestDB.update_user(db, x)
+    u = await TestDB.get_one(db, 282233191916634113)
+    u.display()
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(run())
