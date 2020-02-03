@@ -23,6 +23,7 @@
     "owner.owner",
     "owner.blacklist",
     "owner.dbl",
+    "owner.custom",
     "games.games",
     "event",
     "automod",
