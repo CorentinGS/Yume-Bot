@@ -20,10 +20,8 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-import discord
-from discord.ext import commands
 
-from modules.utils import checks
+from discord.ext import commands
 
 
 class Owner(commands.Cog):
@@ -32,18 +30,6 @@ class Owner(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-
-    @commands.group()
-    @checks.is_owner()
-    async def kob(self, ctx):
-        if ctx.invoked_subcommand is None:
-            return
-
-    @kob.command()
-    @checks.is_owner()
-    async def rules(self, ctx):
-        em = discord.Embed(title="__Rules__", timestamp=ctx.message.created_at)
-
 
 def setup(bot):
     bot.add_cog(Owner(bot))
