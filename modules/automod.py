@@ -21,34 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 from datetime import datetime, timedelta
 
 import discord
 from discord.ext import commands
 
 import modules.utils.checks as check
-from modules.sql.sanctionsdb import SanctionMethod
-from modules.utils.db import Settings
+from modules.sql.blacklistdb import BlacklistDB
+from modules.sql.guilddb import GuildDB
+from modules.sql.sanctionsdb import SanctionMethod, SanctionsDB
+from modules.sql.userdb import UserDB
 from modules.utils.format import Embeds
 from modules.utils.format import Mod
 from modules.utils.guildy import GuildY
@@ -58,13 +40,13 @@ class Checks:
 
     @staticmethod
     async def member_check(member: discord.Member):
-        guild = member.guild
+        guild = GuildDB.get_one(member.guild.id)
         now = datetime.now()
         create = member.created_at
 
-        strike = await Settings().get_sanction_settings_member(str(member.id), str(guild.id))
+        strikes = SanctionsDB.get_sanctions_from_guild_user(guild, member)
 
-        sanctions = len(strike)
+        sanctions = len(strikes)
         time = (now - create).days
 
         return sanctions, time
@@ -188,13 +170,11 @@ class Automod(commands.Cog):
 
         :param member: The member who joined the guild
         """
-        guildy = GuildY(member.guild)
-        await guildy.get()
-
-        glob = await Settings().get_glob_settings()
+        guild = GuildDB.get_one(member.guild.id)
+        user = UserDB.get_one(member.id)
 
         # Check if the user has already been muted to avoid any sanctions bypass
-        if member.id in guildy.mute:
+        if UserDB.is_muted(guild, user):
             # Mute him again
             role = discord.utils.get(member.guild.roles, name="Muted")
             if not role:
@@ -205,8 +185,8 @@ class Automod(commands.Cog):
             await member.add_roles(role)
 
         # Check if the user is in the blacklist
-        if 'Blacklist' in glob:
-            if member.id in glob['Blacklist'] and guildy.bl:
+        if BlacklistDB.is_blacklist(user):
+            if GuildDB.has_blacklist(guild):
                 # Ban the member
                 await member.guild.ban(member, reason="Blacklist")
             try:
@@ -215,17 +195,16 @@ class Automod(commands.Cog):
             except discord.Forbidden:
                 return
 
-        if guildy.logging:
+        if GuildDB.has_logging(guild):
             sanctions, time = await Checks().member_check(member)
             em = await Mod().check_embed(member, member.guild, sanctions, time)
-            if guildy.log_channel:
-                channel = self.bot.get_channel(int(guildy.log_channel))
+            if guild.log_chan:
+                channel = self.bot.get_channel(int(guild.log_chan))
                 if isinstance(channel, discord.TextChannel):
                     try:
                         await channel.send(embed=em)
                     except discord.Forbidden:
                         return
-
 
     @commands.group()
     @check.is_admin()
@@ -243,6 +222,7 @@ class Automod(commands.Cog):
         await ctx.send("Not ready yet ! Be patient dear ;)")
 
     # TODO: Gateway
+
 
 def setup(bot):
     bot.add_cog(Automod(bot))

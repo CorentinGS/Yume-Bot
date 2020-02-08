@@ -26,7 +26,8 @@ import json
 
 from discord.ext import commands
 
-from modules.utils.db import Settings
+from modules.sql.guilddb import GuildDB
+from modules.sql.userdb import UserDB
 
 with open('config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -44,14 +45,15 @@ def is_owner():
 
 
 async def is_mod_check(ctx):
-    set = await Settings().get_server_settings(str(ctx.guild.id))
+    guild = GuildDB.get_one(ctx.guild.id)
+    mods = GuildDB.get_mod_roles(guild)
     auth = ctx.message.author
     if ctx.guild is None:
         return
     if auth == ctx.guild.owner:
         return True
     for role in auth.roles:
-        if str(role.id) in set['Mods']:
+        if role.id in mods:
             return True
 
 
@@ -60,26 +62,16 @@ def is_mod():
 
 
 async def is_admin_check(ctx):
-    set = await Settings().get_server_settings(str(ctx.guild.id))
+    guild = GuildDB.get_one(ctx.guild.id)
+    admins = GuildDB.get_admin_roles(guild)
+
     auth = ctx.message.author
     if ctx.guild is None:
         return False
     if auth == ctx.message.guild.owner:
         return True
     for role in auth.roles:
-        if str(role.id) in set['Admins']:
-            return True
-
-
-async def is_immune(message):
-    set = await Settings().get_server_settings(str(message.guild.id))
-    auth = message.author
-    if message.guild is None:
-        return False
-    if auth == message.guild.owner:
-        return True
-    for role in auth.roles:
-        if str(role.id) in set['Admins']:
+        if role.id in admins:
             return True
 
 
@@ -87,9 +79,22 @@ def is_admin():
     return commands.check(is_admin_check)
 
 
+async def is_immune(message):
+    guild = GuildDB.get_one(message.guild.id)
+    admins = GuildDB.get_admin_roles(guild)
+    auth = message.author
+    if message.guild is None:
+        return False
+    if auth == message.guild.owner:
+        return True
+    for role in auth.roles:
+        if role.id in admins:
+            return True
+
+
 async def is_vip_check(ctx):
-    glob = await Settings().get_glob_settings()
-    if ctx.message.guild.id in glob["VIP"] or ctx.message.author.id in glob["VIP"]:
+    vips = UserDB.get_vips()
+    if ctx.message.author.id in vips:
         return True
     else:
         return False

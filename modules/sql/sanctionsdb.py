@@ -126,6 +126,11 @@ class SanctionsDB:
         cur.execute("DELETE FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
         con.commit()
 
+    @staticmethod
+    def delete_from_user(user_id: int):
+        cur.execute("DELETE FROM public.sanctions WHERE user_id = {};".format(user_id))
+        con.commit()
+
 
 class SanctionMethod:
 

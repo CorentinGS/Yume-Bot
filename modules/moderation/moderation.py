@@ -29,11 +29,10 @@ import discord
 
 from modules.sql.guilddb import GuildDB
 from modules.sql.mutedb import MuteDB
-from modules.sql.sanctionsdb import SanctionMethod
+from modules.sql.sanctionsdb import SanctionMethod, SanctionsDB
 from modules.sql.userdb import UserDB
 from modules.utils import checks
 from modules.utils.converter import *
-from modules.utils.db import Settings
 from modules.utils.format import Embeds
 
 
@@ -105,7 +104,7 @@ class Moderation(commands.Cog):
         """
         Reset this user sanctions
         """
-        await Settings().rm_strike_settings(str(ctx.guild.id), str(member.id))
+        SanctionsDB.delete_from_user(member.id)
 
     @commands.command()
     @checks.is_mod()
