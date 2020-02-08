@@ -21,26 +21,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 from datetime import datetime
 
 import discord
@@ -261,18 +241,15 @@ class Utilities(commands.Cog):
         Who is this ID
         """
 
-        user = await self.bot.fetch_user(id)
+        user: discord.User = await self.bot.fetch_user(id)
 
         embed = discord.Embed(
             title="{}".format(user.name),
             color=discord.Colour.magenta()
         )
 
-        embed.add_field(name="Nick", value=user.nick)
+        embed.add_field(name="Nick", value=f"{user.name}#{user.discriminator}")
         embed.add_field(name="ID", value=user.id)
-        embed.add_field(name="Status", value=user.status)
-        if user.activity:
-            embed.add_field(name="Game Activity", value=user.activity.name)
         embed.add_field(name="Created", value=user.created_at.strftime(
             '%A - %B - %e - %g at %H:%M'))
         embed.set_thumbnail(url=user.avatar_url)
