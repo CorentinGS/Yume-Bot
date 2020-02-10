@@ -21,35 +21,14 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import asyncio
 
 import discord
 from discord.ext import commands
 
+from modules.sql.guilddb import GuildDB
 from modules.utils import checks
-from modules.utils.db import Settings
 from modules.utils.format import Embeds
-from modules.utils.guildy import GuildY
 
 
 class Set(commands.Cog):
@@ -70,24 +49,25 @@ class Set(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def get(self, ctx):
-        guild = GuildY(ctx.message.guild)
-        await guild.get()
+
+        guild = GuildDB.get_one(ctx.message.guild.id)
 
         if not guild.setup:
             await ctx.send("You must setup the bot before ! ")
             await ctx.invoke(self.setup)
 
         else:
-            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_channel, guild.bl, guild.logging,
-                                                     guild.log_channel, guild.automod, guild.members_count, guild.vip)
+            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_chan, guild.blacklist, guild.logging,
+                                                     guild.log_chan, guild.vip, guild.color, guild.stats_channels)
             await ctx.send(embed=em)
 
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def reset(self, ctx):
-        guild = GuildY(ctx.message.guild)
-        await guild.set()
+        guild = GuildDB.get_one(ctx.message.guild.id)
+        guild.setup = False
+        GuildDB.update_guild(guild)
         await ctx.invoke(self.setup)
 
     @setting.command()
@@ -96,8 +76,7 @@ class Set(commands.Cog):
     async def setup(self, ctx):
 
         # Get guild param
-        guild = GuildY(ctx.message.guild)
-        await guild.get()
+        guild = GuildDB.get_one(ctx.message.guild.id)
 
         # Create check
         def check(reaction, user):
@@ -115,15 +94,6 @@ class Set(commands.Cog):
 
         await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
 
-        # VIP
-
-        glob = await Settings().get_glob_settings()
-
-        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP']:
-            guild.vip = True
-            guild.automod = True
-            await guild.set()
-
         # Create logging Channel
         guild.logging = True
         overwrite = {
@@ -133,7 +103,7 @@ class Set(commands.Cog):
         }
 
         log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
-        guild.log_channel = str(log.id)
+        guild.log_chan = str(log.id)
 
         # Welcome / Leave
         msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
@@ -159,18 +129,15 @@ class Set(commands.Cog):
 
                 await msg.delete()
                 guild.greet = True
-                guild.greet_channel = str(text_channel.id)
+                guild.greet_chan = str(text_channel.id)
             elif reaction.emoji == '🚫':
                 guild.greet = False
-
-        await guild.set()
 
         # Colors
 
         msg = await ctx.send("Do you want to activate the Colors role ?")
         for reaction in reactions:
             await msg.add_reaction(reaction)
-
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
         except asyncio.TimeoutError:
@@ -181,8 +148,6 @@ class Set(commands.Cog):
                 guild.color = True
             elif reaction.emoji == '🚫':
                 guild.color = False
-
-        await guild.set()
 
         # Member stats channels
         msg = await ctx.send("Do you want to activate the member stats channels ?")
@@ -195,7 +160,7 @@ class Set(commands.Cog):
             await ctx.send('👎')
         else:
             if reaction.emoji == '✅':
-                guild.members_count = True
+                guild.stats_channels = True
                 overwrite = {
                     ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
                 }
@@ -214,87 +179,65 @@ class Set(commands.Cog):
                                                      overwrites=overwrite, category=category)
 
             elif reaction.emoji == '🚫':
-                guild.members_count = False
+                guild.stats_channels = False
 
-        guild.bl = True
-        await guild.set()
+        guild.blacklist = False
         await msg.delete()
 
         # Mods & Admins role
         await ctx.send('Detecting mod and admin role...', delete_after=5)
         for role in ctx.guild.roles:
-            if role.permissions.administrator or role.permissions.manage_guild is True:
-                guild.admins.append(str(role.id))
-            elif role.permissions.ban_members or role.permissions.kick_members is True:
-                guild.mods.append(str(role.id))
+            if GuildDB.exists_in_admin(role.id, guild):
+                GuildDB.remove_admin(role.id, guild)
+                if role.permissions.administrator or role.permissions.manage_guild is True:
+                    GuildDB.set_admin(role.id, ctx.message.guild.id)
+                elif role.permissions.ban_members or role.permissions.kick_members is True:
+                    GuildDB.set_mod(role.id, ctx.message.guild.id)
         await ctx.send('Setup is now done ! Have a good time')
 
         guild.setup = True
-        guild.color = {}
-        await guild.set()
+        GuildDB.update_guild(guild)
 
     @setting.command()
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def role(self, ctx, value, role: discord.Role = None):
-        guild = GuildY(ctx.message.guild)
-        await guild.get()
+        guild = GuildDB.get_one(ctx.message.guild.id)
+        if GuildDB.exists_in_admin(role.id, guild):
+            GuildDB.remove_admin(role.id, guild)
         if value.lower() == 'mod':
-            guild.mods.append(str(role.id))
+            GuildDB.set_mod(role.id, ctx.message.guild.id)
         elif value.lower() == 'admin':
-            guild.admins.append(str(role.id))
+            GuildDB.set_admin(role.id, ctx.message.guild.id)
         else:
             return
 
-        await guild.set()
+        GuildDB.update_guild(guild)
         await ctx.send("Updating...", delete_after=3)
 
     @commands.command()
     @checks.is_owner()
     async def setting_debug(self, ctx):
-        guildy = GuildY(ctx.guild)
-
+        guild = GuildDB.get_one(ctx.message.guild.id)
         for role in ctx.guild.roles:
+            if GuildDB.exists_in_admin(role.id, guild):
+                GuildDB.remove_admin(role.id, guild)
             if role.permissions.administrator or role.permissions.manage_guild is True:
-                guildy.admins.append(str(role.id))
+                GuildDB.set_admin(role.id, ctx.message.guild.id)
             elif role.permissions.ban_members or role.permissions.kick_members is True:
-                guildy.mods.append(str(role.id))
+                GuildDB.set_mod(role.id, ctx.message.guild.id)
 
-        await guildy.set()
-
+        GuildDB.update_guild(guild)
         await ctx.send("Done")
 
     @setting.command()
     @commands.guild_only()
     @checks.is_admin()
-    async def automod(self, ctx, value: bool = True):
-        guild = GuildY(ctx.guild)
-        await guild.get()
-
-        glob = await Settings().get_glob_settings()
-
-        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP'] or ctx.author.id in glob['VIP']:
-            guild.vip = True
-            guild.automod = value
-            await guild.set()
-            await ctx.send("Settings updated", delete_after=3)
-        else:
-            await ctx.send("You're not VIP. **Our automod system is VIP only.** "
-                           "If you want to become VIP, feel free to **join our support discord** and ask to become VIP.")
-
-    @setting.command()
-    @commands.guild_only()
-    @checks.is_admin()
     async def color(self, ctx, value: bool = True):
-        guild = GuildY(ctx.guild)
-        await guild.get()
-
-        glob = await Settings().get_glob_settings()
-
-        if ctx.guild.owner in glob['VIP'] or ctx.guild.id in glob['VIP'] or ctx.author.id in glob['VIP']:
-            guild.vip = True
+        guild = GuildDB.get_one(ctx.message.guild.id)
+        if guild.vip:
             guild.color = value
-            await guild.set()
+            GuildDB.update_guild(guild)
             await ctx.send("Settings updated", delete_after=3)
         else:
             await ctx.send("You're not VIP. **Our color system is VIP only.** "
@@ -302,21 +245,23 @@ class Set(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        guildy = GuildY(guild)
-
+        guildY = GuildDB.get_one(guild.id)
+        if not GuildDB.guild_exists(guildY):
+            GuildDB.create(guildY)
         for role in guild.roles:
+            if GuildDB.exists_in_admin(role.id, guild):
+                GuildDB.remove_admin(role.id, guild)
             if role.permissions.administrator or role.permissions.manage_guild is True:
-                guildy.admins.append(str(role.id))
+                GuildDB.set_admin(role.id, guild.id)
             elif role.permissions.ban_members or role.permissions.kick_members is True:
-                guildy.mods.append(str(role.id))
+                GuildDB.set_mod(role.id, guild.id)
 
-        await guildy.set()
         if guild.id == '264445053596991498':
             return
         try:
             await guild.owner.send(f"Thank you for adding the YumeBot to your guild!\n"
                                    f"In order to configure the YumeBot and to be able to use it fully"
-                                   f" we ask you to make the command `--setting` in any lounge of your guild **{guild.name}**"
+                                   f" we ask you to make the command `--setting` in any channel of your guild **{guild.name}**"
                                    "Thank you for your understanding.\n\n"
                                    f"If you need help, do not hesitate to contact us on our discord: **https://discord.gg/3BKgvpp**\n"
                                    f"__The YumeNetwork__")

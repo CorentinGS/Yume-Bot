@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,33 +21,12 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import json
 
 import aiohttp
 import discord
 from discord.ext import commands
 
-from modules.utils.db import Settings
 from modules.utils.weather import data_fetch, data_return, url_meteo
 
 with open('./config/config.json', 'r') as cjson:
@@ -79,7 +58,7 @@ class General(commands.Cog):
         await ctx.send("Ping !!")
 
     @commands.command(aliases=['gmto', 'gweather'])
-    async def gmeteo(self, ctx, city: str = "Paris"):
+    async def gmeteo(self, ctx, city: str):
         """
         Full Weather report
         """
@@ -118,7 +97,7 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["mto", "weather"])
-    async def meteo(self, ctx, city: str = "Paris"):
+    async def meteo(self, ctx, city: str):
         """
         Simple Weather report
         """
@@ -144,21 +123,6 @@ class General(commands.Cog):
         embed.add_field(
             name='\N{DASH SYMBOL} **Wind Speed**', value="{}m/s".format(data['wind']))
         await ctx.send(embed=embed)
-
-    @commands.command(aliases=["away", "idle"])
-    async def afk(self, ctx):
-        """
-        Set yourself as AFK
-        """
-        user = ctx.message.author
-
-        setting = await Settings().get_glob_settings()
-        if 'AFK' not in setting:
-            setting['AFK'] = []
-
-        setting['AFK'].append(user.id)
-        await Settings().set_glob_settings(setting)
-        await ctx.send(f"{user.name}, you're now AFK !", delete_after=10)
 
     @commands.command()
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):

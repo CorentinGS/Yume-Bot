@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -23,15 +23,13 @@
 
 import json
 import random
-import secrets
 import sys
 
 import discord
 from discord.ext import commands
 
+from modules.sql.userdb import UserDB
 from modules.utils import checks, lists
-from modules.utils.db import Settings
-from modules.utils.guildy import Setup
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -142,14 +140,6 @@ class Owner(commands.Cog):
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def key(self, ctx, name):
-        key = secrets.token_urlsafe(20)
-        set = await Settings().get_key_settings(str(name))
-        set['key'] = key
-        await ctx.author.send('The key is : **{}**'.format(str(key)))
-
-    @commands.command(hidden=True)
-    @checks.is_owner()
     async def guild(self, ctx):
         await ctx.message.delete()
         em = discord.Embed(timestamp=ctx.message.created_at)
@@ -169,32 +159,6 @@ class Owner(commands.Cog):
 
         await ctx.author.send(embed=em)
 
-    @commands.command(hidden=True)
-    @checks.is_owner()
-    async def check_setup(self, ctx):
-        for guild in self.bot.guilds:
-            if guild.id == '264445053596991498':
-                return
-            set = await Settings().get_server_settings(str(guild.id))
-            if set["Setup"] is False:
-                await Setup.new_guild(guild.id)
-                await guild.owner.send(f"Hey ! the YumeBot has received many improvements recently. "
-                                       f"We have noticed that your discord: {guild.name} is not configured "
-                                       f"for the new version which can lead to errors... "
-                                       f"Please execute in a lounge of your discord {guild.name} "
-                                       f"the following command: --setting reset")
-
-    @commands.command(hidden=True)
-    @checks.is_owner()
-    async def check_up(self, ctx):
-        for guild in self.bot.guilds:
-            set = await Settings().get_server_settings(str(guild.id))
-            if set["Setup"] is False:
-                await Setup.new_guild(guild.id)
-            else:
-                await Setup.refresh(guild.id)
-
-
     @commands.group(hidden=True)
     @checks.is_owner()
     async def vip(self, ctx):
@@ -204,28 +168,17 @@ class Owner(commands.Cog):
     @vip.command(hidden=True)
     async def add(self, ctx, id: int):
         await ctx.message.delete()
+        user = UserDB.get_one(id)
+        UserDB.set_vip(user)
 
-        setting = await Settings().get_glob_settings()
-        if 'VIP' not in setting:
-            setting['VIP'] = []
-
-        if id in setting['VIP']:
-            return await ctx.send("This user / guild is already VIP")
-        setting['VIP'].append(id)
-        await Settings().set_glob_settings(setting)
         await ctx.send(f"{id} is now VIP")
 
     @vip.command(hidden=True)
     async def remove(self, ctx, id: int):
         await ctx.message.delete()
-        setting = await Settings().get_glob_settings()
-
-        if id in setting['VIP']:
-            setting['VIP'].remove(id)
-            await Settings().set_glob_settings(setting)
-            await ctx.send(f"{id} has been remove from VIP")
-        else:
-            return await ctx.send('User is not VIP')
+        user = UserDB.get_one(id)
+        UserDB.unset_vip(user)
+        await ctx.send(f"{id} has been remove from VIP")
 
     @commands.command()
     @checks.is_owner()
@@ -247,7 +200,6 @@ class Owner(commands.Cog):
         await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(f"{content}"))
         await ctx.author.send(f"New presence : {content}")
 
-
     @commands.command()
     @checks.is_owner()
     async def penguin(self, ctx):
@@ -264,9 +216,6 @@ class Owner(commands.Cog):
             await owner.add_roles(role)
         except discord.HTTPException:
             return
-
-
-
 
 
 def setup(bot):

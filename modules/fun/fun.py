@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,26 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
+import asyncio
 import datetime
 import random
 import urllib.parse
@@ -290,6 +271,48 @@ class Fun(commands.Cog):
                 definition += '...'
 
             await ctx.send(f"📚 Definitions for **{result['word']}**```fix\n{definition}```")
+
+    @commands.command()
+    @commands.guild_only()
+    async def rps(self, ctx):
+        embed1 = discord.Embed(
+            title=f"Rock, Paper, Scissors",
+            description="Please type the choice u want to use! \n \n[1] Rock \n \n[2] Paper \n \n[3] Scissors",
+            colour=discord.Colour.dark_blue()
+        )
+        game = ["rock", "paper", "scissors"]
+        results = ["You Won!", "You Lost!", "A Tie!"]
+        bot = random.choice(game)
+        await ctx.send(embed=embed1)
+        try:
+            msg = await self.bot.wait_for('message', timeout=120, check=lambda msg: msg.author == ctx.author)
+        except asyncio.TimeoutError:
+            await ctx.send('👎', delete_after=3)
+
+        message = str(msg.content.lower())
+
+        if message not in game and message not in ["1", "2", "3"]:
+            await ctx.send("Please type a valid value! Was the spelling correct?")
+            return
+
+        if message == bot:
+            result = results[2]
+            colour = discord.Colour.blue()
+        elif (message in ["paper", "2"] and bot == "rock") or (
+                message in ["rock", "1"] and bot == "scissors") or (
+                message in ["scissors", "3"] and bot == "paper"):
+            result = results[0]
+            colour = discord.Colour.green()
+        else:
+            result = results[1]
+            colour = discord.Colour.dark_red()
+
+        embed2 = discord.Embed(
+            title=f"{ctx.message.author.display_name}'s Rock, Paper, Scissors Game!",
+            description=f"Bot choice: `{bot.capitalize()}` \n \nYour choice:`{msg.content.capitalize()}` \n \nResult:`{result}`",
+            colour=colour
+        )
+        await ctx.send(embed=embed2)
 
 
 def setup(bot):

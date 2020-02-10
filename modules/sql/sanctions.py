@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,27 +21,23 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import discord
+import datetime
 
 
-class Utils:
+class Sanction:
+    def __init__(self, sanction_id: int, event: str = "", guild_id: int = 0, moderator_id: int = 0, reason: str = 0,
+                 time: int = 0, user_id: int = 0, event_date: datetime.datetime = datetime.datetime.now()):
+        self.event = event
+        self.guild_id = guild_id
+        self.moderator_id = moderator_id
+        self.reason = reason
+        self.sanction_id = sanction_id
+        self.time = time
+        self.user_id = user_id
+        self.event_date = event_date
 
-    @staticmethod
-    async def delete_voice_chan(ctx, id: int):
-        try:
-            chan = discord.utils.get(ctx.guild.voice_channels, id=id)
-            await chan.delete()
-        except discord.NotFound:
-            return
-        except discord.Forbidden:
-            return await ctx.send("I need more permissions to be able to to that", delete_after=5)
-
-    @staticmethod
-    async def delete_text_chan(ctx, id: int):
-        try:
-            chan = discord.utils.get(ctx.guild.text_channels, id=id)
-            await chan.delete()
-        except discord.NotFound:
-            return
-        except discord.Forbidden:
-            return await ctx.send("I need more permissions to be able to to that", delete_after=5)
+    def display(self):
+        print("UserID : {}".format(self.user_id))
+        print("Event : {}".format(self.event))
+        print("ModeratorID : {}".format(self.moderator_id))
+        print("Reason : {}".format(self.reason))

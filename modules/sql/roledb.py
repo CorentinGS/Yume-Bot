@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -31,45 +31,52 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
-import json
+import psycopg2
+from psycopg2 import extras
 
-import dbl
-from discord.ext import commands, tasks
+from modules.sql.guild import Guild
 
-with open('./config/token.json', 'r') as cjson:
-    token = json.load(cjson)
+try:
+    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres")
+    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+except psycopg2.DatabaseError as e:
+    print('Error %s' % e)
 
-with open('./config/config.json', 'r') as cjson:
-    config = json.load(cjson)
+
+class RoleDB:
+    """
+    Get methods
+    """
+    @staticmethod
+    def get_one_from_role(role_id: int, guild: Guild):
+        cur.execute("SELECT * FROM public.roles WHERE role_id = {} and guild_id = {};".format(role_id, guild.guild_id))
+        rows = cur.fetchone()
+        if rows:
+            return rows
+        return "Error : Role not found"
+
+    @staticmethod
+    def get_one_from_level(level: int, guild: Guild):
+        cur.execute("SELECT * FROM public.roles WHERE level = {} and guild_id = {};".format(level, guild.guild_id))
+        rows = cur.fetchone()
+        if rows:
+            return rows
+        return "Error : Role not found"
 
 
-class Dbl(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.token = token['dbl']
-        self.guild = config['support']
-        self.debug = config['debug']
-        self.update_stats.start()
-        self.dblpy = dbl.DBLClient(self.bot, self.token)
+    """
+    Check methods
+    """
 
-    @tasks.loop(hours=12.0)
-    async def update_stats(self):
-        if not self.bot.id == 456504213262827524:
-            return
-        try:
-            await self.dblpy.post_guild_count()
-            print('DBL updated')
-        except Exception as e:
-            print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+    @staticmethod
+    def set_level(role_id: int, guild: Guild, level: int):
+        cur.execute(
+            "INSERT INTO public.roles ( guild_id, role_id, level) VALUES ( {}, {}, {} );".format(guild.guild_id, role_id, level)
+        )
+        con.commit()
 
-    @commands.command()
-    @commands.is_owner()
-    async def dblup(self, ctx):
-        try:
-            await self.dblpy.post_guild_count()
-            print('DBL updated')
-        except Exception as e:
-            print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
-
-def setup(bot):
-    bot.add_cog(Dbl(bot))
+    @staticmethod
+    def unset_level(level: int, guild: Guild):
+        cur.execute(
+            "DELETE FROM public.roles WHERE level = {} and guild_id = {};".format(level, guild.guild_id))
+        con.commit()
