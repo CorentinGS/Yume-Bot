@@ -23,7 +23,6 @@
 
 import json
 import random
-import secrets
 import sys
 
 import discord
@@ -31,7 +30,6 @@ from discord.ext import commands
 
 from modules.sql.userdb import UserDB
 from modules.utils import checks, lists
-from modules.utils.db import Settings
 
 with open('./config/config.json', 'r') as cjson:
     config = json.load(cjson)
@@ -142,14 +140,6 @@ class Owner(commands.Cog):
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def key(self, ctx, name):
-        key = secrets.token_urlsafe(20)
-        set = await Settings().get_key_settings(str(name))
-        set['key'] = key
-        await ctx.author.send('The key is : **{}**'.format(str(key)))
-
-    @commands.command(hidden=True)
-    @checks.is_owner()
     async def guild(self, ctx):
         await ctx.message.delete()
         em = discord.Embed(timestamp=ctx.message.created_at)
@@ -168,7 +158,6 @@ class Owner(commands.Cog):
                     inline=False)
 
         await ctx.author.send(embed=em)
-
 
     @commands.group(hidden=True)
     @checks.is_owner()
@@ -190,7 +179,6 @@ class Owner(commands.Cog):
         user = UserDB.get_one(id)
         UserDB.unset_vip(user)
         await ctx.send(f"{id} has been remove from VIP")
-
 
     @commands.command()
     @checks.is_owner()

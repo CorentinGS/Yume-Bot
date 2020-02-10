@@ -21,26 +21,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import random
 
 import discord
@@ -130,7 +110,6 @@ class Social(commands.Cog):
                                               ctx.message)
         await ctx.send(embed=em)
 
-
     @commands.command()
     async def cry(self, ctx):
         r = requests.get("https://rra.ram.moe/i/r?type=cry")
@@ -146,6 +125,7 @@ class Social(commands.Cog):
         em = await Embeds.format_social_embed(f"{ctx.author} is lewd", "lewd", f"https://rra.ram.moe{r['path']}",
                                               ctx.message)
         await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Social(bot))

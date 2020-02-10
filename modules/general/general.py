@@ -124,7 +124,6 @@ class General(commands.Cog):
             name='\N{DASH SYMBOL} **Wind Speed**', value="{}m/s".format(data['wind']))
         await ctx.send(embed=embed)
 
-
     @commands.command()
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
         """
@@ -210,7 +209,6 @@ class General(commands.Cog):
             embed.add_field(name="Weight", value=weight)
             embed.set_footer(text="Powered by Pokeapi")
             await ctx.send(embed=embed)
-
 
 
 def setup(bot):
