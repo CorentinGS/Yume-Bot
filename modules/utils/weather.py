@@ -42,8 +42,7 @@ def url_meteo(city):
     unit = 'metric'
     api = 'http://api.openweathermap.org/data/2.5/weather?q='
 
-    full_url = api + str(city) + '&mode=json&units=' + \
-               unit + '&APPID=' + user_api
+    full_url = api + str(city) + '&mode=json&units=' + unit + '&APPID=' + user_api
     return full_url
 
 

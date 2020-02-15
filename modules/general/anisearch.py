@@ -254,9 +254,8 @@ class AniSearch(commands.Cog):
                     if i + 1 == len(anime_manga["externalLinks"]):
                         external_links = external_links[:-2]
 
-                embed = discord.Embed(title=title)
+                embed = discord.Embed(title=title, colour=3447003)
                 embed.url = link
-                embed.color = 3447003
                 embed.description = self.description_parser(description)
                 embed.set_thumbnail(url=anime_manga["coverImage"]["medium"])
                 embed.add_field(name="Score", value=anime_manga.get("averageScore", "N/A"))
@@ -301,9 +300,9 @@ class AniSearch(commands.Cog):
                 character_manga = [
                     f'[{manga["title"]["userPreferred"]}]({"https://anilist.co/manga/" + str(manga["id"])})' for manga
                     in character["media"]["nodes"] if manga["type"] == "MANGA"]
-                embed = discord.Embed(title=self.format_name(character["name"]["first"], character["name"]["last"]))
+                embed = discord.Embed(title=self.format_name(character["name"]["first"], character["name"]["last"]),
+                                      colour=3447003)
                 embed.url = link
-                embed.color = 3447003
                 embed.description = self.description_parser(character["description"])
                 embed.set_thumbnail(url=character["image"]["large"])
                 if len(character_anime) > 0:
@@ -335,9 +334,8 @@ class AniSearch(commands.Cog):
                 title = f"[{user['name']}]({link})"
                 title = user["name"]
 
-                embed = discord.Embed(title=title)
+                embed = discord.Embed(title=title, colour=3447003)
                 embed.url = link
-                embed.color = 3447003
                 embed.description = self.description_parser(user["about"])
                 embed.set_thumbnail(url=user["avatar"]["large"])
                 embed.add_field(name="Watched time",
