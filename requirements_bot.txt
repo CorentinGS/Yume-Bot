@@ -1,4 +1,4 @@
-motor==2.0.0
+motor
 discord.py
 romme==0.1.0
 discord
@@ -8,3 +8,8 @@ wikipedia
 python-dateutil
 dblpy
 pyyaml
+psycopg2-binary
+sqlalchemy
+pandas
+numpy
+asyncpg

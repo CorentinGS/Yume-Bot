@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,16 +21,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-#
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#
 import datetime
 import json
 import re
@@ -167,7 +157,8 @@ class AniSearch(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    def format_name(self, first_name, last_name):  # Combines first_name and last_name and/or shows either of the two
+    @staticmethod
+    def format_name(first_name, last_name):  # Combines first_name and last_name and/or shows either of the two
         if first_name and last_name:
             return first_name + " " + last_name
         elif first_name:
@@ -177,14 +168,16 @@ class AniSearch(commands.Cog):
         else:
             return "No name"
 
-    def clean_html(self, description):  # Removes html tags
+    @staticmethod
+    def clean_html(description):  # Removes html tags
         if not description:
             return ""
         cleanr = re.compile("<.*?>")
         cleantext = re.sub(cleanr, "", description)
         return cleantext
 
-    def clean_spoilers(self, description):  # Removes spoilers using the html tag given by AniList
+    @staticmethod
+    def clean_spoilers(description):  # Removes spoilers using the html tag given by AniList
         if not description:
             return ""
         cleanr = re.compile("/<span[^>]*>.*</span>/g")
@@ -200,7 +193,8 @@ class AniSearch(commands.Cog):
         else:
             return description
 
-    def list_maximum(self, items):  # Limits to 5 strings than adds "+X more"
+    @staticmethod
+    def list_maximum(items):  # Limits to 5 strings than adds "+X more"
         if len(items) > 5:
             return items[:5] + ["+ " + str(len(items) - 5) + " more"]
         else:
@@ -260,9 +254,8 @@ class AniSearch(commands.Cog):
                     if i + 1 == len(anime_manga["externalLinks"]):
                         external_links = external_links[:-2]
 
-                embed = discord.Embed(title=title)
+                embed = discord.Embed(title=title, colour=3447003)
                 embed.url = link
-                embed.color = 3447003
                 embed.description = self.description_parser(description)
                 embed.set_thumbnail(url=anime_manga["coverImage"]["medium"])
                 embed.add_field(name="Score", value=anime_manga.get("averageScore", "N/A"))
@@ -307,9 +300,9 @@ class AniSearch(commands.Cog):
                 character_manga = [
                     f'[{manga["title"]["userPreferred"]}]({"https://anilist.co/manga/" + str(manga["id"])})' for manga
                     in character["media"]["nodes"] if manga["type"] == "MANGA"]
-                embed = discord.Embed(title=self.format_name(character["name"]["first"], character["name"]["last"]))
+                embed = discord.Embed(title=self.format_name(character["name"]["first"], character["name"]["last"]),
+                                      colour=3447003)
                 embed.url = link
-                embed.color = 3447003
                 embed.description = self.description_parser(character["description"])
                 embed.set_thumbnail(url=character["image"]["large"])
                 if len(character_anime) > 0:
@@ -341,9 +334,8 @@ class AniSearch(commands.Cog):
                 title = f"[{user['name']}]({link})"
                 title = user["name"]
 
-                embed = discord.Embed(title=title)
+                embed = discord.Embed(title=title, colour=3447003)
                 embed.url = link
-                embed.color = 3447003
                 embed.description = self.description_parser(user["about"])
                 embed.set_thumbnail(url=user["avatar"]["large"])
                 embed.add_field(name="Watched time",
@@ -402,9 +394,14 @@ class AniSearch(commands.Cog):
                 await ctx.send(embed=embeds[0])
             else:
                 await ctx.send("No mangas were found or there was an error in the process")
-
         except TypeError:
             await ctx.send("No mangas were found or there was an error in the process")
+
+    @manga.error
+    async def manga_error(self, ctx, error):
+        if isinstance(error, commands.UserInputError):
+            help = self.bot.get_cog('Help')
+            await ctx.invoke(help.manga)
 
     @commands.command()
     async def character(self, ctx, *, entered_title):

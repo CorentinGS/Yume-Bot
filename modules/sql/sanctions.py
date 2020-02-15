@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -21,16 +21,23 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-from discord.ext import commands
+import datetime
 
 
-class Reactions(commands.Cog):
-    conf = {}
+class Sanction:
+    def __init__(self, sanction_id: int, event: str = "", guild_id: int = 0, moderator_id: int = 0, reason: str = 0,
+                 time: int = 0, user_id: int = 0, event_date: datetime.datetime = datetime.datetime.now()):
+        self.event = event
+        self.guild_id = guild_id
+        self.moderator_id = moderator_id
+        self.reason = reason
+        self.sanction_id = sanction_id
+        self.time = time
+        self.user_id = user_id
+        self.event_date = event_date
 
-    def __init__(self, bot):
-        self.bot = bot
-        self.config = bot.config
-
-
-def setup(bot):
-    bot.add_cog(Reactions(bot))
+    def display(self):
+        print("UserID : {}".format(self.user_id))
+        print("Event : {}".format(self.event))
+        print("ModeratorID : {}".format(self.moderator_id))
+        print("Reason : {}".format(self.reason))

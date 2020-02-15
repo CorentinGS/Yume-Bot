@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -22,9 +22,13 @@
 #  SOFTWARE.
 
 import random
+from datetime import datetime
 
+import dateutil
 import discord
 
+from modules.sql.sanctions import Sanction
+from modules.sql.sanctionsdb import SanctionsDB
 from modules.utils import lists
 
 
@@ -118,7 +122,8 @@ class Embeds:
         return em
 
     @staticmethod
-    async def format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, automod, stats, vip):
+    async def format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, vip, color,
+                                   stats_channels):
         tip = random.choice(lists.tip)
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Settings')
@@ -141,9 +146,9 @@ class Embeds:
             em.add_field(name="Log Channel", value=logchan.mention)
 
         em.add_field(name="Blacklist", value=blacklist)
-        em.add_field(name='Automod', value=automod)
-        em.add_field(name='Stats', value=stats)
         em.add_field(name='Vip', value=vip)
+        em.add_field(name='Color', value=color)
+        em.add_field(name='Stats Channel', value=stats_channels)
 
         return em
 
@@ -184,4 +189,65 @@ class Embeds:
                          f"(https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
         em.add_field(name="**:pushpin: Commands**", value=f"{liste}")
 
+        return em
+
+    @staticmethod
+    async def format_sanction_embed(bot, sanction: Sanction):
+        user = await bot.fetch_user(sanction.user_id)
+        mod = await bot.fetch_user(sanction.moderator_id)
+        em = discord.Embed()
+        em.set_author(name="Sanction report")
+
+        em.set_footer(text=f"ID : {sanction.sanction_id}")
+        em.description = f"Type: {sanction.event}"
+        em.add_field(name="User", value=user.name)
+        em.add_field(name="User Id", value=sanction.user_id)
+        em.add_field(name="Moderator", value=mod.name)
+        em.add_field(name="Moderator_id", value=sanction.moderator_id)
+
+        em.add_field(name="Reason", value=sanction.reason)
+        em.add_field(name="Time", value=sanction.time)
+        em.add_field(name="Date", value=sanction.event_date)
+        return em
+
+    @staticmethod
+    async def user_list_sanction_embed(sanctions, member):
+
+        em = discord.Embed()
+        em.set_author(name=f"Sanction report | {member.name}",
+                      icon_url=member.avatar_url)
+
+        today = datetime.now()
+
+        msg = "__Sanctions__\n\n"
+
+        for sanction in sanctions:
+            sanction = SanctionsDB.get_sanction(sanction)
+
+            date = datetime.strptime(str(sanction.event_date), '%Y-%m-%d %H:%M:%S.%f')
+
+            rd = dateutil.relativedelta.relativedelta(date, today)
+            str1 = "**" + sanction.event + " |** " + (str(abs(rd.years)) + " years " if rd.years != 0 else "") \
+                   + (str(abs(rd.months)) + " months " if rd.months != 0 else "") \
+                   + (str(abs(rd.days)) + " days " if rd.days != 0 else "") \
+                   + (str(abs(rd.hours)) + " hours " if rd.hours != 0 and rd.months == 0 else "") \
+                   + (str(abs(rd.minutes)) + " minutes " if rd.minutes != 0 and rd.days == 0 else "") \
+                   + (str(abs(rd.seconds)) + " seconds " if rd.minutes == 0 else "") + "ago\n"
+            msg = " ".join((msg, str1))
+
+        em.description = msg
+
+        return em
+
+    @staticmethod
+    async def command_help(ctx, bot: discord.User, command: str, description: str, usage: str, examples: str = None,
+                           permission: str = None):
+        em = discord.Embed(timestamp=ctx.message.created_at)
+        em.set_author(name='Yume Bot', url="https://yumenetwork.net", icon_url=bot.avatar_url)
+        em.title = f"{command}"
+        em.description = f"{description}\n\nUsage:\n`{usage}`"
+        if examples:
+            em.add_field(name="Examples", value=examples, inline=True)
+        if permission:
+            em.add_field(name="Permission", value=f"{permission}")
         return em

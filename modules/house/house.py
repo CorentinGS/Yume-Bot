@@ -31,68 +31,19 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
-import datetime
-
-from modules.utils.db import Settings
+from discord.ext import commands
 
 
-class SanctionY:
-    def __init__(self, id: str):
-        # Bad guy
-        self.user: str = " "
-        self.user_id: str = "0"
+class Set(commands.Cog):
+    conf = {}
 
-        # Event
-        self.event: str = " "
-        self.reason: str = " "
-        self.time: str = "0"
-        self.date = datetime.datetime.now()
-        self.id = id
+    def __init__(self, bot):
+        self.bot = bot
+        self.config = bot.config
 
-        # Mod
-        self.mod: str = " "
-        self.mod_id: str = "0"
 
-        # Guild
-        self.guild: str = " "
-        self.guild_id: str = "0"
 
-    async def set(self):
 
-        set = await Settings().get_sanction_settings(self.id)
 
-        set['user'] = self.user
-        set['user_id'] = self.user_id
-
-        set['moderator'] = self.mod
-        set['moderator_id'] = self.mod_id
-
-        set['guild'] = self.guild
-        set['guild_id'] = self.guild_id
-
-        set['event'] = self.event
-        set['reason'] = self.reason
-        set['time'] = self.time
-        set['date'] = self.date
-
-        await Settings().set_sanction_settings(self.id, set)
-
-    async def get(self):
-        set = await Settings().get_sanction_settings(self.id)
-        if not set:
-            return False
-        else:
-            self.user = set["user"]
-            self.user_id = set['user_id']
-    
-            self.mod = set["moderator"]
-            self.mod_id = set["moderator_id"]
-    
-            self.guild = set['guild']
-            self.guild_id = set['guild_id']
-    
-            self.event = set['event']
-            self.reason = set['reason']
-            self.time = set['time']
-            self.date = set['date']
-            return True
+def setup(bot):
+    bot.add_cog(Set(bot))

@@ -1,4 +1,4 @@
-#  Copyright (c) 2019.
+#  Copyright (c) 2020.
 #  MIT License
 #
 #  Copyright (c) 2019 YumeNetwork
@@ -31,45 +31,33 @@
 #  furnished to do so, subject to the following conditions:
 #
 #
-import json
+#
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#
+class Guild:
+    def __init__(self, guild_id: int, blacklist: bool = False, color: bool = False, greet: bool = False,
+                 greet_chan: int = None, log_chan: int = None, logging: bool = False, setup: bool = False,
+                 stats_category: int = None, stats_channels: bool = False, vip: bool = False):
+        self.guild_id = guild_id
+        self.blacklist = blacklist
+        self.color = color
+        self.greet = greet
+        self.greet_chan = greet_chan
+        self.log_chan = log_chan
+        self.logging = logging
+        self.setup = setup
+        self.stats_category = stats_category
+        self.stats_channels = stats_channels
+        self.vip = vip
 
-import dbl
-from discord.ext import commands, tasks
-
-with open('./config/token.json', 'r') as cjson:
-    token = json.load(cjson)
-
-with open('./config/config.json', 'r') as cjson:
-    config = json.load(cjson)
-
-
-class Dbl(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.token = token['dbl']
-        self.guild = config['support']
-        self.debug = config['debug']
-        self.update_stats.start()
-        self.dblpy = dbl.DBLClient(self.bot, self.token)
-
-    @tasks.loop(hours=12.0)
-    async def update_stats(self):
-        if not self.bot.id == 456504213262827524:
-            return
-        try:
-            await self.dblpy.post_guild_count()
-            print('DBL updated')
-        except Exception as e:
-            print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
-
-    @commands.command()
-    @commands.is_owner()
-    async def dblup(self, ctx):
-        try:
-            await self.dblpy.post_guild_count()
-            print('DBL updated')
-        except Exception as e:
-            print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
-
-def setup(bot):
-    bot.add_cog(Dbl(bot))
+    def display(self):
+        print("GuildID : {}".format(self.guild_id))
+        print("Is Vip : {}".format(self.vip))
+        print("Is Setup : {}".format(self.setup))
