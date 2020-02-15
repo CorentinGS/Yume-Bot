@@ -44,18 +44,3 @@ services:
       options:
         max-size: "500k"
         max-file: "3"
-
-  web:
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile_web
-    ports:
-      - 4437:4437
-    links:
-      - mongo
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "3"
