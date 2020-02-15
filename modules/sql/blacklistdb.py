@@ -43,7 +43,11 @@ class BlacklistDB:
 
     @staticmethod
     def get_one(user_id: int):
-        cur.execute("SELECT * FROM public.blacklist WHERE user_id = {};".format(user_id))
+        try:
+            cur.execute("SELECT * FROM public.blacklist WHERE user_id = {};".format(user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows
@@ -51,7 +55,11 @@ class BlacklistDB:
 
     @staticmethod
     def get_user(user: User):
-        cur.execute("SELECT * FROM public.blacklist WHERE user_id = {};".format(user.user_id))
+        try:
+            cur.execute("SELECT * FROM public.blacklist WHERE user_id = {};".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows
@@ -63,8 +71,12 @@ class BlacklistDB:
 
     @staticmethod
     def is_blacklist(user: User):
-        cur.execute(
-            "SELECT * FROM public.blacklist WHERE user_id = {}".format(user.user_id))
+        try:
+            cur.execute(
+                "SELECT * FROM public.blacklist WHERE user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return True
@@ -76,14 +88,24 @@ class BlacklistDB:
 
     @staticmethod
     def set_blacklist(user: User, reason):
-        cur.execute(
-            "INSERT INTO public.blacklist ( reason, time, user_id) VALUES ( {}, {}, {} );".format(reason, datetime.now(
-                timezone('UTC')), user.user_id)
-        )
+        try:
+            cur.execute(
+                "INSERT INTO public.blacklist ( reason, time, user_id) VALUES ( {}, {}, {} );".format(reason,
+                                                                                                      datetime.now(
+                                                                                                          timezone(
+                                                                                                              'UTC')),
+                                                                                                      user.user_id)
+            )
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
-
 
     @staticmethod
     def unset_blacklist(user: User):
-        cur.execute("DELETE FROM public.blacklist WHERE user_id = {};)".format(user.user_id))
+        try:
+            cur.execute("DELETE FROM public.blacklist WHERE user_id = {};)".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()

@@ -54,7 +54,11 @@ class UserDB:
 
     @staticmethod
     def get_one(user_id: int) -> User:
-        cur.execute("SELECT * FROM public.user WHERE user_id = {};".format(user_id))
+        try:
+            cur.execute("SELECT * FROM public.user WHERE user_id = {};".format(user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return UserDB.user_from_row(rows)
@@ -65,7 +69,11 @@ class UserDB:
 
     @staticmethod
     def get_user(user: User) -> User:
-        cur.execute("SELECT * FROM public.user WHERE user_id = {};".format(user.user_id))
+        try:
+            cur.execute("SELECT * FROM public.user WHERE user_id = {};".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return UserDB.user_from_row(rows)
@@ -75,7 +83,11 @@ class UserDB:
 
     @staticmethod
     def get_all() -> list:
-        cur.execute("SELECT * FROM public.user;")
+        try:
+            cur.execute("SELECT * FROM public.user;")
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return UserDB.users_from_row(rows)
@@ -83,7 +95,11 @@ class UserDB:
 
     @staticmethod
     def get_crews():
-        cur.execute("SELECT * FROM public.user WHERE crew = TRUE;")
+        try:
+            cur.execute("SELECT * FROM public.user WHERE crew = TRUE;")
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return UserDB.users_from_row(rows)
@@ -91,7 +107,11 @@ class UserDB:
 
     @staticmethod
     def get_vips():
-        cur.execute("SELECT * FROM public.user WHERE vip = TRUE")
+        try:
+            cur.execute("SELECT * FROM public.user WHERE vip = TRUE")
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return UserDB.users_from_row(rows)
@@ -103,7 +123,11 @@ class UserDB:
 
     @staticmethod
     def is_crew(user: User) -> bool:
-        cur.execute("SELECT crew FROM public.user WHERE user_id = {}".format(user.user_id))
+        try:
+            cur.execute("SELECT crew FROM public.user WHERE user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows[0]
@@ -111,7 +135,11 @@ class UserDB:
 
     @staticmethod
     def is_vip(user: User) -> bool:
-        cur.execute("SELECT vip FROM public.user WHERE user_id = {}".format(user.user_id))
+        try:
+            cur.execute("SELECT vip FROM public.user WHERE user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows[0]
@@ -119,7 +147,11 @@ class UserDB:
 
     @staticmethod
     def user_exists(user: User) -> bool:
-        cur.execute("SELECT count(*) FROM public.user WHERE user_id = {};".format(user.user_id))
+        try:
+            cur.execute("SELECT count(*) FROM public.user WHERE user_id = {};".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows[0] > 0:
             return True
@@ -131,13 +163,21 @@ class UserDB:
 
     @staticmethod
     def create(user: User):
-        cur.execute("INSERT INTO public.user ( crew, description, user_id, vip) VALUES ( %s, %s, %s, %s);",
-                    (user.crew, user.description, user.user_id, user.vip))
+        try:
+            cur.execute("INSERT INTO public.user ( crew, description, user_id, vip) VALUES ( %s, %s, %s, %s);",
+                        (user.crew, user.description, user.user_id, user.vip))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def delete(user: User):
-        cur.execute("DELETE FROM public.user WHERE user_id = {};".format(user.user_id))
+        try:
+            cur.execute("DELETE FROM public.user WHERE user_id = {};".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     """
@@ -146,14 +186,22 @@ class UserDB:
 
     @staticmethod
     def update_desc(user: User, description: str):
-        cur.execute(
-            "UPDATE public.user SET description = '{}' WHERE  user_id = {}".format(str(description), user.user_id))
+        try:
+            cur.execute(
+                "UPDATE public.user SET description = '{}' WHERE  user_id = {}".format(str(description), user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def update_user(user: User):
-        cur.execute("UPDATE public.user SET description = '{}', crew = '{}', vip = '{}' WHERE  user_id = {}".format(
-            str(user.description), user.crew, user.vip, user.user_id))
+        try:
+            cur.execute("UPDATE public.user SET description = '{}', crew = '{}', vip = '{}' WHERE  user_id = {}".format(
+                str(user.description), user.crew, user.vip, user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     """
@@ -162,12 +210,20 @@ class UserDB:
 
     @staticmethod
     def set_vip(user: User):
-        cur.execute("UPDATE public.user SET vip = TRUE WHERE  user_id = {}".format(user.user_id))
+        try:
+            cur.execute("UPDATE public.user SET vip = TRUE WHERE  user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def set_crew(user: User):
-        cur.execute("UPDATE public.user SET crew = TRUE WHERE  user_id = {}".format(user.user_id))
+        try:
+            cur.execute("UPDATE public.user SET crew = TRUE WHERE  user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     """
@@ -176,12 +232,20 @@ class UserDB:
 
     @staticmethod
     def unset_vip(user: User):
-        cur.execute("UPDATE public.user SET vip = FALSE WHERE  user_id = {}".format(user.user_id))
+        try:
+            cur.execute("UPDATE public.user SET vip = FALSE WHERE  user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def unset_crew(user: User):
-        cur.execute("UPDATE public.user SET crew = FALSE WHERE  user_id = {}".format(user.user_id))
+        try:
+            cur.execute("UPDATE public.user SET crew = FALSE WHERE  user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     """
@@ -190,8 +254,12 @@ class UserDB:
 
     @staticmethod
     def is_muted(guild: Guild, user: User) -> bool:
-        cur.execute(
-            "SELECT * FROM public.muted WHERE guild_id = {} AND user_id = {}".format(guild.guild_id, user.user_id))
+        try:
+            cur.execute(
+                "SELECT * FROM public.muted WHERE guild_id = {} AND user_id = {}".format(guild.guild_id, user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return True

@@ -42,7 +42,7 @@ class Checks:
         now = datetime.now()
         create = member.created_at
 
-        strikes = SanctionsDB.get_sanctions_from_guild_user(guild, member)
+        strikes = SanctionsDB.get_sanctions_from_guild_user(member.guild, member)
 
         sanctions = len(strikes)
         time = (now - create).days

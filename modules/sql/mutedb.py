@@ -41,7 +41,11 @@ class MuteDB:
 
     @staticmethod
     def get_one(user_id: int, guild_id: int):
-        cur.execute("SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user_id, guild_id))
+        try:
+            cur.execute("SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user_id, guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows
@@ -49,8 +53,12 @@ class MuteDB:
 
     @staticmethod
     def get_user(user: User, guild: Guild):
-        cur.execute(
-            "SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user.user_id, guild.guild_id))
+        try:
+            cur.execute(
+                "SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user.user_id, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows
@@ -62,9 +70,12 @@ class MuteDB:
 
     @staticmethod
     def is_muted(user: User, guild: Guild):
-        cur.execute(
-            "SELECT * FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
-
+        try:
+            cur.execute(
+                "SELECT * FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return True
@@ -76,13 +87,21 @@ class MuteDB:
 
     @staticmethod
     def set_mute(user: User, guild: Guild):
-        cur.execute(
-            "INSERT INTO public.muted ( guild_id, user_id) VALUES ( {}, {} );".format(guild.guild_id, user.user_id)
-        )
+        try:
+            cur.execute(
+                "INSERT INTO public.muted ( guild_id, user_id) VALUES ( {}, {} );".format(guild.guild_id, user.user_id)
+            )
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def unset_mute(user: User, guild: Guild):
-        cur.execute(
-            "DELETE FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
+        try:
+            cur.execute(
+                "DELETE FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()

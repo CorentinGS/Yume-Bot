@@ -51,7 +51,11 @@ class GuildDB:
 
     @staticmethod
     def get_one(guild_id: int) -> Guild:
-        cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild_id))
+        try:
+            cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return GuildDB.guild_from_row(rows)
@@ -62,7 +66,11 @@ class GuildDB:
 
     @staticmethod
     def get_guild(guild: Guild) -> Guild:
-        cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
+        try:
+            cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return GuildDB.guild_from_row(rows)
@@ -72,7 +80,11 @@ class GuildDB:
 
     @staticmethod
     def get_all() -> list:
-        cur.execute("SELECT * FROM public.guild;")
+        try:
+            cur.execute("SELECT * FROM public.guild;")
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return GuildDB.guilds_from_row(rows)
@@ -84,7 +96,11 @@ class GuildDB:
 
     @staticmethod
     def is_vip(guild: Guild) -> bool:
-        cur.execute('SELECT vip FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        try:
+            cur.execute('SELECT vip FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows[0]
@@ -92,7 +108,11 @@ class GuildDB:
 
     @staticmethod
     def is_setup(guild: Guild) -> bool:
-        cur.execute('SELECT setup FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        try:
+            cur.execute('SELECT setup FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows[0]
@@ -100,7 +120,11 @@ class GuildDB:
 
     @staticmethod
     def has_blacklist(guild: Guild) -> bool:
-        cur.execute('SELECT blacklist FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        try:
+            cur.execute('SELECT blacklist FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows[0]
@@ -108,7 +132,11 @@ class GuildDB:
 
     @staticmethod
     def has_logging(guild: Guild) -> bool:
-        cur.execute('SELECT logging FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        try:
+            cur.execute('SELECT logging FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows[0]
@@ -116,7 +144,11 @@ class GuildDB:
 
     @staticmethod
     def guild_exists(guild: Guild) -> bool:
-        cur.execute("SELECT count(*) FROM public.guild WHERE user_id = {};".format(guild.guild_id))
+        try:
+            cur.execute("SELECT count(*) FROM public.guild WHERE user_id = {};".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows[0] > 0:
             return True
@@ -128,15 +160,24 @@ class GuildDB:
 
     @staticmethod
     def create(guild: Guild):
-        cur.execute(
-            "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, stats_category, stats_channels, vip)  VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            (guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.guild_id, guild.log_chan, guild.logging,
-             guild.setup, guild.stats_category, guild.stats_channels, guild.vip))
+        try:
+            cur.execute(
+                "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, stats_category, stats_channels, vip)  VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+                (guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.guild_id, guild.log_chan,
+                 guild.logging,
+                 guild.setup, guild.stats_category, guild.stats_channels, guild.vip))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def delete(guild: Guild):
-        cur.execute("DELETE FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
+        try:
+            cur.execute("DELETE FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     """
@@ -145,24 +186,38 @@ class GuildDB:
 
     @staticmethod
     def update_guild(guild: Guild):
-        cur.execute(
-            "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', stats_category = '{}', stats_channels = '{}', vip = '{}'  WHERE  guild_id = {}".format(
-                guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.log_chan, guild.logging, guild.setup,
-                guild.stats_category, guild.stats_channels, guild.vip, guild.guild_id))
-
+        try:
+            cur.execute(
+                "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', stats_category = '{}', stats_channels = '{}', vip = '{}'  WHERE  guild_id = {}".format(
+                    guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.log_chan, guild.logging,
+                    guild.setup,
+                    guild.stats_category, guild.stats_channels, guild.vip, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
+
     """
     Set methods
     """
 
     @staticmethod
     def set_vip(guild: Guild):
-        cur.execute("UPDATE public.guild SET vip = TRUE WHERE  guild_id = {}".format(guild.guild_id))
+        try:
+            cur.execute("UPDATE public.guild SET vip = TRUE WHERE  guild_id = {}".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def set_blacklist(guild: Guild):
-        cur.execute("UPDATE public.guild SET blacklist = TRUE WHERE  guild_id = {}".format(guild.guild_id))
+        try:
+            cur.execute("UPDATE public.guild SET blacklist = TRUE WHERE  guild_id = {}".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+
         con.commit()
 
     """
@@ -171,12 +226,21 @@ class GuildDB:
 
     @staticmethod
     def unset_vip(guild: Guild):
-        cur.execute("UPDATE public.guild SET vip = FALSE WHERE guild_id = {}".format(guild.guild_id))
+        try:
+            cur.execute("UPDATE public.guild SET vip = FALSE WHERE guild_id = {}".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def unset_blacklist(guild: Guild):
-        cur.execute("UPDATE public.guild SET blacklist = FALSE WHERE guild_id = {}".format(guild.guild_id))
+        try:
+            cur.execute("UPDATE public.guild SET blacklist = FALSE WHERE guild_id = {}".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+
         con.commit()
 
     """
@@ -185,8 +249,12 @@ class GuildDB:
 
     @staticmethod
     def is_admin(role_id: int, guild: Guild) -> bool:
-        cur.execute(
-            "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        try:
+            cur.execute(
+                "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows['admin']
@@ -194,8 +262,13 @@ class GuildDB:
 
     @staticmethod
     def exists_in_admin(role_id, guild: Guild) -> bool:
-        cur.execute(
-            "SELECT count(*) FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        try:
+            cur.execute(
+                "SELECT count(*) FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id,
+                                                                                                role_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows[0] > 0:
             return True
@@ -203,27 +276,43 @@ class GuildDB:
 
     @staticmethod
     def remove_admin(role_id, guild: Guild):
-        cur.execute("DELETE FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        try:
+            cur.execute("DELETE FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def set_admin(role_id: int, guild_id: int):
-        cur.execute(
-            "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
-                                                                                           True))
+        try:
+            cur.execute(
+                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
+                                                                                               True))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def set_mod(role_id: int, guild_id: int):
-        cur.execute(
-            "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
-                                                                                           False))
+        try:
+            cur.execute(
+                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
+                                                                                               False))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def is_mod(role_id: int, guild: Guild) -> bool:
-        cur.execute(
-            "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        try:
+            cur.execute(
+                "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows['admin'] is False:
             return True
@@ -231,7 +320,11 @@ class GuildDB:
 
     @staticmethod
     def get_admin_roles(guild: Guild) -> list:
-        cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = true".format(guild.guild_id))
+        try:
+            cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = true".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             df = pandas.DataFrame(np.array(rows))
@@ -240,7 +333,11 @@ class GuildDB:
 
     @staticmethod
     def get_mod_roles(guild: Guild) -> list:
-        cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = false".format(guild.guild_id))
+        try:
+            cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = false".format(guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             df = pandas.DataFrame(np.array(rows))

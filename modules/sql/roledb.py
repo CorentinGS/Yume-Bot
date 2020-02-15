@@ -47,22 +47,29 @@ class RoleDB:
     """
     Get methods
     """
+
     @staticmethod
     def get_one_from_role(role_id: int, guild: Guild):
-        cur.execute("SELECT * FROM public.roles WHERE role_id = {} and guild_id = {};".format(role_id, guild.guild_id))
+        try:
+            cur.execute(
+                "SELECT * FROM public.roles WHERE role_id = {} and guild_id = {};".format(role_id, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows
-        return "Error : Role not found"
 
     @staticmethod
     def get_one_from_level(level: int, guild: Guild):
-        cur.execute("SELECT * FROM public.roles WHERE level = {} and guild_id = {};".format(level, guild.guild_id))
+        try:
+            cur.execute("SELECT * FROM public.roles WHERE level = {} and guild_id = {};".format(level, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return rows
-        return "Error : Role not found"
-
 
     """
     Check methods
@@ -70,13 +77,22 @@ class RoleDB:
 
     @staticmethod
     def set_level(role_id: int, guild: Guild, level: int):
-        cur.execute(
-            "INSERT INTO public.roles ( guild_id, role_id, level) VALUES ( {}, {}, {} );".format(guild.guild_id, role_id, level)
-        )
+        try:
+            cur.execute(
+                "INSERT INTO public.roles ( guild_id, role_id, level) VALUES ( {}, {}, {} );".format(guild.guild_id,
+                                                                                                     role_id, level)
+            )
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def unset_level(level: int, guild: Guild):
-        cur.execute(
-            "DELETE FROM public.roles WHERE level = {} and guild_id = {};".format(level, guild.guild_id))
+        try:
+            cur.execute(
+                "DELETE FROM public.roles WHERE level = {} and guild_id = {};".format(level, guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()

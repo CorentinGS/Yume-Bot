@@ -58,21 +58,33 @@ class SanctionsDB:
 
     @staticmethod
     def get_one(sanction_id: int) -> Sanction:
-        cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction_id)))
+        try:
+            cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return SanctionsDB.sanction_from_row(rows)
 
     @staticmethod
     def get_sanction(sanction: Sanction) -> Sanction:
-        cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction.sanction_id)))
+        try:
+            cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction.sanction_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchone()
         if rows:
             return SanctionsDB.sanction_from_row(rows)
 
     @staticmethod
     def get_all() -> list:
-        cur.execute("SELECT * FROM public.sanctions;")
+        try:
+            cur.execute("SELECT * FROM public.sanctions;")
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
@@ -80,7 +92,11 @@ class SanctionsDB:
 
     @staticmethod
     def get_sanctions_from_user(user: User) -> list:
-        cur.execute("SELECT * FROM public.sanctions WHERE user_id = {};".format(user.user_id))
+        try:
+            cur.execute("SELECT * FROM public.sanctions WHERE user_id = {};".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
@@ -89,8 +105,12 @@ class SanctionsDB:
 
     @staticmethod
     def get_sanctions_from_guild_user(guild: discord.Guild, user: discord.Member) -> list:
-        cur.execute(
-            "SELECT * FROM public.sanctions WHERE user_id = {} AND guild_id = {};".format(user.id, guild.id))
+        try:
+            cur.execute(
+                "SELECT * FROM public.sanctions WHERE user_id = {} AND guild_id = {};".format(user.id, guild.id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
@@ -99,9 +119,13 @@ class SanctionsDB:
 
     @staticmethod
     def get_sanctions_from_guild_mod(guild: Guild, moderator: User) -> list:
-        cur.execute(
-            "SELECT * FROM public.sanctions WHERE moderator_id = {} AND guild_id = {};".format(moderator.user_id,
-                                                                                               guild.guild_id))
+        try:
+            cur.execute(
+                "SELECT * FROM public.sanctions WHERE moderator_id = {} AND guild_id = {};".format(moderator.user_id,
+                                                                                                   guild.guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         rows = cur.fetchall()
         if rows:
             return SanctionsDB.sanctions_from_row(rows)
@@ -114,21 +138,33 @@ class SanctionsDB:
 
     @staticmethod
     def create_sanction(sanction: Sanction):
-        cur.execute(
-            "INSERT INTO public.sanctions ( event, event_date, guild_id, moderator_id, reason, sanction_id, time, user_id) \
-            VALUES ( %s, %s, %s, %s, %s, %s, %s, %s );", (
-                sanction.event, str(sanction.event_date), sanction.guild_id, sanction.moderator_id, sanction.reason,
-                sanction.sanction_id, sanction.time, sanction.user_id))
+        try:
+            cur.execute(
+                "INSERT INTO public.sanctions ( event, event_date, guild_id, moderator_id, reason, sanction_id, time, user_id) \
+                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s );", (
+                    sanction.event, str(sanction.event_date), sanction.guild_id, sanction.moderator_id, sanction.reason,
+                    sanction.sanction_id, sanction.time, sanction.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def delete(sanction: Sanction):
-        cur.execute("DELETE FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
+        try:
+            cur.execute("DELETE FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
     @staticmethod
     def delete_from_user(user_id: int):
-        cur.execute("DELETE FROM public.sanctions WHERE user_id = {};".format(user_id))
+        try:
+            cur.execute("DELETE FROM public.sanctions WHERE user_id = {};".format(user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
         con.commit()
 
 

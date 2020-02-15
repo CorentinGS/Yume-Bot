@@ -102,14 +102,16 @@ class Set(commands.Cog):
                 send_messages=True)
         }
 
-        log = await ctx.guild.create_text_channel("YumeBot-log", overwrites=overwrite)
+        log = discord.utils.get(ctx.guild.text_channels, name="yumebot-log")
+        if not isinstance(log, discord.TextChannel):
+            log = await ctx.guild.create_text_channel("yumebot-log", overwrites=overwrite)
+
         guild.log_chan = str(log.id)
 
         # Welcome / Leave
         msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
-        for reaction in reactions:
-            await msg.add_reaction(reaction)
 
+        [await msg.add_reaction(reaction) for reaction in reactions]
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
         except asyncio.TimeoutError:
@@ -151,8 +153,7 @@ class Set(commands.Cog):
 
         # Member stats channels
         msg = await ctx.send("Do you want to activate the member stats channels ?")
-        for reaction in reactions:
-            await msg.add_reaction(reaction)
+        [await msg.add_reaction(reaction) for reaction in reactions]
 
         try:
             reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)

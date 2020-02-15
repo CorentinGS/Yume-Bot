@@ -21,6 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+import typing
 from random import randint
 
 import discord
@@ -28,6 +29,7 @@ from discord.ext import commands
 
 from modules.sql.guilddb import GuildDB
 from modules.sql.rankingsdb import RankingsDB
+from modules.sql.roledb import RoleDB
 from modules.sql.userdb import UserDB
 
 
@@ -95,34 +97,31 @@ class Level(commands.Cog):
             # await ctx.invoke(self.get)
             return
 
-    """
     @level.command()
     @commands.has_permissions(administrator=True)
-    async def config(self, ctx, level: int, role: str):
+    async def config(self, ctx, level: int, role: typing.Union[discord.Role, int, str]):
+        guild = GuildDB.get_one(ctx.guild.id)
+        if isinstance(role, str):
+            try:
+                rolemention = discord.utils.get(ctx.guild.roles, name=role)
+            except discord.NotFound:
+                return await ctx.send(
+                    "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 role_name**")
+        if isinstance(role, int):
+            try:
+                rolemention = discord.utils.get(ctx.guild.roles, id=role)
+            except discord.NotFound:
+                return await ctx.send(
+                    "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 role_name**")
 
-        set = await Settings().get_server_settings(str(ctx.message.guild.id))
+        row = RoleDB.get_one_from_level(level, guild)
+        if row:
+            RoleDB.unset_level(row['level'], guild)
+        RoleDB.set_level(role.id, guild, level)
 
-        if not "levels" in set:
-            set["levels"] = {}
-        await Settings().set_server_settings(str(ctx.message.guild.id), set)
-        try:
-            rolemention = discord.utils.get(ctx.guild.roles, name=role)
-        except discord.NotFound:
-            return await ctx.send(
-                "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
-        except discord.InvalidArgument:
-            return await ctx.send(
-                "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 test_role**")
+        await ctx.send("Level setup", delete_after=3)
 
-        toto = set["levels"]
-        toto[str(level)] = str(rolemention.id)
-        set["levels"] = toto
-
-        await Settings().set_server_settings(str(ctx.message.guild.id), set)
-        await ctx.send("Level setup")
-
-        # Create a discord converter to handle both name / mention / ID
-    """
+    # TODO: Faire une commande pour supprimer un role/level et pour voir les roles/levels déjà config
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -160,25 +159,19 @@ class Level(commands.Cog):
                 await message.channel.send("{} is now level {}.".format(user.name, rankings['level']), delete_after=3)
             except discord.Forbidden:
                 pass
+            RankingsDB.update_user(userY, guildY, rankings)
+            row = RoleDB.get_one_from_level(rankings['level'], guildY)
+            if row:
+                try:
+                    role = discord.utils.get(
+                        message.guild.roles, id=int(row["role_id"]))
+                    await user.add_roles(role)
+                except discord.HTTPException:
+                    pass
 
         RankingsDB.update_user(userY, guildY, rankings)
 
-        """
-            lvl = toto["levels"]
-            for key in lvl:
-                if int(key) == dic['level']:
-                    try:
-                        role = discord.utils.get(
-                            message.guild.roles, id=int(lvl[key]))
-                    except discord.NotFound:
-                        break
-                    try:
-                        await user.add_roles(role)
-                    except discord.Forbidden:
-                        break
-                    except discord.InvalidArgument:
-                        break
-            """
+
 
 
 # TODO: Ajouter des commandes pour voir les roles
