@@ -30,7 +30,7 @@ from pytz import timezone
 from modules.sql.user import User
 
 try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres")
+    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
     cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
 except psycopg2.DatabaseError as e:
     print('Error %s' % e)
