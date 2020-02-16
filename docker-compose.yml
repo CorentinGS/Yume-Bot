@@ -21,6 +21,9 @@ services:
     restart: always
     ports:
       - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: yumebot
+      POSTGRES_DB : yumebot
     volumes:
       - db-data:/var/lib/postgresql/data
     logging:
