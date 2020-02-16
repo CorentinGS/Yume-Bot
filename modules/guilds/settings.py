@@ -181,6 +181,7 @@ class Set(commands.Cog):
 
             elif reaction.emoji == '🚫':
                 guild.stats_channels = False
+                guild.count_category = 0
 
         guild.blacklist = False
         await msg.delete()

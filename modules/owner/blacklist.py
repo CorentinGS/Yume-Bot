@@ -46,18 +46,15 @@ class Blacklist(commands.Cog):
 
     @blacklist.command()
     @checks.is_owner()
-    async def add(self, ctx, user: Union[int, discord.Member], reason: str = "None"):
-
-        if isinstance(user, int):
-            user = self.bot.get_user(user)
+    async def add(self, ctx, user: int, reason: str = "None"):
 
         await ctx.message.delete()
-        usery = UserDB.get_one(user.id)
+        usery = UserDB.get_one(user)
 
         if BlacklistDB.is_blacklist(usery):
             return await ctx.send("This user is already blacklisted")
         BlacklistDB.set_blacklist(usery, reason)
-        await ctx.send(f"{user.name}#{user.discriminator} is now blacklisted")
+        await ctx.send(f"This user is now blacklisted")
 
     @blacklist.command(aliases=['remove'])
     @checks.is_owner()

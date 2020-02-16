@@ -3,3 +3,4 @@
 .github
 data
 /.idea/
+/modules/sql/test.py

@@ -37,19 +37,16 @@ collection_rankings = db.user
 servers = collection_server.find()
 
 for sanction in collection_sanction.find():
-    cur.execute("INSERT INTO public.sanctions ( event_date, event, guild_id, moderator_id, reason, sanction_id, time, user_id) \
-        VALUES (  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );", (
-        sanction['date'], sanction['event'], sanction['guild_id'],
-        sanction['moderator_id'], sanction['reason'], sanction['_id'], sanction['time'],
-        sanction['user_id']))
+    cur.execute("INSERT INTO public.sanctions ( event_date, event, guild_id, moderator_id, reason, sanction_id, time, user_id) VALUES (  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );",(sanction['date'], sanction['event'], sanction['guild_id'],sanction['moderator_id'], sanction['reason'], sanction['_id'], sanction['time'], sanction['user_id']))
 
 for server in servers:
-    cur.execute("INSERT INTO public.guild ( blacklist, color, greet, greetchan, guild_id, log_chan, logging, setup, stats_category, stats_channels, vip) \
-    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);", (server['bl'], server['Color'], server['Greet'],
-                                                             server['GreetChannel'], server['_id'],
-                                                             server['LogChannel'], server['logging'], server['Setup'],
-                                                             server['category'],
-                                                             server['Display'], server['Vip']))
+    cur.execute(
+        "INSERT INTO public.guild ( blacklist, color, greet, greetchan, guild_id, log_chan, logging, setup, stats_category, stats_channels, vip) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+        (server['bl'], server['Color'], server['Greet'],
+         server['GreetChannel'], server['_id'],
+         server['LogChannel'], server['logging'], server['Setup'],
+         server['category'],
+         server['Display'], server['Vip']))
 
     for user in server['Admins']:
         cur.execute("INSERT INTO public.admin ( admin, guild_id, user_id) VALUES ( %s, %s, %s);",

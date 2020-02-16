@@ -22,7 +22,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./data/postgre:/data/sqldb
+      - db-data:/var/lib/postgresql/data
     logging:
       driver: "json-file"
       options:
@@ -44,3 +44,7 @@ services:
       options:
         max-size: "500k"
         max-file: "3"
+
+volumes:
+ db-data:
+  driver: local

@@ -20,9 +20,10 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-import asyncio
 
 import asyncpg
+import psycopg2
+from psycopg2 import extras
 
 from modules.sql.user import User
 
@@ -79,5 +80,12 @@ async def run():
     u.display()
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(run())
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(run())
+
+
+con = psycopg2.connect("host=localhost dbname=yumebot port=5432 user=postgres")
+cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+cur.execute("SELECT * FROM public.blacklist")
+print(cur.fetchone())
