@@ -148,7 +148,7 @@ class Level(commands.Cog):
         gain = randint(2, 6)
 
         rankings['xp'] += gain
-        rankings['total'] += rankings['xp']
+        rankings['total'] += gain
 
         if rankings['xp'] >= rankings['reach']:
             rankings['reach'] = round(rankings['reach'] * 1.6)
