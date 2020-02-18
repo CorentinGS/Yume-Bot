@@ -39,6 +39,8 @@ class Level(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+        self._cd = commands.CooldownMapping.from_cooldown(1.0, 5.0, commands.BucketType.user)
+
 
     @commands.command()
     async def rank(self, ctx, user: discord.Member = None):
@@ -135,6 +137,11 @@ class Level(commands.Cog):
             return
 
         if message.guild.id == '264445053596991498':
+            return
+
+        bucket = self._cd.get_bucket(message)
+        retry_after = bucket.update_rate_limit()
+        if retry_after:
             return
 
         userY = UserDB.get_one(user.id)
