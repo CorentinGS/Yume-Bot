@@ -121,7 +121,7 @@ class Level(commands.Cog):
             RoleDB.unset_level(row['level'], guild)
         RoleDB.set_level(role.id, guild, level)
 
-        await ctx.send("Level setup", delete_after=3)
+        await ctx.send("Level setup", delete_after=2)
 
     # TODO: Faire une commande pour supprimer un role/level et pour voir les roles/levels déjà config
 
@@ -163,8 +163,8 @@ class Level(commands.Cog):
             rankings['level'] += 1
 
             try:
-                await message.channel.send("{} is now level {}.".format(user.name, rankings['level']), delete_after=3)
-            except discord.Forbidden:
+                await message.channel.send("{} is now level {}.".format(user.name, rankings['level']), delete_after=2)
+            except discord.HTTPException:
                 pass
             RankingsDB.update_user(userY, guildY, rankings)
             row = RoleDB.get_one_from_level(rankings['level'], guildY)

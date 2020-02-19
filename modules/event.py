@@ -91,39 +91,47 @@ class Event(commands.Cog):
         guild = GuildDB.get_one(member.guild.id)
 
         if guild.greet:
-            channel = self.bot.get_channel(int(guild.greet_chan))
-            greet = random.choice(lists.leave)
+            try:
+                channel = member.guild.get_channel(int(guild.greet_chan))
+            except discord.HTTPException:
+                pass
+            else:
+                greet = random.choice(lists.leave)
 
-            em = discord.Embed(timestamp=member.joined_at)
-            em.set_author(name="Bye", icon_url=member.avatar_url)
-            em.set_footer(text=f'{member.name}')
-            em.description = f"{greet}"
-            await channel.send(embed=em)
+                em = discord.Embed(timestamp=member.joined_at)
+                em.set_author(name="Bye", icon_url=member.avatar_url)
+                em.set_footer(text=f'{member.name}')
+                em.description = f"{greet}"
+                await channel.send(embed=em)
 
         if guild.stats_channels:
-            category = discord.utils.get(
-                member.guild.categories, id=int(guild.stats_category))
-            for channel in category.channels:
-                try:
-                    await channel.delete()
-                except discord.Forbidden:
-                    return
-                except discord.HTTPException:
-                    return
+            try:
+                category = discord.utils.get(
+                    member.guild.categories, id=int(guild.stats_category))
+            except discord.HTTPException:
+                return
+            else:
+                for channel in category.channels:
+                    try:
+                        await channel.delete()
+                    except discord.Forbidden:
+                        return
+                    except discord.HTTPException:
+                        return
 
-            overwrite = {
-                member.guild.default_role: discord.PermissionOverwrite(connect=False),
-            }
+                overwrite = {
+                    member.guild.default_role: discord.PermissionOverwrite(connect=False),
+                }
 
-            await member.guild.create_voice_channel(f'Users : {len(member.guild.members)}', overwrites=overwrite,
-                                                    category=category)
-            bots = []
-            for user in member.guild.members:
-                if user.bot is True:
-                    bots.append(user)
-            await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
-            await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}',
-                                                    overwrites=overwrite, category=category)
+                await member.guild.create_voice_channel(f'Users : {len(member.guild.members)}', overwrites=overwrite,
+                                                        category=category)
+                bots = []
+                for user in member.guild.members:
+                    if user.bot is True:
+                        bots.append(user)
+                await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
+                await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}',
+                                                        overwrites=overwrite, category=category)
 
 
 def setup(bot):
