@@ -145,14 +145,16 @@ class GuildDB:
     @staticmethod
     def guild_exists(guild: Guild) -> bool:
         try:
-            cur.execute("SELECT count(*) FROM public.guild WHERE user_id = {};".format(guild.guild_id))
+            cur.execute("SELECT count(*) FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
         except Exception as err:
             print(err)
             con.rollback()
-        rows = cur.fetchone()
-        if rows[0] > 0:
+        try:
+            rows = cur.fetchone()
+        except psycopg2.ProgrammingError:
+            return False
+        else:
             return True
-        return False
 
     """
     Create & delete methods

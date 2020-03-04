@@ -191,10 +191,10 @@ class Set(commands.Cog):
         for role in ctx.guild.roles:
             if GuildDB.exists_in_admin(role.id, guild):
                 GuildDB.remove_admin(role.id, guild)
-                if role.permissions.administrator or role.permissions.manage_guild is True:
-                    GuildDB.set_admin(role.id, ctx.message.guild.id)
-                elif role.permissions.ban_members or role.permissions.kick_members is True:
-                    GuildDB.set_mod(role.id, ctx.message.guild.id)
+            if role.permissions.administrator or role.permissions.manage_guild is True:
+                GuildDB.set_admin(role.id, ctx.message.guild.id)
+            elif role.permissions.ban_members or role.permissions.kick_members is True:
+                GuildDB.set_mod(role.id, ctx.message.guild.id)
         await ctx.send('Setup is now done ! Have a good time')
 
         guild.setup = True

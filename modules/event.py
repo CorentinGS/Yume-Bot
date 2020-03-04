@@ -57,29 +57,35 @@ class Event(commands.Cog):
             await channel.send(embed=em)
 
         if guild.stats_channels:
-            category = discord.utils.get(
-                member.guild.categories, id=int(guild.stats_category))
-            for channel in category.channels:
-                try:
-                    await channel.delete()
-                except discord.Forbidden:
+            try:
+                category = discord.utils.get(
+                    member.guild.categories, id=int(guild.stats_category))
+            except discord.HTTPException:
+                return
+            else:
+                if not isinstance(category, discord.CategoryChannel):
                     return
-                except discord.HTTPException:
-                    return
+                for channel in category.channels:
+                    try:
+                        await channel.delete()
+                    except discord.Forbidden:
+                        return
+                    except discord.HTTPException:
+                        return
 
-            overwrite = {
-                member.guild.default_role: discord.PermissionOverwrite(connect=False),
-            }
+                overwrite = {
+                    member.guild.default_role: discord.PermissionOverwrite(connect=False),
+                }
 
-            await member.guild.create_voice_channel(f'Users : {len(member.guild.members)}', overwrites=overwrite,
-                                                    category=category)
-            bots = []
-            for user in member.guild.members:
-                if user.bot is True:
-                    bots.append(user)
-            await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
-            await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}',
-                                                    overwrites=overwrite, category=category)
+                await member.guild.create_voice_channel(f'Users : {len(member.guild.members)}', overwrites=overwrite,
+                                                        category=category)
+                bots = []
+                for user in member.guild.members:
+                    if user.bot is True:
+                        bots.append(user)
+                await member.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
+                await member.guild.create_voice_channel(f'Members : {len(member.guild.members) - len(bots)}',
+                                                        overwrites=overwrite, category=category)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
@@ -111,6 +117,8 @@ class Event(commands.Cog):
             except discord.HTTPException:
                 return
             else:
+                if not isinstance(category, discord.CategoryChannel):
+                    return
                 for channel in category.channels:
                     try:
                         await channel.delete()
