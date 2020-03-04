@@ -232,6 +232,21 @@ class Set(commands.Cog):
         GuildDB.update_guild(guild)
         await ctx.send("Done")
 
+    @commands.command()
+    @checks.is_owner()
+    async def setting_update(self, ctx):
+        for guild in self.bot.guilds:
+            guild = GuildDB.get_one(guild.id)
+            for role in ctx.guild.roles:
+                if GuildDB.exists_in_admin(role.id, guild):
+                    GuildDB.remove_admin(role.id, guild)
+                if role.permissions.administrator or role.permissions.manage_guild is True:
+                    GuildDB.set_admin(role.id, ctx.message.guild.id)
+                elif role.permissions.ban_members or role.permissions.kick_members is True:
+                    GuildDB.set_mod(role.id, ctx.message.guild.id)
+            GuildDB.update_guild(guild)
+        await ctx.send("Done")
+
     @setting.command()
     @commands.guild_only()
     @checks.is_admin()
