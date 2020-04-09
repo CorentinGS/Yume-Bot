@@ -146,7 +146,7 @@ class Owner(commands.Cog):
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
             # await asyncio.sleep(500)
-            if not guild.id in ['264445053596991498']:
+            if guild.id not in ['264445053596991498']:
                 try:
                     invites = await guild.invites()
                 except discord.HTTPException:
