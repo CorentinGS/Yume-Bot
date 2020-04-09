@@ -158,21 +158,20 @@ class Utilities(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def owner(self, ctx):
-        server = ctx.message.guild
+        owner: discord.Member = ctx.message.guild.owner
 
         embed = discord.Embed(
             title="{}".format(ctx.message.guild.name),
             color=discord.Colour.dark_gold()
         )
 
-        embed.add_field(name="Owner", value=server.owner.mention, inline=True)
-        embed.set_thumbnail(url=server.owner.avatar_url)
+        embed.add_field(name="Owner", value=owner.mention, inline=True)
+        embed.set_thumbnail(url=owner.avatar_url)
         embed.set_footer(text=f"YumeBot",
                          icon_url=self.bot.user.avatar_url)
 
         try:
             await ctx.send(embed=embed)
-
         except discord.HTTPException:
             pass
 

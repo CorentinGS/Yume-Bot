@@ -266,8 +266,8 @@ class Set(commands.Cog):
         if not GuildDB.guild_exists(guildY):
             GuildDB.create(guildY)
         for role in guild.roles:
-            if GuildDB.exists_in_admin(role.id, guild):
-                GuildDB.remove_admin(role.id, guild)
+            if GuildDB.exists_in_admin(role.id, guildY):
+                GuildDB.remove_admin(role.id, guildY)
             if role.permissions.administrator or role.permissions.manage_guild is True:
                 GuildDB.set_admin(role.id, guild.id)
             elif role.permissions.ban_members or role.permissions.kick_members is True:
