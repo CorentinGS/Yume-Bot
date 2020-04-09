@@ -51,6 +51,29 @@ class Help(commands.Cog):
             await ctx.send(embed=embed)
 
     @help.command()
+    @commands.is_nsfw()
+    async def nsfw(self, ctx):
+        liste = "`neko lewd`, `neko nsfw`, `neko blowjob`, `neko pussy`, `neko cum`, `neko feet`, " \
+                "`neko femdom`, `neko bdsm`, `neko cum`, 'neko furry`, `neko solo`, `neko trap`, `yandere`"
+        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Nsfw", liste)
+        await ctx.send(embed=embed)
+
+    @help.command()
+    @commands.is_nsfw()
+    async def yandere(self, ctx):
+        await self.command_help(ctx, self.bot.user, "Yandere", "Show a random yande.re pic", "--yandere <tag>")
+
+    @help.command()
+    @commands.is_nsfw
+    async def neko(self, ctx, tag: str = None):
+        if tag.lower() in ['kitsune', 'waifu'] or not tag:
+            await self.command_help(ctx, self.bot.user, "Neko", "Show a random sfw neko / kitsune / waifu girl",
+                                    "--neko <tag>")
+        else:
+            await self.command_help(ctx, self.bot.user, "Neko", "Show a random nsfw image for nekos.life",
+                                    "--neko <tag>")
+
+    @help.command()
     async def general(self, ctx):
         liste = "`jump`, `weather`, `gweather`, `afk`, `pokemon`, `anime`, `manga`, `character`, `anilist`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "General", liste)
@@ -502,7 +525,7 @@ class Help(commands.Cog):
     @help.command()
     async def fun(self, ctx):
         liste = "`rd`, `8ball`, `cat`, `dog`, `lovepower`, `choose`, `linux`, `number`, `trump`, `chucknorris`, `geek_joke`, `cookie`, `today`," \
-                " `ice`, `lmgtfy`, `love_calc`, `urban`"
+                " `ice`, `lmgtfy`, `love_calc`, `urban`, `neko waifu`, `neko`, `neko kitsune`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Fun", liste)
         await ctx.send(embed=embed)
 

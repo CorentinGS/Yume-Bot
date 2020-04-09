@@ -52,16 +52,23 @@ class Booru(commands.Cog):
 
     @neko.command(name='neko')
     @commands.guild_only()
-    async def n_sfw_neko(self, ctx, tag: str = "sfw"):
+    async def n_sfw_neko(self, ctx):
         async with ctx.typing():
-            if ctx.channel.is_nsfw() and tag.lower() == "nsfw":
-                sources = ["images/nsfw/gif/neko", "images/nsfw/img/neko_lewd", "images/nsfw/img/neko_ero"]
-            else:
-                sources = ["images/sfw/img/neko", "images/sfw/gif/neko"]
+            sources = ["images/sfw/img/neko", "images/sfw/gif/neko"]
             source = choice(sources)
             em = await self.get(source, ctx.author)
             msg: discord.Message = await ctx.send(embed=em)
             await msg.add_reaction("heart")
+
+    @neko.command(name='nsfw')
+    @commands.guild_only()
+    @commands.is_nsfw()
+    async def nsfw_neko(self, ctx):
+        sources = ["images/nsfw/gif/neko", "images/nsfw/img/neko_lewd", "images/nsfw/img/neko_ero"]
+        source = choice(sources)
+        em = await self.get(source, ctx.author)
+        msg: discord.Message = await ctx.send(embed=em)
+        await msg.add_reaction("heart")
 
     @neko.command(name="waifu")
     @commands.guild_only()
@@ -197,6 +204,7 @@ class Booru(commands.Cog):
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
         await msg.add_reaction("heart")
+
 
 def setup(bot):
     bot.add_cog(Booru(bot))
