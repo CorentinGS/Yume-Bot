@@ -20,7 +20,7 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-
+import asyncio
 import json
 import random
 import sys
@@ -146,6 +146,8 @@ class Owner(commands.Cog):
         i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
+            await asyncio.sleep(500)
+            # if not guild.id in ['264445053596991498']:
             try:
                 invites = await guild.invites()
             except discord.HTTPException:
