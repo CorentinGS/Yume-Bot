@@ -20,7 +20,6 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-import asyncio
 import json
 import random
 import sys
@@ -146,36 +145,36 @@ class Owner(commands.Cog):
         i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
-            await asyncio.sleep(500)
-            # if not guild.id in ['264445053596991498']:
-            try:
-                invites = await guild.invites()
-            except discord.HTTPException:
-                pass
-            if len(invites) > 0:
-                print(guild)
-                print(guild.id)
-                em.add_field(
-                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                           f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invites[0].code}",
-                    inline=False)
-            else:
-                for chan in guild.text_channels:
-                    try:
-                        invite = await chan.create_invite()
-                    except discord.Forbidden:
-                        pass
-                    else:
-                        em.add_field(
-                            name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                                   f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
-                            inline=False)
-                        i = True
-                        break
-                if not i:
+            # await asyncio.sleep(500)
+            if not guild.id in ['264445053596991498']:
+                try:
+                    invites = await guild.invites()
+                except discord.HTTPException:
+                    pass
+                if len(invites) > 0:
+                    print(guild)
+                    print(guild.id)
                     em.add_field(
                         name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                               f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
+                                               f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invites[0].code}",
+                        inline=False)
+                else:
+                    for chan in guild.text_channels:
+                        try:
+                            invite = await chan.create_invite()
+                        except discord.Forbidden:
+                            pass
+                        else:
+                            em.add_field(
+                                name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                                       f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
+                                inline=False)
+                            i = True
+                            break
+                    if not i:
+                        em.add_field(
+                            name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                                   f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
 
         await ctx.author.send(embed=em)
 
