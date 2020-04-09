@@ -48,17 +48,17 @@ class Booru(commands.Cog):
     async def neko(self, ctx):
         """Query sources from nekos.life!"""
         if ctx.invoked_subcommand is None:
-            await ctx.invoke(self.n_sfw_neko)
+            await ctx.invoke(self.sfw_neko)
 
     @neko.command(name='neko')
     @commands.guild_only()
-    async def n_sfw_neko(self, ctx):
+    async def sfw_neko(self, ctx):
         async with ctx.typing():
             sources = ["images/sfw/img/neko", "images/sfw/gif/neko"]
             source = choice(sources)
             em = await self.get(source, ctx.author)
             msg: discord.Message = await ctx.send(embed=em)
-            await msg.add_reaction(":heart:")
+            await msg.add_reaction("😻")
 
     @neko.command(name='nsfw')
     @commands.guild_only()
@@ -68,7 +68,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("😻")
 
     @neko.command(name="waifu")
     @commands.guild_only()
@@ -77,7 +77,7 @@ class Booru(commands.Cog):
             source = "images/sfw/img/waifu"
             em = await self.get(source, ctx.author)
             msg: discord.Message = await ctx.send(embed=em)
-            await msg.add_reaction("heart")
+            await msg.add_reaction("❤️")
 
     @neko.command(name="kitsune")
     @commands.guild_only()
@@ -86,7 +86,7 @@ class Booru(commands.Cog):
             source = "images/sfw/img/kitsune"
             em = await self.get(source, ctx.author)
             msg: discord.Message = await ctx.send(embed=em)
-            await msg.add_reaction("heart")
+            await msg.add_reaction("❤️")
 
     @neko.command(name="lewd")
     @commands.guild_only()
@@ -96,7 +96,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("😻")
 
     @neko.command(name="blowjob")
     @commands.guild_only()
@@ -106,7 +106,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="furry")
     @commands.guild_only()
@@ -116,7 +116,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="pussy")
     @commands.guild_only()
@@ -126,7 +126,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="feet")
     @commands.guild_only()
@@ -136,7 +136,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("🥿🦶🦶🦶🦵🦵🦶🐾🦶🐾👟❤️")
 
     @neko.command(name="yuri")
     @commands.guild_only()
@@ -146,7 +146,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="solo")
     @commands.guild_only()
@@ -156,7 +156,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="cum")
     @commands.guild_only()
@@ -166,7 +166,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="cunni")
     @commands.guild_only()
@@ -175,7 +175,7 @@ class Booru(commands.Cog):
         source = "images/nsfw/gif/kuni"
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="bdsm")
     @commands.guild_only()
@@ -184,7 +184,7 @@ class Booru(commands.Cog):
         source = "images/nsfw/img/bdsm_lewd"
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="trap")
     @commands.guild_only()
@@ -194,7 +194,7 @@ class Booru(commands.Cog):
         source = choice(sources)
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
     @neko.command(name="femdom")
     @commands.guild_only()
@@ -203,7 +203,7 @@ class Booru(commands.Cog):
         source = "images/nsfw/img/femdom_lewd"
         em = await self.get(source, ctx.author)
         msg: discord.Message = await ctx.send(embed=em)
-        await msg.add_reaction("heart")
+        await msg.add_reaction("❤️")
 
 
 def setup(bot):
