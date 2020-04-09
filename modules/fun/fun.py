@@ -54,7 +54,7 @@ class Fun(commands.Cog):
             answer = random.choice(lists.ballresponse)
             await ctx.send(f"Question: {question}\nAnswer: {answer}")
 
-    @commands.command(aliases=['neko'])
+    @commands.command(aliases=['chat'])
     @commands.guild_only()
     async def cat(self, ctx):
         """

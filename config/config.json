@@ -13,6 +13,8 @@
     "general.anisearch",
     "moderation.moderation",
     "moderation.poll",
+    "booru.yandere",
+    "booru.neko",
     "social.social",
     "utility.utilities",
     "utility.tags",
