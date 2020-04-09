@@ -54,7 +54,7 @@ class Help(commands.Cog):
     @commands.is_nsfw()
     async def nsfw(self, ctx):
         liste = "`neko lewd`, `neko nsfw`, `neko blowjob`, `neko pussy`, `neko cum`, `neko feet`, " \
-                "`neko femdom`, `neko bdsm`, `neko cum`, 'neko furry`, `neko solo`, `neko trap`, `yandere`"
+                "`neko femdom`, `neko bdsm`, `neko cum`, '`neko furry`, `neko solo`, `neko trap`, `yandere`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Nsfw", liste)
         await ctx.send(embed=embed)
 
