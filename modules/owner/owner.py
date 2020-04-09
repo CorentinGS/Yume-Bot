@@ -142,20 +142,36 @@ class Owner(commands.Cog):
     @checks.is_owner()
     async def guild(self, ctx):
         await ctx.message.delete()
+        invites = []
+        i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
-            chan = guild.text_channels[-1]
             try:
-                invite = await chan.create_invite()
-            except discord.Forbidden:
+                invites = await guild.invites()
+            except discord.HTTPException:
+                pass
+            if len(invites) > 0:
                 em.add_field(
                     name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                           f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
-            else:
-                em.add_field(
-                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                           f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
+                                           f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invites[0].code}",
                     inline=False)
+            else:
+                for chan in guild.text_channels:
+                    try:
+                        invite = await chan.create_invite()
+                    except discord.Forbidden:
+                        pass
+                    else:
+                        em.add_field(
+                            name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                                   f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
+                            inline=False)
+                        i = True
+                        break
+                if not i:
+                    em.add_field(
+                        name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                               f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
 
         await ctx.author.send(embed=em)
 

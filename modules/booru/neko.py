@@ -58,7 +58,7 @@ class Booru(commands.Cog):
             source = choice(sources)
             em = await self.get(source, ctx.author)
             msg: discord.Message = await ctx.send(embed=em)
-            await msg.add_reaction("heart")
+            await msg.add_reaction(":heart:")
 
     @neko.command(name='nsfw')
     @commands.guild_only()
@@ -67,7 +67,7 @@ class Booru(commands.Cog):
         sources = ["images/nsfw/gif/neko", "images/nsfw/img/neko_lewd", "images/nsfw/img/neko_ero"]
         source = choice(sources)
         em = await self.get(source, ctx.author)
-        msg: discord.Message = await ctx.send(embed=em)
+        msg = await ctx.send(embed=em)
         await msg.add_reaction("heart")
 
     @neko.command(name="waifu")
