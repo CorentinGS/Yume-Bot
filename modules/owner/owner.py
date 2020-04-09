@@ -146,6 +146,8 @@ class Owner(commands.Cog):
         i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
+            if not isinstance(guild, discord.Guild):
+                continue
             try:
                 invites = await guild.invites()
             except discord.HTTPException:
