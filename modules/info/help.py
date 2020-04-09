@@ -64,7 +64,7 @@ class Help(commands.Cog):
         await self.command_help(ctx, self.bot.user, "Yandere", "Show a random yande.re pic", "--yandere <tag>")
 
     @help.command()
-    @commands.is_nsfw
+    @commands.is_nsfw()
     async def neko(self, ctx, tag: str = None):
         if tag.lower() in ['kitsune', 'waifu'] or not tag:
             await self.command_help(ctx, self.bot.user, "Neko", "Show a random sfw neko / kitsune / waifu girl",
