@@ -139,11 +139,13 @@ class Owner(commands.Cog):
 
     @commands.command(hidden=True)
     @checks.is_owner()
-    async def guild(self, ctx):
+    async def guilds(self, ctx):
         await ctx.message.delete()
+        await ctx.send("Searching guilds...")
         invites = []
         i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
+        print("Loading guilds")
         for guild in self.bot.guilds:
             # await asyncio.sleep(500)
             try:
@@ -165,15 +167,15 @@ class Owner(commands.Cog):
                     else:
                         em.add_field(
                             name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                                   f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
+                                                   f"\nOwner: {guild.owner} `{guild.owner_id}`\nInvite : {invite.code}",
                             inline=False)
                         i = True
                         break
                 if not i:
                     em.add_field(
                         name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                               f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
-
+                                               f"\nOwner: {guild.owner} `{guild.owner_id}`", inline=False)
+        print("Sending embed")
         await ctx.author.send(embed=em)
 
     @commands.group(hidden=True)
