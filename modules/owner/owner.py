@@ -155,7 +155,7 @@ class Owner(commands.Cog):
 
                     em.add_field(
                         name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                               f"\nOwner: {guild.owner} `{guild.owner_id}`\nInvite : {invites[0].code}",
+                                               f"\nOwner: {guild.owner} `{guild.owner_id}`\nInvite : https://discord.gg/{invites[0].code}",
                         inline=False)
                 else:
                     for chan in guild.text_channels:
@@ -166,7 +166,7 @@ class Owner(commands.Cog):
                         else:
                             em.add_field(
                                 name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                                       f"\nOwner: {guild.owner} `{guild.owner_id}`\nInvite : {invite.code}",
+                                                       f"\nOwner: {guild.owner} `{guild.owner_id}`\nInvite : https://discord.gg/{invite.code}",
                                 inline=False)
                             i = True
                             break
