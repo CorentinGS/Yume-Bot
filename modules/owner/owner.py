@@ -143,10 +143,12 @@ class Owner(commands.Cog):
         await ctx.message.delete()
         await ctx.send("Searching guilds...")
         invites = []
+        x = 0
         i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
             if not guild.unavailable:
+                x += 1
                 try:
                     invites = await guild.invites()
                 except discord.HTTPException:
@@ -174,6 +176,11 @@ class Owner(commands.Cog):
                         em.add_field(
                             name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
                                                    f"\nOwner: {guild.owner} `{guild.owner_id}`", inline=False)
+                if x >= 10:
+                    await ctx.author.send(embed=em)
+                    em = discord.Embed(timestamp=ctx.message.created_at)
+                    x = 0
+
         await ctx.author.send(embed=em)
 
     @commands.group(hidden=True)
