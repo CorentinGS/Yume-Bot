@@ -146,35 +146,33 @@ class Owner(commands.Cog):
         em = discord.Embed(timestamp=ctx.message.created_at)
         for guild in self.bot.guilds:
             # await asyncio.sleep(500)
-            if guild.id not in ['264445053596991498']:
-                try:
-                    invites = await guild.invites()
-                except discord.HTTPException:
-                    pass
-                if len(invites) > 0:
-                    print(guild)
-                    print(guild.id)
-                    em.add_field(
-                        name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                               f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invites[0].code}",
-                        inline=False)
-                else:
-                    for chan in guild.text_channels:
-                        try:
-                            invite = await chan.create_invite()
-                        except discord.Forbidden:
-                            pass
-                        else:
-                            em.add_field(
-                                name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                                       f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
-                                inline=False)
-                            i = True
-                            break
-                    if not i:
+            try:
+                invites = await guild.invites()
+            except discord.HTTPException:
+                pass
+            if len(invites) > 0:
+
+                em.add_field(
+                    name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                           f"\nOwner: {guild.owner} `{guild.owner_id}`\nInvite : {invites[0].code}",
+                    inline=False)
+            else:
+                for chan in guild.text_channels:
+                    try:
+                        invite = await chan.create_invite()
+                    except discord.Forbidden:
+                        pass
+                    else:
                         em.add_field(
                             name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
-                                                   f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
+                                                   f"\nOwner: {guild.owner} `{guild.owner.id}`\nInvite : {invite.code}",
+                            inline=False)
+                        i = True
+                        break
+                if not i:
+                    em.add_field(
+                        name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
+                                               f"\nOwner: {guild.owner} `{guild.owner.id}`", inline=False)
 
         await ctx.author.send(embed=em)
 
