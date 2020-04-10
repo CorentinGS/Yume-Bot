@@ -145,9 +145,7 @@ class Owner(commands.Cog):
         invites = []
         i = False
         em = discord.Embed(timestamp=ctx.message.created_at)
-        print("Loading guilds")
         for guild in self.bot.guilds:
-            # await asyncio.sleep(500)
             if not guild.unavailable:
                 try:
                     invites = await guild.invites()
@@ -176,8 +174,7 @@ class Owner(commands.Cog):
                         em.add_field(
                             name=guild.name, value=f"ID : {guild.id} \nMembers : {len(guild.members)}"
                                                    f"\nOwner: {guild.owner} `{guild.owner_id}`", inline=False)
-            print("Sending embed")
-            await ctx.author.send(embed=em)
+        await ctx.author.send(embed=em)
 
     @commands.group(hidden=True)
     @checks.is_owner()
