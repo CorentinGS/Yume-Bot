@@ -280,7 +280,7 @@ class Set(commands.Cog):
                                    f"In order to configure the YumeBot and to be able to use it fully"
                                    f" we ask you to make the command `--setting` in any channel of your guild **{guild.name}**"
                                    "Thank you for your understanding.\n\n"
-                                   f"If you need help, do not hesitate to contact us on our discord: **https://discord.gg/3BKgvpp**\n"
+                                   f"If you need help, do not hesitate to contact us on our discord: **invite.gg/yumenetwork**\n"
                                    f"__The YumeNetwork__")
         except discord.HTTPException:
             return

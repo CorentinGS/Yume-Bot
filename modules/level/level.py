@@ -26,6 +26,7 @@ from random import randint
 
 import discord
 from discord.ext import commands
+from modules.utils import checks, lists
 
 from modules.sql.guilddb import GuildDB
 from modules.sql.rankingsdb import RankingsDB
@@ -39,8 +40,8 @@ class Level(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
-        self._cd = commands.CooldownMapping.from_cooldown(1.0, 5.0, commands.BucketType.user)
-
+        self._cd = commands.CooldownMapping.from_cooldown(
+            1.0, 5.0, commands.BucketType.user)
 
     @commands.command()
     async def rank(self, ctx, user: discord.Member = None):
@@ -177,8 +178,6 @@ class Level(commands.Cog):
                     pass
 
         RankingsDB.update_user(userY, guildY, rankings)
-
-
 
 
 # TODO: Ajouter des commandes pour voir les roles

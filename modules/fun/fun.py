@@ -95,6 +95,8 @@ class Fun(commands.Cog):
             emoji = "💞"
         elif love > 99:
             emoji = "🖤"
+        elif love == 69:
+            emoji = "🔞"
 
         await ctx.send("Love power of {} is {}! {}".format(user.name, love, emoji))
 
@@ -232,7 +234,10 @@ class Fun(commands.Cog):
         random.seed(int(str(user.id) + str(user_.id)))
 
         if user == user_:
-            love = 100.00
+            if user.id == 282233191916634113:
+                love = 0.0
+            else:
+                love = 100.00
         else:
             love = random.randint(1, 10000) / 100
         if love < 50:

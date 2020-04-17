@@ -22,6 +22,7 @@
 #  SOFTWARE.
 
 from discord.ext import commands
+from modules.utils import checks, lists
 
 
 class Custom(commands.Cog):

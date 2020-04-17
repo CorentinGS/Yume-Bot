@@ -6,7 +6,8 @@ ballresponse = [
     "As I see it, yes", "It is certain", "It is decidedly so",
     "Signs point to yes", "Yes – definitely", "You may rely on it",
     "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again",
-    "Don't count on it", "My sources say no"]
+    "Don't count on it", "My sources say no"
+]
 
 linux = [
     "**I'd just like to interject for a moment.**\n\n"
