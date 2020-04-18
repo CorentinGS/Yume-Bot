@@ -54,7 +54,7 @@ class Help(commands.Cog):
     @commands.is_nsfw()
     async def nsfw(self, ctx):
         liste = "`neko lewd`, `neko nsfw`, `neko blowjob`, `neko pussy`, `neko cum`, `neko feet`, " \
-                "`neko femdom`, `neko bdsm`, `neko cum`, '`neko furry`, `neko solo`, `neko trap`, `yandere`"
+                "`neko femdom`, `neko bdsm`, `neko cum`, '`neko furry`, `neko solo`, `neko trap`, `yandere`, `reddit`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Nsfw", liste)
         await ctx.send(embed=embed)
 
@@ -62,6 +62,11 @@ class Help(commands.Cog):
     @commands.is_nsfw()
     async def yandere(self, ctx):
         await self.command_help(ctx, self.bot.user, "Yandere", "Show a random yande.re pic", "--yandere <tag>")
+
+    @help.command()
+    @commands.is_nsfw()
+    async def reddit(self, ctx):
+        await self.command_help(ctx, self.bot.user, "Reddit", "Show a random reddit pic", "--reddit <tag>", "--reddit tags")
 
     @help.command()
     @commands.is_nsfw()

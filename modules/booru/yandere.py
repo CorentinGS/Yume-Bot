@@ -21,6 +21,9 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+# Source : https://github.com/Jintaku/Jintaku-Cogs-V3/
+
+
 from random import choice
 
 import discord

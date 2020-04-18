@@ -9,7 +9,7 @@ python-dateutil
 dblpy
 pyyaml
 psycopg2-binary
-sqlalchemy
 pandas
 numpy
 asyncpg
+aiocache

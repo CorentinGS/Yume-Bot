@@ -20,6 +20,10 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+
+# Source : https://github.com/Jintaku/Jintaku-Cogs-V3/
+
+
 import discord
 
 
@@ -28,3 +32,5 @@ async def embed_booru(img: str, provider: str, author: discord.User):
     em.title = provider + " requested by " + author.name
     em.set_image(url=img)
     return em
+
+
