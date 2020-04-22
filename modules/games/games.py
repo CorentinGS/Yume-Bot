@@ -399,6 +399,22 @@ class Games(commands.Cog):
             "Have you ever kept a library book?",
             "Who is one person you pretend to like, but actually don’t?",
             "What children’s movie could you watch over and over again?",
+            "Have you ever kissed an animal?",
+            "What was the last thing you ate?",
+            "Do you have any unusual talents?",
+            "Do you have any phobias?",
+            "Have you ever used someone else's password?",
+            "Have you ever ridden the bus without paying the fare?",
+            "Do you message people during your classes?",
+            "Have you ever fallen asleep during a class?",
+            "Have you ever bitten a toenail?",
+            "Have you ever stolen something?",
+            "Are you a hard-working student?",
+            "What was the best day of you life?",
+            "What was the strangest dream you ever had?",
+            "What is the most annoying thing to you (pet peeve)?",
+            "If you could have a superpower, what would it be?",
+            "Who is most important to you?",
             "Do you have bad foot odor?",
             "Do you have any silly nicknames?",
             "When was the last time you wet the bed?",
@@ -607,25 +623,18 @@ class Games(commands.Cog):
             "Text flirt and then send “I love you” to a someone already in a relationship (not married) and screenshot his/her reaction",
             "Send a romantic message to someone of your own gender and screenshot their response",
             "Send a video of you dancing.",
-            "Call me and sing a song for me.",
             "Send a voice message saying that you love me in 3 romantic ways.",
             "Send me a pic of you wearing the least clothes on you.",
             "Be my one day boyfriend or girlfriend.",
             "Write your and my name in your status for 1 day.",
             "Propose to me in the most sensual way possible.",
-            "Send love letter through email to your class teacher.",
             "Select one mobile number blindfolded from your contacts and send one breakup message to him/her. Screenshot the response.",
             "Give a deep explanation of one item in front of you.",
-            "Paint your fingernails blindfolded with a pencil. Show us the result.",
-            "Do a prank call to your mother and tell “I’m expecting a baby soon”. Screenshot the response.",
             "Send me the last message you received from your crush.",
-            "Make a voice call to me and sing rhymes.",
-            "Make a video call to me and perform belly dance.",
             "Open your gallery, close your eyes, scroll randomly and select one picture and send it to me.",
             "Send a text message to your crush blindfolded.",
             "Put my picture as your mobile wallpaper for three days.",
-            "Send a selfie of yours while keeping your finger in your nose.",
-            "Call to any random number and do non-stop conversation for 2 minutes.",
+            "Send a selfie.",
             "Send me the message of your first message that sends to me.",
             "Make a video call to me and do 20 situps continuously.",
             "Send next five text messages to your friends using your elbow only.",
@@ -635,18 +644,49 @@ class Games(commands.Cog):
             "Send a message to your crush saying I’ve lost my condoms in your home please find them.",
             "Send five photo from your gallery.",
             "I’ll give you a person's contact information and send a romantic message to that person.",
+            "Post 'I love English!' on social media.",
+            "Say the English alphabet backwards.",
+            "Give {name} a compliment.",
+            "Show the last photo you took with your phone.",
+            "Act like a dog.",
+            "Introduce yourself to someone you don't know.",
+            "Smell the inside of your shoe.",
+            "Call someone and ask if they believe in aliens.",
+            "Act like a pirate.",
+            "Talk about the last time you apologized.",
+            "Say the months of the year backwards.",
+            "Go up to {name} and ask for a hug",
+            "Set your cell phone language to another language for the next 10 minutes",
+            "Ask your crush out on a date",
+            "Send a nude to the person who dared you",
+            "Kiss someone here",
+            "Show us your feet",
+            "Take off a piece of clothing of your choice",
+            "Take off your socks",
+            "Take off your shirt.",
+            "Take off a piece of clothing of your choice (with evidence).",
+            "Take off your socks (with evidence).",
+            "Take off your shirt (with evidence).",
+            "kiss your feet.",
+            "Write in your status that you like love {name}.",
+            "show off your abs.",
+            "Give a blowjob to an object of your choice.",
+            "Give a blowjob to an object of your choice (with evidence)."
+
         ]
 
     @commands.command(aliases=["wyr"])
     @commands.bot_has_permissions(embed_links=True)
     async def wouldyourather(self, ctx):
         """Would you rather?"""
-        string = requests.post('https://either.io/questions/get', data={'ids': random.randint(1, 4000)}).json()
+        string = requests.post(
+            'https://either.io/questions/get', data={'ids': random.randint(1, 4000)}).json()
 
         # Build Embed
         embed = discord.Embed()
         embed.title = "Would you rather.."
-        embed.description = string["questions"][0]["option_1"] + " or " + string["questions"][0]["option_2"]
+        embed.description = string["questions"][0]["option_1"] + \
+            " or " + string["questions"][0]["option_2"]
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["nhie"])
