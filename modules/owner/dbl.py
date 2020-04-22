@@ -41,9 +41,10 @@ class Dbl(commands.Cog):
         self.guild = config['support']
         self.debug = config['debug']
         self.update_stats.start()
-        self.dblpy = dbl.DBLClient(self.bot, self.token)
+        self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)
 
-    @tasks.loop(hours=12.0)
+    """
+    @tasks.loop(minutes=45.0)
     async def update_stats(self):
         if not self.bot.id == 456504213262827524:
             return
@@ -52,6 +53,11 @@ class Dbl(commands.Cog):
             print('DBL updated')
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+    """
+    
+    @commands.Cog.listener()
+    async def on_guild_post(self):
+        print("Server count posted successfully")
 
     @commands.command()
     @commands.is_owner()
