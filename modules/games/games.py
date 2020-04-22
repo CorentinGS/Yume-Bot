@@ -677,16 +677,43 @@ class Games(commands.Cog):
 
     @commands.command(aliases=["wyr"])
     @commands.bot_has_permissions(embed_links=True)
-    async def wouldyourather(self, ctx):
+    async def wouldyourather(self, ctx, user: discord.Member = None):
         """Would you rather?"""
-        string = requests.post(
-            'https://either.io/questions/get', data={'ids': random.randint(1, 4000)}).json()
+        # sources : https://github.com/CloudBotIRC/CloudBot/blob/master/plugins/wyr.py
+
+        r = requests.get(url="http://www.rrrather.com/botapi", headers={"User-Agent": 'YumeBot 1.0'})
+        data = r.json()
+        data['title'] = data['title'].strip().capitalize().rstrip('.?,:')
+        data['choicea'] = data['choicea'].strip().lower().rstrip('.?,!').lstrip('.')
+        data['choiceb'] = data['choiceb'].strip().lower().rstrip('.?,!').lstrip('.')
+
+        if data['tags']:
+            data['tags'] = data['tags'].lower().split(',')
+        else:
+            data['tags'] = []
+
+        if data['nsfw']:
+            data['tags'].append('nsfw')
+
+        text = data['choicea'].split() + data['choiceb'].split()
+        text = [word for word in text if word != "a"]
+        title_text = data['title'].split()
+        dupl_count = 0
+        for word in title_text:
+            dupl_count += text.count(word)
+        data['title'] = data['title'].replace(" u ", " you ")
+
+        if dupl_count / len(text) >= 0.6:
+            data['title'] = "Would you rather"
 
         # Build Embed
         embed = discord.Embed()
-        embed.title = "Would you rather.."
-        embed.description = string["questions"][0]["option_1"] + \
-            " or " + string["questions"][0]["option_2"]
+        if isinstance(user, discord.Member):
+            embed.title = f"{user.name}, {data['title']}"
+        else:
+            embed.title = data['title']
+        embed.description = data["choicea"] + \
+            "\n" + data["choiceb"]
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["nhie"])
