@@ -40,7 +40,6 @@ class Dbl(commands.Cog):
         self.token = token['dbl']
         self.guild = config['support']
         self.debug = config['debug']
-        self.update_stats.start()
         self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)
 
     """
