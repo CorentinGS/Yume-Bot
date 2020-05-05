@@ -153,13 +153,20 @@ class Level(commands.Cog):
             RankingsDB.create_ranking(userY, guildY)
             rankings = RankingsDB.get_user(userY, guildY)
 
-        gain = randint(2, 6)
+        gain = randint(2, 10)
 
         rankings['xp'] += gain
         rankings['total'] += gain
 
         if rankings['xp'] >= rankings['reach']:
-            rankings['reach'] = round(rankings['reach'] * 1.6)
+            if rankings["level"] >= 15:
+                rankings['reach'] = round(rankings['reach'] * 1.2)
+            elif 15 > rankings["level"] >= 12:
+                rankings['reach'] = round(rankings['reach'] * 1.3)
+            elif 12 > rankings["level"] > 6:
+                rankings['reach'] = round(rankings['reach'] * 1.4)
+            else:
+                rankings['reach'] = round(rankings['reach'] * 1.6)
             rankings['xp'] = 0
             rankings['level'] += 1
 
