@@ -66,7 +66,8 @@ class Help(commands.Cog):
     @help.command()
     @commands.is_nsfw()
     async def reddit(self, ctx):
-        await self.command_help(ctx, self.bot.user, "Reddit", "Show a random reddit pic", "--reddit <tag>", "--reddit tags")
+        await self.command_help(ctx, self.bot.user, "Reddit", "Show a random reddit pic", "--reddit <tag>",
+                                "--reddit tags")
 
     @help.command()
     @commands.is_nsfw()
@@ -471,10 +472,6 @@ class Help(commands.Cog):
                                 "`--kiss @Th3nks`")
 
     @help.command()
-    async def lewd(self, ctx):
-        await self.command_help(ctx, self.bot.user, "lewd", "You are now lewd", "--lewd")
-
-    @help.command()
     async def lick(self, ctx):
         await self.command_help(ctx, self.bot.user, "lick", "Lick someone", "--lick <user>",
                                 "`--lick @Aspekt`")
@@ -536,7 +533,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def social(self, ctx):
-        liste = "`hug`, `pat`, `kiss`, `lewd`, `lick`, `slap`, `cry`"
+        liste = "`hug`, `pat`, `kiss`, `lick`, `slap`, `cry`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Social", liste)
         await ctx.send(embed=embed)
 
