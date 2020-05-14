@@ -167,7 +167,7 @@ class Set(commands.Cog):
                 }
 
                 category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
-                guild.count_category = str(category.id)
+                guild.stats_category = str(category.id)
 
                 await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite,
                                                      category=category)
