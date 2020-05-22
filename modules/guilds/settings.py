@@ -204,6 +204,8 @@ class Set(commands.Cog):
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def role(self, ctx, value, role: discord.Role = None):
+        if not role:
+            return
         guild = GuildDB.get_one(ctx.message.guild.id)
         if GuildDB.exists_in_admin(role.id, guild):
             GuildDB.remove_admin(role.id, guild)
