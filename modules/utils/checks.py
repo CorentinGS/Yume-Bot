@@ -47,6 +47,8 @@ def is_owner():
 async def is_mod_check(ctx):
     guild = GuildDB.get_one(ctx.guild.id)
     mods = GuildDB.get_mod_roles(guild)
+    admins = GuildDB.get_admin_roles(guild)
+
     auth = ctx.message.author
     if ctx.guild is None:
         return
@@ -54,6 +56,8 @@ async def is_mod_check(ctx):
         return True
     for role in auth.roles:
         if role.id in mods:
+            return True
+        elif role.id in admins:
             return True
 
 
