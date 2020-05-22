@@ -90,8 +90,8 @@ class Help(commands.Cog):
         await self.command_help(ctx, self.bot.user, "Jump", "Create a link to a message",
                                 "--jump <message_id> [#channel]", "`--jump 645687761906434261 #general`")
 
-    @help.command()
-    async def meteo(self, ctx):
+    @help.command(aliases=["gweather", "meteo"])
+    async def weather(self, ctx):
         await self.command_help(ctx, self.bot.user, "Weather", "Gives a city's weather forecast",
                                 "--weather <city>",
                                 "`--weather Paris`\n`--gweather Paris`")
@@ -380,7 +380,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def rd(self, ctx):
-        await self.command_help(ctx, self.bot.user, "rd", "Roll a dice", "--rd")
+        await self.command_help(ctx, self.bot.user, "rd", "Shows the republican date", "--rd")
 
     @help.command(aliases=['8ball'])
     async def eightball(self, ctx):

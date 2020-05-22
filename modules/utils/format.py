@@ -171,12 +171,12 @@ class Embeds:
                                                   "**--h nsfw** | Nsfw Commands"
                      )
 
-        em.add_field(name="Links", value="[Documentation](https://yumenetwork.gitbook.io/yumebot/) | [Support]("
-                                         "https://invite.gg/yumenetwork) | [Sources]("
+        em.add_field(name="Links", value="[Support]("
+                                         "https://www.yumenetwork.net/invite/) | [Sources]("
                                          "https://github.com/yumenetwork/Yume-Bot) | "
                                          "[Invite]"
-                                         "(https://discordapp.com/oauth2/authorize?client_id=456504213262827524&permissions=8&&scope=bot) | "
-                                         "[Site](https://yumenetwork.net)",
+                                         "(https://www.yumenetwork.net/botinvite/) | "
+                                         "[Site](https://www.yumenetwork.net)",
                      inline=False)
 
         return em
