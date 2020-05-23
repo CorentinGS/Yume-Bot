@@ -44,6 +44,13 @@ class RankingsDB:
                     "reach": rows['reach'], "user_id": rows['user_id']}
         return rankings
 
+    @staticmethod
+    def rankings_from_rows(rows) -> list:
+        rankings = []
+        for row in rows:
+            rankings.append(RankingsDB.rows_to_dict(row))
+        return rankings
+
     """
     Get methods
     """
@@ -134,6 +141,17 @@ class RankingsDB:
         con.commit()
 
     @staticmethod
+    def update_user_id(user: id, guild: id, level: int, reach: int, xp: int):
+        try:
+            cur.execute(
+                "UPDATE public.rankings SET level = {}, reach = {}, xp = {} WHERE guild_id = {} AND user_id = {};".format(
+                    level, reach, xp, guild, user))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
     def get_rank(user: User, guild: Guild) -> int:
         try:
             cur.execute(
@@ -162,3 +180,15 @@ class RankingsDB:
             df = pandas.DataFrame(np.array(rows), columns=["ID"])
             return df.ID.values.tolist()
         return []
+
+    @staticmethod
+    def get_all():
+        try:
+            cur.execute(
+                "SELECT * FROM public.rankings;")
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
+            return RankingsDB.rankings_from_rows(rows)

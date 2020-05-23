@@ -160,13 +160,13 @@ class Level(commands.Cog):
 
         if rankings['xp'] >= rankings['reach']:
             if rankings["level"] >= 15:
-                rankings['reach'] = round(rankings['reach'] * 1.2)
+                rankings['reach'] = round(rankings['reach'] * 1.05)
             elif 15 > rankings["level"] >= 12:
-                rankings['reach'] = round(rankings['reach'] * 1.3)
-            elif 12 > rankings["level"] > 6:
-                rankings['reach'] = round(rankings['reach'] * 1.4)
+                rankings['reach'] = round(rankings['reach'] * 1.08)
+            elif 12 > rankings["level"] >= 6:
+                rankings['reach'] = round(rankings['reach'] * 1.2)
             else:
-                rankings['reach'] = round(rankings['reach'] * 1.6)
+                rankings['reach'] = round(rankings['reach'] * 1.5)
             rankings['xp'] = 0
             rankings['level'] += 1
 
@@ -185,6 +185,51 @@ class Level(commands.Cog):
                     pass
 
         RankingsDB.update_user(userY, guildY, rankings)
+
+    @commands.command()
+    @checks.is_owner()
+    async def fix_rank(self, ctx):
+        levels_r = {}
+        levels_t = {}
+        reach = 20
+        total = 0
+        for x in range(25):
+            if 0 < x < 6:
+                reach = round(reach * 1.5)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+            if 6 <= x < 12:
+                reach = round(reach * 1.2)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+            if 12 <= x < 15:
+                reach = round(reach * 1.08)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+            if 15 <= x:
+                reach = round(reach * 1.05)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+        rankings = RankingsDB.get_all()
+        total_list = list(levels_t.values())
+        print(total_list)
+        for toto in rankings:
+            closest = min(filter(lambda x: x > toto["total"], total_list))
+            for l, t in levels_t.items():
+                if t == closest:
+                    level = l
+                    break
+            reach = levels_r[level]
+            xp = toto["total"] - levels_r[level-1]
+            RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp )
 
 
 # TODO: Ajouter des commandes pour voir les roles
