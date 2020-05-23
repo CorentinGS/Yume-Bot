@@ -159,10 +159,12 @@ class Level(commands.Cog):
         rankings['total'] += gain
 
         if rankings['xp'] >= rankings['reach']:
-            if rankings["level"] >= 15:
+            if rankings["level"] >= 20:
                 rankings['reach'] = round(rankings['reach'] * 1.05)
-            elif 15 > rankings["level"] >= 12:
+            if 20 > rankings["level"] >= 15:
                 rankings['reach'] = round(rankings['reach'] * 1.08)
+            elif 15 > rankings["level"] >= 12:
+                rankings['reach'] = round(rankings['reach'] * 1.1)
             elif 12 > rankings["level"] >= 6:
                 rankings['reach'] = round(rankings['reach'] * 1.2)
             else:
@@ -196,7 +198,7 @@ class Level(commands.Cog):
         levels_r[0] = 20
         levels_t[0] = 0
 
-        for x in range(40):
+        for x in range(100):
             if 0 < x < 6:
                 reach = round(reach * 1.5)
                 total += reach
@@ -210,12 +212,17 @@ class Level(commands.Cog):
                 levels_t[x] = total
 
             elif 12 <= x < 15:
-                reach = round(reach * 1.08)
+                reach = round(reach * 1.1)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            elif 15 <= x:
+            elif 15 <= x < 20:
+                reach = round(reach * 1.08)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+            elif 20 <= x:
                 reach = round(reach * 1.05)
                 total += reach
                 levels_r[x] = reach
@@ -229,8 +236,6 @@ class Level(commands.Cog):
             closest = min(total_list, key=lambda x: abs(x - toto["total"]))
             if toto["total"] > closest:
                 index = total_list.index(closest)
-                print(index)
-                print(total_list[index])
                 closest = total_list[index + 1]
             for l, t in levels_t.items():
                 if t == closest:
