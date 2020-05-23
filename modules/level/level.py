@@ -224,7 +224,9 @@ class Level(commands.Cog):
         for toto in rankings:
             if toto["total"] == 0:
                 continue
-            closest = min(filter(lambda x: x > toto["total"], total_list))
+            closest = min(total_list, key=lambda x: abs(x-toto["total"]))
+            if toto["total"] > closest:
+                closest = total_list[total_list.index(closest) + 1]
             for l, t in levels_t.items():
                 if t == closest:
                     level = l
