@@ -196,7 +196,7 @@ class Level(commands.Cog):
         levels_r[0] = 20
         levels_t[0] = 0
 
-        for x in range(30):
+        for x in range(40):
             if 0 < x < 6:
                 reach = round(reach * 1.5)
                 total += reach
