@@ -229,6 +229,8 @@ class Level(commands.Cog):
             closest = min(total_list, key=lambda x: abs(x - toto["total"]))
             if toto["total"] > closest:
                 index = total_list.index(closest)
+                print(index)
+                print(total_list[index])
                 closest = total_list[index + 1]
             for l, t in levels_t.items():
                 if t == closest:
