@@ -222,6 +222,8 @@ class Level(commands.Cog):
         total_list = list(levels_t.values())
         print(total_list)
         for toto in rankings:
+            if toto["total"] == 0:
+                continue
             closest = min(filter(lambda x: x > toto["total"], total_list))
             for l, t in levels_t.items():
                 if t == closest:
