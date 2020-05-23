@@ -193,6 +193,9 @@ class Level(commands.Cog):
         levels_t = {}
         reach = 20
         total = 0
+        levels_r[0] = 20
+        levels_t[0] = 0
+
         for x in range(30):
             if 0 < x < 6:
                 reach = round(reach * 1.5)
@@ -218,10 +221,11 @@ class Level(commands.Cog):
                 levels_r[x] = reach
                 levels_t[x] = total
 
+
         rankings = RankingsDB.get_all()
         total_list = list(levels_t.values())
         for toto in rankings:
-            if toto["total"] < 2:
+            if toto["level"] < 2:
                 continue
             closest = min(total_list, key=lambda x: abs(x-toto["total"]))
             if toto["total"] > closest:
@@ -231,6 +235,7 @@ class Level(commands.Cog):
                     level = l
                     break
             reach = levels_r[level]
+
             xp = toto["total"] - levels_r[level-1]
             RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp )
 
