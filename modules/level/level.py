@@ -26,12 +26,12 @@ from random import randint
 
 import discord
 from discord.ext import commands
-from modules.utils import checks, lists
 
 from modules.sql.guilddb import GuildDB
 from modules.sql.rankingsdb import RankingsDB
 from modules.sql.roledb import RoleDB
 from modules.sql.userdb import UserDB
+from modules.utils import checks
 
 
 class Level(commands.Cog):
@@ -203,31 +203,30 @@ class Level(commands.Cog):
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            if 6 <= x < 12:
+            elif 6 <= x < 12:
                 reach = round(reach * 1.2)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            if 12 <= x < 15:
+            elif 12 <= x < 15:
                 reach = round(reach * 1.08)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            if 15 <= x:
+            elif 15 <= x:
                 reach = round(reach * 1.05)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
-
 
         rankings = RankingsDB.get_all()
         total_list = list(levels_t.values())
         for toto in rankings:
             if toto["level"] < 2:
                 continue
-            closest = min(total_list, key=lambda x: abs(x-toto["total"]))
+            closest = min(total_list, key=lambda x: abs(x - toto["total"]))
             if toto["total"] > closest:
                 closest = total_list[total_list.index(closest) + 1]
             for l, t in levels_t.items():
@@ -236,8 +235,8 @@ class Level(commands.Cog):
                     break
             reach = levels_r[level]
 
-            xp = toto["total"] - levels_r[level-1]
-            RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp )
+            xp = toto["total"] - levels_t[level - 1]
+            RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp)
 
 
 # TODO: Ajouter des commandes pour voir les roles
