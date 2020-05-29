@@ -291,7 +291,7 @@ class Help(commands.Cog):
     @help.command()
     async def reset(self, ctx):
         await self.command_help(ctx, self.bot.user, "reset", "reset a users sanctions", "--reset <user/user_id>",
-                                "`--rank @Sp8ce`\n`--reset 411926525751853067`")
+                                "`--reset @Sp8ce`\n`--reset 411926525751853067`")
 
     @help.command()
     async def addrole(self, ctx):
