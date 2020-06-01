@@ -295,7 +295,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def addrole(self, ctx):
-        await self.command_help(ctx, self.bot.user, "addrole", "Add a role to everyone", "--addrole <role>",
+        await self.command_help(ctx, self.bot.user, "addrole", "Add a role to everyone", "--addper role <role>",
                                 "`--addrole @Member`")
 
     @help.command()

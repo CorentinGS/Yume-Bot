@@ -26,6 +26,7 @@
     "owner.blacklist",
     "owner.dbl",
     "games.games",
+    "vip.custom",
     "event",
     "automod",
     "profile",

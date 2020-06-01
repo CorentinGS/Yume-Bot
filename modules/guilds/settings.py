@@ -136,7 +136,7 @@ class Set(commands.Cog):
                 guild.greet = False
 
         # Colors
-
+        """
         msg = await ctx.send("Do you want to activate the Colors role ?")
         for reaction in reactions:
             await msg.add_reaction(reaction)
@@ -150,6 +150,8 @@ class Set(commands.Cog):
                 guild.color = True
             elif reaction.emoji == '🚫':
                 guild.color = False
+        """
+        guild.color = False
 
         # Member stats channels
         msg = await ctx.send("Do you want to activate the member stats channels ?")
