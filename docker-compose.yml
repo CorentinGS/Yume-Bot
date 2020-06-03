@@ -1,20 +1,5 @@
 version: '3.1'
 services:
-  mongo:
-    image: mongo:4.0.6
-    restart: always
-    ports:
-      - 27018:27017
-
-    environment:
-      - MONGO_LOG_DIR=/dev/null
-    volumes:
-      - ./data/mongodb:/data/db
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "5"
 
   postgre:
     image: postgres:latest
@@ -38,7 +23,6 @@ services:
       context: .
       dockerfile: Dockerfile_bot
     links:
-        - mongo
         - postgre
     volumes:
         - .:/usr/src/app
