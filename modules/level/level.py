@@ -153,20 +153,20 @@ class Level(commands.Cog):
             RankingsDB.create_ranking(userY, guildY)
             rankings = RankingsDB.get_user(userY, guildY)
 
-        gain = randint(2, 10)
+        gain = randint(3, 12)
 
         rankings['xp'] += gain
         rankings['total'] += gain
 
         if rankings['xp'] >= rankings['reach']:
             if rankings["level"] >= 20:
-                rankings['reach'] = round(rankings['reach'] * 1.08)
+                rankings['reach'] = round(rankings['reach'] * 1.05)
             if 20 > rankings["level"] >= 15:
-                rankings['reach'] = round(rankings['reach'] * 1.1)
+                rankings['reach'] = round(rankings['reach'] * 1.08)
             elif 15 > rankings["level"] >= 12:
-                rankings['reach'] = round(rankings['reach'] * 1.2)
+                rankings['reach'] = round(rankings['reach'] * 1.1)
             elif 12 > rankings["level"] >= 6:
-                rankings['reach'] = round(rankings['reach'] * 1.4)
+                rankings['reach'] = round(rankings['reach'] * 1.3)
             else:
                 rankings['reach'] = round(rankings['reach'] * 1.5)
             rankings['xp'] = 0
@@ -206,24 +206,24 @@ class Level(commands.Cog):
                 levels_t[x] = total
 
             elif 6 <= x < 12:
-                reach = round(reach * 1.4)
+                reach = round(reach * 1.3)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
             elif 12 <= x < 15:
-                reach = round(reach * 1.2)
+                reach = round(reach * 1.1)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
             elif 15 <= x < 20:
-                reach = round(reach * 1.1)
+                reach = round(reach * 1.08)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
             elif 20 <= x:
-                reach = round(reach * 1.08)
+                reach = round(reach * 1.05)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
