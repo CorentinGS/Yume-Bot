@@ -160,11 +160,11 @@ class Level(commands.Cog):
 
         if rankings['xp'] >= rankings['reach']:
             if rankings["level"] >= 20:
-                rankings['reach'] = round(rankings['reach'] * 1.05)
-            if 20 > rankings["level"] >= 15:
-                rankings['reach'] = round(rankings['reach'] * 1.08)
-            elif 15 > rankings["level"] >= 12:
                 rankings['reach'] = round(rankings['reach'] * 1.1)
+            if 20 > rankings["level"] >= 15:
+                rankings['reach'] = round(rankings['reach'] * 1.15)
+            elif 15 > rankings["level"] >= 12:
+                rankings['reach'] = round(rankings['reach'] * 1.2)
             elif 12 > rankings["level"] >= 6:
                 rankings['reach'] = round(rankings['reach'] * 1.3)
             else:
@@ -212,18 +212,18 @@ class Level(commands.Cog):
                 levels_t[x] = total
 
             elif 12 <= x < 15:
-                reach = round(reach * 1.1)
+                reach = round(reach * 1.2)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
             elif 15 <= x < 20:
-                reach = round(reach * 1.08)
+                reach = round(reach * 1.15)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
             elif 20 <= x:
-                reach = round(reach * 1.05)
+                reach = round(reach * 1.1)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
