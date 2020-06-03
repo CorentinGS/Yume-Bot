@@ -30,6 +30,8 @@ import traceback
 import discord
 from discord.ext import commands
 
+from modules.utils.error import Errors
+
 with open("./config/config.json", "r") as cjson:
     config = json.load(cjson)
 
@@ -90,7 +92,8 @@ class YumeBot(commands.Bot):
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            return await ctx.send(f"Missing a permission.\n`{error}`")
+            em = await Errors.check_error(ctx)
+            return await ctx.send(embed=em)
         elif isinstance(error, commands.UserInputError):
             command = bot.get_command(f"help {ctx.command.name}")
             await ctx.invoke(command)
@@ -103,9 +106,8 @@ class YumeBot(commands.Bot):
                 print(f"{original.__class__.__name__}: {original}", file=sys.stderr)
             elif isinstance(original, discord.Forbidden):
                 try:
-                    await ctx.send(
-                        f"I'm missing permissions to be able to do that.\n`{original}`"
-                    )
+                    em = await Errors.forbidden_error()
+                    await ctx.send(embed=em)
                 except discord.Forbidden:
                     return
 
