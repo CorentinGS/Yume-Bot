@@ -90,7 +90,7 @@ class Set(commands.Cog):
             return await ctx.send("The setup has already been done. "
                                   "If you want to restore it you should use : **--setting reset**")
 
-        reactions = ['✅', '🚫']  # Store reactions
+        reactions = ['✅', '🚫❌']  # Store reactions
 
         await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
 

@@ -21,12 +21,16 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+
 class User:
-    def __init__(self, user_id: int, vip: bool = False, crew: bool = False, description: str = ""):
+    def __init__(self, user_id: int, vip: bool = False, crew: bool = False, description: str = "",
+                 married: bool = False, lover: int = None):
         self.user_id: int = user_id
         self.crew: bool = crew
         self.vip: bool = vip
         self.description: str = description
+        self.married: bool = married
+        self.lover: int = lover
 
     def display(self):
         print("UserID : {}".format(self.user_id))

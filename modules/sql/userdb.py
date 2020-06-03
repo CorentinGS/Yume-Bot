@@ -39,7 +39,7 @@ class UserDB:
 
     @staticmethod
     def user_from_row(rows):
-        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'])
+        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'], rows['married'], rows["lover"])
 
     @staticmethod
     def users_from_row(rows):
@@ -146,6 +146,18 @@ class UserDB:
         return False
 
     @staticmethod
+    def has_lover(user: User) -> bool:
+        try:
+            cur.execute("SELECT married FROM public.user WHERE user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return rows[0]
+        return False
+
+    @staticmethod
     def user_exists(user: User) -> bool:
         try:
             cur.execute("SELECT count(*) FROM public.user WHERE user_id = {};".format(user.user_id))
@@ -226,6 +238,18 @@ class UserDB:
             con.rollback()
         con.commit()
 
+    @staticmethod
+    def set_lover(user: User, lover: User):
+        try:
+            cur.execute("UPDATE public.user SET married = TRUE , lover = {} WHERE  user_id = {}".format(lover.user_id,
+                                                                                                        user.user_id))
+            cur.execute("UPDATE public.user SET married = TRUE , lover = {} WHERE  user_id = {}".format(user.user_id,
+                                                                                                        lover.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
     """
     Unset methods
     """
@@ -243,6 +267,18 @@ class UserDB:
     def unset_crew(user: User):
         try:
             cur.execute("UPDATE public.user SET crew = FALSE WHERE  user_id = {}".format(user.user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def unset_lover(user: User, lover: User):
+        try:
+            cur.execute("UPDATE public.user SET married = FALSE , lover = %s WHERE  user_id = %s", (None,
+                                                                                                    user.user_id))
+            cur.execute(
+                "UPDATE public.user SET married = FALSE, lover= %s WHERE  user_id = %s", (None, lover.user_id))
         except Exception as err:
             print(err)
             con.rollback()
