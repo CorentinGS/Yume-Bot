@@ -31,7 +31,6 @@ from modules.sql.guilddb import GuildDB
 from modules.sql.rankingsdb import RankingsDB
 from modules.sql.roledb import RoleDB
 from modules.sql.userdb import UserDB
-from modules.utils import checks
 
 
 class Level(commands.Cog):
@@ -188,6 +187,7 @@ class Level(commands.Cog):
 
         RankingsDB.update_user(userY, guildY, rankings)
 
+    '''
     @commands.command()
     @checks.is_owner()
     async def fix_rank(self, ctx):
@@ -246,6 +246,7 @@ class Level(commands.Cog):
 
             xp = toto["total"] - levels_t[level - 1]
             RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp)
+    '''
 
 
 # TODO: Ajouter des commandes pour voir les roles
