@@ -161,9 +161,9 @@ class Level(commands.Cog):
         if rankings['xp'] >= rankings['reach']:
             if rankings["level"] > 39:
                 rankings['reach'] = round(rankings['reach'] * 1.02)
-            if 39 >= rankings["level"] > 25:
+            if 39 >= rankings["level"] > 21:
                 rankings['reach'] = round(rankings['reach'] * 1.05)
-            elif 25 >= rankings["level"] > 10:
+            elif 21 >= rankings["level"] > 10:
                 rankings['reach'] = round(rankings['reach'] * 1.1)
             elif 10 >= rankings["level"] > 6:
                 rankings['reach'] = round(rankings['reach'] * 1.5)
