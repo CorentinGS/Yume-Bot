@@ -212,6 +212,12 @@ class Level(commands.Cog):
                 levels_t[x] = total
 
             elif 10 < x <= 25:
+                reach = round(reach * 1.1)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+            elif 25 < x <= 39:
                 reach = round(reach * 1.05)
                 total += reach
                 levels_r[x] = reach
