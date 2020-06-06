@@ -104,6 +104,12 @@ class Custom(commands.Cog):
             await ctx.channel.delete()
             PrivateDB.delete_user(ctx.author.id, cat.id)
 
+    @staticmethod
+    async def send_webhook(channel: discord.TextChannel, author: discord.Member, content: list):
+        webhooks = await channel.webhooks()
+        webhook = webhooks[0]
+        await webhook.send(embeds=content, username=author.name, avatar_url=author.avatar_url)
+
 
 def setup(bot):
     bot.add_cog(Custom(bot))
