@@ -231,15 +231,19 @@ class Fun(commands.Cog):
         """
         if not user_:
             user_ = ctx.message.author
-        random.seed(int(str(user.id) + str(user_.id)))
+        if user.id > user_.id:
+            random.seed(int(str(user.id) + str(user_.id)))
+            love = random.randint(1, 10000) / 100
 
-        if user == user_:
+        elif user.id < user_.id:
+            random.seed(int(str(user_.id) + str(user.id)))
+            love = random.randint(1, 10000) / 100
+        else:
             if user.id == 282233191916634113:
                 love = 0.0
             else:
                 love = 100.00
-        else:
-            love = random.randint(1, 10000) / 100
+
         if love < 50:
             emoji = "💔"
         elif love > 50:
