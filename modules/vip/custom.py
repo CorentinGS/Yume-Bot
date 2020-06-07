@@ -23,7 +23,9 @@
 import discord
 from discord.ext import commands
 
+from modules.sql.anondb import AnonDB
 from modules.sql.privatedb import PrivateDB
+from modules.utils import checks
 
 
 class Custom(commands.Cog):
@@ -32,6 +34,63 @@ class Custom(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+    @commands.group()
+    async def anon(self, ctx):
+        return
+
+    @anon.command()
+    @commands.guild_only()
+    async def set(self, ctx, channel: discord.TextChannel = None):
+        if not channel:
+            channel = ctx.channel
+        permissions: discord.Permissions = channel.permissions_for(ctx.guild.me)
+        if not (
+                permissions.read_messages or permissions.send_messages
+                or permissions.manage_webhooks or permissions.manage_messages):
+            return await ctx.send("I don't have enough permissions !"
+                                  " Please be sure to give me the following permissions :\n"
+                                  "**read_messages**, **send_messages**, **manage_webhooks**, **manage_messages**")
+        AnonDB.set_channel(ctx.guild.id, channel.id)
+        await channel.create_webhook("Anon")
+        msg = await channel.send(f"This room is now ready to receive anonymous messages."
+                                 f"To send messages in this room, just do the following command as a private message:"
+                                 f" ```--anon send {ctx.guild.id} Your text```")
+        await msg.pin()
+
+    @anon.command()
+    @checks.is_admin()
+    @commands.guild_only()
+    async def remove(self, ctx):
+        if AnonDB.is_setup(ctx.guild.id):
+            AnonDB.unset_channel(ctx.guild.id)
+            await ctx.send("Anon features is now unset !")
+        else:
+            await ctx.send("Anon features isn't set")
+
+    @anon.command()
+    async def send(self, ctx, guild_id: int, *, msg: str):
+        if not isinstance(ctx.message.channel, discord.DMChannel):
+            return await ctx.send("This command has to be send in DM")
+        setup = AnonDB.is_setup(guild_id)
+        if not setup:
+            return await ctx.send("This guild hasn't activate this feature yet !")
+        anon = AnonDB.get_channel(guild_id)
+        try:
+            guild: discord.Guild = self.bot.get_guild(guild_id)
+            chan: discord.TextChannel = guild.get_channel(anon["channel_id"])
+        except discord.HTTPException:
+            return await ctx.send(
+                "Sorry, but I couldn't find the anonymous message room. If you think this is an error, "
+                "please contact the guild administrator and ask them to check that the feature is properly configured.")
+        msg = msg.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
+        await self.send_anon_webhook(chan, "Anon", msg)
+
+    @staticmethod
+    async def send_anon_webhook(channel: discord.TextChannel, author: str, content: str):
+        webhooks = await channel.webhooks()
+        webhook = webhooks[0]
+        await webhook.send(content=content, username=author)
 
     @commands.group()
     async def private(self, ctx):
@@ -61,7 +120,9 @@ class Custom(commands.Cog):
         PrivateDB.create_one(private)
 
         await msg.edit(content="Private category is ready !")
-        await hub.send("Hey ! This is the hub channel. Use `--private create` to start with your own private channel !")
+        msg = await hub.send(
+            "Hey ! This is the hub channel. Use `--private create` to start with your own private channel !")
+        await msg.pin()
 
     @private.command()
     @commands.guild_only()

@@ -163,6 +163,7 @@ class Automod(commands.Cog):
         else:
             await message.channel.send(f'Banned {author} (ID: {author.id}) for spamming {mention_count} mentions.')
     '''
+
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """

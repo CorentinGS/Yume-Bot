@@ -44,9 +44,6 @@ modules = config["modules"]
 def get_prefix(bot, message):
     prefixes = ["--", "y!", "yume", "yum", "yume ", "yum ", "yume!"]
 
-    if not message.guild:
-        return "?"
-
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
 
@@ -96,7 +93,10 @@ class YumeBot(commands.Bot):
             return await ctx.send(embed=em)
         elif isinstance(error, commands.UserInputError):
             command = bot.get_command(f"help {ctx.command.name}")
-            await ctx.invoke(command)
+            if command:
+                await ctx.invoke(command)
+            else:
+                print(error)
             # TODO: Check if there is a group command or something like this
         elif isinstance(error, commands.CommandInvokeError):
             original = error.original
