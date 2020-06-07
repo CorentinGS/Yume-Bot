@@ -65,6 +65,7 @@ class Fun(commands.Cog):
         await ctx.send(r["url"])
 
     @commands.command()
+    @commands.guild_only()
     async def dog(self, ctx):
         """
         Doggy !!!
@@ -150,6 +151,7 @@ class Fun(commands.Cog):
             await ctx.send("**Number fact** :\n" + str(response.text) + "\n**Year fact** :\n" + str(response_year.text))
 
     @commands.command()
+    @commands.guild_only()
     async def trump(self, ctx, tag: str = None):
         """
         Trump is a meme

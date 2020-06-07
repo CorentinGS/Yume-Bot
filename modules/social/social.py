@@ -23,7 +23,6 @@
 import random
 
 import discord
-import requests
 from discord.ext import commands
 
 from modules.utils.format import Embeds
@@ -122,6 +121,7 @@ class Social(commands.Cog):
         ]
 
     @commands.command()
+    @commands.guild_only()
     async def hug(self, ctx, user: discord.Member = None):
         string = random.choice(self.hug)
 
@@ -132,6 +132,7 @@ class Social(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
     async def pat(self, ctx, user: discord.Member = None):
         string = random.choice(self.pat)
 
@@ -142,6 +143,7 @@ class Social(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
     async def kiss(self, ctx, user: discord.Member = None):
         string = random.choice(self.kiss)
 
@@ -152,6 +154,7 @@ class Social(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
     async def lick(self, ctx, user: discord.Member = None):
         string = random.choice(self.lick)
 
@@ -162,6 +165,7 @@ class Social(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
     async def slap(self, ctx, user: discord.Member = None):
         string = random.choice(self.slap)
 
@@ -172,6 +176,7 @@ class Social(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
     async def feed(self, ctx, user: discord.Member = None):
         string = random.choice(self.feed)
 
@@ -182,6 +187,7 @@ class Social(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command()
+    @commands.guild_only()
     async def cry(self, ctx):
         string = random.choice(self.cry)
 

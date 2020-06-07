@@ -46,6 +46,7 @@ class Blacklist(commands.Cog):
 
     @blacklist.command()
     @checks.is_owner()
+    @commands.guild_only()
     async def add(self, ctx, user: int, reason: str = "None"):
 
         await ctx.message.delete()
@@ -58,6 +59,7 @@ class Blacklist(commands.Cog):
 
     @blacklist.command(aliases=['remove'])
     @checks.is_owner()
+    @commands.guild_only()
     async def rm(self, ctx, user: Union[int, discord.Member]):
 
         if isinstance(user, int):

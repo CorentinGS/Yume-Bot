@@ -48,6 +48,7 @@ class Gestion(commands.Cog):
         self.config = bot.config
 
     @commands.command()
+    @commands.guild_only()
     async def suggestion(self, ctx, *, content: str):
 
         guild = self.bot.get_guild(int(GUILD))
@@ -76,6 +77,7 @@ class Gestion(commands.Cog):
             await ctx.invoke(help.suggestion)
 
     @commands.command()
+    @commands.guild_only()
     async def feedback(self, ctx):
 
         auth = ctx.message.author

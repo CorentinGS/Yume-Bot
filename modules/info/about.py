@@ -35,6 +35,7 @@ class About(commands.Cog):
         self.config = bot.config
 
     @commands.command()
+    @commands.guild_only()
     async def about(self, ctx):
         """
         Gives information about the bot

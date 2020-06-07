@@ -69,6 +69,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(aliases=["sanctions", "modlog", "modlogs"])
+    @commands.guild_only()
     @checks.is_mod()
     async def sanction(self, ctx, user: typing.Union[discord.Member, discord.User, int]):
         """
@@ -87,6 +88,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.bot_has_permissions(manage_channels=True)
+    @commands.guild_only()
     @checks.is_admin()
     async def slowmode(self, ctx, *, value: int = None):
         """
@@ -100,6 +102,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_admin()
+    @commands.guild_only()
     async def reset(self, ctx, member: discord.Member):
         """
         Reset this user sanctions
@@ -108,6 +111,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_mod()
+    @commands.guild_only()
     async def strike(self, ctx, user: discord.Member, *, reason: ModReason = None):
         """
         Strike him
@@ -121,6 +125,7 @@ class Moderation(commands.Cog):
         await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=["chut", "tg"])
+    @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def mute(self, ctx, user: discord.Member, duration: str, *, reason: ModReason = None):
@@ -176,6 +181,7 @@ class Moderation(commands.Cog):
             await ctx.invoke(self.unmute, user, True)
 
     @commands.command()
+    @commands.guild_only()
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member, auto: bool = False):
@@ -204,6 +210,7 @@ class Moderation(commands.Cog):
         await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=['out'])
+    @commands.guild_only()
     @commands.bot_has_permissions(kick_members=True)
     @checks.is_mod()
     async def kick(self, ctx, user: discord.Member, *, reason: ModReason = None):
@@ -218,6 +225,7 @@ class Moderation(commands.Cog):
         await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command(aliases=['preventban', 'preban', 'idban'])
+    @commands.guild_only()
     @checks.is_admin()
     async def hackban(self, ctx, id: MemberID, *, reason: ModReason = None):
 
@@ -232,6 +240,7 @@ class Moderation(commands.Cog):
         await self.log_send(ctx, ctx.message.guild.id, em)
 
     @commands.command()
+    @commands.guild_only()
     @checks.is_admin()
     async def unban(self, ctx, id: MemberID):
 
@@ -250,6 +259,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=['ciao'])
     @checks.is_mod()
+    @commands.guild_only()
     async def ban(self, ctx, user: discord.Member, *, reason: ModReason = None):
         perm = await Check().check(ctx, user)
         if perm is False:
@@ -264,6 +274,7 @@ class Moderation(commands.Cog):
 
     @commands.command(case_insensitive=True, aliases=['clean', 'clear'])
     @checks.is_mod()
+    @commands.guild_only()
     async def purge(self, ctx, amount: int, arg: str = None):
         if not arg:
             await ctx.channel.purge(limit=amount, bulk=True)
@@ -280,31 +291,37 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=['deafen'])
     @checks.is_mod()
+    @commands.guild_only()
     async def deaf(self, ctx, user: discord.Member):
         await user.edit(deafen=True)
 
     @commands.command(aliases=['undeafen'])
     @checks.is_mod()
+    @commands.guild_only()
     async def undeaf(self, ctx, user: discord.Member):
         await user.edit(deafen=False)
 
     @commands.command(aliases=['novoice'])
     @checks.is_mod()
+    @commands.guild_only()
     async def vmute(self, ctx, user: discord.Member):
         await user.edit(mute=True)
 
     @commands.command()
     @checks.is_mod()
+    @commands.guild_only()
     async def unvmute(self, ctx, user: discord.Member):
         await user.edit(mute=False)
 
     @commands.command()
     @checks.is_mod()
+    @commands.guild_only()
     async def nick(self, ctx, user: discord.Member, name: str = None):
         await user.edit(nick=name)
 
     @commands.command()
     @checks.is_admin()
+    @commands.guild_only()
     async def massban(self, ctx, *members: MemberID):
         try:
             for member_id in members:
@@ -323,6 +340,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_admin()
+    @commands.guild_only()
     async def mention(self, ctx, role: str):
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
 
@@ -334,6 +352,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @checks.is_admin()
+    @commands.guild_only()
     async def annonce(self, ctx, role: str, *, content):
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
 

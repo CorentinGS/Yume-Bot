@@ -43,6 +43,7 @@ class Level(commands.Cog):
             1.0, 5.0, commands.BucketType.user)
 
     @commands.command()
+    @commands.guild_only()
     async def rank(self, ctx, user: discord.Member = None):
         if user is None:
             user = ctx.message.author
@@ -66,6 +67,7 @@ class Level(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(aliases=["scoreboard"])
+    @commands.guild_only()
     async def leaderboard(self, ctx):
         guildY = GuildDB.get_one(ctx.message.guild.id)
         scoreboard = RankingsDB.get_scoreboard(guildY)

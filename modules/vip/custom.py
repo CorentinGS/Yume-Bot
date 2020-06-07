@@ -70,6 +70,7 @@ class Custom(commands.Cog):
             await ctx.send("Anon features isn't set")
 
     @anon.command()
+    @commands.cooldown(2, 20, commands.BucketType.user)
     async def send(self, ctx, guild_id: int, *, msg: str):
         if not isinstance(ctx.message.channel, discord.DMChannel):
             return await ctx.send("This command has to be send in DM")

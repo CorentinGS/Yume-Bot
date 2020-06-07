@@ -110,6 +110,8 @@ class YumeBot(commands.Bot):
                     await ctx.send(embed=em)
                 except discord.Forbidden:
                     return
+        elif isinstance(error, commands.CommandOnCooldown):
+            return await ctx.send("You're on cooldown ! Don't spam this command")
 
     async def close(self):
         await super().close()

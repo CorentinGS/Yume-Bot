@@ -43,6 +43,7 @@ class General(commands.Cog):
         self.config = bot.config
 
     @commands.command()
+    @commands.guild_only()
     async def ping(self, ctx):
         """
         Pong !
@@ -50,6 +51,7 @@ class General(commands.Cog):
         await ctx.send("Pong !!")
 
     @commands.command()
+    @commands.guild_only()
     async def pong(self, ctx):
         """
         Ping !
@@ -58,6 +60,7 @@ class General(commands.Cog):
         await ctx.send("Ping !!")
 
     @commands.command(aliases=['gmto', 'gweather'])
+    @commands.guild_only()
     async def gmeteo(self, ctx, city: str):
         """
         Full Weather report
@@ -97,6 +100,7 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["mto", "weather"])
+    @commands.guild_only()
     async def meteo(self, ctx, city: str):
         """
         Simple Weather report
@@ -125,6 +129,7 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.guild_only()
     async def jump(self, ctx, id: int, channel: discord.TextChannel = None):
         """
         Create a direct link to a message
@@ -142,6 +147,7 @@ class General(commands.Cog):
         await ctx.send('Url :{}'.format(msg.jump_url))
 
     @commands.command()
+    @commands.guild_only()
     @commands.bot_has_permissions(embed_links=True)
     async def pokemon(self, ctx, name_or_id):
         """Show pokemon info"""

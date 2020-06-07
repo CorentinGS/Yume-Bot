@@ -677,6 +677,7 @@ class Games(commands.Cog):
 
     @commands.command(aliases=["wyr"])
     @commands.bot_has_permissions(embed_links=True)
+    @commands.guild_only()
     async def wouldyourather(self, ctx, user: discord.Member = None):
         """Would you rather?"""
         # sources : https://github.com/CloudBotIRC/CloudBot/blob/master/plugins/wyr.py
@@ -713,10 +714,11 @@ class Games(commands.Cog):
         else:
             embed.title = data['title']
         embed.description = data["choicea"] + \
-            "\n" + data["choiceb"]
+                            "\n" + data["choiceb"]
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["nhie"])
+    @commands.guild_only()
     @commands.bot_has_permissions(embed_links=True)
     async def neverhaveiever(self, ctx):
         """Never have I"""
@@ -730,6 +732,7 @@ class Games(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.guild_only()
     @commands.bot_has_permissions(embed_links=True)
     async def truth(self, ctx, *, user: discord.Member):
         """Ask a truth question to users!"""
@@ -752,6 +755,7 @@ class Games(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.guild_only()
     @commands.bot_has_permissions(embed_links=True)
     async def dare(self, ctx, *, user: discord.Member):
         """Dare someone!"""
