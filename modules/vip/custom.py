@@ -40,6 +40,7 @@ class Custom(commands.Cog):
         return
 
     @anon.command()
+    @checks.is_admin()
     @commands.guild_only()
     async def set(self, ctx, channel: discord.TextChannel = None):
         if not channel:
@@ -52,7 +53,7 @@ class Custom(commands.Cog):
                                   " Please be sure to give me the following permissions :\n"
                                   "**read_messages**, **send_messages**, **manage_webhooks**, **manage_messages**")
         AnonDB.set_channel(ctx.guild.id, channel.id)
-        await channel.create_webhook("Anon")
+        await channel.create_webhook(name="Anon")
         msg = await channel.send(f"This room is now ready to receive anonymous messages."
                                  f"To send messages in this room, just do the following command as a private message:"
                                  f" ```--anon send {ctx.guild.id} Your text```")
@@ -85,6 +86,7 @@ class Custom(commands.Cog):
                 "please contact the guild administrator and ask them to check that the feature is properly configured.")
         msg = msg.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
         await self.send_anon_webhook(chan, "Anon", msg)
+        await ctx.message.add_reaction('✅')
 
     @staticmethod
     async def send_anon_webhook(channel: discord.TextChannel, author: str, content: str):
