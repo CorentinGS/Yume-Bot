@@ -87,7 +87,7 @@ class Profiles(commands.Cog):
         lover: User = UserDB.get_user(User(member.id))
 
         def check(m):
-            return m.author == member
+            return m.author == member and m.channel == ctx.channel
 
         if user.married:
             em = await Embeds.already_married(user)
