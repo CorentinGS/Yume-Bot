@@ -41,7 +41,7 @@ class Level(commands.Cog):
         self.bot = bot
         self.config = bot.config
         self._cd = commands.CooldownMapping.from_cooldown(
-            1.0, 5.0, commands.BucketType.user)
+            2.0, 6.0, commands.BucketType.user)
 
     @commands.command()
     @commands.guild_only()
@@ -155,7 +155,16 @@ class Level(commands.Cog):
             RankingsDB.create_ranking(userY, guildY)
             rankings = RankingsDB.get_user(userY, guildY)
 
-        gain = randint(2, 12)
+        if rankings['level'] < 3:
+            gain = randint(2, 12)
+        elif 3 <= rankings['level'] < 6:
+            gain = randint(8, 20)
+        elif 6 <= rankings['level'] < 10:
+            gain = randint(12, 20)
+        elif 10 <= rankings['level'] < 20:
+            gain = randint(12, 22)
+        else:
+            gain = randint(15, 25)
 
         rankings['xp'] += gain
         rankings['total'] += gain
@@ -169,7 +178,7 @@ class Level(commands.Cog):
             elif 21 >= rankings["level"] > 10:
                 rankings['reach'] = round(rankings['reach'] * 1.1)
             elif 10 >= rankings["level"] > 6:
-                rankings['reach'] = round(rankings['reach'] * 1.5)
+                rankings['reach'] = round(rankings['reach'] * 1.3)
             else:
                 rankings['reach'] = round(rankings['reach'] * 1.6)
             rankings['xp'] = 0
@@ -190,7 +199,6 @@ class Level(commands.Cog):
 
         RankingsDB.update_user(userY, guildY, rankings)
 
-
     @commands.command()
     @checks.is_owner()
     async def fix_rank(self, ctx):
@@ -209,7 +217,7 @@ class Level(commands.Cog):
                 levels_t[x] = total
 
             elif 6 < x <= 10:
-                reach = round(reach * 1.5)
+                reach = round(reach * 1.3)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
@@ -249,7 +257,6 @@ class Level(commands.Cog):
 
             xp = toto["total"] - levels_t[level - 1]
             RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp)
-
 
 
 # TODO: Ajouter des commandes pour voir les roles
