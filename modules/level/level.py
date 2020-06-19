@@ -31,6 +31,7 @@ from modules.sql.guilddb import GuildDB
 from modules.sql.rankingsdb import RankingsDB
 from modules.sql.roledb import RoleDB
 from modules.sql.userdb import UserDB
+from modules.utils import checks
 
 
 class Level(commands.Cog):
@@ -160,6 +161,7 @@ class Level(commands.Cog):
         rankings['total'] += gain
 
         if rankings['xp'] >= rankings['reach']:
+            rankings['level'] += 1
             if rankings["level"] > 39:
                 rankings['reach'] = round(rankings['reach'] * 1.02)
             if 39 >= rankings["level"] > 21:
@@ -171,7 +173,6 @@ class Level(commands.Cog):
             else:
                 rankings['reach'] = round(rankings['reach'] * 1.6)
             rankings['xp'] = 0
-            rankings['level'] += 1
 
             try:
                 await message.channel.send("{} is now level {}.".format(user.name, rankings['level']), delete_after=2)
@@ -189,7 +190,7 @@ class Level(commands.Cog):
 
         RankingsDB.update_user(userY, guildY, rankings)
 
-    '''
+
     @commands.command()
     @checks.is_owner()
     async def fix_rank(self, ctx):
@@ -234,7 +235,7 @@ class Level(commands.Cog):
         rankings = RankingsDB.get_all()
         total_list = list(levels_t.values())
         for toto in rankings:
-            if toto["level"] < 2:
+            if toto["level"] < 5:
                 continue
             closest = min(total_list, key=lambda x: abs(x - toto["total"]))
             if toto["total"] > closest:
@@ -248,7 +249,7 @@ class Level(commands.Cog):
 
             xp = toto["total"] - levels_t[level - 1]
             RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp)
-    '''
+
 
 
 # TODO: Ajouter des commandes pour voir les roles

@@ -77,12 +77,16 @@ class RankingsDB:
         except Exception as err:
             print(err)
             con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            rankings = RankingsDB.rows_to_dict(rows)
-            return rankings
+        try:
+            rows = cur.fetchone()
+        except (Exception, psycopg2.Error) as error:
+            return {}
+        else:
+            if rows:
+                rankings = RankingsDB.rows_to_dict(rows)
+                return rankings
 
-        return {}
+            return {}
 
     @staticmethod
     def ranking_exists(user: User, guild: Guild) -> bool:
