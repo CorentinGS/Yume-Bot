@@ -6,7 +6,7 @@ class Embeds:
     @staticmethod
     async def get_lover(user: discord.Member, lover: discord.User) -> discord.Embed:
         em = discord.Embed(color=discord.Colour.blue())
-        msg: str = f"♥️️{user.name}#{user.discriminator} is married with {lover.name}#{user.discriminator}"
+        msg: str = f"♥️️{user.name}#{user.discriminator} is married with {lover.name}#{lover.discriminator}"
         em.description = msg
         return em
 

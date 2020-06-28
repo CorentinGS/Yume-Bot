@@ -25,7 +25,7 @@
 import json
 
 import dbl
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 with open('./config/token.json', 'r') as cjson:
     token = json.load(cjson)
@@ -53,7 +53,7 @@ class Dbl(commands.Cog):
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
     """
-    
+
     @commands.Cog.listener()
     async def on_guild_post(self):
         print("Server count posted successfully")
@@ -68,6 +68,7 @@ class Dbl(commands.Cog):
         except Exception as e:
             print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
             await ctx.send("Error : \n`{}`".format(e))
+
 
 def setup(bot):
     bot.add_cog(Dbl(bot))
