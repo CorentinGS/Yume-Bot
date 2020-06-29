@@ -54,7 +54,7 @@ class About(commands.Cog):
         for guild in self.bot.guilds:
             channels += len(guild.channels)
 
-        site = '[Documentation](https://yumenetwork.net)'
+        site = '[Documentation](https://www.yumenetwork.net)'
         server = '[Discord](https://yumenetwork.net/yumebot/invite/)'
         lib = '[Discord.py](https://github.com/Rapptz/discord.py/tree/rewrite)'
         vote = '[Vote for me](https://top.gg/bot/456504213262827524)'
