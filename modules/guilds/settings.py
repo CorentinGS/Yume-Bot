@@ -90,7 +90,7 @@ class Set(commands.Cog):
             return await ctx.send("The setup has already been done. "
                                   "If you want to restore it you should use : **--setting reset**")
 
-        reactions = ['✅', '🚫❌']  # Store reactions
+        reactions = ['✅', '❌']  # Store reactions
 
         await ctx.send("Hey ! Let's setup your server ;) ", delete_after=3)
 
@@ -132,8 +132,9 @@ class Set(commands.Cog):
                 await msg.delete()
                 guild.greet = True
                 guild.greet_chan = str(text_channel.id)
-            elif reaction.emoji == '🚫':
+            elif reaction.emoji == '❌':
                 guild.greet = False
+        await msg.delete()
 
         # Colors
         """
@@ -153,40 +154,7 @@ class Set(commands.Cog):
         """
         guild.color = False
 
-        # Member stats channels
-        msg = await ctx.send("Do you want to activate the member stats channels ?")
-        [await msg.add_reaction(reaction) for reaction in reactions]
-
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
-        except asyncio.TimeoutError:
-            await ctx.send('👎')
-        else:
-            if reaction.emoji == '✅':
-                guild.stats_channels = True
-                overwrite = {
-                    ctx.guild.default_role: discord.PermissionOverwrite(connect=False),
-                }
-
-                category = await ctx.guild.create_category_channel("Stats", overwrites=overwrite)
-                guild.stats_category = str(category.id)
-
-                await ctx.guild.create_voice_channel(f'Users : {len(ctx.guild.members)}', overwrites=overwrite,
-                                                     category=category)
-                bots = []
-                for user in ctx.guild.members:
-                    if user.bot is True:
-                        bots.append(user)
-                await ctx.guild.create_voice_channel(f'Bots : {len(bots)}', overwrites=overwrite, category=category)
-                await ctx.guild.create_voice_channel(f'Members : {len(ctx.guild.members) - len(bots)}',
-                                                     overwrites=overwrite, category=category)
-
-            elif reaction.emoji == '🚫':
-                guild.stats_channels = False
-                guild.count_category = 0
-
         guild.blacklist = False
-        await msg.delete()
 
         # Mods & Admins role
         await ctx.send('Detecting mod and admin role...', delete_after=5)

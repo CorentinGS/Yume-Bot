@@ -39,7 +39,7 @@ class GuildDB:
     @staticmethod
     def guild_from_row(rows):
         return Guild(rows['guild_id'], rows['blacklist'], rows['color'], rows['greet'], rows['greet_chan'],
-                     rows['log_chan'], rows['logging'], rows['setup'], rows['stats_category'], rows['stats_channels'],
+                     rows['log_chan'], rows['logging'], rows['setup'],
                      rows['vip'])
 
     @staticmethod
@@ -164,10 +164,10 @@ class GuildDB:
     def create(guild: Guild):
         try:
             cur.execute(
-                "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, stats_category, stats_channels, vip)  VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+                "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, vip)  VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s);",
                 (guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.guild_id, guild.log_chan,
                  guild.logging,
-                 guild.setup, guild.stats_category, guild.stats_channels, guild.vip))
+                 guild.setup, guild.vip))
         except Exception as err:
             print(err)
             con.rollback()
@@ -190,10 +190,10 @@ class GuildDB:
     def update_guild(guild: Guild):
         try:
             cur.execute(
-                "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', stats_category = '{}', stats_channels = '{}', vip = '{}'  WHERE  guild_id = {}".format(
+                "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', vip = '{}'  WHERE  guild_id = {}".format(
                     guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.log_chan, guild.logging,
                     guild.setup,
-                    guild.stats_category, guild.stats_channels, guild.vip, guild.guild_id))
+                    guild.vip, guild.guild_id))
         except Exception as err:
             print(err)
             con.rollback()

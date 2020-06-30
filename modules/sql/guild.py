@@ -24,7 +24,7 @@
 class Guild:
     def __init__(self, guild_id: int, blacklist: bool = False, color: bool = False, greet: bool = False,
                  greet_chan: int = 0, log_chan: int = 0, logging: bool = False, setup: bool = False,
-                 stats_category: int = 0, stats_channels: bool = False, vip: bool = False):
+                 vip: bool = False):
         self.guild_id = guild_id
         self.blacklist = blacklist
         self.color = color
@@ -33,8 +33,7 @@ class Guild:
         self.log_chan = log_chan
         self.logging = logging
         self.setup = setup
-        self.stats_category = stats_category
-        self.stats_channels = stats_channels
+
         self.vip = vip
 
     def display(self):
