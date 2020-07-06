@@ -20,8 +20,13 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+from random import random
 
+import discord
 from discord.ext import commands
+
+from modules.sql.guilddb import GuildDB
+from modules.utils import lists
 
 
 class Event(commands.Cog):
@@ -30,6 +35,48 @@ class Event(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member: discord.Member):
+        """
+
+        :param member: The member who joined the guild
+        """
+
+        guild = GuildDB.get_one(member.guild.id)
+
+        if guild.greet:
+            channel = self.bot.get_channel(int(guild.greet_chan))
+            greet = random.choice(lists.greet)
+
+            em = discord.Embed(timestamp=member.joined_at)
+            em.set_author(name="Welcome", icon_url=member.avatar_url)
+            em.set_footer(text=f'{member.name}')
+            em.description = f"{greet}"
+            await channel.send(embed=em)
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        """
+
+        :param member: The member who has left
+        """
+
+        guild = GuildDB.get_one(member.guild.id)
+
+        if guild.greet:
+            try:
+                channel = member.guild.get_channel(int(guild.greet_chan))
+            except discord.HTTPException:
+                pass
+            else:
+                greet = random.choice(lists.leave)
+
+                em = discord.Embed(timestamp=member.joined_at)
+                em.set_author(name="Bye", icon_url=member.avatar_url)
+                em.set_footer(text=f'{member.name}')
+                em.description = f"{greet}"
+                await channel.send(embed=em)
 
 
 def setup(bot):
