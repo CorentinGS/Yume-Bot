@@ -66,3 +66,91 @@ class AnonDB:
         if rows:
             return True
         return False
+
+    @staticmethod
+    def is_blocked(user_id: int, guild_id: int):
+        try:
+            cur.execute(
+                "SELECT * FROM public.anon_users WHERE guild_id = {} AND user_id = {};".format(guild_id, user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            if rows['blocked'] is True:
+                return True
+            else:
+                return False
+
+    @staticmethod
+    def set_author(user_id: int, guild_id: int):
+        try:
+            cur.execute("INSERT INTO public.anon_users ( user_id, guild_id) VALUES ( %s, %s );", (user_id, guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def is_author(user_id: int, guild_id: int):
+        try:
+            cur.execute(
+                "SELECT * FROM public.anon_users WHERE guild_id = {} AND user_id = {};".format(guild_id, user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def get_message(message_id: int):
+        try:
+            cur.execute("SELECT * FROM public.anon_logs WHERE message_id = {};".format(message_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            message = {"user_id": rows["user_id"],
+                       "message_id": rows["message_id"],
+                       "guild_id": rows["guild_id"]
+                       }
+            return message
+        else:
+            return {}
+
+    @staticmethod
+    def set_message(message_id: int, user_id: int, guild_id: int):
+        try:
+            cur.execute(
+                "INSERT INTO public.anon_logs ( message_id, guild_id, user_id) VALUES ( %s, %s, %s );",
+                (message_id, guild_id, user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def block_anon(user_id: int, guild_id: int):
+        try:
+            cur.execute(
+                "UPDATE public.anon_users SET blocked = true WHERE user_id = {} AND guild_id = {};".format(user_id,
+                                                                                                           guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def unblock_anon(user_id: int, guild_id: int):
+        try:
+            cur.execute(
+                "UPDATE public.anon_users SET blocked = false WHERE user_id = {} AND guild_id = {};".format(user_id,
+                                                                                                            guild_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()

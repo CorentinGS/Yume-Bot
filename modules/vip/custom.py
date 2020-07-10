@@ -70,6 +70,39 @@ class Custom(commands.Cog):
             await ctx.send("Anon features isn't set")
 
     @anon.command()
+    @checks.is_mod()
+    @commands.guild_only()
+    async def block(self, ctx, message_id):
+        message = AnonDB.get_message(message_id)
+        if not message:
+            await ctx.send("I can't find this message")
+        AnonDB.block_anon(message["user_id"], message['guild_id'])
+        await ctx.send("The anon author of this message has been blocked")
+
+    @anon.command()
+    @checks.is_mod()
+    @commands.guild_only()
+    async def unblock(self, ctx, user: discord.Member):
+        AnonDB.unblock_anon(user.id, ctx.guild.id)
+        await ctx.send("{} has been unblocked".format(user.display_name))
+
+    @anon.command()
+    @checks.is_admin()
+    @commands.guild_only()
+    async def whois(self, ctx, message_id):
+        message = AnonDB.get_message(message_id)
+        if not message:
+            await ctx.send("I can't find this message")
+        try:
+            user: discord.User = await self.bot.fetch_user(message['user_id'])
+        except discord.NotFound:
+            await ctx.send("We couldn't find the author if this message...")
+            return
+        else:
+            await ctx.send(
+                "The anon author of this message is {}#{} - `{}`".format(user.name, user.discriminator, user.id))
+
+    @anon.command()
     @commands.cooldown(2, 30, commands.BucketType.user)
     async def send(self, ctx, guild_id: int, *, msg: str):
         if not isinstance(ctx.message.channel, discord.DMChannel):
@@ -77,6 +110,13 @@ class Custom(commands.Cog):
         setup = AnonDB.is_setup(guild_id)
         if not setup:
             return await ctx.send("This guild hasn't activate this feature yet !")
+        if not AnonDB.is_author(ctx.author.id, guild_id):
+            AnonDB.set_author(user_id=ctx.author.id, guild_id=guild_id)
+        blocked = AnonDB.is_blocked(ctx.author.id, guild_id)
+        if blocked:
+            return await ctx.send(
+                "Sorry, but it seems you're not allowed to use the anon command anymore. If you think this is an error,"
+                " please contact the guild administrator and ask them to unlock your access.")
         anon = AnonDB.get_channel(guild_id)
         try:
             guild: discord.Guild = self.bot.get_guild(guild_id)
@@ -86,14 +126,16 @@ class Custom(commands.Cog):
                 "Sorry, but I couldn't find the anonymous message room. If you think this is an error, "
                 "please contact the guild administrator and ask them to check that the feature is properly configured.")
         msg = msg.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
-        await self.send_anon_webhook(chan, "Anon", msg)
+        message_id = await self.send_anon_webhook(chan, "Anon", msg)
+        AnonDB.set_message(message_id, ctx.author.id, guild_id)
         await ctx.message.add_reaction('✅')
 
     @staticmethod
     async def send_anon_webhook(channel: discord.TextChannel, author: str, content: str):
         webhooks = await channel.webhooks()
         webhook = webhooks[0]
-        await webhook.send(content=content, username=author)
+        msg = await webhook.send(content=content, username=author, wait=True)
+        return msg.id
 
     @commands.group()
     async def private(self, ctx):
