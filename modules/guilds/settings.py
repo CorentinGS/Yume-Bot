@@ -104,9 +104,15 @@ class Set(commands.Cog):
 
         log = discord.utils.get(ctx.guild.text_channels, name="yumebot-log")
         if not isinstance(log, discord.TextChannel):
-            log = await ctx.guild.create_text_channel("yumebot-log", overwrites=overwrite)
-
-        guild.log_chan = str(log.id)
+            try:
+                log = await ctx.guild.create_text_channel("yumebot-log", overwrites=overwrite)
+            except discord.Forbidden:
+                await ctx.send("I don't have all the permissions required")
+                pass
+            except discord.HTTPException:
+                pass
+            else:
+                guild.log_chan = str(log.id)
 
         # Welcome / Leave
         msg = await ctx.send("Do you want to activate the Welcome/Leave msg ?")
