@@ -110,6 +110,7 @@ class Set(commands.Cog):
                 await ctx.send("I don't have all the permissions required")
                 pass
             except discord.HTTPException:
+                print("HTTP Exception in setting yumebot-log")
                 pass
             else:
                 guild.log_chan = str(log.id)
@@ -135,32 +136,15 @@ class Set(commands.Cog):
                 except IndexError:
                     text_channel = ctx.message.channel
 
-                await msg.delete()
                 guild.greet = True
                 guild.greet_chan = str(text_channel.id)
             elif reaction.emoji == '❌':
                 guild.greet = False
         await msg.delete()
 
-        # Colors
-        """
-        msg = await ctx.send("Do you want to activate the Colors role ?")
-        for reaction in reactions:
-            await msg.add_reaction(reaction)
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
-        except asyncio.TimeoutError:
-            await ctx.send('👎', delete_after=3)
-        else:
-            if reaction.emoji == '✅':
-                await msg.delete()
-                guild.color = True
-            elif reaction.emoji == '🚫':
-                guild.color = False
-        """
         guild.color = False
-
         guild.blacklist = False
+        print("send detecting")
 
         # Mods & Admins role
         await ctx.send('Detecting mod and admin role...', delete_after=5)
