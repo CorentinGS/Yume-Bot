@@ -26,7 +26,7 @@ import datetime
 
 class Sanction:
     def __init__(self, sanction_id: int, event: str = "", guild_id: int = 0, moderator_id: int = 0, reason: str = 0,
-                 time: int = 0, user_id: int = 0, event_date: datetime.datetime = datetime.datetime.now()):
+                 time: int = 0, user_id: int = 0, event_date: datetime.datetime = datetime.date.today()):
         self.event = event
         self.guild_id = guild_id
         self.moderator_id = moderator_id

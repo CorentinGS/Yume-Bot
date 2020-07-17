@@ -225,15 +225,9 @@ class Embeds:
         for sanction in sanctions:
             sanction = SanctionsDB.get_sanction(sanction)
 
-            date = datetime.strptime(str(sanction.event_date), '%Y-%m-%d %H:%M:%S.%f')
+            date = sanction.event_date
 
-            rd = dateutil.relativedelta.relativedelta(date, today)
-            str1 = "**" + sanction.event + " |** " + (str(abs(rd.years)) + " years " if rd.years != 0 else "") \
-                   + (str(abs(rd.months)) + " months " if rd.months != 0 else "") \
-                   + (str(abs(rd.days)) + " days " if rd.days != 0 else "") \
-                   + (str(abs(rd.hours)) + " hours " if rd.hours != 0 and rd.months == 0 else "") \
-                   + (str(abs(rd.minutes)) + " minutes " if rd.minutes != 0 and rd.days == 0 else "") \
-                   + (str(abs(rd.seconds)) + " seconds " if rd.minutes == 0 else "") + "ago\n"
+            str1 = "**" + sanction.event + " |** " + str(date) + "\n"
             msg = " ".join((msg, str1))
 
         em.description = msg
