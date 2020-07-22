@@ -1,5 +1,5 @@
 motor
-discord.py
+discord.py==1.3.4
 romme==0.1.0
 discord
 beautifulsoup4
