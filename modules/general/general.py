@@ -78,7 +78,7 @@ class General(commands.Cog):
     async def missette(self, ctx):
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
-            webhook = await ctx.channel.create_webhook(name="Jade")
+            webhook = await ctx.channel.create_webhook(name="Missette")
         else:
             webhook = webhooks[0]
         user_id = 511135694207451146
