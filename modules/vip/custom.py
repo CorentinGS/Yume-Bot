@@ -81,7 +81,7 @@ class Custom(commands.Cog):
             return
         if NetworkDB.is_blocked(author.id):
             return
-        msg = message.content
+        msg = message.clean_content
         if "discord.gg" in msg:
             return
         msg = msg.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
