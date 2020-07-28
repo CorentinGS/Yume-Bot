@@ -117,6 +117,7 @@ class YumeBot(commands.Bot):
         await super().close()
 
     async def on_guild_join(self, guild):
+        global channel
         await self.wait_until_ready()
         embed = discord.Embed(colour=discord.Color.green())
         embed.title = "New Guild"
@@ -129,10 +130,12 @@ class YumeBot(commands.Bot):
         server = self.get_guild(int(self.guild))
         for chan in server.channels:
             if chan.id == int(self.debug):
-                channel = chan
-        await channel.send(embed=embed)
+                channel: discord.TextChannel = chan
+        if isinstance(channel, discord.TextChannel):
+            await channel.send(embed=embed)
 
     async def on_guild_remove(self, guild):
+        global channel
         await self.wait_until_ready()
         embed = discord.Embed(colour=discord.Color.red())
         embed.title = "Left Guild"
@@ -145,8 +148,9 @@ class YumeBot(commands.Bot):
         server = self.get_guild(int(self.guild))
         for chan in server.channels:
             if chan.id == int(self.debug):
-                channel = chan
-        await channel.send(embed=embed)
+                channel: discord.TextChannel = chan
+        if isinstance(channel, discord.TextChannel):
+            await channel.send(embed=embed)
 
     def run(self):
         super().run(self.token, reconnect=True)

@@ -24,6 +24,7 @@ import discord
 from discord.ext import commands
 
 from modules.sql.anondb import AnonDB
+from modules.sql.networkdb import NetworkDB
 from modules.sql.privatedb import PrivateDB
 from modules.utils import checks
 
@@ -34,6 +35,40 @@ class Custom(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = bot.config
+
+    @commands.group()
+    async def network(self, ctx):
+        return
+
+    @network.command()
+    @checks.is_owner()
+    @commands.guild_only()
+    async def set(self, ctx, channel: discord.TextChannel= None):
+        if not channel:
+            channel = ctx.channel
+        permissions: discord.Permissions = channel.permissions_for(ctx.guild.me)
+        if not (
+                permissions.read_messages or permissions.send_messages
+                or permissions.manage_webhooks or permissions.manage_messages):
+            return await ctx.send("I don't have enough permissions !"
+                                  " Please be sure to give me the following permissions :\n"
+                                  "**read_messages**, **send_messages**, **manage_webhooks**, **manage_messages**")
+        NetworkDB.set_channel(channel.id, ctx.guild.id)
+        await channel.create_webhook(name="Anon")
+        await channel.send(f"This room is now linked to the network.")
+
+    @network.command()
+    @checks.is_admin()
+    @commands.guild_only()
+    async def unset(self, ctx):
+        NetworkDB.delete_channel(ctx.guild.id)
+        await ctx.send("Network features is now unset !")
+
+    @network.command()
+    @checks.is_owner()
+    @commands.guild_only()
+    async def block(self, ctx, user_id: int):
+        NetworkDB.block_user(user_id)
 
     @commands.group()
     async def anon(self, ctx):
