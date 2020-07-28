@@ -70,6 +70,12 @@ class Custom(commands.Cog):
     async def block(self, ctx, user_id: int):
         NetworkDB.block_user(user_id)
 
+    @network.command()
+    @checks.is_owner()
+    @commands.guild_only()
+    async def block(self, ctx, user_id: int):
+        NetworkDB.unblock_user(user_id)
+
     @commands.group()
     async def anon(self, ctx):
         return

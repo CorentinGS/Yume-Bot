@@ -91,3 +91,36 @@ class NetworkDB:
             print(err)
             con.rollback()
         con.commit()
+
+    @staticmethod
+    def block_user(user_id: int):
+        try:
+            cur.execute(
+                "INSERT INTO public.user_network ( user_id) VALUES ( {} );".format(user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def unblock_user(user_id: int):
+        try:
+            cur.execute(
+                "DELETE FROM public.user_network WHERE user_id = {};".format(user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def is_blocked(user_id: int):
+        try:
+            cur.execute(
+                "SELECT * FROM public.user_network WHERE user_id = {};".format(user_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
+            return True
+        return False
