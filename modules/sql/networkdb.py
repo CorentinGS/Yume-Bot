@@ -74,7 +74,7 @@ class NetworkDB:
     def set_channel(chan_id: int, guild_id: int):
         try:
             cur.execute(
-                "INSERT INTO public.rankings ( guild_id, chan_id)  VALUES ( {}, {});".format(
+                "INSERT INTO public.chan_network ( guild_id, chan_id)  VALUES ( {}, {});".format(
                     guild_id, chan_id))
         except Exception as err:
             print(err)

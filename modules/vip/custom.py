@@ -72,6 +72,38 @@ class Custom(commands.Cog):
     async def network_unblock(self, ctx, user_id: int):
         NetworkDB.unblock_user(user_id)
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        author = message.author
+        if not NetworkDB.is_linked(message.channel.id):
+            return
+        if author.bot or not isinstance(author, discord.Member):
+            return
+        if NetworkDB.is_blocked(author.id):
+            return
+        msg = message.content
+        if "discord.gg" in msg:
+            return
+        msg = msg.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
+        channels = NetworkDB.get_all_linked_channels()
+        for chan in channels:
+            if chan["chan"] == message.channel.id:
+                continue
+            try:
+                channel = self.bot.get_channel(chan["chan"])
+            except discord.NotFound:
+                continue
+            else:
+                webhooks = await channel.webhooks()
+                if not webhooks:
+                    continue
+                else:
+                    webhook = webhooks[0]
+
+                await webhook.send(content=msg,
+                                   username="{} - {}".format(message.author.name, message.author.id),
+                                   avatar_url=message.author.avatar_url, wait=True)
+
     @commands.group()
     async def anon(self, ctx):
         return
