@@ -59,6 +59,20 @@ class General(commands.Cog):
 
         await ctx.send("Ping !!")
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.is_owner()
+    async def jade(self, ctx):
+        webhooks = await ctx.channel.webhooks()
+        if not webhooks:
+            webhook = await ctx.channel.create_webhook(name="Jade")
+        else:
+            webhook = webhooks[0]
+        user_id = 292362017006944256
+        user: discord.User = await self.bot.fetch_user(user_id)
+        await webhook.send(content="On voit le résultat...", username=user.name, avatar_url=user.avatar_url, wait=True)
+
+
     @commands.command(aliases=['gmto', 'gweather'])
     @commands.guild_only()
     async def gmeteo(self, ctx, city: str):

@@ -36,14 +36,10 @@ class Custom(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
-    @commands.group()
-    async def network(self, ctx):
-        return
-
-    @network.command()
+    @commands.command()
     @checks.is_owner()
     @commands.guild_only()
-    async def set(self, ctx, channel: discord.TextChannel= None):
+    async def network_set(self, ctx, channel: discord.TextChannel = None):
         if not channel:
             channel = ctx.channel
         permissions: discord.Permissions = channel.permissions_for(ctx.guild.me)
@@ -54,26 +50,26 @@ class Custom(commands.Cog):
                                   " Please be sure to give me the following permissions :\n"
                                   "**read_messages**, **send_messages**, **manage_webhooks**, **manage_messages**")
         NetworkDB.set_channel(channel.id, ctx.guild.id)
-        await channel.create_webhook(name="Anon")
+        await channel.create_webhook(name="Network")
         await channel.send(f"This room is now linked to the network.")
 
-    @network.command()
+    @commands.command()
     @checks.is_admin()
     @commands.guild_only()
-    async def unset(self, ctx):
+    async def network_unset(self, ctx):
         NetworkDB.delete_channel(ctx.guild.id)
         await ctx.send("Network features is now unset !")
 
-    @network.command()
+    @commands.command()
     @checks.is_owner()
     @commands.guild_only()
-    async def block(self, ctx, user_id: int):
+    async def network_block(self, ctx, user_id: int):
         NetworkDB.block_user(user_id)
 
-    @network.command()
+    @commands.command()
     @checks.is_owner()
     @commands.guild_only()
-    async def block(self, ctx, user_id: int):
+    async def network_unblock(self, ctx, user_id: int):
         NetworkDB.unblock_user(user_id)
 
     @commands.group()
