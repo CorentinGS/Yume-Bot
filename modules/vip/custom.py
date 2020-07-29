@@ -20,8 +20,11 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+import random
+from datetime import datetime
+
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from modules.sql.anondb import AnonDB
 from modules.sql.networkdb import NetworkDB
@@ -73,7 +76,6 @@ class Custom(commands.Cog):
     async def network_unblock(self, ctx, user_id: int):
         NetworkDB.unblock_user(user_id)
         await ctx.send("User has been unblocked")
-
 
     @commands.Cog.listener()
     async def on_message(self, message):
