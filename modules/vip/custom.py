@@ -65,12 +65,15 @@ class Custom(commands.Cog):
     @commands.guild_only()
     async def network_block(self, ctx, user_id: int):
         NetworkDB.block_user(user_id)
+        await ctx.send("User has been blocked")
 
     @commands.command()
     @checks.is_owner()
     @commands.guild_only()
     async def network_unblock(self, ctx, user_id: int):
         NetworkDB.unblock_user(user_id)
+        await ctx.send("User has been unblocked")
+
 
     @commands.Cog.listener()
     async def on_message(self, message):
