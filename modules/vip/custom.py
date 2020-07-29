@@ -82,7 +82,7 @@ class Custom(commands.Cog):
         if NetworkDB.is_blocked(author.id):
             return
         msg = message.clean_content
-        if "discord.gg" in msg:
+        if "discord.gg" in msg or msg.startswith("--"):
             return
         msg = msg.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
         channels = NetworkDB.get_all_linked_channels()
@@ -93,7 +93,7 @@ class Custom(commands.Cog):
                 channel = self.bot.get_channel(chan["chan"])
             except discord.NotFound:
                 continue
-            else:
+            if isinstance(channel, discord.TextChannel):
                 webhooks = await channel.webhooks()
                 if not webhooks:
                     continue
