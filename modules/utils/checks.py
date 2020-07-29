@@ -34,6 +34,7 @@ with open('config/config.json', 'r') as cjson:
 
 owner = int(config["owner_id"])
 DEV = config['dev']
+princes = [292362017006944256, 511135694207451146, 282233191916634113]
 
 
 def is_owner_check(ctx):
@@ -42,6 +43,14 @@ def is_owner_check(ctx):
 
 def is_owner():
     return commands.check(is_owner_check)
+
+
+def is_prince_check(ctx):
+    return ctx.message.author.id in princes
+
+
+def is_prince():
+    return commands.check(is_prince_check)
 
 
 async def is_mod_check(ctx):
@@ -55,9 +64,7 @@ async def is_mod_check(ctx):
     if auth == ctx.guild.owner:
         return True
     for role in auth.roles:
-        if role.id in mods:
-            return True
-        elif role.id in admins:
+        if role.id in mods or role.id in admins:
             return True
 
 

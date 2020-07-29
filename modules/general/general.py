@@ -27,6 +27,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 
+from modules.utils import checks
 from modules.utils.weather import data_fetch, data_return, url_meteo
 
 with open('./config/config.json', 'r') as cjson:
@@ -61,7 +62,7 @@ class General(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.is_owner()
+    @checks.is_prince()
     async def jade(self, ctx):
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
@@ -74,7 +75,7 @@ class General(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.is_owner()
+    @checks.is_prince()
     async def missette(self, ctx):
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
@@ -85,6 +86,18 @@ class General(commands.Cog):
         user: discord.User = await self.bot.fetch_user(user_id)
         await webhook.send(content="Petit faible...", username=user.name, avatar_url=user.avatar_url, wait=True)
 
+    @commands.command()
+    @commands.guild_only()
+    @checks.is_prince()
+    async def yume(self, ctx):
+        webhooks = await ctx.channel.webhooks()
+        if not webhooks:
+            webhook = await ctx.channel.create_webhook(name="Yume")
+        else:
+            webhook = webhooks[0]
+        user_id = 282233191916634113
+        user: discord.User = await self.bot.fetch_user(user_id)
+        await webhook.send(content="Je suis un petit faible", username=user.name, avatar_url=user.avatar_url, wait=True)
 
     @commands.command(aliases=['gmto', 'gweather'])
     @commands.guild_only()
