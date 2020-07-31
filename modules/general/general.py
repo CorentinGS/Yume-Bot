@@ -64,6 +64,7 @@ class General(commands.Cog):
     @commands.guild_only()
     @checks.is_prince()
     async def jade(self, ctx):
+        await ctx.message.delete()
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
             webhook = await ctx.channel.create_webhook(name="Jade")
@@ -77,12 +78,14 @@ class General(commands.Cog):
     @commands.guild_only()
     @checks.is_prince()
     async def jade2(self, ctx):
+        await ctx.message.delete()
         await ctx.send("https://i.imgur.com/03SkULK.jpg?1")
 
     @commands.command()
     @commands.guild_only()
     @checks.is_prince()
     async def missette(self, ctx):
+        await ctx.message.delete()
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
             webhook = await ctx.channel.create_webhook(name="Missette")
@@ -96,6 +99,7 @@ class General(commands.Cog):
     @commands.guild_only()
     @checks.is_prince()
     async def yume(self, ctx):
+        await ctx.message.delete()
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
             webhook = await ctx.channel.create_webhook(name="Yume")
