@@ -187,7 +187,7 @@ class Embeds:
         em.set_author(name='Yume Bot', url="https://yumenetwork.gitbook.io/yumebot/", icon_url=icon)
         em.description = f"**Category : {category}**" \
                          f"\nYou can get more info about a command [here]" \
-                         f"(https://yumenetwork.gitbook.io/yumebot/commands/{str.lower(category)})"
+                         f"(https://www.yumenetwork.net/documentation/)"
         em.add_field(name="**:pushpin: Commands**", value=f"{liste}")
 
         return em
