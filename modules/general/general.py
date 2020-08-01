@@ -109,6 +109,21 @@ class General(commands.Cog):
         user: discord.User = await self.bot.fetch_user(user_id)
         await webhook.send(content="Je suis un petit faible", username=user.name, avatar_url=user.avatar_url, wait=True)
 
+    @commands.command()
+    @commands.guild_only()
+    @checks.is_prince()
+    async def yume2(self, ctx):
+        await ctx.message.delete()
+        await ctx.send("https://i.imgur.com/FOFjRCB.jpg")   
+        webhooks = await ctx.channel.webhooks()
+        if not webhooks:
+            webhook = await ctx.channel.create_webhook(name="Le petit prince")
+        else:
+            webhook = webhooks[0]
+        user_id = 282233191916634113
+        user: discord.User = await self.bot.fetch_user(user_id)
+        await webhook.send(content="Slurp Slurp Slurp...", username=user.name, avatar_url=user.avatar_url, wait=True)
+
     @commands.command(aliases=['gmto', 'gweather'])
     @commands.guild_only()
     async def gmeteo(self, ctx, city: str):
