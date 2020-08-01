@@ -155,7 +155,7 @@ class Embeds:
     @staticmethod
     async def format_commands_embed(ctx, icon):
         em = discord.Embed(timestamp=ctx.message.created_at)
-        em.set_author(name='Yume Bot', url="https://yumenetwork.gitbook.io/yumebot/", icon_url=icon)
+        em.set_author(name='Yume Bot', url="https://www.yumenetwork.net/documentation/", icon_url=icon)
         em.description = "**» Does anyone need any help?**\n" \
                          "You can use **--h <category>** to view commands for that category."
         em.add_field(name="**Categories**", value="**--h general** | General Commands\n"
