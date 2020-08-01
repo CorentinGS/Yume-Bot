@@ -76,6 +76,12 @@ class General(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @checks.is_prince()
+    async def jade2(self, ctx):
+        await ctx.send("https://i.imgur.com/03SkULK.jpg?1")
+
+    @commands.command()
+    @commands.guild_only()
+    @checks.is_prince()
     async def missette(self, ctx):
         webhooks = await ctx.channel.webhooks()
         if not webhooks:
