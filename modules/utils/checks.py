@@ -34,7 +34,7 @@ with open('config/config.json', 'r') as cjson:
 
 owner = int(config["owner_id"])
 DEV = config['dev']
-princes = [292362017006944256, 511135694207451146, 282233191916634113, 252393780173471745]
+princes = [292362017006944256, 511135694207451146, 282233191916634113]
 
 
 def is_owner_check(ctx):
