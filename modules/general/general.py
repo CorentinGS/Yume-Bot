@@ -116,6 +116,13 @@ class General(commands.Cog):
         await ctx.message.delete()
         await ctx.send("https://cdn.discordapp.com/attachments/676191608441536560/739526949264818287/image0.png")
 
+    @commands.command()
+    @commands.guild_only()
+    @checks.is_prince()
+    async def yume3(self, ctx):
+        await ctx.message.delete()
+        await ctx.send("https://cdn.discordapp.com/attachments/700646553471418379/739574054872154184/image0.png")
+
     @commands.command(aliases=['gmto', 'gweather'])
     @commands.guild_only()
     async def gmeteo(self, ctx, city: str):
