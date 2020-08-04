@@ -84,6 +84,13 @@ class General(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @checks.is_prince()
+    async def jade3(self, ctx):
+        await ctx.message.delete()
+        await ctx.send("https://cdn.discordapp.com/attachments/676191608441536560/740119400572518520/jade3.png")
+
+    @commands.command()
+    @commands.guild_only()
+    @checks.is_prince()
     async def missette(self, ctx):
         await ctx.message.delete()
         webhooks = await ctx.channel.webhooks()
