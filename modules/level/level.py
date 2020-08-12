@@ -142,6 +142,9 @@ class Level(commands.Cog):
         if message.guild.id == '264445053596991498':
             return
 
+        if RankingsDB.is_ignored_chan(message.channel.id):
+            return
+
         bucket = self._cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()
         if retry_after:
@@ -198,6 +201,26 @@ class Level(commands.Cog):
                     pass
 
         RankingsDB.update_user(userY, guildY, rankings)
+
+    @commands.command()
+    @checks.is_admin()
+    async def rankings_ignore(self, ctx, chan: discord.TextChannel):
+        await ctx.message.delete()
+        if RankingsDB.is_ignored_chan(chan.id):
+            await ctx.send("This channel is already ignored !")
+        RankingsDB.set_ignored_chan(ctx.guild.id, chan.id)
+        await ctx.send("This channel has been ignored : {} !".format(chan.mention), delete_after=5)
+        if ctx.guild.id == 488765635439099914:
+            await ctx.send("Fanfan tu l'as bien dans le cul là !")  # <3
+
+    @commands.command()
+    @checks.is_admin()
+    async def rankings_unignore(self, ctx, chan: discord.TextChannel):
+        await ctx.message.delete()
+        if not RankingsDB.is_ignored_chan(chan.id):
+            await ctx.send("This channel is not ignored !")
+        RankingsDB.delete_ignored_chan(ctx.guild.id, chan.id)
+        await ctx.send("This channel has been unignored : {} !".format(chan.mention), delete_after=5)
 
     @commands.command()
     @checks.is_owner()

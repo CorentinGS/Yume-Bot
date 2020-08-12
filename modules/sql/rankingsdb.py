@@ -196,3 +196,41 @@ class RankingsDB:
         rows = cur.fetchall()
         if rows:
             return RankingsDB.rankings_from_rows(rows)
+
+    @staticmethod
+    def set_ignored_chan(guild_id: int, chan_id: int):
+        try:
+            cur.execute(
+                "INSERT INTO public.rankings_chan ( guild_id, chan_id) VALUES ({} , {} );".format(guild_id, chan_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def is_ignored_chan(chan_id: int):
+        try:
+            cur.execute(
+                "SELECT * FROM public.rankings_chan WHERE chan_id = {};".format(chan_id)
+            )
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return True
+        return False
+
+    @staticmethod
+    def get_ignored_chans(guild_id: int):
+        return
+
+    @staticmethod
+    def delete_ignored_chan(guild_id: int, chan_id: int):
+        try:
+            cur.execute(
+                "DELETE FROM public.rankings_chan WHERE	guild_id = {} AND chan_id = {};".format(guild_id, chan_id))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
