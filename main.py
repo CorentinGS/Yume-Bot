@@ -126,10 +126,11 @@ class YumeBot(commands.Bot):
         embed.add_field(name="Server", value="{0.name} <{0.id}>".format(guild))
         embed.add_field(name="Members", value="**{0}**".format(len(guild.members)))
         embed.timestamp = datetime.datetime.now()
-        server = self.get_guild(int(self.guild))
-        for chan in server.channels:
-            if chan.id == int(self.debug):
-                channel: discord.TextChannel = chan
+        try:
+            guild: discord.Guild = self.get_guild(488765635439099914)
+        except discord.HTTPException:
+            return
+        channel: discord.TextChannel = guild.get_channel(int(self.debug))
         if isinstance(channel, discord.TextChannel):
             await channel.send(embed=embed)
 
@@ -143,10 +144,11 @@ class YumeBot(commands.Bot):
         embed.add_field(name="Server", value="{0.name} <{0.id}>".format(guild))
         embed.add_field(name="Members", value="**{0}**".format(len(guild.members)))
         embed.timestamp = datetime.datetime.now()
-        server = self.get_guild(int(self.guild))
-        for chan in server.channels:
-            if chan.id == int(self.debug):
-                channel: discord.TextChannel = chan
+        try:
+            guild: discord.Guild = self.get_guild(488765635439099914)
+        except discord.HTTPException:
+            return
+        channel: discord.TextChannel = guild.get_channel(int(self.debug))
         if isinstance(channel, discord.TextChannel):
             await channel.send(embed=embed)
 
