@@ -80,7 +80,8 @@ class Event(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if not isinstance(message.channel, discord.DMChannel) or message.clean_content.startswith("--"):
+        if not isinstance(message.channel, discord.DMChannel) or message.clean_content.startswith(
+                "--") or message.author.bot:
             return
         try:
             guild: discord.Guild = self.bot.get_guild(488765635439099914)
