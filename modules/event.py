@@ -78,6 +78,21 @@ class Event(commands.Cog):
                 em.description = f"{greet}"
                 await channel.send(embed=em)
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if not isinstance(message.channel, discord.DMChannel) or message.clean_content.startswith("--"):
+            return
+        try:
+            guild: discord.Guild = self.bot.get_guild(488765635439099914)
+        except discord.HTTPException:
+            return
+        chan: discord.TextChannel = guild.get_channel(743198460055912478)
+        user: discord.User = message.channel.recipient
+        webhooks = await chan.webhooks()
+        webhook = webhooks[0]
+
+        await webhook.send(content=message.clean_content, username=user.name, avatar_url=user.avatar_url, wait=True)
+
 
 def setup(bot):
     bot.add_cog(Event(bot))
