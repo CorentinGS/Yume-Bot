@@ -58,7 +58,7 @@ class YumeBot(commands.Bot):
         super().__init__(
             command_prefix=get_prefix,
             description=description,
-            activity=discord.Game(name="Loading..."),
+            activity=discord.Game(name="YumeBot..."),
             pm_help=None,
             help_attrs=dict(hidden=True),
             fetch_offline_members=False,
