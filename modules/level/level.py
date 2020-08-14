@@ -22,6 +22,7 @@
 #  SOFTWARE.
 
 import typing
+from math import floor
 from random import randint
 
 import discord
@@ -168,6 +169,8 @@ class Level(commands.Cog):
             gain = randint(12, 22)
         else:
             gain = randint(15, 25)
+        if message.author in message.guild.premium_subscribers:
+            gain += gain*1.5
 
         rankings['xp'] += gain
         rankings['total'] += gain
@@ -175,15 +178,19 @@ class Level(commands.Cog):
         if rankings['xp'] >= rankings['reach']:
             rankings['level'] += 1
             if rankings["level"] > 39:
-                rankings['reach'] = round(rankings['reach'] * 1.02)
-            if 39 >= rankings["level"] > 21:
-                rankings['reach'] = round(rankings['reach'] * 1.05)
+                rankings['reach'] = floor(rankings['reach'] * 1.02)
+            if 40 >= rankings["level"] > 35:
+                rankings['reach'] = floor(rankings['reach'] * 1.04)
+            if 35 >= rankings["level"] > 30:
+                rankings['reach'] = floor(rankings['reach'] * 1.05)
+            if 30 >= rankings["level"] > 21:
+                rankings['reach'] = floor(rankings['reach'] * 1.07)
             elif 21 >= rankings["level"] > 10:
-                rankings['reach'] = round(rankings['reach'] * 1.1)
+                rankings['reach'] = floor(rankings['reach'] * 1.1)
             elif 10 >= rankings["level"] > 6:
-                rankings['reach'] = round(rankings['reach'] * 1.3)
+                rankings['reach'] = floor(rankings['reach'] * 1.25)
             else:
-                rankings['reach'] = round(rankings['reach'] * 1.6)
+                rankings['reach'] = floor(rankings['reach'] * 1.6)
             rankings['xp'] = 0
 
             try:
@@ -234,31 +241,43 @@ class Level(commands.Cog):
 
         for x in range(100):
             if 0 < x <= 6:
-                reach = round(reach * 1.6)
+                reach = floor(reach * 1.6)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
             elif 6 < x <= 10:
-                reach = round(reach * 1.3)
+                reach = floor(reach * 1.25)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            elif 10 < x <= 25:
-                reach = round(reach * 1.1)
+            elif 10 < x <= 21:
+                reach = floor(reach * 1.1)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            elif 25 < x <= 39:
-                reach = round(reach * 1.05)
+            elif 21 < x <= 30:
+                reach = floor(reach * 1.07)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+            elif 30 < x <= 35:
+                reach = floor(reach * 1.05)
+                total += reach
+                levels_r[x] = reach
+                levels_t[x] = total
+
+            elif 35 < x <= 40:
+                reach = floor(reach * 1.04)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
 
             elif 39 < x:
-                reach = round(reach * 1.02)
+                reach = floor(reach * 1.02)
                 total += reach
                 levels_r[x] = reach
                 levels_t[x] = total
