@@ -300,6 +300,8 @@ class Level(commands.Cog):
             xp = toto["total"] - levels_t[level - 1]
             RankingsDB.update_user_id(toto["user_id"], toto["guild_id"], level, reach, xp)
 
+        await ctx.send("Fixed...")
+
 
 # TODO: Ajouter des commandes pour voir les roles
 
