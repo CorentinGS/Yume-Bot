@@ -90,7 +90,10 @@ class YumeBot(commands.Bot):
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             em = await Errors.check_error(ctx)
-            return await ctx.send(embed=em)
+            try:
+                return await ctx.send(embed=em)
+            except discord.Forbidden:
+                return
         elif isinstance(error, commands.UserInputError):
             command = bot.get_command(f"help {ctx.command.name}")
             if command:

@@ -40,7 +40,7 @@ class Check(commands.Cog):
 
     @staticmethod
     async def check(ctx, user: discord.Member):
-        if ctx.message.author.top_role > user.top_role or ctx.author is ctx.guild.owner:
+        if ctx.message.author.top_role.position > user.top_role.position or ctx.author.id == ctx.guild.owner.id:
             return True
         else:
             await ctx.send("You can't do that because you don't have enough permissions...")
@@ -138,7 +138,7 @@ class Moderation(commands.Cog):
         """
 
         perm = await Check().check(ctx, user)
-        if perm is False:
+        if not perm:
             return
 
         guild = ctx.message.guild
