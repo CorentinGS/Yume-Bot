@@ -408,29 +408,6 @@ class Moderation(commands.Cog):
         except (discord.Forbidden, discord.HTTPException):
             return await ctx.send("I don't have permission to edit this topic!")
 
-    @commands.command()
-    @checks.is_admin()
-    @checks.is_vip()
-    async def addrole(self, ctx, role: Union[str, discord.Role]):
-        """
-        Add a role to everyone
-        """
-        if not isinstance(role, discord.Role):
-            try:
-                role = discord.utils.get(ctx.guild.roles, name=role)
-            except discord.NotFound:
-                return await ctx.send("I can't find that role")
-        count = 0
-        for user in ctx.guild.members:
-            await user.add_roles(role)
-            await asyncio.sleep(1)
-            count += 1
-            if count == 20:
-                await asyncio.sleep(3)
-                count = 0
-
-
-# TODO: Separer les commandes mod et admin
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
