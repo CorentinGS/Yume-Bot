@@ -285,6 +285,8 @@ class Level(commands.Cog):
         rankings = RankingsDB.get_all()
         total_list = list(levels_t.values())
         for toto in rankings:
+            if toto["level"] < 1:
+                continue
             closest = min(total_list, key=lambda x: abs(x - toto["total"]))
             if toto["total"] > closest:
                 index = total_list.index(closest)
