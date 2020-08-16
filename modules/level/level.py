@@ -177,7 +177,7 @@ class Level(commands.Cog):
 
         if rankings['xp'] >= rankings['reach']:
             rankings['level'] += 1
-            if rankings["level"] > 39:
+            if rankings["level"] > 40:
                 rankings['reach'] = floor(rankings['reach'] * 1.02)
             if 40 >= rankings["level"] > 35:
                 rankings['reach'] = floor(rankings['reach'] * 1.04)
