@@ -53,8 +53,7 @@ class Help(commands.Cog):
     @help.command()
     @commands.is_nsfw()
     async def nsfw(self, ctx):
-        liste = "`neko lewd`, `neko nsfw`, `neko blowjob`, `neko pussy`, `neko cum`, `neko feet`, " \
-                "`neko femdom`, `neko bdsm`, `neko cum`, '`neko furry`, `neko solo`, `neko trap`, `yandere`, `reddit`"
+        liste = "`yandere`, `reddit`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Nsfw", liste)
         await ctx.send(embed=embed)
 
@@ -68,16 +67,6 @@ class Help(commands.Cog):
     async def reddit(self, ctx):
         await self.command_help(ctx, self.bot.user, "Reddit", "Show a random reddit pic", "--reddit <tag>",
                                 "--reddit tags")
-
-    @help.command()
-    @commands.is_nsfw()
-    async def neko(self, ctx, tag: str = 'neko'):
-        if tag.lower() in ['kitsune', 'waifu', 'neko']:
-            await self.command_help(ctx, self.bot.user, "Neko", "Show a random sfw neko / kitsune / waifu girl",
-                                    "--neko <tag>")
-        else:
-            await self.command_help(ctx, self.bot.user, "Neko", "Show a random nsfw image for nekos.life",
-                                    "--neko <tag>")
 
     @help.command()
     async def general(self, ctx):
@@ -225,7 +214,7 @@ class Help(commands.Cog):
 
     @help.command()
     async def unmute(self, ctx):
-        await self.command_help(ctx, self.bot.user, "UnMute", "UnMute an user", "--mute <user> [reason]",
+        await self.command_help(ctx, self.bot.user, "UnMute", "UnMute an user", "--unmute <user> [reason]",
                                 "`--unmute @Yume`")
 
     @help.command()
@@ -527,7 +516,7 @@ class Help(commands.Cog):
     @help.command()
     async def fun(self, ctx):
         liste = "`rd`, `8ball`, `cat`, `dog`, `lovepower`, `choose`, `linux`, `number`, `trump`, `chucknorris`, `geek_joke`, `cookie`, `today`," \
-                " `ice`, `lmgtfy`, `love_calc`, `urban`, `neko waifu`, `neko`, `neko kitsune`"
+                " `ice`, `lmgtfy`, `love_calc`, `urban`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Fun", liste)
         await ctx.send(embed=embed)
 

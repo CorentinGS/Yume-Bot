@@ -3,7 +3,7 @@
   "dev": [
     "282233191916634113"
   ],
-  "version": "Stable 1.0.4",
+  "version": "Stable 1.0.5",
   "modules": [
     "info.about",
     "info.help",
@@ -14,7 +14,6 @@
     "moderation.moderation",
     "moderation.poll",
     "booru.yandere",
-    "booru.neko",
     "booru.reddit",
     "social.social",
     "utility.utilities",
