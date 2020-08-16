@@ -276,7 +276,7 @@ class Level(commands.Cog):
                 levels_r[x] = reach
                 levels_t[x] = total
 
-            elif 39 < x:
+            elif 40 < x:
                 reach = floor(reach * 1.02)
                 total += reach
                 levels_r[x] = reach
@@ -285,8 +285,6 @@ class Level(commands.Cog):
         rankings = RankingsDB.get_all()
         total_list = list(levels_t.values())
         for toto in rankings:
-            if toto["level"] < 5:
-                continue
             closest = min(total_list, key=lambda x: abs(x - toto["total"]))
             if toto["total"] > closest:
                 index = total_list.index(closest)
