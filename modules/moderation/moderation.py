@@ -26,6 +26,7 @@ import typing
 from typing import Union
 
 import discord
+from discord.ext import commands
 
 from modules.sql.guilddb import GuildDB
 from modules.sql.mutedb import MuteDB
@@ -36,7 +37,7 @@ import modules.utils.converter
 from modules.utils.format import Embeds
 
 
-class Check(modules.utils.converter.commands.Cog):
+class Check(commands.Cog):
 
     @staticmethod
     async def check(ctx, user: discord.Member):
@@ -68,8 +69,8 @@ class Moderation(modules.utils.converter.commands.Cog):
         else:
             await ctx.send(embed=embed)
 
-    @modules.utils.converter.commands.command(aliases=["sanctions", "modlog", "modlogs"])
-    @modules.utils.converter.commands.guild_only()
+    @commands.command(aliases=["sanctions", "modlog", "modlogs"])
+    @commands.guild_only()
     @checks.is_mod()
     async def sanction(self, ctx, user: typing.Union[discord.Member, discord.User, int]):
         """
@@ -86,9 +87,9 @@ class Moderation(modules.utils.converter.commands.Cog):
         else:
             return
 
-    @modules.utils.converter.commands.command()
-    @modules.utils.converter.commands.bot_has_permissions(manage_channels=True)
-    @modules.utils.converter.commands.guild_only()
+    @commands.command()
+    @commands.bot_has_permissions(manage_channels=True)
+    @commands.guild_only()
     @checks.is_admin()
     async def slowmode(self, ctx, *, value: int = None):
         """
@@ -100,18 +101,18 @@ class Moderation(modules.utils.converter.commands.Cog):
             await ctx.channel.edit(slowmode_delay=value)
         await ctx.send("Channel slowmode has been changed !")
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_admin()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def reset(self, ctx, member: discord.Member):
         """
         Reset this user sanctions
         """
         SanctionsDB.delete_from_user(member.id)
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def strike(self, ctx, user: discord.Member, *, reason: modules.utils.converter.ModReason = None):
         """
         Strike him
@@ -124,9 +125,9 @@ class Moderation(modules.utils.converter.commands.Cog):
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'strike', id)
         await self.log_send(ctx, ctx.message.guild.id, em)
 
-    @modules.utils.converter.commands.command(aliases=["chut", "tg"])
-    @modules.utils.converter.commands.guild_only()
-    @modules.utils.converter.commands.bot_has_permissions(manage_channels=True, manage_roles=True)
+    @commands.command(aliases=["chut", "tg"])
+    @commands.guild_only()
+    @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def mute(self, ctx, user: discord.Member, duration: str, *, reason: modules.utils.converter.ModReason = None):
 
@@ -180,9 +181,9 @@ class Moderation(modules.utils.converter.commands.Cog):
         if MuteDB.is_muted(userY, guildY):
             await ctx.invoke(self.unmute, user, True)
 
-    @modules.utils.converter.commands.command()
-    @modules.utils.converter.commands.guild_only()
-    @modules.utils.converter.commands.bot_has_permissions(manage_channels=True, manage_roles=True)
+    @commands.command()
+    @commands.guild_only()
+    @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
     @checks.is_mod()
     async def unmute(self, ctx, user: discord.Member, auto: bool = False):
 
@@ -209,9 +210,9 @@ class Moderation(modules.utils.converter.commands.Cog):
         em = await Embeds().format_mod_embed(ctx, user, mod, None, 'unmute')
         await self.log_send(ctx, ctx.message.guild.id, em)
 
-    @modules.utils.converter.commands.command(aliases=['out'])
-    @modules.utils.converter.commands.guild_only()
-    @modules.utils.converter.commands.bot_has_permissions(kick_members=True)
+    @commands.command(aliases=['out'])
+    @commands.guild_only()
+    @commands.bot_has_permissions(kick_members=True)
     @checks.is_mod()
     async def kick(self, ctx, user: discord.Member, *, reason: modules.utils.converter.ModReason = None):
         perm = await Check().check(ctx, user)
@@ -227,7 +228,8 @@ class Moderation(modules.utils.converter.commands.Cog):
     @modules.utils.converter.commands.command(aliases=['preventban', 'preban', 'idban'])
     @modules.utils.converter.commands.guild_only()
     @checks.is_admin()
-    async def hackban(self, ctx, id: modules.utils.converter.MemberID, *, reason: modules.utils.converter.ModReason = None):
+    async def hackban(self, ctx, id: modules.utils.converter.MemberID, *,
+                      reason: modules.utils.converter.ModReason = None):
 
         user = discord.Object(id=id)
         await ctx.guild.ban(user)
@@ -239,8 +241,8 @@ class Moderation(modules.utils.converter.commands.Cog):
 
         await self.log_send(ctx, ctx.message.guild.id, em)
 
-    @modules.utils.converter.commands.command()
-    @modules.utils.converter.commands.guild_only()
+    @commands.command()
+    @commands.guild_only()
     @checks.is_admin()
     async def unban(self, ctx, id: modules.utils.converter.MemberID):
 
@@ -257,9 +259,9 @@ class Moderation(modules.utils.converter.commands.Cog):
 
         await self.log_send(ctx, ctx.message.guild.id, em)
 
-    @modules.utils.converter.commands.command(aliases=['ciao'])
+    @commands.command(aliases=['ciao'])
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def ban(self, ctx, user: discord.Member, *, reason: modules.utils.converter.ModReason = None):
         perm = await Check().check(ctx, user)
         if perm is False:
@@ -272,9 +274,9 @@ class Moderation(modules.utils.converter.commands.Cog):
 
         await self.log_send(ctx, ctx.message.guild.id, em)
 
-    @modules.utils.converter.commands.command(case_insensitive=True, aliases=['clean', 'clear'])
+    @commands.command(case_insensitive=True, aliases=['clean', 'clear'])
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def purge(self, ctx, amount: int, arg: str = None):
         if not arg:
             await ctx.channel.purge(limit=amount, bulk=True)
@@ -289,39 +291,39 @@ class Moderation(modules.utils.converter.commands.Cog):
 
             await ctx.channel.purge(limit=amount + 1, check=is_image, bulk=True)
 
-    @modules.utils.converter.commands.command(aliases=['deafen'])
+    @commands.command(aliases=['deafen'])
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def deaf(self, ctx, user: discord.Member):
         await user.edit(deafen=True)
 
-    @modules.utils.converter.commands.command(aliases=['undeafen'])
+    @commands.command(aliases=['undeafen'])
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def undeaf(self, ctx, user: discord.Member):
         await user.edit(deafen=False)
 
-    @modules.utils.converter.commands.command(aliases=['novoice'])
+    @commands.command(aliases=['novoice'])
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def vmute(self, ctx, user: discord.Member):
         await user.edit(mute=True)
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def unvmute(self, ctx, user: discord.Member):
         await user.edit(mute=False)
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_mod()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def nick(self, ctx, user: discord.Member, name: str = None):
         await user.edit(nick=name)
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_admin()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def massban(self, ctx, *members: modules.utils.converter.MemberID):
         try:
             for member_id in members:
@@ -338,9 +340,9 @@ class Moderation(modules.utils.converter.commands.Cog):
         else:
             await ctx.send(f'{len(members)} users were banned')
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_admin()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def mention(self, ctx, role: str):
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
 
@@ -350,9 +352,9 @@ class Moderation(modules.utils.converter.commands.Cog):
         await ctx.send(rolemention.mention)
         await rolemention.edit(mentionable=False)
 
-    @modules.utils.converter.commands.command()
+    @commands.command()
     @checks.is_admin()
-    @modules.utils.converter.commands.guild_only()
+    @commands.guild_only()
     async def annonce(self, ctx, role: str, *, content):
         rolemention = discord.utils.get(ctx.guild.roles, name=role)
 
@@ -364,8 +366,8 @@ class Moderation(modules.utils.converter.commands.Cog):
 
     # source:   https://github.com/nmbook/FalcomBot-cogs/blob/master/topic/topic.py
 
-    @modules.utils.converter.commands.group()
-    @modules.utils.converter.commands.guild_only()
+    @commands.group()
+    @commands.guild_only()
     async def topic(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self.get)

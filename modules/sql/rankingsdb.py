@@ -58,7 +58,8 @@ class RankingsDB:
     @staticmethod
     def get_one(user_id: int, guild_id: int) -> dict:
         try:
-            cur.execute("SELECT * FROM public.rankings WHERE user_id = {} and guild_id = {};".format(user_id, guild_id))
+            cur.execute("SELECT * FROM public.rankings WHERE user_id = {} and guild_id = {};".format(str(user_id),
+                                                                                                     str(guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -72,8 +73,8 @@ class RankingsDB:
     def get_user(user: User, guild: Guild) -> dict:
         try:
             cur.execute(
-                "SELECT * FROM public.rankings WHERE user_id = {} and guild_id = {};".format(user.user_id,
-                                                                                             guild.guild_id))
+                "SELECT * FROM public.rankings WHERE user_id = {} and guild_id = {};".format(str(user.user_id),
+                                                                                             str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -92,8 +93,9 @@ class RankingsDB:
     def ranking_exists(user: User, guild: Guild) -> bool:
         try:
             cur.execute(
-                "SELECT count(*) FROM public.rankings WHERE user_id = {} AND guild_id = {};".format(user.user_id,
-                                                                                                    guild.guild_id))
+                "SELECT count(*) FROM public.rankings WHERE user_id = {} AND guild_id = {};".format(str(user.user_id),
+                                                                                                    str(
+                                                                                                        guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -111,7 +113,7 @@ class RankingsDB:
         try:
             cur.execute(
                 "INSERT INTO public.rankings ( guild_id, level, reach, total, user_id, xp)  VALUES ( {}, 0, 20, 0, {}, 0 );".format(
-                    guild.guild_id, user.user_id))
+                    str(guild.guild_id), str(user.user_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -122,7 +124,7 @@ class RankingsDB:
         try:
             cur.execute(
                 "UPDATE public.rankings SET level = 0, reach = 20, total = 0, xp = 0 WHERE guild_id = {} AND user_id = {};".format(
-                    guild.guild_id, user.user_id))
+                    str(guild.guild_id), str(user.user_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -138,7 +140,7 @@ class RankingsDB:
             cur.execute(
                 "UPDATE public.rankings SET level = {}, reach = {}, total = {}, xp = {} WHERE guild_id = {} AND user_id = {};".format(
                     ranking['level'], ranking['reach'], ranking['total'], ranking['xp'],
-                    guild.guild_id, user.user_id))
+                    str(guild.guild_id), str(user.user_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -149,7 +151,7 @@ class RankingsDB:
         try:
             cur.execute(
                 "UPDATE public.rankings SET level = {}, reach = {}, xp = {} WHERE guild_id = {} AND user_id = {};".format(
-                    level, reach, xp, guild, user))
+                    level, reach, xp, str(guild), str(user)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -160,7 +162,7 @@ class RankingsDB:
         try:
             cur.execute(
                 "SELECT user_id FROM public.rankings WHERE guild_id = {} GROUP BY user_id, total ORDER BY total DESC ".format(
-                    guild.guild_id))
+                    str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -175,7 +177,7 @@ class RankingsDB:
         try:
             cur.execute(
                 "SELECT user_id FROM public.rankings WHERE guild_id = {} GROUP BY user_id, total ORDER BY total DESC LIMIT 10".format(
-                    guild.guild_id))
+                    str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -201,7 +203,8 @@ class RankingsDB:
     def set_ignored_chan(guild_id: int, chan_id: int):
         try:
             cur.execute(
-                "INSERT INTO public.rankings_chan ( guild_id, chan_id) VALUES ({} , {} );".format(guild_id, chan_id))
+                "INSERT INTO public.rankings_chan ( guild_id, chan_id) VALUES ({} , {} );".format(str(guild_id),
+                                                                                                  str(chan_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -211,7 +214,7 @@ class RankingsDB:
     def is_ignored_chan(chan_id: int):
         try:
             cur.execute(
-                "SELECT * FROM public.rankings_chan WHERE chan_id = {};".format(chan_id)
+                "SELECT * FROM public.rankings_chan WHERE chan_id = CAST({} AS varchar);".format(chan_id)
             )
         except Exception as err:
             print(err)
@@ -229,7 +232,8 @@ class RankingsDB:
     def delete_ignored_chan(guild_id: int, chan_id: int):
         try:
             cur.execute(
-                "DELETE FROM public.rankings_chan WHERE	guild_id = {} AND chan_id = {};".format(guild_id, chan_id))
+                "DELETE FROM public.rankings_chan WHERE	guild_id = {} AND chan_id = {};".format(str(guild_id),
+                                                                                                   str(chan_id)))
         except Exception as err:
             print(err)
             con.rollback()

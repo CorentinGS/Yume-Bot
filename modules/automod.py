@@ -29,6 +29,7 @@ from discord.ext import commands
 import modules.utils.checks as check
 from modules.sql.blacklistdb import BlacklistDB
 from modules.sql.guilddb import GuildDB
+from modules.sql.mutedb import MuteDB
 from modules.sql.sanctionsdb import SanctionsDB
 from modules.sql.userdb import UserDB
 from modules.utils.format import Mod
@@ -174,7 +175,7 @@ class Automod(commands.Cog):
         user = UserDB.get_one(member.id)
 
         # Check if the user has already been muted to avoid any sanctions bypass
-        if UserDB.is_muted(guild, user):
+        if MuteDB.is_muted(user, guild):
             # Mute him again
             role = discord.utils.get(member.guild.roles, name="Muted")
             if not role:

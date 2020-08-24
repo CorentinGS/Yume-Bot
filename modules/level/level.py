@@ -135,6 +135,8 @@ class Level(commands.Cog):
 
         :param message: The message that has been sent
         """
+        return
+        """
         user = message.author
 
         if user.bot is True or message.guild is None:
@@ -208,7 +210,7 @@ class Level(commands.Cog):
                     pass
 
         RankingsDB.update_user(userY, guildY, rankings)
-
+        """
     @commands.command()
     @checks.is_admin()
     async def rankings_ignore(self, ctx, chan: discord.TextChannel):

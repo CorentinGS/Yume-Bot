@@ -25,21 +25,21 @@ import typing
 from datetime import datetime
 
 import discord
-import psycopg2
-from psycopg2 import extras
+import sqlalchemy
 
+from modules.sql.dbConnect import Db
 from modules.sql.guild import Guild
 from modules.sql.sanctions import Sanction
 from modules.sql.user import User
 
-try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-except psycopg2.DatabaseError as e:
-    print('Error %s' % e)
-
 
 class SanctionsDB:
+    # global con, meta, t_sanction
+
+    # def __init__(self):
+    # self.con, self.meta = Db.connect()
+    # self.t_sanction = self.meta.tables['sanctions']
+
     @staticmethod
     def sanction_from_row(rows) -> Sanction:
         return Sanction(rows['sanction_id'], rows['event'], rows['guild_id'], rows['moderator_id'], rows['reason'],
@@ -57,115 +57,81 @@ class SanctionsDB:
     """
 
     @staticmethod
-    def get_one(sanction_id: int) -> Sanction:
+    def get_sanction(sanction_id: int) -> Sanction:
+        con, meta = Db.connect()
+        t_sanction = meta.tables['sanctions']
         try:
-            cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction_id)))
+            clause = t_sanction.select().where(t_sanction.c.sanction_id == sanction_id)
+            for row in con.execute(clause):
+                print(row)
+                if row:
+                    return SanctionsDB.sanction_from_row(row)
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return SanctionsDB.sanction_from_row(rows)
-
-    @staticmethod
-    def get_sanction(sanction: Sanction) -> Sanction:
-        try:
-            cur.execute("SELECT * FROM public.sanctions WHERE sanction_id = {};".format(str(sanction.sanction_id)))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return SanctionsDB.sanction_from_row(rows)
-
-    @staticmethod
-    def get_all() -> list:
-        try:
-            cur.execute("SELECT * FROM public.sanctions;")
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            return SanctionsDB.sanctions_from_row(rows)
-        return []
-
-    @staticmethod
-    def get_sanctions_from_user(user: User) -> list:
-        try:
-            cur.execute("SELECT * FROM public.sanctions WHERE user_id = {};".format(user.user_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            return SanctionsDB.sanctions_from_row(rows)
-
-        return []
 
     @staticmethod
     def get_sanctions_from_guild_user(guild: discord.Guild, user: discord.Member) -> list:
+        con, meta = Db.connect()
+        t_sanction = meta.tables['sanctions']
         try:
-            cur.execute(
-                "SELECT * FROM public.sanctions WHERE user_id = {} AND guild_id = {};".format(user.id, guild.id))
+            clause = t_sanction.select().where(
+                t_sanction.and_(t_sanction.c.user_id == str(user.id), t_sanction.c.guild_id == str(guild.id)))
+            for row in con.execute(clause):
+                if row:
+                    return SanctionsDB.sanctions_from_row(row)
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            return SanctionsDB.sanctions_from_row(rows)
 
         return []
 
-    @staticmethod
-    def get_sanctions_from_guild_mod(guild: Guild, moderator: User) -> list:
-        try:
-            cur.execute(
-                "SELECT * FROM public.sanctions WHERE moderator_id = {} AND guild_id = {};".format(moderator.user_id,
-                                                                                                   guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            return SanctionsDB.sanctions_from_row(rows)
-
-        return []
 
     """
     Create & delete methods
     """
 
+
     @staticmethod
     def create_sanction(sanction: Sanction):
+        con, meta = Db.connect()
+        t_sanction = meta.tables['sanctions']
         try:
-            cur.execute(
-                "INSERT INTO public.sanctions ( event, event_date, guild_id, moderator_id, reason, sanction_id, time, user_id) \
-                VALUES ( %s, %s, %s, %s, %s, %s, %s, %s );", (
-                    sanction.event, str(sanction.event_date), sanction.guild_id, sanction.moderator_id, sanction.reason,
-                    sanction.sanction_id, sanction.time, sanction.user_id))
+            clause = t_sanction.insert().values(
+                event=sanction.event,
+                event_date=sanction.event_date,
+                guild_id=sanction.guild_id,
+                moderator_id=sanction.moderator_id,
+                reason=sanction.reason,
+                sanction_id=sanction.sanction_id,
+                time=sanction.time,
+                user_id=sanction.user_id)
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
+
 
     @staticmethod
     def delete(sanction: Sanction):
+        con, meta = Db.connect()
+        t_sanction = meta.tables['sanctions']
         try:
-            cur.execute("DELETE FROM public.sanctions WHERE sanction_id = {};".format(sanction.sanction_id))
+            clause = t_sanction.delete().where(t_sanction.c.sanction_id == str(sanction.sanction_id))
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
+
 
     @staticmethod
     def delete_from_user(user_id: int):
+        con, meta = Db.connect()
+        t_sanction = meta.tables['sanctions']
         try:
-            cur.execute("DELETE FROM public.sanctions WHERE user_id = {};".format(user_id))
+            clause = t_sanction.delete().where(t_sanction.c.user_id == str(user_id))
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
+
+
+from modules.sql.user import User
 
 
 class SanctionMethod:
@@ -204,7 +170,7 @@ class SanctionMethod:
 
     @staticmethod
     async def find_sanction_id(ctx, id):
-        sanction = SanctionsDB.get_one(id)
+        sanction = SanctionsDB.get_sanction(id)
         return sanction
 
     @staticmethod

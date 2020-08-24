@@ -223,7 +223,7 @@ class Embeds:
         msg = "__Sanctions__\n\n"
 
         for sanction in sanctions:
-            sanction = SanctionsDB.get_sanction(sanction)
+            sanction = SanctionsDB.get_sanction(sanction.sanction_id)
 
             date = sanction.event_date
 

@@ -225,8 +225,7 @@ class Set(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         guildY = GuildDB.get_one(guild.id)
-        if not GuildDB.guild_exists(guildY):
-            GuildDB.create(guildY)
+
         for role in guild.roles:
             if GuildDB.exists_in_admin(role.id, guildY):
                 GuildDB.remove_admin(role.id, guildY)

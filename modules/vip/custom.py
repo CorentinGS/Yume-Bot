@@ -79,6 +79,8 @@ class Custom(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        return
+        """
         author = message.author
         if not NetworkDB.is_linked(message.channel.id):
             return
@@ -108,6 +110,7 @@ class Custom(commands.Cog):
                 await webhook.send(content=msg,
                                    username="{} - {}".format(message.author.name, message.author.id),
                                    avatar_url=message.author.avatar_url, wait=True)
+"""
 
     @commands.group()
     async def anon(self, ctx):

@@ -19,6 +19,7 @@
     "utility.utilities",
     "utility.tags",
     "level.level",
+    "level.messages_event",
     "guilds.settings",
     "guilds.color",
     "owner.owner",
