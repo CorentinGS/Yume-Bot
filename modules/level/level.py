@@ -90,7 +90,7 @@ class Level(commands.Cog):
                 x += 1
                 level = member_ranking['level']
                 total = member_ranking['total']
-                em.add_field(name=f"**{x} - {member.name}**", value=f"Level : {level} \nTotal xp : {total}",
+                em.add_field(name=f"**{x} - {member.name}**", value=f"Total xp : {total}",
                              inline=False)
 
         await ctx.send(embed=em)
