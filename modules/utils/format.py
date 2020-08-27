@@ -122,8 +122,8 @@ class Embeds:
         return em
 
     @staticmethod
-    async def format_get_set_embed(ctx, greet, greetchannel, blacklist, logging, logchannel, vip, color,
-                                   stats_channels):
+    async def format_get_set_embed(ctx, greet, greetchannel, logging, logchannel, vip,
+                                   ):
         tip = random.choice(lists.tip)
         em = discord.Embed(timestamp=ctx.message.created_at)
         em.set_author(name='Settings')
@@ -144,11 +144,7 @@ class Embeds:
             em.add_field(name="Log Channel", value="None")
         else:
             em.add_field(name="Log Channel", value=logchan.mention)
-
-        em.add_field(name="Blacklist", value=blacklist)
         em.add_field(name='Vip', value=vip)
-        em.add_field(name='Color', value=color)
-        em.add_field(name='Stats Channel', value=stats_channels)
 
         return em
 
@@ -202,13 +198,13 @@ class Embeds:
         em.set_footer(text=f"ID : {sanction.sanction_id}")
         em.description = f"Type: {sanction.event}"
         em.add_field(name="User", value=user.name)
-        em.add_field(name="User Id", value=sanction.user_id)
+        em.add_field(name="User Id", value=str(sanction.user_id))
         em.add_field(name="Moderator", value=mod.name)
-        em.add_field(name="Moderator_id", value=sanction.moderator_id)
+        em.add_field(name="Moderator_id", value=str(sanction.moderator_id))
 
         em.add_field(name="Reason", value=sanction.reason)
-        em.add_field(name="Time", value=sanction.time)
-        em.add_field(name="Date", value=sanction.event_date)
+        em.add_field(name="Time", value=str(sanction.time))
+        em.add_field(name="Date", value=str(sanction.event_date))
         return em
 
     @staticmethod

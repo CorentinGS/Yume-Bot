@@ -22,8 +22,6 @@ class Level(commands.Cog):
     async def on_message(self, message: discord.Message):
 
         user = message.author
-        print("toto")
-
         if user.bot is True or message.guild is None:
             return
 

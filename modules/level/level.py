@@ -56,7 +56,7 @@ class Level(commands.Cog):
 
         if not rankings:
             RankingsDB.create_ranking(userY, guildY)
-            rankings = RankingsDB.get_user(user, guildY)
+            rankings = RankingsDB.get_user(userY, guildY)
 
         rank = RankingsDB.get_rank(userY, guildY)
 

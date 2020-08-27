@@ -50,11 +50,11 @@ class SanctionsDB:
         con, meta = Db.connect()
         t_sanction = meta.tables['sanctions']
         try:
-            clause = t_sanction.select().where(t_sanction.c.sanction_id == sanction_id)
-            for row in con.execute(clause):
-                print(row)
-                if row:
-                    return SanctionsDB.sanction_from_row(row)
+            clause = t_sanction.select().where(t_sanction.c.sanction_id == str(sanction_id))
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row:
+                return SanctionsDB.sanction_from_row(row)
         except Exception as err:
             print(err)
 

@@ -57,8 +57,8 @@ class Set(commands.Cog):
             await ctx.invoke(self.setup)
 
         else:
-            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_chan, guild.blacklist, guild.logging,
-                                                     guild.log_chan, guild.vip, guild.color, guild.stats_channels)
+            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_chan, guild.logging,
+                                                     guild.log_chan, guild.vip)
             await ctx.send(embed=em)
 
     @setting.command()
