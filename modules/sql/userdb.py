@@ -34,14 +34,7 @@ class UserDB:
 
     @staticmethod
     def user_from_row(rows):
-        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'], rows['married'], rows["lover"])
-
-    @staticmethod
-    def users_from_row(rows):
-        users = []
-        for row in rows:
-            users.append(UserDB.user_from_row(row))
-        return users
+        return User(rows[0], rows[1], rows[2], rows[3], rows[4], rows[5])
 
     """
     Get methods
@@ -53,29 +46,14 @@ class UserDB:
         t_user = meta.tables['user']
         try:
             clause = t_user.select().where(t_user.c.user_id == str(user_id))
-            for row in con.execute(clause):
-                if row:
-                    return UserDB.user_from_row(row)
-                else:
-                    u = User(user_id)
-                    UserDB.create(u)
-                    return u
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def get_user(user: User) -> User:
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
-        try:
-            clause = t_user.select().where(t_user.c.user_id == str(user.user_id))
-            for row in con.execute(clause):
-                if row:
-                    return UserDB.user_from_row(row)
-                else:
-                    u = User(user.user_id)
-                    UserDB.create(u)
-                    return u
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row:
+                return UserDB.user_from_row(row)
+            else:
+                u = User(user_id)
+                UserDB.create(u)
+                return u
         except Exception as err:
             print(err)
 
@@ -83,12 +61,13 @@ class UserDB:
     def get_vips():
         con, meta = Db.connect()
         t_user = meta.tables['user']
+        users = []
         try:
             clause = t_user.select().where(t_user.c.vip == True)
-            rows = con.execute(clause)
-            if rows:
-                return UserDB.users_from_row(rows)
-            return "Error : No VIP"
+            for rows in con.execute(clause):
+                for row in rows:
+                    users.append(UserDB.user_from_row(row))
+                return users
         except Exception as err:
             print(err)
 
@@ -145,21 +124,21 @@ class UserDB:
             print(err)
 
     @staticmethod
-    def set_lover(user: User, lover: User):
+    def set_lover(user_id: int, lover_id: int):
         con, meta = Db.connect()
         t_user = meta.tables['user']
         try:
-            clause = t_user.update().where(t_user.c.user_id == str(user.user_id)).values(
+            clause = t_user.update().where(t_user.c.user_id == str(user_id)).values(
                 married=True,
-                lover=lover.user_id
+                lover=lover_id
             )
             con.execute(clause)
         except Exception as err:
             print(err)
         try:
-            clause = t_user.update().where(t_user.c.user_id == str(lover.user_id)).values(
+            clause = t_user.update().where(t_user.c.user_id == str(lover_id)).values(
                 married=True,
-                lover=user.user_id
+                lover=user_id
             )
             con.execute(clause)
         except Exception as err:

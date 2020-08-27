@@ -23,16 +23,11 @@
 
 import psycopg2
 from psycopg2 import extras
+from sqlalchemy import and_, select, func
 
 from modules.sql.dbConnect import Db
 from modules.sql.guild import Guild
 from modules.sql.user import User
-
-try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-except psycopg2.DatabaseError as e:
-    print('Error %s' % e)
 
 
 class MuteDB:
@@ -45,14 +40,15 @@ class MuteDB:
     """
 
     @staticmethod
-    def is_muted(user: User, guild: Guild):
+    def is_muted(user_id: int, guild_id: int):
         con, meta = Db.connect()
         t_muted = meta.tables['muted']
         try:
-            clause = t_muted.select().where(
-                t_muted.and_(t_muted.c.user_id == str(user.user_id), t_muted.c.guild_id == str(guild.guild_id)))
+            clause = select([func.count()]).select_from(t_muted).where(
+                and_(t_muted.c.user_id == str(user_id), t_muted.c.guild_id == str(guild_id)))
             rows = con.execute(clause)
-            if rows:
+            row = rows.fetchone()
+            if row[0] > 0:
                 return True
             return False
         except Exception as err:
@@ -63,25 +59,25 @@ class MuteDB:
      """
 
     @staticmethod
-    def set_mute(user: User, guild: Guild):
+    def set_mute(user_id: int, guild_id: int):
         con, meta = Db.connect()
         t_muted = meta.tables['muted']
         try:
             clause = t_muted.insert().values(
-                guild_id=guild.guild_id,
-                user_id=user.user_id
+                guild_id=guild_id,
+                user_id=user_id
             )
             con.execute(clause)
         except Exception as err:
             print(err)
 
     @staticmethod
-    def unset_mute(user: User, guild: Guild):
+    def unset_mute(user_id: int, guild_id: int):
         con, meta = Db.connect()
         t_muted = meta.tables['muted']
         try:
             clause = t_muted.delete().where(
-                t_muted._and(t_muted.c.user_id == str(user.user_id), t_muted.c.guild_id == str(guild.guild_id)))
+                and_(t_muted.c.user_id == str(user_id), t_muted.c.guild_id == str(guild_id)))
             con.execute(clause)
         except Exception as err:
             print(err)

@@ -62,10 +62,11 @@ class Moderation(modules.utils.converter.commands.Cog):
                 channel = self.bot.get_channel(int(guildY.log_chan))
             except discord.HTTPException:
                 return
-            try:
-                await channel.send(embed=embed)
-            except discord.Forbidden:
-                return
+            if isinstance(channel, discord.TextChannel):
+                try:
+                    await channel.send(embed=embed)
+                except discord.Forbidden:
+                    return
         else:
             await ctx.send(embed=embed)
 
@@ -143,8 +144,6 @@ class Moderation(modules.utils.converter.commands.Cog):
             return
 
         guild = ctx.message.guild
-        guildY = GuildDB.get_one(guild.id)
-        userY = UserDB.get_one(user.id)
 
         unit = duration[-1]
         if unit == 's':
@@ -158,7 +157,7 @@ class Moderation(modules.utils.converter.commands.Cog):
         else:
             return await ctx.send('Invalid Unit! Use `s`, `m`, `h` or `d`.')
 
-        if MuteDB.is_muted(userY, guildY):
+        if MuteDB.is_muted(user.id, guild.id):
             return await ctx.send('This user is already muted, you should '
                                   'unmute him first.')
 
@@ -169,16 +168,16 @@ class Moderation(modules.utils.converter.commands.Cog):
                 await chan.set_permissions(role, send_messages=False)
         await user.add_roles(role)
 
-        MuteDB.set_mute(userY, guildY)
+        MuteDB.set_mute(user.id, guild.id)
 
         id = await SanctionMethod().create_sanction(user, 'Mute', ctx.message.author, guild, reason, time)
         em = await Embeds().format_mod_embed(ctx, user, ctx.message.author, reason, 'mute', id, duration)
 
-        await self.log_send(ctx, ctx.message.guild.id, em)
+        await self.log_send(ctx, ctx.guild.id, em)
 
         await asyncio.sleep(time)
 
-        if MuteDB.is_muted(userY, guildY):
+        if MuteDB.is_muted(user.id, guild.id):
             await ctx.invoke(self.unmute, user, True)
 
     @commands.command()
@@ -194,13 +193,11 @@ class Moderation(modules.utils.converter.commands.Cog):
 
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         guild = ctx.message.guild
-        guildY = GuildDB.get_one(guild.id)
-        userY = UserDB.get_one(user.id)
 
-        if not MuteDB.is_muted(userY, guildY) or not role:
+        if not MuteDB.is_muted(user.id, guild.id) or not role:
             return
 
-        MuteDB.unset_mute(userY, guildY)
+        MuteDB.unset_mute(user.id, guild.id)
 
         try:
             await user.remove_roles(role)

@@ -1,5 +1,6 @@
 from modules.sql.dbConnect import Db
 
+
 class Message:
 
     def __init__(self, message_id: int, guild_id: int, channel_id: int, user_id: int, time_id: int):

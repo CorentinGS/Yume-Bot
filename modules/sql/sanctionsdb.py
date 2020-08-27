@@ -26,6 +26,7 @@ from datetime import datetime
 
 import discord
 import sqlalchemy
+from sqlalchemy import and_
 
 from modules.sql.dbConnect import Db
 from modules.sql.guild import Guild
@@ -34,23 +35,11 @@ from modules.sql.user import User
 
 
 class SanctionsDB:
-    # global con, meta, t_sanction
-
-    # def __init__(self):
-    # self.con, self.meta = Db.connect()
-    # self.t_sanction = self.meta.tables['sanctions']
 
     @staticmethod
     def sanction_from_row(rows) -> Sanction:
-        return Sanction(rows['sanction_id'], rows['event'], rows['guild_id'], rows['moderator_id'], rows['reason'],
-                        rows['time'], rows['user_id'], rows['event_date'])
-
-    @staticmethod
-    def sanctions_from_row(rows):
-        sanctions = []
-        for row in rows:
-            sanctions.append(SanctionsDB.sanction_from_row(row))
-        return sanctions
+        return Sanction(rows[0], rows[1], rows[2], rows[3], rows[4],
+                        rows[5], rows[6], rows[7])
 
     """
     Get methods
@@ -73,22 +62,23 @@ class SanctionsDB:
     def get_sanctions_from_guild_user(guild: discord.Guild, user: discord.Member) -> list:
         con, meta = Db.connect()
         t_sanction = meta.tables['sanctions']
+        sanctions = []
+
         try:
             clause = t_sanction.select().where(
-                t_sanction.and_(t_sanction.c.user_id == str(user.id), t_sanction.c.guild_id == str(guild.id)))
+                and_(t_sanction.c.user_id == str(user.id),
+                     t_sanction.c.guild_id == str(guild.id)))
             for row in con.execute(clause):
-                if row:
-                    return SanctionsDB.sanctions_from_row(row)
+                sanctions.append(SanctionsDB.sanction_from_row(row))
+            return sanctions
         except Exception as err:
             print(err)
 
         return []
 
-
     """
     Create & delete methods
     """
-
 
     @staticmethod
     def create_sanction(sanction: Sanction):
@@ -108,7 +98,6 @@ class SanctionsDB:
         except Exception as err:
             print(err)
 
-
     @staticmethod
     def delete(sanction: Sanction):
         con, meta = Db.connect()
@@ -118,7 +107,6 @@ class SanctionsDB:
             con.execute(clause)
         except Exception as err:
             print(err)
-
 
     @staticmethod
     def delete_from_user(user_id: int):

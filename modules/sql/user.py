@@ -31,9 +31,3 @@ class User:
         self.description: str = description
         self.married: bool = married
         self.lover: int = lover
-
-    def display(self):
-        print("UserID : {}".format(self.user_id))
-        print("Is Crew : {}".format(self.crew))
-        print("Is Vip : {}".format(self.vip))
-        print("Description : {}".format(self.description))

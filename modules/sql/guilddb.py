@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pandas
 import psycopg2
 from psycopg2 import extras
-from sqlalchemy import select, func
+from sqlalchemy import select, func, and_
 
 from modules.sql.dbConnect import Db
 from modules.sql.guild import Guild
@@ -51,32 +51,20 @@ class GuildDB:
         t_guild = meta.tables['guild']
         try:
             clause = t_guild.select().where(t_guild.c.guild_id == str(guild_id))
-            for row in con.execute(clause):
-                if row:
-                    return GuildDB.guild_from_row(row)
-                else:
-                    g = Guild(guild_id)
-                    GuildDB.create(g)
-                    return g
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row:
+                return GuildDB.guild_from_row(row)
+            else:
+                g = Guild(guild_id)
+                GuildDB.create(g)
+                return g
         except Exception as err:
             print(err)
 
     """
     Checks methods
     """
-
-    @staticmethod
-    def has_blacklist(guild: Guild) -> bool:
-        con, meta = Db.connect()
-        t_guild = meta.tables['guild']
-        try:
-            clause = t_guild.select([t_guild.c.blacklist]).where(t_guild.c.guild_id == str(guild.guild_id))
-            for row in con.execute(clause):
-                if row:
-                    return row[0]
-                return False
-        except Exception as err:
-            print(err)
 
     @staticmethod
     def has_logging(guild: Guild) -> bool:
@@ -156,13 +144,14 @@ class GuildDB:
         con, meta = Db.connect()
         t_admin = meta.tables['admin']
         try:
-            clause = select([func.count()]).select_from(t_admin).where(t_admin.and_(
+            clause = select([func.count()]).select_from(t_admin).where(and_(
                 t_admin.c.guild_id == guild.guild_id,
                 t_admin.c.role_id == role_id))
-            for row in con.execute(clause):
-                if row[0] > 0:
-                    return True
-                return False
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row[0] > 0:
+                return True
+            return False
         except Exception as err:
             print(err)
 
@@ -171,9 +160,9 @@ class GuildDB:
         con, meta = Db.connect()
         t_admin = meta.tables['admin']
         try:
-            clause = t_admin.delete().where(
+            clause = t_admin.delete().where(and_(
                 t_admin.c.guild_id == guild.guild_id,
-                t_admin.c.role_id == role_id)
+                t_admin.c.role_id == role_id))
             con.execute(clause)
         except Exception as err:
             print(err)
@@ -207,31 +196,17 @@ class GuildDB:
             print(err)
 
     @staticmethod
-    def is_mod(role_id: int, guild: Guild) -> bool:
-        con, meta = Db.connect()
-        t_admin = meta.tables['admin']
-        try:
-            clause = t_admin.select([t_admin.c.admin]).where(t_admin.and_(t_admin.c.guild_id == str(guild.guild_id),
-                                                                          t_admin.c.role_id == str(role_id)))
-            for row in con.execute(clause):
-                if row['admin'] is False:
-                    return True
-                return False
-        except Exception as err:
-            print(err)
-
-    @staticmethod
     def get_admin_roles(guild: Guild) -> list:
         con, meta = Db.connect()
         t_admin = meta.tables['admin']
+        roles = []
+
         try:
-            clause = t_admin.select([t_admin.c.role_id]).where(t_admin.and_(t_admin.c.guild_id == str(guild.guild_id),
-                                                                            t_admin.c.admin == True))
+            clause = t_admin.select().where(and_(t_admin.c.guild_id == str(guild.guild_id),
+                                                 t_admin.c.admin == True))
             for row in con.execute(clause):
-                if row:
-                    df = pandas.DataFrame(np.array(row))
-                    return df[0].values.tolist()
-                return []
+                roles.append(row[0])
+            return roles
         except Exception as err:
             print(err)
 
@@ -239,13 +214,13 @@ class GuildDB:
     def get_mod_roles(guild: Guild) -> list:
         con, meta = Db.connect()
         t_admin = meta.tables['admin']
+        roles = []
         try:
-            clause = t_admin.select([t_admin.c.role_id]).where(t_admin.and_(t_admin.c.guild_id == str(guild.guild_id),
-                                                                            t_admin.c.admin == False))
+            clause = t_admin.select().where(and_(t_admin.c.guild_id == str(guild.guild_id),
+                                                 t_admin.c.admin == False))
             for row in con.execute(clause):
-                if row:
-                    df = pandas.DataFrame(np.array(row))
-                    return df[0].values.tolist()
-                return []
+                roles.append(row[0])
+            return roles
+
         except Exception as err:
             print(err)

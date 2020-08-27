@@ -39,6 +39,7 @@ class Custom(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
+    """
     @commands.command()
     @checks.is_owner()
     @commands.guild_only()
@@ -80,7 +81,7 @@ class Custom(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         return
-        """
+
         author = message.author
         if not NetworkDB.is_linked(message.channel.id):
             return
