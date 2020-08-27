@@ -31,12 +31,6 @@ from modules.sql.dbConnect import Db
 from modules.sql.guild import Guild
 from modules.sql.user import User
 
-try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-except psycopg2.DatabaseError as e:
-    print('Error %s' % e)
-
 
 class RankingsDB:
 
@@ -45,10 +39,6 @@ class RankingsDB:
         rankings = {"guild_id": rows['guild_id'], "level": rows['level'], "xp": rows['xp'], "total": rows['total'],
                     "reach": rows['reach'], "user_id": rows['user_id']}
         return rankings
-
-    """
-    Get methods
-    """
 
     @staticmethod
     def get_user(user: User, guild: Guild) -> dict:
@@ -82,10 +72,6 @@ class RankingsDB:
         except Exception as err:
             print(err)
 
-    """
-    Create methods
-    """
-
     @staticmethod
     def create_ranking(user: User, guild: Guild):
         con, meta = Db.connect()
@@ -117,18 +103,34 @@ class RankingsDB:
         except Exception as err:
             print(err)
 
-    """
-    Level methods
-    """
+    @staticmethod
+    def update_user(user: User, guild: Guild, ranking: dict):
+        con, meta = Db.connect()
+        t_rankings = meta.tables['rankings']
+        try:
+            clause = t_rankings.update() \
+                .where(
+                and_(
+                    t_rankings.c.guild_id == str(guild.guild_id),
+                    t_rankings.c.user_id == str(user.user_id))) \
+                .values(level=ranking["level"],
+                        reach=ranking['reach'],
+                        xp=ranking['xp'],
+                        total=ranking['total'])
+            con.execute(clause)
+        except Exception as err:
+            print(err)
 
     @staticmethod
     def update_user_id(user_id: id, guild_id: id, level: int, reach: int, xp: int):
         con, meta = Db.connect()
         t_rankings = meta.tables['rankings']
-
         try:
-            clause = t_rankings.update().where(t_rankings.c.guild_id == str(guild_id),
-                                               t_rankings.c.user_id == str(user_id)) \
+            clause = t_rankings.update() \
+                .where(
+                and_(
+                    t_rankings.c.guild_id == str(guild_id),
+                    t_rankings.c.user_id == str(user_id))) \
                 .values(level=level,
                         reach=reach,
                         xp=xp)
@@ -223,7 +225,7 @@ class RankingsDB:
                 .where(
                 and_(
                     t_rankings_chan.c.chan_id == str(chan_id),
-                    t_rankings_chan.c.guild_id == guild_id))
+                    t_rankings_chan.c.guild_id == str(guild_id)))
             con.execute(clause)
         except Exception as err:
             print(err)
