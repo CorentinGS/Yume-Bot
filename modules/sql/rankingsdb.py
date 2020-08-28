@@ -217,6 +217,24 @@ class RankingsDB:
             print(err)
 
     @staticmethod
+    def get_ignored_chan(guild_id: int):
+        channels = []
+        con, meta = Db.connect()
+        t_rankings_chan = meta.tables['rankings_chan']
+        try:
+            clause = t_rankings_chan.select().where(t_rankings_chan.c.guild_id == str(guild_id))
+            rows = con.execute(clause)
+            for row in rows:
+                channels.append({
+                    "chan_id": row['chan_id'],
+                    "guild_id": row["guild_id"]
+                })
+            return channels
+
+        except Exception as err:
+            print(err)
+
+    @staticmethod
     def delete_ignored_chan(guild_id: int, chan_id: int):
         con, meta = Db.connect()
         t_rankings_chan = meta.tables['rankings_chan']

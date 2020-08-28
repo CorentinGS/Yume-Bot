@@ -36,10 +36,6 @@ class RoleDB:
         roles = {"guild_id": rows['guild_id'], "level": rows['level'], "role_id": rows['role_id']}
         return roles
 
-    """
-    Get methods
-    """
-
     @staticmethod
     def get_one_from_level(level: int, guild_id: int):
         con, meta = Db.connect()
@@ -53,6 +49,20 @@ class RoleDB:
             if row:
                 return RoleDB.rows_to_dict(row)
             return {}
+        except Exception as err:
+            print(err)
+
+    @staticmethod
+    def get_levels(guild_id: int):
+        roles = []
+        con, meta = Db.connect()
+        t_roles = meta.tables["roles"]
+        try:
+            clause = t_roles.select().where(t_roles.c.guild_id == str(guild_id))
+            rows = con.execute(clause)
+            for row in rows:
+                roles.append(RoleDB.rows_to_dict(row))
+            return roles
         except Exception as err:
             print(err)
 

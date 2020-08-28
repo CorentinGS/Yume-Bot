@@ -36,7 +36,3 @@ class Guild:
 
         self.vip = vip
 
-    def display(self):
-        print("GuildID : {}".format(self.guild_id))
-        print("Is Vip : {}".format(self.vip))
-        print("Is Setup : {}".format(self.setup))

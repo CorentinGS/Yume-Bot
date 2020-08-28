@@ -73,8 +73,8 @@ class Level(commands.Cog):
     @commands.command(aliases=["scoreboard"])
     @commands.guild_only()
     async def leaderboard(self, ctx):
-        guildY = GuildDB.get_one(ctx.message.guild.id)
-        scoreboard = RankingsDB.get_scoreboard(guildY)
+        guild_y = GuildDB.get_one(ctx.message.guild.id)
+        scoreboard = RankingsDB.get_scoreboard(guild_y)
 
         em = discord.Embed(
             description="ScoreBoard",
@@ -84,10 +84,10 @@ class Level(commands.Cog):
         x = 0
         for user in scoreboard:
             member = discord.utils.get(ctx.guild.members, id=int(user))
-            userY = UserDB.get_one(user)
-            member_ranking = RankingsDB.get_user(userY, guildY)
+            user_y = UserDB.get_one(user)
+            member_ranking = RankingsDB.get_user(user_y, guild_y)
             if member is None:
-                RankingsDB.reset_user(userY, guildY)
+                RankingsDB.reset_user(user_y, guild_y)
             else:
                 x += 1
                 level = member_ranking['level']
@@ -99,28 +99,22 @@ class Level(commands.Cog):
 
     @commands.group()
     @commands.guild_only()
-    @commands.has_permissions(administrator=True)
+    @checks.is_admin()
     async def level(self, ctx):
         if ctx.invoked_subcommand is None:
             # await ctx.invoke(self.get)
             return
 
     @level.command()
-    @commands.has_permissions(administrator=True)
-    async def config(self, ctx, level: int, role: typing.Union[discord.Role, int, str]):
-        guild = GuildDB.get_one(ctx.guild.id)
-        if isinstance(role, str):
-            try:
-                role = discord.utils.get(ctx.guild.roles, name=role)
-            except discord.NotFound:
-                return await ctx.send(
-                    "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 role_name**")
+    @checks.is_admin()
+    async def set(self, ctx, level: int, role: typing.Union[discord.Role, int]):
         if isinstance(role, int):
             try:
                 role = discord.utils.get(ctx.guild.roles, id=role)
             except discord.NotFound:
                 return await ctx.send(
-                    "We can't find the role. Be sure to follow the syntax as in the exemple : **--level set 3 role_name**")
+                    "We can't find the role. Be sure to follow the syntax "
+                    "as in the exemple : **--level set 3 role_name**")
 
         roles = RoleDB.get_one_from_level(level, ctx.guild.id)
         if roles:
@@ -129,7 +123,35 @@ class Level(commands.Cog):
 
         await ctx.send("Level setup", delete_after=2)
 
-    # TODO: Faire une commande pour supprimer un role/level et pour voir les roles/levels déjà config
+    @level.command()
+    @checks.is_admin()
+    async def unset(self, ctx, level: int):
+        roles = RoleDB.get_one_from_level(level, ctx.guild.id)
+        if roles:
+            RoleDB.unset_level(roles['level'], ctx.guild.id)
+            await ctx.send("Level role removed", delete_after=2)
+        else:
+            await ctx.send("This level isn't setup...", delete_after=2)
+
+    @level.command()
+    @checks.is_admin()
+    async def show(self, ctx):
+        roles = RoleDB.get_levels(ctx.guild.id)
+        em = discord.Embed(
+            color=discord.Colour.blurple()
+        )
+        msg = "__Levels Roles__\n\n"
+
+        for role in roles:
+
+            role_discord = discord.utils.get(ctx.guild.roles, id=int(role['role_id']))
+
+            if not role_discord:
+                continue
+            str1 = "**" + str(role['level']) + " |** " + role_discord.mention + "\n"
+            msg = " ".join((msg, str1))
+        em.description = msg
+        await ctx.send(embed=em)
 
     async def checks_message(self, message: discord.Message) -> bool:
         user = message.author
@@ -225,23 +247,43 @@ class Level(commands.Cog):
 
         RankingsDB.update_user(user_y, guild_y, rankings)
 
-    @commands.command()
+    @level.command()
     @checks.is_admin()
-    async def rankings_ignore(self, ctx, chan: discord.TextChannel):
+    async def ignore(self, ctx, chan: discord.TextChannel):
         await ctx.message.delete()
         if RankingsDB.is_ignored_chan(chan.id):
             await ctx.send("This channel is already ignored !")
         RankingsDB.set_ignored_chan(ctx.guild.id, chan.id)
         await ctx.send("This channel has been ignored : {} !".format(chan.mention), delete_after=5)
 
-    @commands.command()
+    @level.command()
     @checks.is_admin()
-    async def rankings_unignore(self, ctx, chan: discord.TextChannel):
+    async def unignore(self, ctx, chan: discord.TextChannel):
         await ctx.message.delete()
         if not RankingsDB.is_ignored_chan(chan.id):
             return await ctx.send("This channel is not ignored !")
         RankingsDB.delete_ignored_chan(ctx.guild.id, chan.id)
         await ctx.send("This channel has been unignored : {} !".format(chan.mention), delete_after=5)
+
+    @level.command()
+    @checks.is_admin()
+    async def channels(self, ctx):
+        channels = RankingsDB.get_ignored_chan(ctx.guild.id)
+        em = discord.Embed(
+            color=discord.Colour.blurple()
+        )
+        msg = "__Ignored Channels__\n\n"
+
+        for channel in channels:
+
+            channel_discord = discord.utils.get(ctx.guild.channels, id=int(channel['chan_id']))
+
+            if not channel_discord:
+                continue
+            str1 = "*-* " + channel_discord.mention + "\n"
+            msg = " ".join((msg, str1))
+        em.description = msg
+        await ctx.send(embed=em)
 
     @commands.command()
     @checks.is_owner()

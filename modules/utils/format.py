@@ -209,7 +209,7 @@ class Embeds:
 
     @staticmethod
     async def user_list_sanction_embed(sanctions, member):
-
+        x = 0
         em = discord.Embed()
         em.set_author(name=f"Sanction report | {member.name}",
                       icon_url=member.avatar_url)
@@ -219,13 +219,16 @@ class Embeds:
         msg = "__Sanctions__\n\n"
 
         for sanction in sanctions:
+            x += 1
+
             sanction = SanctionsDB.get_sanction(sanction.sanction_id)
 
             date = sanction.event_date
 
             str1 = "**" + sanction.event + " |** " + str(date) + "\n"
             msg = " ".join((msg, str1))
-
+            if x == 15:
+                break
         em.description = msg
 
         return em
