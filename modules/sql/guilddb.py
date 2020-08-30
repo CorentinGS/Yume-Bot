@@ -59,23 +59,6 @@ class GuildDB:
             print(err)
 
     """
-    Checks methods
-    """
-
-    @staticmethod
-    def has_logging(guild: Guild) -> bool:
-        con, meta = Db.connect()
-        t_guild = meta.tables['guild']
-        try:
-            clause = t_guild.select([t_guild.c.logging]).where(t_guild.c.guild_id == str(guild.guild_id))
-            for row in con.execute(clause):
-                if row:
-                    return row[0]
-                return False
-        except Exception as err:
-            print(err)
-
-    """
     Create & delete methods
     """
 

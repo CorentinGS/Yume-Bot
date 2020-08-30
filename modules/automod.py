@@ -183,8 +183,8 @@ class Automod(commands.Cog):
                 for chan in member.guild.text_channels:
                     await chan.set_permissions(role, send_messages=False)
             await member.add_roles(role)
-
-        if GuildDB.has_logging(guild):
+        print(guild.logging)
+        if guild.logging:
             sanctions, time = await Checks().member_check(member)
             em = await Mod().check_embed(member, member.guild, sanctions, time)
             if guild.log_chan:

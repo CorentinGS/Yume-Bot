@@ -3,7 +3,7 @@
   "dev": [
     "282233191916634113"
   ],
-  "version": "Stable 1.0.5",
+  "version": "Stable 1.1.0",
   "modules": [
     "info.about",
     "info.help",
