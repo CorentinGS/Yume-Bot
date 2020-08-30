@@ -45,7 +45,6 @@ class Level(commands.Cog):
                     channel_id=message.channel.id, time_id=int(time))
 
         MessageDB.insert_message(m)
-        await message.channel.send("Message received")
 
 
 def setup(bot):
