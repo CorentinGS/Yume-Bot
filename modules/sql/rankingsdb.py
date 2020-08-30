@@ -20,14 +20,17 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+import json
 
 import numpy as np
 import pandas
+import psycopg2
 from sqlalchemy import and_, select, func
 
 from modules.sql.dbConnect import Db
 from model.guild import Guild
 from model.user import User
+from psycopg2 import extras
 
 
 class RankingsDB:
@@ -39,13 +42,13 @@ class RankingsDB:
         return rankings
 
     @staticmethod
-    def get_user(user: User, guild: Guild) -> dict:
+    def get_user(user_id: int, guild_id: int) -> dict:
         con, meta = Db.connect()
         t_rankings = meta.tables['rankings']
         try:
             clause = t_rankings.select().where(
-                and_(t_rankings.c.user_id == str(user.user_id),
-                     t_rankings.c.guild_id == str(guild.guild_id)))
+                and_(t_rankings.c.user_id == str(user_id),
+                     t_rankings.c.guild_id == str(guild_id)))
             rows = con.execute(clause)
             row = rows.fetchone()
             if row:
@@ -71,16 +74,16 @@ class RankingsDB:
             print(err)
 
     @staticmethod
-    def create_ranking(user: User, guild: Guild):
+    def create_ranking(user_id: int, guild_id: int):
         con, meta = Db.connect()
         t_rankings = meta.tables['rankings']
         try:
             clause = t_rankings.insert().values(
-                guild_id=guild.guild_id,
+                guild_id=guild_id,
                 level=0,
                 reach=20,
                 total=0,
-                user_id=user.user_id,
+                user_id=user_id,
                 xp=0)
             con.execute(clause)
         except Exception as err:
@@ -103,15 +106,15 @@ class RankingsDB:
             print(err)
 
     @staticmethod
-    def update_user(user: User, guild: Guild, ranking: dict):
+    def update_user(user_id: int, guild_id: int, ranking: dict):
         con, meta = Db.connect()
         t_rankings = meta.tables['rankings']
         try:
             clause = t_rankings.update() \
                 .where(
                 and_(
-                    t_rankings.c.guild_id == str(guild.guild_id),
-                    t_rankings.c.user_id == str(user.user_id))) \
+                    t_rankings.c.guild_id == str(guild_id),
+                    t_rankings.c.user_id == str(user_id))) \
                 .values(level=ranking["level"],
                         reach=ranking['reach'],
                         xp=ranking['xp'],
@@ -138,7 +141,7 @@ class RankingsDB:
             print(err)
 
     @staticmethod
-    def get_rank(user: User, guild: Guild) -> int:
+    def get_rank(user_id: int, guild_id: int) -> int:
         users = []
         con, meta = Db.connect()
         t_rankings = meta.tables['rankings']
@@ -147,12 +150,12 @@ class RankingsDB:
                 .select_from(t_rankings) \
                 .group_by(t_rankings.c.user_id, t_rankings.c.total) \
                 .order_by(t_rankings.c.total.desc()) \
-                .where(t_rankings.c.guild_id == str(guild.guild_id))
+                .where(t_rankings.c.guild_id == str(guild_id))
             rows = con.execute(clause)
             for row in rows:
                 users.append(row[0])
             df = pandas.DataFrame(np.array(users), columns=["ID"])
-            return df.ID[df.ID == user.user_id].index.tolist()[0] + 1
+            return df.ID[df.ID == user_id].index.tolist()[0] + 1
         except Exception as err:
             print(err)
 
@@ -199,21 +202,37 @@ class RankingsDB:
         except Exception as err:
             print(err)
 
+    '''
     @staticmethod
     def is_ignored_chan(chan_id: int):
         con, meta = Db.connect()
         t_rankings_chan = meta.tables['rankings_chan']
         try:
-            clause = select([func.count()]) \
-                .select_from(t_rankings_chan) \
-                .where(t_rankings_chan.c.chan_id == str(chan_id))
+            clause = t_rankings_chan.select().where(t_rankings_chan.c.chan_id == str(chan_id))
             rows = con.execute(clause)
             row = rows.fetchone()
-            if row[0] > 0:
+            if row:
                 return True
             return False
         except Exception as err:
             print(err)
+    '''
+
+    @staticmethod
+    def is_ignored_chan(chan_id: int):
+        with open("./config/keys.json", "r") as cjson:
+            keys = json.load(cjson)
+
+        con = psycopg2.connect(
+            "host=postgre dbname=yumebot port=5432 user=postgres password={}".format(keys["postgresql"]))
+        cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            cur.execute('SELECT * FROM public.rankings_chan')
+        except Exception as err:
+            print(err)
+            con.rollback()
+        cur.fetchall()
 
     @staticmethod
     def get_ignored_chan(guild_id: int):

@@ -50,23 +50,15 @@ class Level(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def rank(self, ctx, user: discord.Member = None):
-        t1 = datetime.now()
         if user is None:
             user = ctx.message.author
 
-        userY = UserDB.get_one(user.id)
-        t2 = datetime.now()
-        guildY = GuildDB.get_one(ctx.message.guild.id)
-        t3 = datetime.now()
-        rankings = RankingsDB.get_user(userY, guildY)
-        t4 = datetime.now()
+        rankings = RankingsDB.get_user(user.id, ctx.guild.id)
         if not rankings:
-            RankingsDB.create_ranking(userY, guildY)
-            rankings = RankingsDB.get_user(userY, guildY)
-        t5 = datetime.now()
+            RankingsDB.create_ranking(user.id, ctx.guild.id)
+            rankings = RankingsDB.get_user(user.id, ctx.guild.id)
 
-        rank = RankingsDB.get_rank(userY, guildY)
-        t6 = datetime.now()
+        rank = RankingsDB.get_rank(user.id, ctx.guild.id)
         em = discord.Embed()
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.add_field(name="**Rank**", value=f"{rank}", inline=False)
@@ -74,16 +66,6 @@ class Level(commands.Cog):
         em.add_field(name="**Progress**",
                      value="{} / {}".format(rankings['xp'], rankings['reach']))
         await ctx.send(embed=em)
-
-        t7 = datetime.now()
-
-        print("1:" + str(t2 - t1))
-        print("2:" + str(t3 - t2))
-        print("3:" + str(t4 - t3))
-        print("4:" + str(t5 - t4))
-        print("5:" + str(t6 - t5))
-        print("6:" + str(t7 - t6))
-        print("total:" + str(t7 - t1) + "\n")
 
     @commands.command(aliases=["scoreboard"])
     @commands.guild_only()
@@ -174,12 +156,14 @@ class Level(commands.Cog):
 
         bucket = self._cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()
-
+        RankingsDB.is_ignored_chan(message.channel.id)
+        if retry_after:
+            pass
         if (user.bot is True) \
                 or (message.guild is None) \
                 or (message.guild.id in ignored_guilds) \
-                or retry_after \
-                or RankingsDB.is_ignored_chan(message.channel.id):
+                or retry_after:
+
             return False
         else:
             return True
@@ -201,7 +185,7 @@ class Level(commands.Cog):
         return gain
 
     @staticmethod
-    async def level_up(message: discord.Message, rankings: dict, user_y: User, guild_y: Guild):
+    async def level_up(message: discord.Message, rankings: dict, user_id: int, guild_id: int):
         rankings['level'] += 1
         if rankings["level"] > 40:
             rankings['reach'] = floor(rankings['reach'] * 1.02)
@@ -223,7 +207,7 @@ class Level(commands.Cog):
                                        delete_after=2)
         except discord.HTTPException:
             pass
-        RankingsDB.update_user(user_y, guild_y, rankings)
+        RankingsDB.update_user(user_id, guild_id, rankings)
         return rankings
 
     @commands.Cog.listener()
@@ -235,13 +219,11 @@ class Level(commands.Cog):
         if not check:
             return
 
-        user_y = UserDB.get_one(message.author.id)
-        guild_y = GuildDB.get_one(message.guild.id)
-        rankings = RankingsDB.get_user(user_y, guild_y)
+        rankings = RankingsDB.get_user(message.author.id, message.guild.id)
 
         if not rankings:
-            RankingsDB.create_ranking(user_y, guild_y)
-            rankings = RankingsDB.get_user(user_y, guild_y)
+            RankingsDB.create_ranking(message.author.id, message.guild.id)
+            rankings = RankingsDB.get_user(message.author.id, message.guild.id)
 
         gain: int = await self.set_gain(message, rankings)
 
@@ -249,9 +231,10 @@ class Level(commands.Cog):
         rankings['total'] += gain
 
         if rankings['xp'] >= rankings['reach']:
-            rankings = await self.level_up(message, rankings, user_y, guild_y)
+            rankings = await self.level_up(message, rankings, message.author.id, message.guild.id)
 
             roles = RoleDB.get_one_from_level(rankings['level'], message.guild.id)
+
             if roles:
                 try:
                     role = discord.utils.get(
@@ -260,7 +243,8 @@ class Level(commands.Cog):
                 except discord.HTTPException:
                     pass
 
-        RankingsDB.update_user(user_y, guild_y, rankings)
+        RankingsDB.update_user(message.author.id, message.guild.id, rankings)
+        t9 = datetime.now()
 
     @level.command()
     @checks.is_admin()
