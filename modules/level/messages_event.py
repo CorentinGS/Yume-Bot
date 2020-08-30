@@ -21,7 +21,7 @@ class Level(commands.Cog):
         if user.bot is True or message.guild is None:
             return
 
-        if message.guild.id == '264445053596991498':
+        if message.guild.id not in [488765635439099914, 631811291568144384, 618414922556112916, 740622438282428416]:
             return
 
         if RankingsDB.is_ignored_chan(message.channel.id):
