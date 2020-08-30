@@ -1,9 +1,6 @@
 import psycopg2
 from psycopg2 import extras
 
-from modules.sql.guild import Guild
-from modules.sql.user import User
-
 try:
     con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
     cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)

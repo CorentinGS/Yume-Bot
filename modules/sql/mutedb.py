@@ -21,13 +21,9 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import psycopg2
-from psycopg2 import extras
 from sqlalchemy import and_, select, func
 
 from modules.sql.dbConnect import Db
-from modules.sql.guild import Guild
-from modules.sql.user import User
 
 
 class MuteDB:

@@ -21,14 +21,10 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import numpy as np
-import pandas as pandas
-import psycopg2
-from psycopg2 import extras
 from sqlalchemy import select, func, and_
 
 from modules.sql.dbConnect import Db
-from modules.sql.guild import Guild
+from model.guild import Guild
 
 
 class GuildDB:

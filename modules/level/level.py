@@ -28,11 +28,11 @@ from random import randint
 import discord
 from discord.ext import commands
 
-from modules.sql.guild import Guild
+from model.guild import Guild
 from modules.sql.guilddb import GuildDB
 from modules.sql.rankingsdb import RankingsDB
 from modules.sql.roledb import RoleDB
-from modules.sql.user import User
+from model.user import User
 from modules.sql.userdb import UserDB
 from modules.utils import checks
 

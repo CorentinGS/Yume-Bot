@@ -25,13 +25,10 @@ import typing
 from datetime import datetime
 
 import discord
-import sqlalchemy
 from sqlalchemy import and_
 
 from modules.sql.dbConnect import Db
-from modules.sql.guild import Guild
-from modules.sql.sanctions import Sanction
-from modules.sql.user import User
+from model.sanctions import Sanction
 
 
 class SanctionsDB:
@@ -117,9 +114,6 @@ class SanctionsDB:
             con.execute(clause)
         except Exception as err:
             print(err)
-
-
-from modules.sql.user import User
 
 
 class SanctionMethod:

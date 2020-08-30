@@ -26,7 +26,7 @@ import discord
 from discord.ext import commands
 
 from modules.profile.format import Embeds
-from modules.sql.user import User
+from model.user import User
 from modules.sql.userdb import UserDB
 
 

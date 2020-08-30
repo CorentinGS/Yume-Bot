@@ -1,12 +1,8 @@
 import discord
 from discord.ext import commands
 
-from modules.level.messages_db import MessageDB, Message
-from modules.sql.guilddb import GuildDB
+from modules.sql.messages_db import MessageDB, Message
 from modules.sql.rankingsdb import RankingsDB
-from modules.sql.roledb import RoleDB
-from modules.sql.userdb import UserDB
-from modules.utils import checks
 
 
 class Level(commands.Cog):

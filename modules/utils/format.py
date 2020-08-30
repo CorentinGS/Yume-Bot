@@ -24,10 +24,9 @@
 import random
 from datetime import datetime
 
-import dateutil
 import discord
 
-from modules.sql.sanctions import Sanction
+from model.sanctions import Sanction
 from modules.sql.sanctionsdb import SanctionsDB
 from modules.utils import lists
 

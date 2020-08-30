@@ -22,12 +22,8 @@
 #  SOFTWARE.
 
 
-import psycopg2
-from psycopg2 import extras
-
 from modules.sql.dbConnect import Db
-from modules.sql.guild import Guild
-from modules.sql.user import User
+from model.user import User
 
 
 class UserDB:
