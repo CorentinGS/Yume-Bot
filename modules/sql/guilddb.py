@@ -21,18 +21,10 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import numpy as np
-import pandas as pandas
-import psycopg2
-from psycopg2 import extras
+from sqlalchemy import select, func, and_
 
-from modules.sql.guild import Guild
-
-try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-except psycopg2.DatabaseError as e:
-    print('Error %s' % e)
+from modules.sql.dbConnect import Db
+from model.guild import Guild
 
 
 class GuildDB:
@@ -51,110 +43,37 @@ class GuildDB:
 
     @staticmethod
     def get_one(guild_id: int) -> Guild:
+        con, meta = Db.connect()
+        t_guild = meta.tables['guild']
         try:
-            cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild_id))
+            clause = t_guild.select().where(t_guild.c.guild_id == str(guild_id))
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row:
+                return GuildDB.guild_from_row(row)
+            else:
+                g = Guild(guild_id)
+                GuildDB.create(g)
+                return g
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return GuildDB.guild_from_row(rows)
-        else:
-            g = Guild(guild_id)
-            GuildDB.create(g)
-            return g
-
-    @staticmethod
-    def get_guild(guild: Guild) -> Guild:
-        try:
-            cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return GuildDB.guild_from_row(rows)
-        else:
-            GuildDB.create(guild)
-            return guild
-
-    @staticmethod
-    def get_all() -> list:
-        try:
-            cur.execute("SELECT * FROM public.guild;")
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            return GuildDB.guilds_from_row(rows)
-        return []
 
     """
     Checks methods
     """
 
     @staticmethod
-    def is_vip(guild: Guild) -> bool:
-        try:
-            cur.execute('SELECT vip FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows[0]
-        return False
-
-    @staticmethod
-    def is_setup(guild: Guild) -> bool:
-        try:
-            cur.execute('SELECT setup FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows[0]
-        return False
-
-    @staticmethod
-    def has_blacklist(guild: Guild) -> bool:
-        try:
-            cur.execute('SELECT blacklist FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows[0]
-        return False
-
-    @staticmethod
     def has_logging(guild: Guild) -> bool:
+        con, meta = Db.connect()
+        t_guild = meta.tables['guild']
         try:
-            cur.execute('SELECT logging FROM public.guild WHERE guild_id = {};'.format(guild.guild_id))
+            clause = t_guild.select([t_guild.c.logging]).where(t_guild.c.guild_id == str(guild.guild_id))
+            for row in con.execute(clause):
+                if row:
+                    return row[0]
+                return False
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows[0]
-        return False
-
-    @staticmethod
-    def guild_exists(guild: Guild) -> bool:
-        try:
-            cur.execute("SELECT count(*) FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        try:
-            rows = cur.fetchone()
-        except psycopg2.ProgrammingError:
-            return False
-        else:
-            return True
 
     """
     Create & delete methods
@@ -162,25 +81,32 @@ class GuildDB:
 
     @staticmethod
     def create(guild: Guild):
+        con, meta = Db.connect()
+        t_guild = meta.tables['guild']
         try:
-            cur.execute(
-                "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, vip)  VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-                (guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.guild_id, guild.log_chan,
-                 guild.logging,
-                 guild.setup, guild.vip))
+            clause = t_guild.insert().values(
+                blacklist=guild.blacklist,
+                color=guild.color,
+                greet=guild.greet,
+                greet_chan=guild.greet_chan,
+                guild_id=guild.guild_id,
+                log_chan=guild.log_chan,
+                logging=guild.logging,
+                setup=guild.setup,
+                vip=guild.vip)
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
 
     @staticmethod
     def delete(guild: Guild):
+        con, meta = Db.connect()
+        t_guild = meta.tables['guild']
         try:
-            cur.execute("DELETE FROM public.guild WHERE guild_id = {};".format(guild.guild_id))
+            clause = t_guild.delete().where(t_guild.c.guild_id == str(guild.guild_id))
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
 
     """
     Update methods
@@ -188,160 +114,109 @@ class GuildDB:
 
     @staticmethod
     def update_guild(guild: Guild):
+        con, meta = Db.connect()
+        t_guild = meta.tables['guild']
         try:
-            cur.execute(
-                "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}', greet_chan = '{}', log_chan = '{}', logging = '{}', setup = '{}', vip = '{}'  WHERE  guild_id = {}".format(
-                    guild.blacklist, guild.color, guild.greet, guild.greet_chan, guild.log_chan, guild.logging,
-                    guild.setup,
-                    guild.vip, guild.guild_id))
+            clause = t_guild.update().where(t_guild.c.guild_id == str(guild.guild_id)).values(
+                blacklist=guild.blacklist,
+                color=guild.color,
+                greet=guild.greet,
+                greet_chan=guild.greet_chan,
+                guild_id=guild.guild_id,
+                log_chan=guild.log_chan,
+                logging=guild.logging,
+                setup=guild.setup,
+                vip=guild.vip)
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
-
-    """
-    Set methods
-    """
-
-    @staticmethod
-    def set_vip(guild: Guild):
-        try:
-            cur.execute("UPDATE public.guild SET vip = TRUE WHERE  guild_id = {}".format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        con.commit()
-
-    @staticmethod
-    def set_blacklist(guild: Guild):
-        try:
-            cur.execute("UPDATE public.guild SET blacklist = TRUE WHERE  guild_id = {}".format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-
-        con.commit()
-
-    """
-    Unset methods
-    """
-
-    @staticmethod
-    def unset_vip(guild: Guild):
-        try:
-            cur.execute("UPDATE public.guild SET vip = FALSE WHERE guild_id = {}".format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        con.commit()
-
-    @staticmethod
-    def unset_blacklist(guild: Guild):
-        try:
-            cur.execute("UPDATE public.guild SET blacklist = FALSE WHERE guild_id = {}".format(guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-
-        con.commit()
 
     """
     Others methods
     """
 
     @staticmethod
-    def is_admin(role_id: int, guild: Guild) -> bool:
-        try:
-            cur.execute(
-                "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows['admin']
-        return False
-
-    @staticmethod
     def exists_in_admin(role_id, guild: Guild) -> bool:
+        con, meta = Db.connect()
+        t_admin = meta.tables['admin']
         try:
-            cur.execute(
-                "SELECT count(*) FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id,
-                                                                                                role_id))
+            clause = select([func.count()]).select_from(t_admin).where(and_(
+                t_admin.c.guild_id == guild.guild_id,
+                t_admin.c.role_id == role_id))
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row[0] > 0:
+                return True
+            return False
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows[0] > 0:
-            return True
-        return False
 
     @staticmethod
     def remove_admin(role_id, guild: Guild):
+        con, meta = Db.connect()
+        t_admin = meta.tables['admin']
         try:
-            cur.execute("DELETE FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
+            clause = t_admin.delete().where(and_(
+                t_admin.c.guild_id == guild.guild_id,
+                t_admin.c.role_id == role_id))
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
 
     @staticmethod
     def set_admin(role_id: int, guild_id: int):
+        con, meta = Db.connect()
+        t_admin = meta.tables['admin']
         try:
-            cur.execute(
-                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
-                                                                                               True))
+            clause = t_admin.insert().values(
+                guild_id=guild_id,
+                role_id=role_id,
+                admin=True
+            )
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
 
     @staticmethod
     def set_mod(role_id: int, guild_id: int):
+        con, meta = Db.connect()
+        t_admin = meta.tables['admin']
         try:
-            cur.execute(
-                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)", (guild_id, role_id,
-                                                                                               False))
+            clause = t_admin.insert().values(
+                guild_id=guild_id,
+                role_id=role_id,
+                admin=False
+            )
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
-
-    @staticmethod
-    def is_mod(role_id: int, guild: Guild) -> bool:
-        try:
-            cur.execute(
-                "SELECT admin FROM public.admin WHERE guild_id = {} AND role_id = {}".format(guild.guild_id, role_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows['admin'] is False:
-            return True
-        return False
 
     @staticmethod
     def get_admin_roles(guild: Guild) -> list:
+        con, meta = Db.connect()
+        t_admin = meta.tables['admin']
+        roles = []
+
         try:
-            cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = true".format(guild.guild_id))
+            clause = t_admin.select().where(and_(t_admin.c.guild_id == str(guild.guild_id),
+                                                 t_admin.c.admin == True))
+            for row in con.execute(clause):
+                roles.append(row[0])
+            return roles
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            df = pandas.DataFrame(np.array(rows))
-            return df[0].values.tolist()
-        return []
 
     @staticmethod
     def get_mod_roles(guild: Guild) -> list:
+        con, meta = Db.connect()
+        t_admin = meta.tables['admin']
+        roles = []
         try:
-            cur.execute("SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = false".format(guild.guild_id))
+            clause = t_admin.select().where(and_(t_admin.c.guild_id == str(guild.guild_id),
+                                                 t_admin.c.admin == False))
+            for row in con.execute(clause):
+                roles.append(row[0])
+            return roles
+
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchall()
-        if rows:
-            df = pandas.DataFrame(np.array(rows))
-            return df[0].values.tolist()
-        return []

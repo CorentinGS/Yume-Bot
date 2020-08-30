@@ -21,17 +21,9 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import psycopg2
-from psycopg2 import extras
+from sqlalchemy import and_, select, func
 
-from modules.sql.guild import Guild
-from modules.sql.user import User
-
-try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-except psycopg2.DatabaseError as e:
-    print('Error %s' % e)
+from modules.sql.dbConnect import Db
 
 
 class MuteDB:
@@ -39,69 +31,49 @@ class MuteDB:
     Get methods
     """
 
-    @staticmethod
-    def get_one(user_id: int, guild_id: int):
-        try:
-            cur.execute("SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user_id, guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows
-        return "Error : User not found"
-
-    @staticmethod
-    def get_user(user: User, guild: Guild):
-        try:
-            cur.execute(
-                "SELECT * FROM public.muted WHERE user_id = {} AND guild_id = {};".format(user.user_id, guild.guild_id))
-        except Exception as err:
-            print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return rows
-        return "Error : User not found"
-
     """
     Check methods
     """
 
     @staticmethod
-    def is_muted(user: User, guild: Guild):
+    def is_muted(user_id: int, guild_id: int):
+        con, meta = Db.connect()
+        t_muted = meta.tables['muted']
         try:
-            cur.execute(
-                "SELECT * FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
+            clause = select([func.count()]).select_from(t_muted).where(
+                and_(t_muted.c.user_id == str(user_id), t_muted.c.guild_id == str(guild_id)))
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row[0] > 0:
+                return True
+            return False
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return True
-        return False
 
     """
      Set / Unset methods
      """
 
     @staticmethod
-    def set_mute(user: User, guild: Guild):
+    def set_mute(user_id: int, guild_id: int):
+        con, meta = Db.connect()
+        t_muted = meta.tables['muted']
         try:
-            cur.execute(
-                "INSERT INTO public.muted ( guild_id, user_id) VALUES ( {}, {} );".format(guild.guild_id, user.user_id)
+            clause = t_muted.insert().values(
+                guild_id=guild_id,
+                user_id=user_id
             )
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()
 
     @staticmethod
-    def unset_mute(user: User, guild: Guild):
+    def unset_mute(user_id: int, guild_id: int):
+        con, meta = Db.connect()
+        t_muted = meta.tables['muted']
         try:
-            cur.execute(
-                "DELETE FROM public.muted WHERE user_id = {} and guild_id = {};".format(user.user_id, guild.guild_id))
+            clause = t_muted.delete().where(
+                and_(t_muted.c.user_id == str(user_id), t_muted.c.guild_id == str(guild_id)))
+            con.execute(clause)
         except Exception as err:
             print(err)
-            con.rollback()
-        con.commit()

@@ -1,5 +1,7 @@
 import psycopg2
 
+from modules.sql.dbConnect import Db
+
 try:
     con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
     cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -11,20 +13,22 @@ class AnonDB:
 
     @staticmethod
     def rows_to_dict(rows) -> dict:
-        anon = {"guild_id": rows['guild_id'], "channel_id": rows['channel_id']}
+        anon = {"channel_id": rows[0], "guild_id": rows[1]}
         return anon
 
     @staticmethod
     def get_channel(guild_id: int):
+        con, meta = Db.connect()
+        t_anon = meta.tables['anon']
         try:
-            cur.execute("SELECT * FROM public.anon WHERE guild_id = {};".format(guild_id))
+            clause = t_anon.select().where(t_anon.c.guild_id == str(guild_id))
+            rows = con.execute(clause)
+            row = rows.fetchone()
+            if row:
+                return AnonDB.rows_to_dict(row)
+            return None
         except Exception as err:
             print(err)
-            con.rollback()
-        rows = cur.fetchone()
-        if rows:
-            return AnonDB.rows_to_dict(rows)
-        return None
 
     @staticmethod
     def set_channel(guild_id: int, channel_id: int):

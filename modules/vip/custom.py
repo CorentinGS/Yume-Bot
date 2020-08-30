@@ -39,6 +39,7 @@ class Custom(commands.Cog):
         self.bot = bot
         self.config = bot.config
 
+    """
     @commands.command()
     @checks.is_owner()
     @commands.guild_only()
@@ -79,6 +80,8 @@ class Custom(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        return
+
         author = message.author
         if not NetworkDB.is_linked(message.channel.id):
             return
@@ -108,6 +111,7 @@ class Custom(commands.Cog):
                 await webhook.send(content=msg,
                                    username="{} - {}".format(message.author.name, message.author.id),
                                    avatar_url=message.author.avatar_url, wait=True)
+
 
     @commands.group()
     async def anon(self, ctx):
@@ -211,6 +215,7 @@ class Custom(commands.Cog):
         msg = await webhook.send(content=content, username=author, wait=True)
         return msg.id
 
+    
     @commands.group()
     async def private(self, ctx):
         return
@@ -289,6 +294,7 @@ class Custom(commands.Cog):
         webhooks = await channel.webhooks()
         webhook = webhooks[0]
         await webhook.send(embeds=content, username=author.name, avatar_url=author.avatar_url)
+"""
 
 
 def setup(bot):

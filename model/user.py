@@ -21,22 +21,13 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-class Guild:
-    def __init__(self, guild_id: int, blacklist: bool = False, color: bool = False, greet: bool = False,
-                 greet_chan: int = 0, log_chan: int = 0, logging: bool = False, setup: bool = False,
-                 vip: bool = False):
-        self.guild_id = guild_id
-        self.blacklist = blacklist
-        self.color = color
-        self.greet = greet
-        self.greet_chan = greet_chan
-        self.log_chan = log_chan
-        self.logging = logging
-        self.setup = setup
 
-        self.vip = vip
-
-    def display(self):
-        print("GuildID : {}".format(self.guild_id))
-        print("Is Vip : {}".format(self.vip))
-        print("Is Setup : {}".format(self.setup))
+class User:
+    def __init__(self, user_id: int, vip: bool = False, crew: bool = False, description: str = "",
+                 married: bool = False, lover: int = None):
+        self.user_id: int = user_id
+        self.crew: bool = crew
+        self.vip: bool = vip
+        self.description: str = description
+        self.married: bool = married
+        self.lover: int = lover

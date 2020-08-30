@@ -111,3 +111,4 @@ venv.bak/
 /config/keys.json
 /.vscode
 /.idea/
+/cron/bot-cron

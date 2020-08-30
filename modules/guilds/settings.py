@@ -57,8 +57,8 @@ class Set(commands.Cog):
             await ctx.invoke(self.setup)
 
         else:
-            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_chan, guild.blacklist, guild.logging,
-                                                     guild.log_chan, guild.vip, guild.color, guild.stats_channels)
+            em = await Embeds().format_get_set_embed(ctx, guild.greet, guild.greet_chan, guild.logging,
+                                                     guild.log_chan, guild.vip)
             await ctx.send(embed=em)
 
     @setting.command()
@@ -225,8 +225,7 @@ class Set(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         guildY = GuildDB.get_one(guild.id)
-        if not GuildDB.guild_exists(guildY):
-            GuildDB.create(guildY)
+
         for role in guild.roles:
             if GuildDB.exists_in_admin(role.id, guildY):
                 GuildDB.remove_admin(role.id, guildY)

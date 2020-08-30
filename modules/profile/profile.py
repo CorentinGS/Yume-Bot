@@ -26,7 +26,7 @@ import discord
 from discord.ext import commands
 
 from modules.profile.format import Embeds
-from modules.sql.user import User
+from model.user import User
 from modules.sql.userdb import UserDB
 
 
@@ -65,13 +65,13 @@ class Profiles(commands.Cog):
     @marriage.command()
     @commands.guild_only()
     async def divorce(self, ctx):
-        user: User = UserDB.get_user(User(ctx.author.id))
+        user: User = UserDB.get_one(ctx.author.id)
 
         if not user.married:
             em = await Embeds.is_not_married(ctx.author)
             await ctx.send(embed=em)
         else:
-            loverr: User = UserDB.get_user(User(user.lover))
+            loverr: User = UserDB.get_one(user.lover)
             UserDB.unset_lover(user, loverr)
 
             lover: discord.User = self.bot.get_user(user.lover)
@@ -83,14 +83,14 @@ class Profiles(commands.Cog):
     @marriage.command()
     @commands.guild_only()
     async def ask(self, ctx, member: discord.Member):
-        user: User = UserDB.get_user(User(ctx.author.id))
-        lover: User = UserDB.get_user(User(member.id))
+        user: User = UserDB.get_one(ctx.author.id)
+        lover: User = UserDB.get_one(member.id)
 
         def check(m):
             return m.author == member and m.channel == ctx.channel
 
         if user.married:
-            em = await Embeds.already_married(user)
+            em = await Embeds.already_married(ctx.author)
             await ctx.send(embed=em)
         elif lover.married:
             em = await Embeds.is_married(member)
@@ -105,7 +105,7 @@ class Profiles(commands.Cog):
                     member.name), delete_after=5)
             else:
                 if message.content.lower() == "yes":
-                    UserDB.set_lover(user, lover)
+                    UserDB.set_lover(ctx.author.id, member.id)
                     em = await Embeds.said_yes(ctx.author, member)
                     await ctx.send(embed=em)
                 else:
@@ -117,9 +117,9 @@ class Profiles(commands.Cog):
     async def get(self, ctx, member: discord.Member = None):
         if not member:
             member: discord.Member = ctx.author
-        user: User = UserDB.get_user(User(member.id))
+        user: User = UserDB.get_one(member.id)
         if user.married:
-            lover: discord.User = self.bot.get_user(user.lover)
+            lover: discord.User = self.bot.get_user(int(user.lover))
             if lover:
                 em = await Embeds.get_lover(member, lover)
                 await ctx.send(embed=em)

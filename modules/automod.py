@@ -27,8 +27,8 @@ import discord
 from discord.ext import commands
 
 import modules.utils.checks as check
-from modules.sql.blacklistdb import BlacklistDB
 from modules.sql.guilddb import GuildDB
+from modules.sql.mutedb import MuteDB
 from modules.sql.sanctionsdb import SanctionsDB
 from modules.sql.userdb import UserDB
 from modules.utils.format import Mod
@@ -174,7 +174,7 @@ class Automod(commands.Cog):
         user = UserDB.get_one(member.id)
 
         # Check if the user has already been muted to avoid any sanctions bypass
-        if UserDB.is_muted(guild, user):
+        if MuteDB.is_muted(member.id, member.guild.id):
             # Mute him again
             role = discord.utils.get(member.guild.roles, name="Muted")
             if not role:
@@ -183,17 +183,6 @@ class Automod(commands.Cog):
                 for chan in member.guild.text_channels:
                     await chan.set_permissions(role, send_messages=False)
             await member.add_roles(role)
-
-        # Check if the user is in the blacklist
-        if BlacklistDB.is_blacklist(user):
-            if GuildDB.has_blacklist(guild):
-                # Ban the member
-                await member.guild.ban(member, reason="Blacklist")
-            try:
-                await member.send("you're in the blacklist ! If you think it's an error, ask here --> "
-                                  "yume.network@protonmail.com")
-            except discord.Forbidden:
-                return
 
         if GuildDB.has_logging(guild):
             sanctions, time = await Checks().member_check(member)

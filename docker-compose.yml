@@ -17,6 +17,12 @@ services:
         max-size: "200k"
         max-file: "5"
 
+  metabase:
+    image: metabase/metabase
+    restart: always
+    ports:
+      - 3001:3000
+
   bot:
     restart: always
     build:
