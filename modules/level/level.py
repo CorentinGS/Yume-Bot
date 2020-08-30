@@ -22,6 +22,7 @@
 #  SOFTWARE.
 
 import typing
+from datetime import datetime
 from math import floor
 from random import randint
 
@@ -49,19 +50,23 @@ class Level(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def rank(self, ctx, user: discord.Member = None):
+        t1 = datetime.now()
         if user is None:
             user = ctx.message.author
 
         userY = UserDB.get_one(user.id)
+        t2 = datetime.now()
         guildY = GuildDB.get_one(ctx.message.guild.id)
+        t3 = datetime.now()
         rankings = RankingsDB.get_user(userY, guildY)
-
+        t4 = datetime.now()
         if not rankings:
             RankingsDB.create_ranking(userY, guildY)
             rankings = RankingsDB.get_user(userY, guildY)
+        t5 = datetime.now()
 
         rank = RankingsDB.get_rank(userY, guildY)
-
+        t6 = datetime.now()
         em = discord.Embed()
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.add_field(name="**Rank**", value=f"{rank}", inline=False)
@@ -69,6 +74,16 @@ class Level(commands.Cog):
         em.add_field(name="**Progress**",
                      value="{} / {}".format(rankings['xp'], rankings['reach']))
         await ctx.send(embed=em)
+
+        t7 = datetime.now()
+
+        print("1:" + str(t2 - t1))
+        print("2:" + str(t3 - t2))
+        print("3:" + str(t4 - t3))
+        print("4:" + str(t5 - t4))
+        print("5:" + str(t6 - t5))
+        print("6:" + str(t7 - t6))
+        print("total:" + str(t7 - t1) + "\n")
 
     @commands.command(aliases=["scoreboard"])
     @commands.guild_only()
