@@ -91,8 +91,9 @@ class RankingsDB:
         con, meta = Db.connect()
         t_rankings = meta.tables['rankings']
         try:
-            clause = t_rankings.update().where(t_rankings.c.guild_id == str(guild.guild_id),
-                                               t_rankings.c.user_id == str(user.user_id)) \
+            clause = t_rankings.update().where(
+                and_(t_rankings.c.guild_id == str(guild.guild_id),
+                     t_rankings.c.user_id == str(user.user_id))) \
                 .values(level=0,
                         reach=20,
                         total=0,

@@ -67,26 +67,6 @@ class UserDB:
         except Exception as err:
             print(err)
 
-    """
-    Checks methods
-    """
-
-    @staticmethod
-    def is_vip(user: User) -> bool:
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
-        try:
-            clause = t_user.select(t_user.c.vip).where(t_user.c.user_id == str(user.user_id))
-            rows = con.execute(clause)
-            if rows:
-                return rows[0]
-            return False
-        except Exception as err:
-            print(err)
-
-    """
-    Create & delete methods
-    """
 
     @staticmethod
     def create(user: User):

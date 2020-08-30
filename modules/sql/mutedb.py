@@ -41,7 +41,8 @@ class MuteDB:
         t_muted = meta.tables['muted']
         try:
             clause = select([func.count()]).select_from(t_muted).where(
-                and_(t_muted.c.user_id == str(user_id), t_muted.c.guild_id == str(guild_id)))
+                and_(t_muted.c.user_id == str(user_id),
+                     t_muted.c.guild_id == str(guild_id)))
             rows = con.execute(clause)
             row = rows.fetchone()
             if row[0] > 0:
@@ -73,7 +74,8 @@ class MuteDB:
         t_muted = meta.tables['muted']
         try:
             clause = t_muted.delete().where(
-                and_(t_muted.c.user_id == str(user_id), t_muted.c.guild_id == str(guild_id)))
+                and_(t_muted.c.user_id == str(user_id),
+                     t_muted.c.guild_id == str(guild_id)))
             con.execute(clause)
         except Exception as err:
             print(err)
