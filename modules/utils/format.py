@@ -162,8 +162,7 @@ class Embeds:
                                                   "**--h guild** | Guild Commands\n"
                                                   "**--h info** | Information Commands\n"
                                                   "**--h social** | Social Commands\n"
-                                                  "**--h game** | Game Commands\n"
-                                                  "**--h nsfw** | Nsfw Commands"
+                                                  "**--h game** | Game Commands"
                      )
 
         em.add_field(name="Links", value="[Support]("

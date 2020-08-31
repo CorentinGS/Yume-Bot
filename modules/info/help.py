@@ -51,24 +51,6 @@ class Help(commands.Cog):
             await ctx.send(embed=embed)
 
     @help.command()
-    @commands.is_nsfw()
-    async def nsfw(self, ctx):
-        liste = "`yandere`, `reddit`"
-        embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "Nsfw", liste)
-        await ctx.send(embed=embed)
-
-    @help.command()
-    @commands.is_nsfw()
-    async def yandere(self, ctx):
-        await self.command_help(ctx, self.bot.user, "Yandere", "Show a random yande.re pic", "--yandere <tag>")
-
-    @help.command()
-    @commands.is_nsfw()
-    async def reddit(self, ctx):
-        await self.command_help(ctx, self.bot.user, "Reddit", "Show a random reddit pic", "--reddit <tag>",
-                                "--reddit tags")
-
-    @help.command()
     async def general(self, ctx):
         liste = "`jump`, `weather`, `gweather`, `afk`, `pokemon`, `anime`, `manga`, `character`, `anilist`"
         embed = await Embeds().format_cat_embed(ctx, self.bot.user.avatar_url, "General", liste)
