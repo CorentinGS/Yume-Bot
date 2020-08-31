@@ -27,9 +27,7 @@ from modules.sql.dbConnect import Db
 
 
 class MuteDB:
-    """
-    Get methods
-    """
+
 
     """
     Check methods
@@ -37,19 +35,17 @@ class MuteDB:
 
     @staticmethod
     def is_muted(user_id: int, guild_id: int):
-        con, meta = Db.connect()
-        t_muted = meta.tables['muted']
+        con, cur = Db.connect()
         try:
-            clause = select([func.count()]).select_from(t_muted).where(
-                and_(t_muted.c.user_id == str(user_id),
-                     t_muted.c.guild_id == str(guild_id)))
-            rows = con.execute(clause)
-            row = rows.fetchone()
-            if row[0] > 0:
-                return True
-            return False
+            cur.execute(
+                "SELECT * FROM public.muted WHERE user_id = {}::text and guild_id = {}::text;".format(str(user_id), str(guild_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return True
+        return False
 
     """
      Set / Unset methods
@@ -57,25 +53,23 @@ class MuteDB:
 
     @staticmethod
     def set_mute(user_id: int, guild_id: int):
-        con, meta = Db.connect()
-        t_muted = meta.tables['muted']
+        con, cur = Db.connect()
         try:
-            clause = t_muted.insert().values(
-                guild_id=guild_id,
-                user_id=user_id
+            cur.execute(
+                "INSERT INTO public.muted ( guild_id, user_id) VALUES ( {}::text, {}::text );".format(str(guild_id), str(user_id))
             )
-            con.execute(clause)
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()
 
     @staticmethod
     def unset_mute(user_id: int, guild_id: int):
-        con, meta = Db.connect()
-        t_muted = meta.tables['muted']
+        con, cur = Db.connect()
         try:
-            clause = t_muted.delete().where(
-                and_(t_muted.c.user_id == str(user_id),
-                     t_muted.c.guild_id == str(guild_id)))
-            con.execute(clause)
+            cur.execute(
+                "DELETE FROM public.muted WHERE user_id = {}::text and guild_id = {}::text;".format(str(user_id), str(guild_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()

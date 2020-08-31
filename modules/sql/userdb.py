@@ -30,7 +30,14 @@ class UserDB:
 
     @staticmethod
     def user_from_row(rows):
-        return User(rows[0], rows[1], rows[2], rows[3], rows[4], rows[5])
+        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'], rows['married'], rows["lover"])
+
+    @staticmethod
+    def users_from_row(rows):
+        users = []
+        for row in rows:
+            users.append(UserDB.user_from_row(row))
+        return users
 
     """
     Get methods
@@ -38,121 +45,96 @@ class UserDB:
 
     @staticmethod
     def get_one(user_id: int) -> User:
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
+        con, cur = Db.connect()
         try:
-            clause = t_user.select().where(t_user.c.user_id == str(user_id))
-            rows = con.execute(clause)
-            row = rows.fetchone()
-            if row:
-                return UserDB.user_from_row(row)
-            else:
-                u = User(user_id)
-                UserDB.create(u)
-                return u
+            cur.execute("SELECT * FROM public.user WHERE user_id = {}::text;".format(str(user_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return UserDB.user_from_row(rows)
+        else:
+            u = User(user_id)
+            UserDB.create(u)
+            return u
 
     @staticmethod
     def get_vips():
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
-        users = []
+        con, cur = Db.connect()
         try:
-            clause = t_user.select().where(t_user.c.vip == True)
-            for rows in con.execute(clause):
-                for row in rows:
-                    users.append(UserDB.user_from_row(row))
-                return users
+            cur.execute("SELECT * FROM public.user WHERE vip = TRUE")
         except Exception as err:
             print(err)
-
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
+            return UserDB.users_from_row(rows)
+        return "Error : No VIP"
 
     @staticmethod
     def create(user: User):
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
+        con, cur = Db.connect()
         try:
-            clause = t_user.insert().values(
-                crew=user.crew,
-                description=user.description,
-                user_id=user.user_id,
-                vip=user.vip
-            )
-            con.execute(clause)
+            cur.execute("INSERT INTO public.user ( crew, description, user_id, vip) VALUES ( %s, %s, %s::text, %s);",
+                        (user.crew, user.description, str(user.user_id), str(user.vip)))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()
 
     """
     Set methods
     """
 
     @staticmethod
-    def set_vip(user: User):
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
+    def set_vip(user_id: int):
+        con, cur = Db.connect()
         try:
-            clause = t_user.update().where(t_user.c.user_id == str(user.user_id)).values(
-                vip=user.vip
-            )
-            con.execute(clause)
+            cur.execute("UPDATE public.user SET vip = TRUE WHERE  user_id = {}::text".format(str(user_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()
 
     @staticmethod
     def set_lover(user_id: int, lover_id: int):
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
+        con, cur = Db.connect()
         try:
-            clause = t_user.update().where(t_user.c.user_id == str(user_id)).values(
-                married=True,
-                lover=lover_id
-            )
-            con.execute(clause)
+            cur.execute("UPDATE public.user SET married = TRUE , lover = {}::text WHERE  user_id = {}::text".format(
+                str(lover_id),
+                str(user_id)))
+            cur.execute("UPDATE public.user SET married = TRUE , lover = {}::text WHERE  user_id = {}::text".format(
+                str(user_id),
+                str(lover_id)))
         except Exception as err:
             print(err)
-        try:
-            clause = t_user.update().where(t_user.c.user_id == str(lover_id)).values(
-                married=True,
-                lover=user_id
-            )
-            con.execute(clause)
-        except Exception as err:
-            print(err)
+            con.rollback()
+        con.commit()
 
     """
     Unset methods
     """
 
     @staticmethod
-    def unset_vip(user: User):
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
+    def unset_vip(user_id: int):
+        con, cur = Db.connect()
         try:
-            clause = t_user.update().where(t_user.c.user_id == str(user.user_id)).values(
-                vip=False,
-            )
-            con.execute(clause)
+            cur.execute("UPDATE public.user SET vip = FALSE WHERE  user_id = {}::text".format(str(user_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()
 
     @staticmethod
-    def unset_lover(user: User, lover: User):
-        con, meta = Db.connect()
-        t_user = meta.tables['user']
+    def unset_lover(user_id: int, lover_id: int):
+        con, cur = Db.connect()
         try:
-            clause = t_user.update().where(t_user.c.user_id == str(user.user_id)).values(
-                married=False,
-                lover=None
-            )
-            con.execute(clause)
+            cur.execute("UPDATE public.user SET married = FALSE , lover = %s WHERE  user_id = %s::text", (None,
+                                                                                                          str(user_id)))
+            cur.execute(
+                "UPDATE public.user SET married = FALSE, lover= %s WHERE  user_id = %s::text", (None, str(lover_id)))
         except Exception as err:
             print(err)
-        try:
-            clause = t_user.update().where(t_user.c.user_id == str(lover.user_id)).values(
-                married=False,
-                lover=None
-            )
-            con.execute(clause)
-        except Exception as err:
-            print(err)
+            con.rollback()
+        con.commit()

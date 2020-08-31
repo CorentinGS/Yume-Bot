@@ -35,58 +35,54 @@ class RoleDB:
 
     @staticmethod
     def get_one_from_level(level: int, guild_id: int):
-        con, meta = Db.connect()
-        t_roles = meta.tables['roles']
+        con, cur = Db.connect()
         try:
-            clause = t_roles.select().where(
-                and_(t_roles.c.level == level,
-                     t_roles.c.guild_id == str(guild_id)))
-            rows = con.execute(clause)
-            row = rows.fetchone()
-            if row:
-                return RoleDB.rows_to_dict(row)
-            return {}
+            cur.execute(
+                "SELECT * FROM public.roles WHERE level = {} and guild_id = {}::text;".format(level, str(guild_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return rows
 
     @staticmethod
     def get_levels(guild_id: int):
         roles = []
-        con, meta = Db.connect()
-        t_roles = meta.tables["roles"]
+        con, cur = Db.connect()
         try:
-            clause = t_roles.select().where(t_roles.c.guild_id == str(guild_id))
-            rows = con.execute(clause)
+            cur.execute("SELECT * FROM public.roles WHERE guild_id = {}::text;".format(str(guild_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
             for row in rows:
                 roles.append(RoleDB.rows_to_dict(row))
             return roles
-        except Exception as err:
-            print(err)
+        return []
 
     @staticmethod
     def set_level(role_id: int, guild_id: int, level: int):
-        con, meta = Db.connect()
-        t_roles = meta.tables['roles']
+        con, cur = Db.connect()
         try:
-            clause = t_roles.insert().values(
-                guild_id=guild_id,
-                role_id=role_id,
-                level=level)
-            con.execute(clause)
+            cur.execute(
+                "INSERT INTO public.roles ( guild_id, role_id, level) VALUES ( {}::text, {}::text, {} );".format(
+                    str(guild_id),
+                    str(role_id), level)
+            )
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()
 
     @staticmethod
     def unset_level(level: int, guild_id: int):
-        con, meta = Db.connect()
-        t_roles = meta.tables['roles']
+        con, cur = Db.connect()
         try:
-            clause = t_roles.delete() \
-                .where(
-                and_(
-                    t_roles.c.level == level,
-                    t_roles.c.guild_id == str(guild_id)))
-            con.execute(clause)
-
+            cur.execute(
+                "DELETE FROM public.roles WHERE level = {} and guild_id = {}::text;".format(level, str(guild_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()

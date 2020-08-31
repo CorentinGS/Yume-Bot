@@ -15,16 +15,14 @@ class MessageDB:
 
     @staticmethod
     def insert_message(message: Message):
-
+        con, cur = Db.connect()
         try:
-            con, meta = Db.connect()
-            messages = meta.tables['messages']
-            clause = messages.insert().values(
-                message_id=message.message_id,
-                guild_id=message.guild_id,
-                channel_id=message.channel_id,
-                user_id=message.user_id,
-                time_id=message.time_id)
-            con.execute(clause)
+            cur.execute(
+                "INSERT INTO public.messages (  message_id, guild_id, channel_id, user_id, time_id) \
+                VALUES ( %s::text, %s::text, %s::text, %s::text, %s );", (
+                    str(message.message_id), str(message.guild_id), str(message.channel_id), str(message.user_id),
+                    message.time_id))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()

@@ -71,8 +71,7 @@ class Profiles(commands.Cog):
             em = await Embeds.is_not_married(ctx.author)
             await ctx.send(embed=em)
         else:
-            loverr: User = UserDB.get_one(user.lover)
-            UserDB.unset_lover(user, loverr)
+            UserDB.unset_lover(ctx.author.id, user.lover)
 
             lover: discord.User = self.bot.get_user(user.lover)
             if not lover:

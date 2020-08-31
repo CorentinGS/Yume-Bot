@@ -43,210 +43,165 @@ class RankingsDB:
 
     @staticmethod
     def get_user(user_id: int, guild_id: int) -> dict:
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
+        con, cur = Db.connect()
         try:
-            clause = t_rankings.select().where(
-                and_(t_rankings.c.user_id == str(user_id),
-                     t_rankings.c.guild_id == str(guild_id)))
-            rows = con.execute(clause)
-            row = rows.fetchone()
-            if row:
-                return RankingsDB.rows_to_dict(row)
-            return {}
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def ranking_exists(user: User, guild: Guild) -> bool:
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = select([func.count()]).select_from(t_rankings).where(and_(
-                t_rankings.c.guild_id == str(guild.guild_id),
-                t_rankings.c.user_id == str(user.user_id)))
-            rows = con.execute(clause)
-            row = rows.fetchone()
-            if row[0] > 0:
-                return True
-            return False
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def create_ranking(user_id: int, guild_id: int):
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = t_rankings.insert().values(
-                guild_id=guild_id,
-                level=0,
-                reach=20,
-                total=0,
-                user_id=user_id,
-                xp=0)
-            con.execute(clause)
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def reset_user(user: User, guild: Guild):
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = t_rankings.update().where(
-                and_(t_rankings.c.guild_id == str(guild.guild_id),
-                     t_rankings.c.user_id == str(user.user_id))) \
-                .values(level=0,
-                        reach=20,
-                        total=0,
-                        xp=0)
-            con.execute(clause)
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def update_user(user_id: int, guild_id: int, ranking: dict):
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = t_rankings.update() \
-                .where(
-                and_(
-                    t_rankings.c.guild_id == str(guild_id),
-                    t_rankings.c.user_id == str(user_id))) \
-                .values(level=ranking["level"],
-                        reach=ranking['reach'],
-                        xp=ranking['xp'],
-                        total=ranking['total'])
-            con.execute(clause)
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def update_user_id(user_id: id, guild_id: id, level: int, reach: int, xp: int):
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = t_rankings.update() \
-                .where(
-                and_(
-                    t_rankings.c.guild_id == str(guild_id),
-                    t_rankings.c.user_id == str(user_id))) \
-                .values(level=level,
-                        reach=reach,
-                        xp=xp)
-            con.execute(clause)
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def get_rank(user_id: int, guild_id: int) -> int:
-        users = []
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = select([t_rankings.c.user_id]) \
-                .select_from(t_rankings) \
-                .group_by(t_rankings.c.user_id, t_rankings.c.total) \
-                .order_by(t_rankings.c.total.desc()) \
-                .where(t_rankings.c.guild_id == str(guild_id))
-            rows = con.execute(clause)
-            for row in rows:
-                users.append(row[0])
-            df = pandas.DataFrame(np.array(users), columns=["ID"])
-            return df.ID[df.ID == user_id].index.tolist()[0] + 1
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def get_scoreboard(guild: Guild) -> list:
-        users = []
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        try:
-            clause = select([t_rankings.c.user_id]) \
-                .select_from(t_rankings) \
-                .group_by(t_rankings.c.user_id, t_rankings.c.total) \
-                .order_by(t_rankings.c.total.desc()) \
-                .limit(10) \
-                .where(t_rankings.c.guild_id == str(guild.guild_id))
-
-            rows = con.execute(clause)
-            for row in rows:
-                users.append(row[0])
-            df = pandas.DataFrame(np.array(users), columns=["ID"])
-            return df.ID.values.tolist()
-        except Exception as err:
-            print(err)
-
-    @staticmethod
-    def get_all():
-        con, meta = Db.connect()
-        t_rankings = meta.tables['rankings']
-        clause = t_rankings.select()
-        rows = con.execute(clause)
-        rankings = []
-        for row in rows:
-            rankings.append(RankingsDB.rows_to_dict(row))
-        return rankings
-
-    @staticmethod
-    def set_ignored_chan(guild_id: int, chan_id: int):
-        con, meta = Db.connect()
-        t_rankings_chan = meta.tables['rankings_chan']
-        try:
-            clause = t_rankings_chan.insert().values(
-                guild_id=guild_id, chan_id=chan_id)
-            con.execute(clause)
-        except Exception as err:
-            print(err)
-
-    '''
-    @staticmethod
-    def is_ignored_chan(chan_id: int):
-        con, meta = Db.connect()
-        t_rankings_chan = meta.tables['rankings_chan']
-        try:
-            clause = t_rankings_chan.select().where(t_rankings_chan.c.chan_id == str(chan_id))
-            rows = con.execute(clause)
-            row = rows.fetchone()
-            if row:
-                return True
-            return False
-        except Exception as err:
-            print(err)
-    '''
-
-    @staticmethod
-    def is_ignored_chan(chan_id: int):
-        with open("./config/keys.json", "r") as cjson:
-            keys = json.load(cjson)
-
-        con = psycopg2.connect(
-            "host=postgre dbname=yumebot port=5432 user=postgres password={}".format(keys["postgresql"]))
-        cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-        try:
-            cur.execute('SELECT * FROM public.rankings_chan')
+            cur.execute(
+                "SELECT * FROM public.rankings WHERE user_id = {}::text and guild_id = {}::text;".format(str(user_id),
+                                                                                                         str(guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
-        cur.fetchall()
+        rows = cur.fetchone()
+        if rows:
+            rankings = RankingsDB.rows_to_dict(rows)
+            return rankings
+        return {}
+
+    @staticmethod
+    def create_ranking(user_id: int, guild_id: int):
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "INSERT INTO public.rankings ( guild_id, level, reach, total, user_id, xp) "
+                " VALUES ( {}::text, 0, 20, 0, {}::text, 0 );".format(
+                    str(guild_id), str(user_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def reset_user(user_id: int, guild_id: int):
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "UPDATE public.rankings SET level = 0, reach = 20, total = 0, xp = 0 "
+                "WHERE guild_id = {}::text AND user_id = {}::text;".format(
+                    str(guild_id), str(user_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def update_user(user_id: int, guild_id: int, ranking: dict):
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "UPDATE public.rankings SET level = {}, reach = {}, total = {}, xp = {} "
+                "WHERE guild_id = {}::text AND user_id = {}::text;".format(
+                    ranking['level'], ranking['reach'], ranking['total'], ranking['xp'],
+                    str(guild_id), str(user_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def update_user_id(user_id: id, guild_id: id, level: int, reach: int, xp: int):
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "UPDATE public.rankings SET level = {}, reach = {}, xp = {} "
+                "WHERE guild_id = {}::text AND user_id = {}::text;".format(
+                    level, reach, xp, str(guild_id), str(user_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def get_rank(user_id: int, guild_id: int) -> int:
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "SELECT user_id FROM public.rankings "
+                "WHERE guild_id = {}::text GROUP BY user_id, total ORDER BY total DESC "
+                    .format(str(guild_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
+            df = pandas.DataFrame(np.array(rows), columns=["ID"])
+            return df.ID[df.ID == str(user_id)].index.tolist()[0] + 1
+        return 0
+
+    @staticmethod
+    def get_scoreboard(guild: Guild) -> list:
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "SELECT user_id FROM public.rankings "
+                "WHERE guild_id = {}::text GROUP BY user_id, total ORDER BY total DESC LIMIT 10".format(
+                    str(guild.guild_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
+            df = pandas.DataFrame(np.array(rows), columns=["ID"])
+            return df.ID.values.tolist()
+        return []
+
+    @staticmethod
+    def get_all():
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "SELECT * FROM public.rankings;")
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchall()
+        if rows:
+            rankings = []
+            for row in rows:
+                rankings.append(RankingsDB.rows_to_dict(row))
+            return rankings
+
+    @staticmethod
+    def set_ignored_chan(guild_id: int, chan_id: int):
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "INSERT INTO public.rankings_chan ( guild_id, chan_id) VALUES ({}::text , {}::text );".format(
+                    str(guild_id), str(chan_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
+
+    @staticmethod
+    def is_ignored_chan(chan_id: int):
+        con, cur = Db.connect()
+        try:
+            cur.execute(
+                "SELECT * FROM public.rankings_chan WHERE chan_id = {}::text;".format(str(chan_id))
+            )
+        except Exception as err:
+            print(err)
+            con.rollback()
+        rows = cur.fetchone()
+        if rows:
+            return True
+        return False
 
     @staticmethod
     def get_ignored_chan(guild_id: int):
         channels = []
-        con, meta = Db.connect()
-        t_rankings_chan = meta.tables['rankings_chan']
+        con, cur = Db.connect()
         try:
-            clause = t_rankings_chan.select().where(t_rankings_chan.c.guild_id == str(guild_id))
-            rows = con.execute(clause)
-            for row in rows:
-                channels.append({
-                    "chan_id": row['chan_id'],
-                    "guild_id": row["guild_id"]
-                })
+            cur.execute(
+                "SELECT FROM public.rankings_chan WHERE guild_id = {}::text".format(str(guild_id))
+            )
+            rows = cur.fetchall()
+            if rows:
+                for row in rows:
+                    channels.append({
+                        "chan_id": row['chan_id'],
+                        "guild_id": row["guild_id"]
+                    })
             return channels
 
         except Exception as err:
@@ -254,14 +209,12 @@ class RankingsDB:
 
     @staticmethod
     def delete_ignored_chan(guild_id: int, chan_id: int):
-        con, meta = Db.connect()
-        t_rankings_chan = meta.tables['rankings_chan']
+        con, cur = Db.connect()
         try:
-            clause = t_rankings_chan.delete() \
-                .where(
-                and_(
-                    t_rankings_chan.c.chan_id == str(chan_id),
-                    t_rankings_chan.c.guild_id == str(guild_id)))
-            con.execute(clause)
+            cur.execute(
+                "DELETE FROM public.rankings_chan WHERE	guild_id = {}::text AND chan_id = {}::text;".format(
+                    str(guild_id), str(chan_id)))
         except Exception as err:
             print(err)
+            con.rollback()
+        con.commit()

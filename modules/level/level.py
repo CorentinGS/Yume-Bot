@@ -80,14 +80,13 @@ class Level(commands.Cog):
 
         x = 0
         for user in scoreboard:
-            member = discord.utils.get(ctx.guild.members, id=int(user))
-            user_y = UserDB.get_one(user)
-            member_ranking = RankingsDB.get_user(user_y, guild_y)
-            if member is None:
-                RankingsDB.reset_user(user_y, guild_y)
+            member: discord.Member = discord.utils.get(ctx.guild.members, id=int(user))
+            if not isinstance(member, discord.Member):
+                RankingsDB.reset_user(member.id, ctx.guild.id)
+
             else:
+                member_ranking = RankingsDB.get_user(member.id, ctx.guild.id)
                 x += 1
-                level = member_ranking['level']
                 total = member_ranking['total']
                 em.add_field(name=f"**{x} - {member.name}**", value=f"Total xp : {total}",
                              inline=False)

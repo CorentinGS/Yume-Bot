@@ -149,8 +149,8 @@ class Set(commands.Cog):
         # Mods & Admins role
         await ctx.send('Detecting mod and admin role...', delete_after=5)
         for role in ctx.guild.roles:
-            if GuildDB.exists_in_admin(role.id, guild):
-                GuildDB.remove_admin(role.id, guild)
+            if GuildDB.exists_in_admin(role.id, ctx.guild.id):
+                GuildDB.remove_admin(role.id, ctx.guild.id)
             if role.permissions.administrator or role.permissions.manage_guild is True:
                 GuildDB.set_admin(role.id, ctx.message.guild.id)
             elif role.permissions.ban_members or role.permissions.kick_members is True:
@@ -167,8 +167,8 @@ class Set(commands.Cog):
         if not role:
             return
         guild = GuildDB.get_one(ctx.message.guild.id)
-        if GuildDB.exists_in_admin(role.id, guild):
-            GuildDB.remove_admin(role.id, guild)
+        if GuildDB.exists_in_admin(role.id, ctx.guild.id):
+            GuildDB.remove_admin(role.id, ctx.guild.id)
         if value.lower() == 'mod':
             GuildDB.set_mod(role.id, ctx.message.guild.id)
         elif value.lower() == 'admin':
@@ -184,8 +184,8 @@ class Set(commands.Cog):
     async def setting_debug(self, ctx):
         guild = GuildDB.get_one(ctx.message.guild.id)
         for role in ctx.guild.roles:
-            if GuildDB.exists_in_admin(role.id, guild):
-                GuildDB.remove_admin(role.id, guild)
+            if GuildDB.exists_in_admin(role.id, ctx.guild.id):
+                GuildDB.remove_admin(role.id, ctx.guild.id)
             if role.permissions.administrator or role.permissions.manage_guild is True:
                 GuildDB.set_admin(role.id, ctx.message.guild.id)
             elif role.permissions.ban_members or role.permissions.kick_members is True:
@@ -200,8 +200,8 @@ class Set(commands.Cog):
         for gguild in self.bot.guilds:
             guild = GuildDB.get_one(gguild.id)
             for role in gguild.roles:
-                if GuildDB.exists_in_admin(role.id, guild):
-                    GuildDB.remove_admin(role.id, guild)
+                if GuildDB.exists_in_admin(role.id, ctx.guild.id):
+                    GuildDB.remove_admin(role.id, ctx.guild.id)
                 if role.permissions.administrator or role.permissions.manage_guild is True:
                     GuildDB.set_admin(role.id, gguild.id)
                 elif role.permissions.ban_members or role.permissions.kick_members is True:
@@ -227,8 +227,8 @@ class Set(commands.Cog):
         guildY = GuildDB.get_one(guild.id)
 
         for role in guild.roles:
-            if GuildDB.exists_in_admin(role.id, guildY):
-                GuildDB.remove_admin(role.id, guildY)
+            if GuildDB.exists_in_admin(role.id, guild.id):
+                GuildDB.remove_admin(role.id, guild.id)
             if role.permissions.administrator or role.permissions.manage_guild is True:
                 GuildDB.set_admin(role.id, guild.id)
             elif role.permissions.ban_members or role.permissions.kick_members is True:

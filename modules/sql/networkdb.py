@@ -1,11 +1,7 @@
 import psycopg2
 from psycopg2 import extras
 
-try:
-    con = psycopg2.connect("host=postgre dbname=yumebot port=5432 user=postgres password=yumebot")
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-except psycopg2.DatabaseError as e:
-    print('Error %s' % e)
+from modules.sql.dbConnect import Db
 
 
 class NetworkDB:
@@ -28,8 +24,10 @@ class NetworkDB:
 
     @staticmethod
     def is_linked(chan_id: int):
+        con, cur = Db.connect()
+
         try:
-            cur.execute("SELECT * FROM public.chan_network WHERE chan_id = {};".format(chan_id))
+            cur.execute("SELECT * FROM public.chan_network WHERE chan_id = {}::text;".format(str(chan_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -40,8 +38,10 @@ class NetworkDB:
 
     @staticmethod
     def get_linked_from_guild(guild_id: int):
+        con, cur = Db.connect()
+
         try:
-            cur.execute("SELECT * FROM public.chan_network WHERE guild_id = {};".format(guild_id))
+            cur.execute("SELECT * FROM public.chan_network WHERE guild_id = {}::text;".format(str(guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -52,6 +52,8 @@ class NetworkDB:
 
     @staticmethod
     def get_all_linked_channels():
+        con, cur = Db.connect()
+
         try:
             cur.execute("SELECT * FROM public.chan_network;")
         except Exception as err:
@@ -69,10 +71,12 @@ class NetworkDB:
 
     @staticmethod
     def set_channel(chan_id: int, guild_id: int):
+        con, cur = Db.connect()
+
         try:
             cur.execute(
-                "INSERT INTO public.chan_network ( guild_id, chan_id)  VALUES ( {}, {});".format(
-                    guild_id, chan_id))
+                "INSERT INTO public.chan_network ( guild_id, chan_id)  VALUES ( {}::text, {}::text);".format(
+                    str(guild_id), str(chan_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -80,10 +84,12 @@ class NetworkDB:
 
     @staticmethod
     def delete_channel(chan_id: int):
+        con, cur = Db.connect()
+
         try:
             cur.execute(
-                "DELETE FROM public.chan_network WHERE chan_id = {};".format(
-                    chan_id))
+                "DELETE FROM public.chan_network WHERE chan_id = {}::text;".format(
+                    str(chan_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -91,9 +97,11 @@ class NetworkDB:
 
     @staticmethod
     def block_user(user_id: int):
+        con, cur = Db.connect()
+
         try:
             cur.execute(
-                "INSERT INTO public.user_network ( user_id) VALUES ( {} );".format(user_id))
+                "INSERT INTO public.user_network ( user_id) VALUES ( {}::text );".format(str(user_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -101,9 +109,11 @@ class NetworkDB:
 
     @staticmethod
     def unblock_user(user_id: int):
+        con, cur = Db.connect()
+
         try:
             cur.execute(
-                "DELETE FROM public.user_network WHERE user_id = {};".format(user_id))
+                "DELETE FROM public.user_network WHERE user_id = {}::text;".format(str(user_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -111,9 +121,11 @@ class NetworkDB:
 
     @staticmethod
     def is_blocked(user_id: int):
+        con, cur = Db.connect()
+
         try:
             cur.execute(
-                "SELECT * FROM public.user_network WHERE user_id = {};".format(user_id))
+                "SELECT * FROM public.user_network WHERE user_id = {}::text;".format(str(user_id)))
         except Exception as err:
             print(err)
             con.rollback()

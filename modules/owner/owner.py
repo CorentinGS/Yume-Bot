@@ -193,7 +193,7 @@ class Owner(commands.Cog):
     async def add(self, ctx, id: int):
         await ctx.message.delete()
         user = UserDB.get_one(id)
-        UserDB.set_vip(user)
+        UserDB.set_vip(id)
 
         await ctx.send(f"{id} is now VIP")
 
@@ -201,7 +201,7 @@ class Owner(commands.Cog):
     async def remove(self, ctx, id: int):
         await ctx.message.delete()
         user = UserDB.get_one(id)
-        UserDB.unset_vip(user)
+        UserDB.unset_vip(id)
         await ctx.send(f"{id} has been remove from VIP")
 
     @commands.command()
