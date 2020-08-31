@@ -226,8 +226,6 @@ class Utilities(commands.Cog):
         if not user:
             user = ctx.author
 
-        # joins = sorted(ctx.guild.members, key=lambda o: o.joined_at)
-
         embed = discord.Embed(
             title="{}".format(user.name),
             color=discord.Colour.magenta()

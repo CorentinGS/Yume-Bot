@@ -73,7 +73,7 @@ class Embeds:
 
         if command == "ban" or command == "hackban":
             color = discord.Colour.red()
-        if command == "unban" or "unmute":
+        if command == "unban" or command == "unmute":
             color = discord.Colour.green()
         if command == "kick":
             color = discord.Colour.blue()

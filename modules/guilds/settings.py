@@ -108,10 +108,10 @@ class Set(commands.Cog):
                 log = await ctx.guild.create_text_channel("yumebot-log", overwrites=overwrite)
             except discord.Forbidden:
                 await ctx.send("I don't have all the permissions required")
-                pass
+
             except discord.HTTPException:
                 print("HTTP Exception in setting yumebot-log")
-                pass
+
             else:
                 guild.log_chan = str(log.id)
 

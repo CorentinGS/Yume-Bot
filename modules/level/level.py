@@ -156,8 +156,7 @@ class Level(commands.Cog):
         bucket = self._cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()
         RankingsDB.is_ignored_chan(message.channel.id)
-        if retry_after:
-            pass
+
         if (user.bot is True) \
                 or (message.guild is None) \
                 or (message.guild.id in ignored_guilds) \

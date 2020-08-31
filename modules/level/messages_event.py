@@ -23,8 +23,8 @@ class Level(commands.Cog):
         if message.guild.id not in [488765635439099914, 631811291568144384, 618414922556112916, 740622438282428416]:
             return False
 
-        # if RankingsDB.is_ignored_chan(message.channel.id):
-        #   return False
+        if RankingsDB.is_ignored_chan(message.channel.id):
+            return False
 
         bucket = self._cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()

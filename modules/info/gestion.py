@@ -83,7 +83,6 @@ class Gestion(commands.Cog):
         auth = ctx.message.author
         guild = ctx.message.guild
 
-        # owner = await self.bot.get_user_info(OWNER)
         server = self.bot.get_guild(int(GUILD))
         for chan in server.channels:
             if chan.id == int(FEEDBACK):
