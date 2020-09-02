@@ -32,7 +32,7 @@ class GuildDB:
     def guild_from_row(rows):
         return Guild(rows['guild_id'], rows['blacklist'], rows['color'], rows['greet'], rows['greet_chan'],
                      rows['log_chan'], rows['logging'], rows['setup'],
-                     rows['vip'])
+                     rows['vip'], rows["guild_name"])
 
     @staticmethod
     def guilds_from_row(rows):
@@ -66,12 +66,12 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, vip) "
-                " VALUES ( %s, %s, %s, %s::text, %s::text, %s::text, %s, %s, %s);",
+                "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, vip, guild_name) "
+                " VALUES ( %s, %s, %s, %s::text, %s::text, %s::text, %s, %s, %s, %s);",
                 (guild.blacklist, guild.color, guild.greet, str(guild.greet_chan), str(guild.guild_id),
                  str(guild.log_chan),
                  guild.logging,
-                 guild.setup, guild.vip))
+                 guild.setup, guild.vip, guild.guild_name))
         except Exception as err:
             print(err)
             con.rollback()
@@ -98,19 +98,27 @@ class GuildDB:
             cur.execute(
                 "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}',"
                 " greet_chan = '{}::text', log_chan = '{}::text', logging = '{}', "
-                "setup = '{}', vip = '{}'  WHERE  guild_id = {}::text".format(
+                "setup = '{}', vip = '{}', guild_name='{}'  WHERE  guild_id = {}::text".format(
                     guild.blacklist, guild.color, guild.greet, str(guild.greet_chan), str(guild.log_chan),
                     guild.logging,
                     guild.setup,
-                    guild.vip, str(guild.guild_id)))
+                    guild.vip, guild.guild_name, str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
         con.commit()
 
-    """
-    Others methods
-    """
+    @staticmethod
+    def update_name(guild_id: int, name: str):
+        con, cur = Db.connect()
+        try:
+            cur.execute("UPDATE public.guild SET guild_name = %s WHERE guild_id = %s::text", (
+                name,
+                str(guild_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
 
     @staticmethod
     def exists_in_admin(role_id, guild_id: int) -> bool:
@@ -133,7 +141,8 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "DELETE FROM public.admin WHERE guild_id = {}::text AND role_id = {}::text".format(str(guild_id), str(role_id)))
+                "DELETE FROM public.admin WHERE guild_id = {}::text AND role_id = {}::text".format(str(guild_id),
+                                                                                                   str(role_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -170,7 +179,8 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = true".format(str(guild.guild_id)))
+                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = true".format(
+                    str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -185,7 +195,8 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = false".format(str(guild.guild_id)))
+                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = false".format(
+                    str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()

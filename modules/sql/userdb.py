@@ -30,7 +30,8 @@ class UserDB:
 
     @staticmethod
     def user_from_row(rows):
-        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'], rows['married'], rows["lover"])
+        return User(rows['user_id'], rows['vip'], rows['crew'], rows['description'], rows['married'], rows["lover"],
+                    rows['user_name'])
 
     @staticmethod
     def users_from_row(rows):
@@ -38,10 +39,6 @@ class UserDB:
         for row in rows:
             users.append(UserDB.user_from_row(row))
         return users
-
-    """
-    Get methods
-    """
 
     @staticmethod
     def get_one(user_id: int) -> User:
@@ -76,16 +73,14 @@ class UserDB:
     def create(user: User):
         con, cur = Db.connect()
         try:
-            cur.execute("INSERT INTO public.user ( crew, description, user_id, vip) VALUES ( %s, %s, %s::text, %s);",
-                        (user.crew, user.description, str(user.user_id), str(user.vip)))
+            cur.execute(
+                "INSERT INTO public.user ( crew, description, user_id, vip, user_name) "
+                "VALUES ( %s, %s, %s::text, %s, %s::text);",
+                (user.crew, user.description, str(user.user_id), str(user.vip), user.user_name))
         except Exception as err:
             print(err)
             con.rollback()
         con.commit()
-
-    """
-    Set methods
-    """
 
     @staticmethod
     def set_vip(user_id: int):
@@ -112,15 +107,23 @@ class UserDB:
             con.rollback()
         con.commit()
 
-    """
-    Unset methods
-    """
+    @staticmethod
+    def update_name(user_id: int, name: str):
+        con, cur = Db.connect()
+        try:
+            cur.execute("UPDATE public.user SET user_name = %s WHERE user_id = %s::text", (
+                name,
+                str(user_id)))
+        except Exception as err:
+            print(err)
+            con.rollback()
+        con.commit()
 
     @staticmethod
     def unset_vip(user_id: int):
         con, cur = Db.connect()
         try:
-            cur.execute("UPDATE public.user SET vip = FALSE WHERE  user_id = {}::text".format(str(user_id)))
+            cur.execute("UPDATE public.user SET vip = FALSE WHERE user_id = {}::text".format(str(user_id)))
         except Exception as err:
             print(err)
             con.rollback()

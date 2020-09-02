@@ -27,6 +27,7 @@ import sys
 import discord
 from discord.ext import commands
 
+from modules.sql.guilddb import GuildDB
 from modules.sql.userdb import UserDB
 from modules.utils import checks, lists
 
@@ -240,6 +241,19 @@ class Owner(commands.Cog):
             await owner.add_roles(role)
         except discord.HTTPException:
             return
+
+    @commands.command()
+    @checks.is_owner()
+    async def update_names(self, ctx):
+        for guild in self.bot.guilds:
+            G = GuildDB.get_one(guild_id=guild.id)
+            GuildDB.update_name(guild.id, guild.name)
+            if guild.id in [488765635439099914, 631811291568144384, 618414922556112916, 740622438282428416]:
+                for user in guild.members:
+                    if not user.bot:
+                        U = UserDB.get_one(user.id)
+                        UserDB.update_name(user.id,
+                                           "{}#{}".format(user.name.lower(), user.discriminator))
 
 
 def setup(bot):

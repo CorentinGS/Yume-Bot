@@ -30,6 +30,7 @@ from modules.sql.guilddb import GuildDB
 from modules.sql.messages_db import Message, MessageDB
 from modules.sql.rankingsdb import RankingsDB
 from modules.sql.roledb import RoleDB
+from modules.sql.userdb import UserDB
 from modules.utils import lists
 from random import randint
 
@@ -42,6 +43,18 @@ class Event(commands.Cog):
         self.config = bot.config
         self._cd = commands.CooldownMapping.from_cooldown(
             1.0, 2.0, commands.BucketType.user)
+
+    @commands.Cog.listener()
+    async def on_user_update(self, before, after):
+        if before.name != after.name:
+            name = "{}#{}".format(after.name.lower(), after.discriminator)
+            UserDB.update_name(after.id, name)
+
+    @commands.Cog.listener()
+    async def on_guild_update(self, before, after):
+        if before.name != after.name:
+            name = "{}".format(after.name.lower())
+            GuildDB.update_name(after.id, name)
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
@@ -109,6 +122,11 @@ class Event(commands.Cog):
 
     @staticmethod
     async def on_vip_message(message):
+        user = UserDB.get_one(message.author.id)
+        if not user.user_name or "{}#{}".format(message.author.name.lower(),
+                                                message.author.discriminator) != user.user_name.lower():
+            UserDB.update_name(message.author.id,
+                               "{}#{}".format(message.author.name.lower(), message.author.discriminator))
         dt = message.created_at
         time = str(dt.year) + ("0" + str(dt.month) if dt.month < 10 else str(dt.month)) + (
             "0" + str(dt.day) if dt.day < 10 else str(dt.day))

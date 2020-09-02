@@ -24,10 +24,11 @@
 
 class User:
     def __init__(self, user_id: int, vip: bool = False, crew: bool = False, description: str = "",
-                 married: bool = False, lover: int = None):
+                 married: bool = False, lover: int = None, user_name: str = None):
         self.user_id: int = user_id
         self.crew: bool = crew
         self.vip: bool = vip
         self.description: str = description
         self.married: bool = married
         self.lover: int = lover
+        self.user_name: str = user_name

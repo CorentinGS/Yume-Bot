@@ -171,7 +171,6 @@ class Automod(commands.Cog):
         :param member: The member who joined the guild
         """
         guild = GuildDB.get_one(member.guild.id)
-        user = UserDB.get_one(member.id)
 
         # Check if the user has already been muted to avoid any sanctions bypass
         if MuteDB.is_muted(member.id, member.guild.id):

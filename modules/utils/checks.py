@@ -57,14 +57,13 @@ async def is_mod_check(ctx):
     guild = GuildDB.get_one(ctx.guild.id)
     mods = GuildDB.get_mod_roles(guild)
     admins = GuildDB.get_admin_roles(guild)
-
     auth = ctx.message.author
     if ctx.guild is None:
         return
     if auth == ctx.guild.owner:
         return True
     for role in auth.roles:
-        if role.id in mods or role.id in admins:
+        if str(role.id) in mods or str(role.id) in admins:
             return True
 
 
@@ -94,18 +93,19 @@ async def is_immune(message):
     guild = GuildDB.get_one(message.guild.id)
     admins = GuildDB.get_admin_roles(guild)
     auth = message.author
+
     if message.guild is None:
         return False
     if auth == message.guild.owner:
         return True
     for role in auth.roles:
-        if role.id in admins:
+        if str(role.id) in admins:
             return True
 
 
 async def is_vip_check(ctx):
     vips = UserDB.get_vips()
-    if ctx.message.author.id in vips:
+    if str(ctx.message.author.id) in vips:
         return True
     else:
         return False
