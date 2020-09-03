@@ -81,7 +81,7 @@ async def is_admin_check(ctx):
     if auth == ctx.message.guild.owner:
         return True
     for role in auth.roles:
-        if role.id in admins:
+        if str(role.id) in admins:
             return True
 
 
