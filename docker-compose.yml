@@ -64,6 +64,8 @@ services:
       options:
         max-size: "500k"
         max-file: "3"
+    networks:
+      - traefik_network
 
 
 volumes:
