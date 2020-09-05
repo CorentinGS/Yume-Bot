@@ -22,6 +22,29 @@ services:
     restart: always
     ports:
       - 3001:3000
+    labels:
+      traefik.enable: true
+      # http port 80
+      traefik.http.routers.yume-dashboard-ui.entrypoints: web
+      traefik.http.routers.yume-dashboard-ui.rule: Host(`dashboard.yumenetwork.net`)
+      traefik.http.routers.yume-dashboard-ui.middlewares: yume-dashboard-https-redirect
+      traefik.http.routers.yume-dashboard-ui.service: yume-dashboard-ui
+
+      # https port 443
+      traefik.http.routers.yume-dashboard-ui-secure.entrypoints: websecure
+      traefik.http.routers.yume-dashboard-ui-secure.rule: Host(`dashboard.yumenetwork.net`)
+      # traefik.http.routers.yume-dashboard-ui-secure.middlewares: "medium-security-headers@file"
+      traefik.http.routers.yume-dashboard-ui-secure.tls: true
+      traefik.http.routers.yume-dashboard-ui-secure.service: yume-dashboard-ui
+      traefik.http.routers.yume-dashboard-ui-secure.tls.certresolver: httpcertresolver
+
+      traefik.http.middlewares.yume-dashboard-https-redirect.redirectScheme.scheme: https
+      traefik.http.middlewares.yume-dashboard-https-redirect.redirectScheme.permanent: true
+
+      traefik.http.services.yume-dashboard-ui.loadbalancer.server.port: 3000
+    networks:
+      - traefik_network
+
 
   bot:
     restart: always
@@ -41,3 +64,7 @@ services:
 volumes:
  db-data:
   driver: local
+
+networks:
+    traefik_network:
+        external: true
