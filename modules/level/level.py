@@ -82,7 +82,7 @@ class Level(commands.Cog):
         for user in scoreboard:
             member: discord.Member = discord.utils.get(ctx.guild.members, id=int(user))
             if not isinstance(member, discord.Member):
-                RankingsDB.reset_user(member.id, ctx.guild.id)
+                RankingsDB.reset_user(int(user), ctx.guild.id)
 
             else:
                 member_ranking = RankingsDB.get_user(member.id, ctx.guild.id)
