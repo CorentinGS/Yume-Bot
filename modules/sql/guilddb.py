@@ -45,7 +45,7 @@ class GuildDB:
     def get_one(guild_id: int) -> Guild:
         con, cur = Db.connect()
         try:
-            cur.execute("SELECT * FROM public.guild WHERE guild_id = {}::text;".format(str(guild_id)))
+            cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(str(guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -67,7 +67,7 @@ class GuildDB:
         try:
             cur.execute(
                 "INSERT INTO public.guild ( blacklist, color, greet, greet_chan, guild_id, log_chan, logging, setup, vip, guild_name) "
-                " VALUES ( %s, %s, %s, %s::text, %s::text, %s::text, %s, %s, %s, %s);",
+                " VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
                 (guild.blacklist, guild.color, guild.greet, str(guild.greet_chan), str(guild.guild_id),
                  str(guild.log_chan),
                  guild.logging,
@@ -81,7 +81,7 @@ class GuildDB:
     def delete(guild: Guild):
         con, cur = Db.connect()
         try:
-            cur.execute("DELETE FROM public.guild WHERE guild_id = {}::text;".format(str(guild.guild_id)))
+            cur.execute("DELETE FROM public.guild WHERE guild_id = {};".format(str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -112,7 +112,7 @@ class GuildDB:
     def update_name(guild_id: int, name: str):
         con, cur = Db.connect()
         try:
-            cur.execute("UPDATE public.guild SET guild_name = %s WHERE guild_id = %s::text", (
+            cur.execute("UPDATE public.guild SET guild_name = %s WHERE guild_id = %s", (
                 name,
                 str(guild_id)))
         except Exception as err:
@@ -125,7 +125,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT count(*) FROM public.admin WHERE guild_id = {}::text AND role_id = {}::text".format(
+                "SELECT count(*) FROM public.admin WHERE guild_id = {} AND role_id = {}".format(
                     str(guild_id),
                     str(role_id)))
         except Exception as err:
@@ -141,7 +141,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "DELETE FROM public.admin WHERE guild_id = {}::text AND role_id = {}::text".format(str(guild_id),
+                "DELETE FROM public.admin WHERE guild_id = {} AND role_id = {}".format(str(guild_id),
                                                                                                    str(role_id)))
         except Exception as err:
             print(err)
@@ -153,7 +153,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s::text, %s::text, %s)",
+                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)",
                 (str(guild_id), str(role_id),
                  True))
         except Exception as err:
@@ -166,7 +166,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s::text, %s::text, %s)",
+                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)",
                 (str(guild_id), str(role_id),
                  False))
         except Exception as err:
@@ -179,7 +179,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = true".format(
+                "SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = true".format(
                     str(guild.guild_id)))
         except Exception as err:
             print(err)
@@ -195,7 +195,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = false".format(
+                "SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = false".format(
                     str(guild.guild_id)))
         except Exception as err:
             print(err)
