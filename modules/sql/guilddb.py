@@ -97,8 +97,8 @@ class GuildDB:
         try:
             cur.execute(
                 "UPDATE public.guild SET blacklist = '{}', color = '{}', greet = '{}',"
-                " greet_chan = '{}::text', log_chan = '{}::text', logging = '{}', "
-                "setup = '{}', vip = '{}', guild_name='{}'  WHERE  guild_id = {}::text".format(
+                " greet_chan = '{}', log_chan = '{}', logging = '{}', "
+                "setup = '{}', vip = '{}', guild_name='{}'  WHERE  guild_id = {}".format(
                     guild.blacklist, guild.color, guild.greet, str(guild.greet_chan), str(guild.log_chan),
                     guild.logging,
                     guild.setup,
