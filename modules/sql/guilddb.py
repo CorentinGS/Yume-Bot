@@ -81,7 +81,7 @@ class GuildDB:
     def delete(guild: Guild):
         con, cur = Db.connect()
         try:
-            cur.execute("DELETE FROM public.guild WHERE guild_id = {};".format(str(guild.guild_id)))
+            cur.execute("DELETE FROM public.guild WHERE guild_id = {}::text;".format(str(guild.guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
@@ -112,7 +112,7 @@ class GuildDB:
     def update_name(guild_id: int, name: str):
         con, cur = Db.connect()
         try:
-            cur.execute("UPDATE public.guild SET guild_name = %s WHERE guild_id = %s", (
+            cur.execute("UPDATE public.guild SET guild_name = %s WHERE guild_id = %s::text", (
                 name,
                 str(guild_id)))
         except Exception as err:
@@ -125,7 +125,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT count(*) FROM public.admin WHERE guild_id = {} AND role_id = {}".format(
+                "SELECT count(*) FROM public.admin WHERE guild_id = {}::text AND role_id = {}::text".format(
                     str(guild_id),
                     str(role_id)))
         except Exception as err:
@@ -141,7 +141,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "DELETE FROM public.admin WHERE guild_id = {} AND role_id = {}".format(str(guild_id),
+                "DELETE FROM public.admin WHERE guild_id = {}::text AND role_id = {}::text".format(str(guild_id),
                                                                                                    str(role_id)))
         except Exception as err:
             print(err)
@@ -153,7 +153,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)",
+                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s::text, %s::text, %s)",
                 (str(guild_id), str(role_id),
                  True))
         except Exception as err:
@@ -166,7 +166,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s, %s, %s)",
+                "INSERT INTO public.admin ( guild_id, role_id, admin ) VALUES ( %s::text, %s::text, %s)",
                 (str(guild_id), str(role_id),
                  False))
         except Exception as err:
@@ -179,7 +179,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = true".format(
+                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = true".format(
                     str(guild.guild_id)))
         except Exception as err:
             print(err)
@@ -195,7 +195,7 @@ class GuildDB:
         con, cur = Db.connect()
         try:
             cur.execute(
-                "SELECT role_id FROM public.admin WHERE guild_id = {} AND admin = false".format(
+                "SELECT role_id FROM public.admin WHERE guild_id = {}::text AND admin = false".format(
                     str(guild.guild_id)))
         except Exception as err:
             print(err)
