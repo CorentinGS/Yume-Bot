@@ -45,7 +45,7 @@ class GuildDB:
     def get_one(guild_id: int) -> Guild:
         con, cur = Db.connect()
         try:
-            cur.execute("SELECT * FROM public.guild WHERE guild_id = {};".format(str(guild_id)))
+            cur.execute("SELECT * FROM public.guild WHERE guild_id = {}::text;".format(str(guild_id)))
         except Exception as err:
             print(err)
             con.rollback()
