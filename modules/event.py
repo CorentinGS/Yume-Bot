@@ -148,7 +148,7 @@ class Event(commands.Cog):
         else:
             gain = randint(14, 22)
         if message.author in message.guild.premium_subscribers:
-            gain += gain * 2
+            gain += gain * 1.2
         return gain
 
     @staticmethod
